@@ -86,18 +86,19 @@ def check(staged):
     print('PASS: task protection, source permissions, diff whitespace')
 
 
-def doctor():
+def doctor(android=False):
     missing = []
-    for name in ('git', 'python3', 'java', 'adb', 'emulator', 'ffmpeg', 'ffprobe', 'aapt'):
+    names = ('git', 'python3', 'g++', 'cmake', 'ninja', 'ffmpeg')
+    if android:
+        names += ('java', 'adb', 'emulator', 'aapt')
+    for name in names:
         found = shutil.which(name)
         print(f'{name}: {found or "MISSING"}')
         if not found:
             missing.append(name)
     print(f'host: {platform.platform()} / {platform.machine()}')
-    print(f'ANDROID_HOME: {os.environ.get("ANDROID_HOME", "unset")}')
-    print(f'JAVA_HOME: {os.environ.get("JAVA_HOME", "unset")}')
-    print('Project: SDK 35, Java 17, Gradle 8.9; target AVD: 4096 MB')
-    if shutil.which('adb'):
+    print('Audio SDK: C++17, C ABI, CPU sherpa-onnx; no JVM/UI dependency')
+    if android and shutil.which('adb'):
         subprocess.run(['adb', 'devices', '-l'], check=True, timeout=20)
     if missing:
         raise ValueError('Missing prerequisites: ' + ', '.join(missing))
@@ -163,7 +164,7 @@ def run(command):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='action', required=True)
-    commands.add_parser('doctor')
+    commands.add_parser('doctor').add_argument('--android', action='store_true')
     commands.add_parser('hooks')
     commands.add_parser('check').add_argument('--staged', action='store_true')
     for name in ('transcript', 'apk', 'models'):
@@ -184,7 +185,7 @@ def main():
         elif args.action == 'check':
             check(args.staged)
         elif args.action == 'doctor':
-            doctor()
+            doctor(args.android)
         elif args.action == 'apk':
             apk(args.path)
         elif args.action == 'models':

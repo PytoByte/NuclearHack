@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 .venv/
+.tools/
+/.build/
 .audio-runs/
 models/
 third_party/

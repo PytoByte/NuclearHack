@@ -1,0 +1,23 @@
+name: Audio SDK
+on:
+  push:
+    branches: [dev]
+  pull_request:
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: make audio-bootstrap
+      - run: make check native-test native-sanitize
+  android-abi:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: make mobile-bootstrap mobile-build

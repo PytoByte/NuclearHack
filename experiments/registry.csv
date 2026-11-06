@@ -1,0 +1,2 @@
+experiment_id,date,scope,baseline,status,metrics
+exp_0001,2026-11-07,host_decoder_synthetic_mp3,none,inconclusive,eval/results/exp_0001/metrics.json

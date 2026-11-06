@@ -1,74 +1,79 @@
-# Автоматизация аудиомодуля
+# Работа с native audio SDK
 
-## Оценка перед разработкой
+Актуальное решение: самостоятельный **C++17 SDK с C ABI**, без UI/JVM/Gradle.
+Архитектура и ограничения: `docs/AUDIO_ARCHITECTURE.md`.
+Публичный API: `src/audio/include/nuclear_audio.h`.
 
-Рабочая ветка `dev` создана от `main`, затем выполнен fast-forward `origin/ui`.
-В исходном UI ASR/диаризация эмулируются задержками и готовыми репликами.
-Настоящего аудиобейзлайна и измеренных WER/DER/RTF/Android RAM пока нет.
-Экспорт вручную экранирует только кавычки и обратный слеш; при интеграции
-нужен JSON-сериализатор, корректно обрабатывающий управляющие символы.
+## Воспроизведение окружения
 
-Текущая машина: Python/git доступны; Java, adb, emulator, ffmpeg/ffprobe,
-aapt в PATH отсутствуют. `local.properties` из UI содержит Windows SDK path.
-В UI уже закоммичены build/.gradle/.idea: новый .gitignore предотвращает
-добавление новых файлов, но не снимает существующие с учёта.
-Очистку индекса проводить отдельно от реализации аудио; файлы пользователя сохранять.
-В UI также изменены executable bits у task/: merge перенёс эти изменения
-без изменения содержимого. Новые изменения task/ запрещены.
-
-Дополнительные MCP/плагины и отдельный Codex skill на этом этапе не нужны:
-исполняемые проверки в репозитории обеспечивают воспроизводимость.
-Модельные загрузчики и упаковщик добавлять после выбора конкретных версий,
-лицензий и ABI; фиктивные URL/хеши и автоматическая загрузка latest не нужны.
-
-## Команды
-
-Все команды выполняются из корня; Python использует только стандартную библиотеку.
+Из корня проекта, на Linux x86_64 с установленными git, g++ и uv:
 
 ```sh
-make hooks         # локально включает .githooks; чужие hooks не перезаписывает
-make check         # изменения task/, source INTERNET, пробелы в diff
-make test          # проверки самой автоматизации
-make doctor        # строгая проверка инструментов; отсутствие => ненулевой exit
-make android-check # сборка + lint + unit tests + INTERNET в собранном APK
-python3 scripts/audio_tools.py transcript export.json
-python3 scripts/audio_tools.py models models/manifest.json
-python3 scripts/audio_tools.py run -- python3 eval/scripts/run_asr.py
+make audio-bootstrap
+make doctor
+make native-test
+make native-sanitize
+make mobile-bootstrap
+make mobile-build
 ```
 
-Последняя команда — пример запуска будущего harness, которого пока нет.
-Любую реальную команду можно передать после `run --`: сохраняются git SHA,
-статус дерева, платформа, stdout/stderr, код возврата и длительность команды
-в уникальный `.audio-runs/<UTC timestamp>/`. Старые результаты не перезаписываются.
-Это время команды на dev-машине, не Android RTF и не измерение пиковой RAM.
-Каталог игнорируется Git: в логи могут попасть приватные данные.
-Не передавайте секреты аргументами команды — argv сохраняется в environment.json.
+Bootstrap устанавливает инструменты в `.venv/` и `.tools/`, без sudo и изменений
+системного окружения. Python 3.12 выбирает uv. CMake/Ninja/FFmpeg закреплены
+в `uv.lock`, native runtime/miniaudio/NDK — в `config/audio-toolchain.lock.json`.
+NDK скачивается только при `mobile-bootstrap`. После подготовки сборка
+CMake не обращается в сеть. Повторный bootstrap пропускает готовые артефакты.
+Для интерактивной работы из корня: `. scripts/audio-env.sh`.
 
-Хук читает staged manifest из индекса, не из рабочего дерева. Проверяет только
-исходные разрешения; окончательный контроль выполняет `apk` по merged manifest.
-Git hooks можно обойти: это дополнительная защита, а не запрет записи в файловой системе.
-Автоматическое исправление файлов в хуке отключено.
+## Автоматические проверки
 
-Манифест моделей имеет вид `{"files": [...]}`. Каждая запись содержит
-`path` относительно корня проекта, `source`, `version`, `license`, `sha256`.
-Включать все веса, токенизаторы и конфигурации. Проверка читает файл потоково,
-проверяет SHA256 и наличие метаданных. Правомерность лицензии проверяется отдельно.
-Пустой список не проходит. Настоящий manifest появится после выбора моделей.
+- `make native-test`: Release SDK, CTest с настоящим C-клиентом и Python ctypes
+  тесты C ABI, decoder, WAV/MP3, ресемплирования, alias, отмены, ошибок и concurrency.
+- `make native-sanitize`: Debug SDK с ASan/UBSan, CTest decoder и границ ABI.
+- `make mobile-build`: сборка ARM64/x86_64 API 26 и проверка ELF/16-KiB LOAD
+  выравнивания нашего SDK, sherpa C API и ONNX Runtime; без устройства/интерфейса.
+- `make check`: защита task/, source INTERNET permission, diff whitespace.
+- `make hooks`: включает локальный pre-commit, читает staged manifest из индекса,
+  не перезаписывает существующие пользовательские hooks.
+- `.github/workflows/audio-sdk.yml`: host tests + sanitizers и mobile ABI build.
+  Проверки локально выполнены; запуск CI в GitHub пока не проверен.
 
-## Следующие шаги для автономного цикла
+Source permission check не заменяет merged manifest APK. Если команда UI
+собирает приложение, использовать `make android-check` (дополнительное окружение)
+и `python3 scripts/audio_tools.py apk <APK>`.
 
-1. Подготовить JDK 17, SDK 35, SDK build-tools, platform-tools, emulator и ffmpeg;
-   добавить инструменты в PATH. Исправить локальный SDK path вне task/.
-2. Создать AVD с 4096 MB RAM; зафиксировать ABI и наличие совместимых JNI .so.
-3. Выбрать и закрепить модели/лицензии/хеши; реализовать dev bootstrap,
-   verify и offline packaging без загрузок в приложении.
-4. Создать разрешённый набор аудио с разметкой, заморозить dev/test,
-   добавить harness WER/DER/RTF и сбор Android PSS/логов.
-5. Удалить подстановку готовых реплик при подключении реального pipeline.
-   Автоматизировать offline smoke: импорт → ASR → диаризация → экспорт,
-   отдельно запуск локальной LLM после выгрузки аудиомоделей.
+## Эксперименты и контракты
 
-Политика экспериментов — в `docs/AGENT_AUDIO_HACKATHON.md`.
-Полные Android-проверки запускать после изменений runtime/моделей/слияния реплик,
-быстрые проверки — перед каждым коммитом. Не выдавать статические проверки
-или сборку за прохождение реальной транскрибации на 4-ГБ Android.
+```sh
+.build/audio/nh-audio native-info
+.build/audio/nh-audio probe input.mp3
+python3 scripts/benchmark_decode.py input.mp3
+python3 scripts/audio_tools.py transcript export.json
+python3 scripts/audio_tools.py models models/manifest.json
+python3 scripts/audio_tools.py run -- .build/audio/nh-audio probe input.mp3
+```
+
+Benchmark измеряет decoder на Linux: время, decode RTF и process peak RSS
+через wait4. ASR/diarization/Android RAM этим не измеряются. Обычный `run`
+сохраняет команду, git SHA, статус дерева, платформу, stdout/stderr, код возврата
+и время команды в уникальном `.audio-runs/<UTC timestamp>/`.
+Старые запуски не перезаписываются, каталог игнорируется Git.
+Не передавать секреты через argv: команда сохраняется в метаданных.
+
+Манифест моделей: `{"files": [...]}`; для каждого файла `path` относительно
+репозитория, `source`, `version`, `license`, `sha256`. Включать веса,
+токенизаторы и конфигурации. Пустой manifest не проходит. Загрузчик и
+упаковщик весов появятся после выбора конкретных моделей, без фиктивных хешей.
+
+Сейчас SDK предоставляет низкоуровневые runtime-операции, а не полный файловый
+pipeline. Для baseline остаются model bootstrap, file orchestrator, VAD,
+глобальная диаризация, экспорт и отдельная LLM. Модельные измерения пока отсутствуют.
+
+## История репозитория
+
+`dev` создана от `main`, UI влит fast-forward. Пользовательский
+`docs/AGENT_AUDIO_HACKATHON.md` сохраняется без изменения и не добавляется в Git.
+Его Android-app-first последовательность заменена текущим запросом на SDK.
+`task/` — read-only. Из ui ранее перенеслись только executable bits файлов task/;
+новых изменений этого каталога не делаем.
+В UI уже tracked build/.gradle/.idea и Windows local.properties; SDK их не
+использует и не изменяет. .gitignore не снимает существующие файлы с учёта.

@@ -1,0 +1,34 @@
+{
+  "experiment_id": "exp_0001",
+  "scope": "host decoder only; synthetic sine MP3; no models",
+  "samples": [
+    {
+      "scope": "host_decode_only",
+      "audio_seconds": 10,
+      "wall_seconds": 0.0275646,
+      "max_pcm_block_bytes": 64000,
+      "decode_rtf": 0.00275646,
+      "run_id": "decode-20261106T213830.988367Z",
+      "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+      "cpu": "x86_64",
+      "git_sha": "f7d85cb6593067cb9c095fb28c00dee6d64bfcf3",
+      "git_dirty": true,
+      "process_wall_seconds": 0.037029764000180876,
+      "process_peak_rss_kib": 13092
+    },
+    {
+      "scope": "host_decode_only",
+      "audio_seconds": 600,
+      "wall_seconds": 1.64892,
+      "max_pcm_block_bytes": 64000,
+      "decode_rtf": 0.0027482,
+      "run_id": "decode-20261106T213831.130657Z",
+      "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+      "cpu": "x86_64",
+      "git_sha": "f7d85cb6593067cb9c095fb28c00dee6d64bfcf3",
+      "git_dirty": true,
+      "process_wall_seconds": 1.6551321549995919,
+      "process_peak_rss_kib": 13116
+    }
+  ]
+}

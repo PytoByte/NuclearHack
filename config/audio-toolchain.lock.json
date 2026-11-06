@@ -1,0 +1,39 @@
+{
+  "platform": "linux-x86_64",
+  "sherpa_version": "2.0.1",
+  "artifacts": [
+    {
+      "name": "sherpa-host",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v2.0.1/sherpa-onnx-v2.0.1-linux-x64-shared-no-tts.tar.bz2",
+      "sha256": "b3b095f619059d54914027ff38f8a0a132ea3bbc5df32a212a9743a8bd1467b2",
+      "archive": "tar",
+      "strip": 1
+    },
+    {
+      "name": "sherpa-android",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v2.0.1/sherpa-onnx-v2.0.1-android.tar.bz2",
+      "sha256": "39003753ec293425ed56723ea9b972b98841a490af3311670c3060548d654330",
+      "archive": "tar",
+      "strip": 1
+    },
+    {
+      "name": "miniaudio/miniaudio.h",
+      "url": "https://raw.githubusercontent.com/mackron/miniaudio/f40cf03f80cdb7e741d43e53b7e706e8c1394bcf/miniaudio.h",
+      "sha256": "7e4f3f13c8fe66df2080ac3dd12a89193e3c2463cb7f067c798abd7331cd8ee6"
+    },
+    {
+      "name": "miniaudio/LICENSE",
+      "url": "https://raw.githubusercontent.com/mackron/miniaudio/f40cf03f80cdb7e741d43e53b7e706e8c1394bcf/LICENSE",
+      "sha256": "457f1b500e0adf6bc059edddfa78a2f62012e7c3bb43476c20e0bd23b25ba0eb"
+    },
+    {
+      "name": "ndk",
+      "url": "https://dl.google.com/android/repository/android-ndk-r27d-linux.zip",
+      "sha1": "22105e410cf29afcf163760cc95522b9fb981121",
+      "archive": "zip",
+      "strip": 1,
+      "optional": true,
+      "sha256": "601246087a682d1944e1e16dd85bc6e49560fe8b6d61255be2829178c8ed15d9"
+    }
+  ]
+}

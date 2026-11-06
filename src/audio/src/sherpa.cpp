@@ -1,6 +1,7 @@
 #include "internal.hpp"
 #include "sherpa-onnx/c-api/c-api.h"
 #include <cmath>
+#include <cstring>
 #include <fstream>
 #include <memory>
 #include <mutex>
@@ -28,7 +29,7 @@ nh_status create_recognizer(SherpaOnnxOfflineRecognizerConfig &config, uint32_t 
   config.feat_config.feature_dim = 80;
   config.model_config.num_threads = static_cast<int32_t>(threads);
   config.model_config.provider = "cpu";
-  config.decoding_method = "greedy_search";
+  if (!config.decoding_method) config.decoding_method = "greedy_search";
   auto handle = std::make_unique<nh_asr>();
   handle->native = SherpaOnnxCreateOfflineRecognizer(&config);
   if (!handle->native) return nh::fail(NH_RUNTIME_ERROR, "Could not initialize ASR model");
@@ -38,6 +39,48 @@ nh_status create_recognizer(SherpaOnnxOfflineRecognizerConfig &config, uint32_t 
 }
 extern "C" {
 const char *nh_sherpa_version(void) { return SherpaOnnxGetVersionStr(); }
+nh_status nh_asr_create(const nh_asr_config *options, nh_asr **out) {
+  return nh::guard([&]() -> nh_status {
+    if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
+    *out = nullptr;
+    if (!options || options->struct_size != sizeof(*options) || !options->family ||
+        !options->threads || options->threads > 16)
+      return nh::fail(NH_INVALID_ARGUMENT, "Invalid ASR configuration");
+    const std::string family = options->family;
+    const std::string method = options->decoding_method ? options->decoding_method : "greedy_search";
+    const bool beam = method == "modified_beam_search";
+    if ((method != "greedy_search" && !beam) || (beam && family != "transducer") ||
+        (beam && (!options->max_active_paths || options->max_active_paths > 64)) ||
+        (options->hotwords_file && *options->hotwords_file && (!beam || !std::isfinite(options->hotwords_score))))
+      return nh::fail(NH_INVALID_ARGUMENT, "Unsupported decoder/hotword configuration");
+    if (family != "ctc" && family != "transducer" && family != "whisper")
+      return nh::fail(NH_INVALID_ARGUMENT, "Unknown ASR family");
+    if (!readable(options->model) || !readable(options->tokens) ||
+        (family != "ctc" && !readable(options->decoder)) ||
+        (family == "transducer" && !readable(options->joiner)) ||
+        (options->hotwords_file && *options->hotwords_file && !readable(options->hotwords_file)))
+      return nh::fail(NH_IO_ERROR, "ASR model/tokenizer/hotwords not readable");
+    SherpaOnnxOfflineRecognizerConfig config{};
+    config.model_config.tokens = options->tokens;
+    config.decoding_method = method.c_str();
+    config.max_active_paths = static_cast<int32_t>(options->max_active_paths);
+    config.hotwords_file = options->hotwords_file;
+    config.hotwords_score = options->hotwords_score;
+    if (family == "ctc") config.model_config.nemo_ctc.model = options->model;
+    else if (family == "transducer") {
+      config.model_config.transducer.encoder = options->model;
+      config.model_config.transducer.decoder = options->decoder;
+      config.model_config.transducer.joiner = options->joiner;
+    } else {
+      config.model_config.whisper.encoder = options->model;
+      config.model_config.whisper.decoder = options->decoder;
+      config.model_config.whisper.language = options->language ? options->language : "ru";
+      config.model_config.whisper.task = "transcribe";
+      config.model_config.whisper.tail_paddings = -1;
+    }
+    return create_recognizer(config, options->threads, out);
+  });
+}
 nh_status nh_asr_create_ctc(const char *model, const char *tokens, uint32_t threads, nh_asr **out) {
   return nh::guard([&]() -> nh_status {
     if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
@@ -115,24 +158,32 @@ nh_status nh_asr_create_whisper(const char *encoder, const char *decoder, const 
 void nh_asr_destroy(nh_asr *handle) { delete handle; }
 nh_status nh_diarizer_create(const char *segmentation, const char *embedding,
                             uint32_t threads, float threshold, nh_diarizer **out) {
+  nh_diarizer_config options{sizeof(nh_diarizer_config), segmentation, embedding, threads, threshold, 0.3f, 0.5f, -1};
+  return nh_diarizer_create_config(&options, out);
+}
+nh_status nh_diarizer_create_config(const nh_diarizer_config *options, nh_diarizer **out) {
   return nh::guard([&]() -> nh_status {
     if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
     *out = nullptr;
-    // sherpa clusters by cosine dissimilarity (1 - cosine), whose range is [0,2].
-    if (!threads || threads > 16 || !std::isfinite(threshold) || threshold <= 0 || threshold > 2)
-      return nh::fail(NH_INVALID_ARGUMENT, "Invalid diarization threads/threshold");
-    if (!readable(segmentation) || !readable(embedding)) return nh::fail(NH_IO_ERROR, "Diarization models not readable");
+    if (!options || options->struct_size != sizeof(*options) || !options->threads || options->threads > 16 ||
+        !std::isfinite(options->cluster_threshold) || options->cluster_threshold <= 0 || options->cluster_threshold > 2 ||
+        !std::isfinite(options->min_duration_on) || options->min_duration_on < 0 || options->min_duration_on > 10 ||
+        !std::isfinite(options->min_duration_off) || options->min_duration_off < 0 || options->min_duration_off > 10 ||
+        (options->oracle_speakers != -1 && (options->oracle_speakers < 1 || options->oracle_speakers > 64)))
+      return nh::fail(NH_INVALID_ARGUMENT, "Invalid diarization configuration");
+    if (!readable(options->segmentation) || !readable(options->embedding))
+      return nh::fail(NH_IO_ERROR, "Diarization models not readable");
     SherpaOnnxOfflineSpeakerDiarizationConfig config{};
-    config.segmentation.pyannote.model = segmentation;
-    config.segmentation.num_threads = static_cast<int32_t>(threads);
+    config.segmentation.pyannote.model = options->segmentation;
+    config.segmentation.num_threads = static_cast<int32_t>(options->threads);
     config.segmentation.provider = "cpu";
-    config.embedding.model = embedding;
-    config.embedding.num_threads = static_cast<int32_t>(threads);
+    config.embedding.model = options->embedding;
+    config.embedding.num_threads = static_cast<int32_t>(options->threads);
     config.embedding.provider = "cpu";
-    config.clustering.num_clusters = -1;
-    config.clustering.threshold = threshold;
-    config.min_duration_on = 0.3f;
-    config.min_duration_off = 0.5f;
+    config.clustering.num_clusters = options->oracle_speakers;
+    config.clustering.threshold = options->cluster_threshold;
+    config.min_duration_on = options->min_duration_on;
+    config.min_duration_off = options->min_duration_off;
     auto handle = std::make_unique<nh_diarizer>();
     handle->native = SherpaOnnxCreateOfflineSpeakerDiarization(&config);
     if (!handle->native) return nh::fail(NH_RUNTIME_ERROR, "Could not initialize diarizer");

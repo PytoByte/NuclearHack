@@ -10,13 +10,45 @@ static int32_t consume(const float *, uint32_t frames, uint64_t, void *user) {
   if (frames > stats.max_block) stats.max_block = frames;
   return 0;
 }
+static int32_t progress(const char *stage, uint64_t done, uint64_t total, void *) {
+  std::cerr << "{\"stage\":\"" << stage << "\",\"completed_frames\":" << done << ",\"total_frames\":" << total << "}\n";
+  return 0;
+}
 int main(int argc, char **argv) {
   if (argc == 1 || (argc == 2 && std::string(argv[1]) == "native-info")) {
-    std::cout << "{\"abi\":" << nh_abi_version() << ",\"sherpa\":\"" << nh_sherpa_version() << "\"}\n";
+    std::cout << "{\"abi\":" << nh_abi_version() << ",\"sherpa\":\"" << nh_sherpa_version() << "\",\"llm\":" << nh_llm_available() << "}\n";
     return 0;
   }
+  if (argc >= 5 && std::string(argv[1]) == "summarize") {
+    try {
+      nh_llm_config config{};
+      config.struct_size = sizeof(config); config.model = argv[3]; config.output_text = argv[4];
+      config.threads = argc > 5 ? std::stoul(argv[5]) : 4;
+      config.context_tokens = 4096; config.max_output_tokens = 256;
+      const auto code = nh_summarize_file(argv[2], &config, progress, nullptr);
+      if (code != NH_OK) std::cerr << nh_last_error() << '\n';
+      return code;
+    } catch (const std::exception &e) { std::cerr << e.what() << '\n'; return 2; }
+  }
+  if (argc >= 9 && std::string(argv[1]) == "transcribe") {
+    try {
+      const std::string trace = std::string(argv[3]) + ".trace.json";
+      nh_pipeline_config config{};
+      config.struct_size = sizeof(config);
+      config.asr_model = argv[4]; config.tokens = argv[5]; config.segmentation = argv[6];
+      config.embedding = argv[7]; config.scratch_directory = argv[8];
+      config.output_json = argv[3]; config.trace_json = trace.c_str();
+      config.threads = argc > 9 ? std::stoul(argv[9]) : 2;
+      config.cluster_threshold = argc > 10 ? std::stof(argv[10]) : 0.8f;
+      config.chunk_seconds = argc > 11 ? std::stoul(argv[11]) : 20;
+      config.max_audio_seconds = 600;
+      const auto code = nh_transcribe_file(argv[2], &config, progress, nullptr);
+      if (code != NH_OK) std::cerr << nh_last_error() << '\n';
+      return code;
+    } catch (const std::exception &e) { std::cerr << e.what() << '\n'; return 2; }
+  }
   if (argc != 3 || std::string(argv[1]) != "probe") {
-    std::cerr << "Usage: nh-audio [native-info | probe LOCAL_AUDIO]\n";
+    std::cerr << "Usage: nh-audio [native-info | probe LOCAL_AUDIO | transcribe INPUT OUTPUT MODEL TOKENS SEGMENTATION EMBEDDING SCRATCH [THREADS THRESHOLD CHUNK_SECONDS]]\n";
     return 2;
   }
   Stats stats;

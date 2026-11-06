@@ -11,6 +11,16 @@ PCM = C.CFUNCTYPE(C.c_int32, C.POINTER(C.c_float), C.c_uint32, C.c_uint64, C.c_v
 ASR = C.CFUNCTYPE(C.c_int32, C.c_char_p, C.c_char_p, C.c_void_p)
 TURN = C.CFUNCTYPE(C.c_int32, C.c_int32, C.c_double, C.c_double, C.c_void_p)
 
+class AsrConfig(C.Structure):
+    _fields_ = [('struct_size', C.c_uint32)] + [(k,C.c_char_p) for k in
+        ('family','model','decoder','joiner','tokens','language','decoding_method','hotwords_file')] + [
+        ('threads',C.c_uint32),('max_active_paths',C.c_uint32),('hotwords_score',C.c_float)]
+
+class DiarConfig(C.Structure):
+    _fields_ = [('struct_size',C.c_uint32),('segmentation',C.c_char_p),('embedding',C.c_char_p),
+        ('threads',C.c_uint32),('cluster_threshold',C.c_float),('min_duration_on',C.c_float),
+        ('min_duration_off',C.c_float),('oracle_speakers',C.c_int32)]
+
 
 class NativeSdk:
     def __init__(self):
@@ -50,9 +60,19 @@ class NativeSdk:
             raise errors[0]
         return np.concatenate(chunks) if chunks else np.empty(0, dtype=np.float32)
 
-    def create(self, family, files, threads):
+    def create(self, family, files, threads, method='greedy_search', language='ru', hotwords=None):
         handle = C.c_void_p()
         files = {Path(p).name: os.fsencode(ROOT / p) for p in files}
+        if hasattr(self.lib, 'nh_asr_create'):
+            self.lib.nh_asr_create.argtypes = [C.POINTER(AsrConfig), C.POINTER(C.c_void_p)]
+            model,decoder,joiner,tokens = (
+                (files.get('model.int8.onnx',files.get('model.onnx')),None,None,files.get('tokens.txt')) if family=='ctc' else
+                (files.get('encoder.int8.onnx'),files.get('decoder.onnx'),files.get('joiner.onnx'),files.get('tokens.txt')) if family=='transducer' else
+                (files.get('base-encoder.int8.onnx'),files.get('base-decoder.int8.onnx'),None,files.get('base-tokens.txt')))
+            config=AsrConfig(C.sizeof(AsrConfig),family.encode(),model,decoder,joiner,tokens,language.encode(),
+                method.encode(),os.fsencode(hotwords) if hotwords else None,threads,4,1.5)
+            self.check(self.lib.nh_asr_create(C.byref(config),C.byref(handle)))
+            return handle
         if family == 'ctc':
             code = self.lib.nh_asr_create_ctc(files['model.int8.onnx'], files['tokens.txt'], threads, C.byref(handle))
         elif family == 'transducer':

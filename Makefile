@@ -1,6 +1,18 @@
 export PATH := $(CURDIR)/.venv/bin:$(CURDIR)/.tools/bin:$(PATH)
 .PHONY: help doctor check hooks test android-check audio-bootstrap mobile-bootstrap native-build native-test native-sanitize mobile-build
 .PHONY: research-bootstrap research-test
+.PHONY: llama-build android-host-bootstrap android-host-build offline-package
+llama-build:
+	.venv/bin/python scripts/build_llama_audio.py
+android-host-bootstrap: mobile-bootstrap
+	.venv/bin/python scripts/bootstrap_android_audio.py
+android-host-build:
+	.venv/bin/python scripts/build_llama_audio.py --android arm64-v8a
+	.venv/bin/python scripts/build_llama_audio.py --android x86_64
+	$(MAKE) mobile-build
+	.venv/bin/python scripts/build_android_host.py
+offline-package:
+	.venv/bin/python scripts/package_offline_models.py
 help:
 	@echo 'doctor        Show missing native audio tools (strict)'
 	@echo 'check         Check task protection and source manifests'

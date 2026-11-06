@@ -70,6 +70,27 @@
         "models/diarization/embedding.LICENSE",
         "models/diarization/segmentation.LICENSE"
       ]
+    },
+    {
+      "id": "qwen3-0.6b-q8",
+      "family": "llama",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "files": [
+        "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "models/qwen3-0.6b-q8/LICENSE"
+      ]
+    },
+    {
+      "id": "wespeaker-resnet34-lm",
+      "family": "speaker_embedding",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "revision": "f0c48c298fd835726c27956a5d617bad7115627e",
+      "files": [
+        "models/diarization/wespeaker-resnet34-lm.onnx",
+        "models/diarization/wespeaker-resnet34-lm.MODELCARD",
+        "models/diarization/wespeaker-resnet34-lm.LICENSE"
+      ]
     }
   ],
   "files": [
@@ -238,6 +259,49 @@
       "source": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
       "version": "065629c313eaf1a01c65c640c46d77e61e9607b4",
       "license": "Apache-2.0"
+    },
+    {
+      "path": "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+      "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/qwen3-0.6b-q8/LICENSE",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/LICENSE",
+      "sha256": "5de36594c10839788a8c589443a8ef9d8b8d17c65a1b5807206ae037fc36c6bd",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/wespeaker_en_voxceleb_resnet34_LM.onnx",
+      "sha256": "e9848563da86f263117134dfd7ad63c92355b37de492b55e325400c9d9c39012",
+      "size_bytes": 26530550,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.MODELCARD",
+      "url": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM/resolve/f0c48c298fd835726c27956a5d617bad7115627e/README.md",
+      "sha256": "af2f6592a73d1333b872f75c6047f24bd1bb53346c0597edc1544140aa9c7e73",
+      "size_bytes": 3152,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.LICENSE",
+      "url": "https://raw.githubusercontent.com/creativecommons/cc-legal-tools-data/a0dac18d1a773b4cdb7d8dd5d9bf4efab7901030/legacy/legalcode/by_4.0.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "size_bytes": 18657,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
     }
   ]
 }

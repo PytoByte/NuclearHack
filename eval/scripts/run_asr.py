@@ -27,6 +27,9 @@ def main():
     parser.add_argument('--experiment', required=True)
     parser.add_argument('--model', required=True)
     parser.add_argument('--threads', type=int, default=2)
+    parser.add_argument('--method', choices=['greedy_search','modified_beam_search'], default='greedy_search')
+    parser.add_argument('--language', default='ru', help='Empty string requests Whisper autodetect')
+    parser.add_argument('--hotwords', type=Path)
     parser.add_argument('--manifest', type=Path, default=ROOT / 'eval/data/fleurs-ru-validation.jsonl')
     parser.add_argument('--limit', type=int)
     args = parser.parse_args()
@@ -53,6 +56,8 @@ def main():
         with (out / 'stdout.log').open('a') as log:
             log.write(line + '\n')
     config = dict(experiment_id=args.experiment, model=model, threads=args.threads,
+        decoding_method=args.method, language=args.language,
+        hotwords_sha256=sha256(args.hotwords) if args.hotwords else None,
         manifest=str(manifest.relative_to(ROOT)), manifest_sha256=sha256(manifest),
         selected_audio_ids=[r['audio_id'] for r in dataset],
         normalization='v1: NFC, lowercase, yo->ye, punctuation/symbols->space; keep numbers/fillers',
@@ -69,7 +74,7 @@ def main():
     sdk = NativeSdk()
     rss_stages = dict(before_load=current_rss_kib())
     start = time.perf_counter()
-    handle = sdk.create(model['family'], model['files'], args.threads)
+    handle = sdk.create(model['family'], model['files'], args.threads, args.method, args.language, args.hotwords)
     load_seconds = time.perf_counter() - start
     rss_stages['after_load'] = current_rss_kib()
     results = []

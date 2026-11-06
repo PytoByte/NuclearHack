@@ -1,0 +1,53 @@
+{
+  "artifacts": [
+    {
+      "name": "jdk",
+      "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.21%2B9/OpenJDK17U-jdk_x64_linux_hotspot_17.0.21_9.tar.gz",
+      "sha256": "8b9b611d917e3dfd8419d3566b5949226f69b052fed7e109c1368add1dfe8711",
+      "archive": "tar",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/cmdline-tools/19.0",
+      "url": "https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip",
+      "sha1": "5fdcc763663eefb86a5b8879697aa6088b041e70",
+      "archive": "zip",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/platform-tools",
+      "url": "https://dl.google.com/android/repository/platform-tools_r37.0.2-linux.zip",
+      "sha1": "736a08af10515674e40d8b754fe87390d698da2b",
+      "archive": "zip",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/emulator",
+      "url": "https://dl.google.com/android/repository/emulator-linux_x64-16847572.zip",
+      "sha1": "5b1a9674d67f3a0f2efccb5543587791e4e37ac8",
+      "archive": "zip",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/platforms/android-35",
+      "url": "https://dl.google.com/android/repository/platform-35_r02.zip",
+      "sha1": "0bb560a90a7a2cbd0dd8348224d518b638fe7949",
+      "archive": "zip",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/build-tools/35.0.0",
+      "url": "https://dl.google.com/android/repository/build-tools_r35_linux.zip",
+      "sha1": "2cfaa0bbb2336e9ec18ed3ecea84fa2e2af607bc",
+      "archive": "zip",
+      "strip": 1
+    },
+    {
+      "name": "android-sdk/system-images/android-35/google_apis/x86_64",
+      "url": "https://dl.google.com/android/repository/sys-img/google_apis/x86_64-35_r09.zip",
+      "sha1": "0103e6dab21290c4b9d16550a3ce99476f884eef",
+      "archive": "zip",
+      "strip": 1
+    }
+  ]
+}

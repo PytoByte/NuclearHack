@@ -2,19 +2,69 @@
 
 07.11.2026. Рабочая ветка `dev`. Реализованный пайплайн — [ARCHITECTURE.md](ARCHITECTURE.md).
 
-## Этапы
+## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-- [x] K0: C++17/C ABI SDK, локальные зависимости, Linux tests/sanitizers,
-  cross-compilation ARM64/x86_64 и проверка 16-KiB ELF alignment.
-- [x] K1: выбраны проверяемые ASR-кандидаты, закреплены версии/хеши/лицензии
-  GigaAM CTC v3/v2 и RNNT v3; dev-only bootstrap.
-- [x] K2: заморожены 40 FLEURS ru validation clips, 20 male/20 female,
-  длительность 1–25 s, deterministic selection до inference.
-- [x] K3: native ASR baseline, одинаковый WER, time/RSS, выбор модели/потоков;
-  независимый frozen test40 пройден без перенастройки.
-- [ ] K4: diarization baseline на разговорной речи с RTTM, затем VAD/chunking.
-- [ ] K5: file orchestrator, стабильные IDs/таймкоды/JSON; отдельный LLM adapter.
-- [ ] K6: headless Android execution и 4-GB RAM verification.
+**Сейчас: этап 2, контролируемый раунд E17/E10–E12/E03/E04.**
+Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной SAF import/export
+ещё проверяется отдельно и не считается пройденным только по instrumentation. Отдельный ASR screening не считается прохождением gate 1.5.
+После baseline работа продолжается по E01–E23; останавливаться на baseline нельзя.
+
+| Исходный пункт | Статус | Что осталось / свидетельство |
+| --- | --- | --- |
+| 0, 1, 2 — ТЗ, Q&A, ограничения/оценка | разобраны | Offline, verbatim JSON, 4-GB Android; никаких внешних вычислений пользовательского аудио |
+| 3 — архитектура | частично | Native SDK принят пользователем; минимальный Android test host, без разработки визуального продукта |
+| K.1 — окружение | готово | JDK17, API35/NDK27d, AVD4096MiB/x86_64/4cores; версии и хеши pinned |
+| K.2/K.2a — runtime, веса, референсы | готово для baseline | sherpa/llama/ASR/diar/Qwen pinned; offline tar + лицензии; SHA проверены на AVD |
+| K.3 — данные | частично | FLEURS val40/test40, AMI dev/test, 3 русских Dialogs MP3; natural Russian RTTM/CTM ещё нет |
+| K.4 — gate подготовки | пройден | APK/JNI/веса работают offline на AVD4096MiB, exp_0019 |
+| 1.1 — desktop ASR screening | основное выполнено | CTC v3/v2, RNNT v3, Whisper base; дальнейшие ASR A/B по этапу 2 |
+| 1.2 — ASR Android / файл | выполнено | Тот же C API через APK/JNI, Android текст совпал с host |
+| 1.3 — diarization/merge | baseline выполнен | Auto diar + word overlap merge реализованы; dev threshold .8 выбран, короткие реплики проблемны |
+| 1.4 — LLM/JSON | baseline выполнен | JSON3/3 и genuine Qwen3 summary3/3 на Android; SAF export проверить отдельно |
+| 1.5 — gate baseline | pipeline пройден; SAF pending | Offline Android3/3 + LLM, WER3.53%, fullRTF .773, pipelinePSS314MiB, LLMPSS1166MiB |
+| 6 — метрики и журнал | частично | WER/CER/DER/time/RSS, hashes, CI и raw logs; cpWER есть; Android PSS profile идёт, JER/ошибка timestamps ещё нужны |
+| 8 — автономный цикл | действует | A/B, worst cases, ≥3 гипотезы, accept/reject, сохранение лучшей конфигурации, следующий run |
+| 9 — Anti-Vocale | исследован | Ports/chunks/lifecycle/eval полезны; сетевые части/remote/Firebase не копируются |
+| 10 — команды/проверки | частично | Host tests/ABI есть; APK manifest без INTERNET, offline Android smoke идёт |
+| 11 — поставка | впереди | SDK + offline модели/минимальный Android host, воспроизводимость, ограничения и demo |
+| 12 — отчётность | действует | Статусы/ADR/гипотезы здесь, архитектура отдельно, сырые файлы в .audio-runs |
+
+Файлы assumptions/model_licenses/progress/decisions/hypotheses из инструкции
+сведены в этот документ по требованию пользователя; машинные hashes/configs/logs
+хранятся отдельно. `task/` и пользовательский исходный план не изменяются.
+
+## Этап 2 — покрытие E01–E23 (после gate baseline)
+
+Ранние прогоны ниже — screening, а не объявление этапа 2 завершённым.
+
+| ID | Проверяемая группа | Статус |
+| --- | --- | --- |
+| E01 | GigaAM v3/v2/Whisper | host screening есть; повтор на Android |
+| E02 | CTC/RNNT/e2e | CTC/RNNT screening есть; e2e/verbatim ещё проверить |
+| E03 | greedy/beam | проверить поддержку и A/B; не имитировать отсутствующий decoder |
+| E04 | ru/autodetect | сравнить на поддерживаемом Whisper |
+| E05 | chunks/overlap/silence/dedup | после файлового baseline |
+| E06 | VAD off/on и padding | после baseline; отдельно короткие реплики |
+| E07 | INT8/FP32/FP16 | diar smoke начат; ASR и Android A/B впереди |
+| E08 | resample/gain/denoise | decoder alias test есть; ASR/DER A/B впереди |
+| E09 | hints/hotwords | проверить capability выбранного decoder; без LLM-подстановок |
+| E10 | segmentation/embeddings/clustering | baseline .5 отклонён; нужны альтернативные embeddings |
+| E11 | auto/oracle dev | auto уже используется; oracle только диагностическая абляция |
+| E12 | thresholds/minDuration/smoothing | dev threshold grid идёт; перенос на test без подбора |
+| E13 | midpoint/overlap/frame attribution | после merge baseline, отдельные тесты |
+| E14 | short/overlap/similar voices/gain | собрать и измерить strata |
+| E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
+| E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
+| E17 | Android CPU threads 1/2/4 | host screening есть, Android впереди |
+| E18 | quantization/load/inference/memory | host ASR/diar начат; LLM + Android впереди |
+| E19 | lazy load/release ASR→diar→LLM | ASR lifecycle probe есть; полный pipeline + Android впереди |
+| E20 | streaming PCM/ограниченные chunks | файловый disk spool + ограниченные ASR chunks реализованы; long-file profile впереди |
+| E21 | 5/15/30/60 min, cancel/resume | после baseline; без ложного extrapolation коротких файлов |
+| E22 | NNAPI/NPU/CPU fallback | проверить возможности реального AVD/runtime; hardware-only варианты отдельно |
+| E23 | explicit memory budget/config | после Android RAM profile; без silent fallback |
+
+Продвинутые realtime/cross-session/separation/UI из §7.4 — только после
+стабильного baseline, с явной оценкой полезности/стоимости и причин неприменимости.
 
 ## Эксперименты
 
@@ -32,11 +82,15 @@
 | exp_0010 | Diarization FP32 / AMI180 / threshold .5 | DER 64.27%, 23 вместо 4 speakers, RTF .314, RSS 299 MiB; отклонить конфигурацию |
 | exp_0011 | Diarization INT8 / AMI180 / threshold .5 | DER 43.96%, 16 вместо 4 speakers, RTF .287, RSS 300 MiB; тоже не принят |
 | exp_0012–13 | 5 ASR load/infer/release cycles, без/с trim | Монотонного роста нет; host malloc_trim возвращает RSS к ~65 MiB |
+| exp_0014–16 | AMI validation, thresholds .5/.8/1.1 | DER 25.84/13.10/16.19%; auto 15/9/3 при 4 reference; .8 provisional |
+| exp_0018 | Host full pipeline + отдельная LLM, 3 MP3 | WER 3.53% (6/170); cpWER 3.23/46.67/17.95%; short: 2 вместо 3 голосов. JSON3/3, LLM3/3, исходный SHA не изменён |
+| exp_0019 | Android4096MiB offline, те же 3 MP3 + LLM | WER3.53%, cpWER17.65%, fullRTF .773; peakPSS314MiB, LLMPSS1166MiB; JSON/LLM3/3 |
+| exp_0020 | Android CPU1t, те же 3 MP3, без LLM | WER3.53%, короткий speaker defect сохраняется; медленнее4t, сравнение2/4t идёт |
 
 Агрегаты: `eval/results/<id>/`; конфигурации, hypotheses, stdout/stderr —
 `.audio-runs/<id>/`. Старые эксперименты не перезаписывать. Machine registry:
 `experiments/registry.csv`. Desktop WER/RTF/RSS отдельно от Android; Android
-WER/DER/RTF/RAM сейчас **not measured**.
+WER/RTF/PSS измерены в exp_0019; Android DER **not measured** (нет корректного русского RTTM).
 
 Baseline: 40 clips / 456.54 s; RSS включает Python harness и native runtime.
 Raw WER 33.20% из-за регистра/пунктуации, normalized WER считается по ADR-002.
@@ -138,9 +192,44 @@ dissimilarity `1−cos`, диапазон [0,2], а не вероятность.
 без validation. Dataset preview API AMI validation вернул 500/501; берём
 закреплённый исходный parquet вместо viewer, не меняем test на dev.
 
-## Очередь
+| Validation-порог | DER | Auto speakers |
+| --- | --- | --- |
+| 0.5 (exp_0014) | 25.84% | 15 / 4 |
+| 0.8 (exp_0015) | 13.10% | 9 / 4 |
+| 1.1 (exp_0016) | 16.19% | 3 / 4 |
 
-1. Test40 завершён; конфигурацию не перенастраивать по его результатам.
-2. Выполнить FP32/INT8 diarization smoke и ASR lifetime probe.
-3. Далее: VAD/chunking, resampler/MP3 A/B, согласованные русские диалоги с RTTM.
-4. Затем file orchestrator/JSON, LLM и headless Android.
+Validation/test аудио, эталоны и ID спикеров различны. Ранние viewer ошибки
+не меняют источник: validation извлечён из pinned parquet с проверкой SHA256.
+
+**ADR-011 — baseline file pipeline.** Disk spool вместо полного heap PCM,
+ASR→release→diar→release→optional LLM. Char timestamps дают приближение,
+не forced alignment; fallback не меняет текст. max600s — измеряемый baseline
+лимит, не обещание поддержки часовых записей. Выход/trace атомарны и раздельны.
+
+**ADR-012 — минимальный Android host.** Java/JNI без Gradle/Compose:
+SAF импорт/экспорт, просмотр, отдельное summary. Это проверка standalone SDK.
+Pinned SDK/JDK/AVD и локальная доставка tar не требуют сети на устройстве.
+
+**ADR-013 — русские smoke данные.** Dialogs preview, 3 актёра,
+OpenRAIL, revision a74ff44d8d27ca3d21098ea3ed4d31a32923fbdd. Из реальных
+записанных реплик детерминированно собраны 2/3-speaker MP3, pauses/short,
+noise15dB/overlap350ms. Это structural smoke, не естественные встречи.
+Интервалы размещения исходников включают тишину: не считать их speech RTTM
+и не публиковать фиктивную DER. Эталоны доступны только scoring harness.
+Host exp_0018 выполнялся при параллельной подготовке: timing функциональный,
+не контролируемое сравнение скорости. WER/cpWER и валидность применимы.
+
+## Очередь и причинные гипотезы
+
+1. exp_0019 завершён; текущий раунд задан `experiments/phase2-queue.json`,
+   выполняется serial runner без одновременных performance-тестов. Далее SAF smoke.
+2. H1 (высокий приоритет): ERes2Net zh embeddings объединяют короткие русские
+   голоса; WeSpeaker VoxCeleb ResNet34-LM может снизить confusion. Проверить
+   на dev AMI, затем отдельное подтверждение; source license CC-BY4.
+3. H2 (высокий): fixed20s разрезает слова; chunk10/25s и silence boundaries
+   могут снизить deletions. Сравнить на тех же данных, без LLM-коррекции.
+4. H3 (средний): threshold .8 снижает fragmentation, но склеивает short voices;
+   отдельно minDuration/атрибуция, WER и cpWER, не задавая oracle в production.
+5. H4 (средний): Android1/2/4t меняет RTF/RAM; host4t не доказывает optimum AVD.
+6. H5 (средний): Q8→Q4 и доступный CPU ISA снизят память/время LLM;
+   измерить отдельно качество резюме, не смешивать с основным transcript.

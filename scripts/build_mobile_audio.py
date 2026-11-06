@@ -17,18 +17,20 @@ for abi in ('arm64-v8a', 'x86_64'):
                '-DANDROID_PLATFORM=android-26', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON',
                '-Wno-deprecated',
                '-DNH_SHERPA_ROOT=' + str(tools / 'sherpa-host'),
-               '-DNH_SHERPA_LIB_DIR=' + str(tools / 'sherpa-android' / abi)]
+               '-DNH_SHERPA_LIB_DIR=' + str(tools / 'sherpa-android' / abi),
+               '-DNH_LLAMA_ROOT=' + str(ROOT / '.build' / ('llama-android-' + abi))]
     subprocess.run(command, check=True)
-    subprocess.run([str(cmake), '--build', str(build), '--target', 'nuclear_audio', '-j', '4'], check=True)
+    subprocess.run([str(cmake), '--build', str(build), '--target', 'nuclear_audio', 'nuclear_audio_jni', 'nh-audio', '-j', '4'], check=True)
     readelf = tools / 'ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf'
     machine = 'AArch64' if abi == 'arm64-v8a' else 'Advanced Micro Devices X86-64'
     header = subprocess.check_output([str(readelf), '-h', str(build / 'libnuclear_audio.so')], text=True)
     if machine not in header:
         raise SystemExit(f'Wrong ELF machine for {abi}')
     # Check both our SDK and the vendor dependencies against the 16-KiB page requirement.
-    libraries = [build / 'libnuclear_audio.so',
+    libraries = [build / 'libnuclear_audio.so', build / 'libnuclear_audio_jni.so',
                  tools / 'sherpa-android' / abi / 'libsherpa-onnx-c-api.so',
                  tools / 'sherpa-android' / abi / 'libonnxruntime.so']
+    libraries += list((ROOT / '.build' / ('llama-android-' + abi) / 'bin').glob('*.so'))
     for library in libraries:
         headers = subprocess.check_output([str(readelf), '-lW', str(library)], text=True)
         for line in headers.splitlines():

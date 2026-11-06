@@ -34,6 +34,16 @@
       "strip": 1,
       "optional": true,
       "sha256": "601246087a682d1944e1e16dd85bc6e49560fe8b6d61255be2829178c8ed15d9"
+    },
+    {
+      "name": "json/json.hpp",
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp",
+      "sha256": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6"
+    },
+    {
+      "name": "json/LICENSE",
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/LICENSE.MIT",
+      "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
     }
   ]
 }

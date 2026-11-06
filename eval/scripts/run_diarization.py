@@ -11,7 +11,7 @@ import subprocess
 import sys
 import time
 
-from native_sdk import NativeSdk, ROOT, TURN
+from native_sdk import NativeSdk, ROOT, TURN, DiarConfig
 sys.path.insert(0, str(ROOT / 'scripts'))
 from bootstrap_models import sha256
 
@@ -22,6 +22,10 @@ def main():
     parser.add_argument('--quant', choices=['fp32', 'int8'], default='fp32')
     parser.add_argument('--threads', type=int, default=2)
     parser.add_argument('--threshold', type=float, default=0.5)
+    parser.add_argument('--embedding', choices=['eres2net','wespeaker-resnet34-lm'], default='eres2net')
+    parser.add_argument('--min-on', type=float, default=0.3)
+    parser.add_argument('--min-off', type=float, default=0.5)
+    parser.add_argument('--oracle-speakers', type=int, default=-1)
     parser.add_argument('--manifest', type=Path, default=ROOT / 'eval/data/ami-diarization-smoke.json')
     args = parser.parse_args()
     if not args.experiment.startswith('exp_') or not args.experiment[4:].isdigit():
@@ -30,6 +34,9 @@ def main():
     manifest = json.loads(manifest_path.read_text())
     catalog = json.loads((ROOT / 'config/audio-models.lock.json').read_text())
     model = next(m for m in catalog['models'] if m['id'] == 'pyannote-eres2net-' + args.quant)
+    if args.embedding != 'eres2net':
+        model = dict(model, files=[p for p in model['files'] if '/embedding.' not in p] +
+            next(m['files'] for m in catalog['models'] if m['id']==args.embedding))
     for item in catalog['files']:
         if item['path'] in model['files'] and sha256(ROOT / item['path']) != item['sha256']:
             raise ValueError('Invalid diarization model file: ' + item['path'])
@@ -41,6 +48,7 @@ def main():
     diagnostics = (out / 'stderr.log').open('a')
     os.dup2(diagnostics.fileno(), 2)
     config = dict(experiment_id=args.experiment, model=model, threads=args.threads, threshold=args.threshold,
+        embedding=args.embedding, min_duration_on=args.min_on, min_duration_off=args.min_off, oracle_speakers=args.oracle_speakers,
         collar_seconds=0.25, skip_overlap=False, uem=[0, 180],
         manifest=manifest, manifest_sha256=sha256(manifest_path), sdk_sha256=sha256(ROOT / '.build/audio/libnuclear_audio.so'))
     (out / 'config.json').write_text(json.dumps(config, indent=2))
@@ -52,8 +60,11 @@ def main():
     segmentation = ROOT / 'models/diarization' / ('segmentation-model.onnx' if args.quant == 'fp32' else 'segmentation-model.int8.onnx')
     handle = C.c_void_p()
     before = time.perf_counter()
-    sdk.check(lib.nh_diarizer_create(os.fsencode(segmentation), os.fsencode(ROOT / 'models/diarization/embedding.onnx'),
-                                   args.threads, args.threshold, C.byref(handle)))
+    lib.nh_diarizer_create_config.argtypes=[C.POINTER(DiarConfig),C.POINTER(C.c_void_p)]
+    options=DiarConfig(C.sizeof(DiarConfig),os.fsencode(segmentation),os.fsencode(ROOT / 'models/diarization' /
+        ('embedding.onnx' if args.embedding=='eres2net' else args.embedding+'.onnx')),
+        args.threads,args.threshold,args.min_on,args.min_off,args.oracle_speakers)
+    sdk.check(lib.nh_diarizer_create_config(C.byref(options),C.byref(handle)))
     load = time.perf_counter() - before
     turns = []
     @TURN
@@ -73,7 +84,7 @@ def main():
     (out / 'inference.json').write_text(json.dumps(dict(load_seconds=load,
         inference_seconds=elapsed, process_peak_rss_kib=peak, frames=len(samples)), indent=2))
     from pyannote.core import Annotation, Segment, Timeline
-    from pyannote.metrics.diarization import DiarizationErrorRate
+    from pyannote.metrics.diarization import DiarizationErrorRate, JaccardErrorRate
     reference = Annotation(uri=manifest['audio_id'])
     hypothesis = Annotation(uri=manifest['audio_id'])
     truth = json.loads((ROOT / manifest['reference']).read_text())
@@ -83,7 +94,9 @@ def main():
         hypothesis[Segment(turn['start'], turn['end']), i] = turn['speaker']
     metric = DiarizationErrorRate(collar=0.25, skip_overlap=False)
     score = metric(reference, hypothesis, uem=Timeline([Segment(0, 180)]), detailed=True)
+    jer=JaccardErrorRate(collar=0.25,skip_overlap=False)(reference,hypothesis,uem=Timeline([Segment(0,180)]))
     result = dict(experiment_id=args.experiment, quant=args.quant, threads=args.threads,
+        jer=float(jer), embedding=args.embedding, min_duration_on=args.min_on, min_duration_off=args.min_off, oracle_speakers=args.oracle_speakers,
         threshold=args.threshold, seconds=len(samples) / 16000, load_seconds=load,
         inference_seconds=elapsed, inference_rtf=elapsed / (len(samples) / 16000),
         process_peak_rss_kib=peak, predicted_speakers=len({t['speaker'] for t in turns}),

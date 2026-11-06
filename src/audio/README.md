@@ -63,11 +63,39 @@ python3 scripts/audio_tools.py models models/manifest.json
 ```
 
 `probe`/benchmark измеряют только decoder на dev-машине. ASR adapters:
-NeMo/GigaAM CTC, transducer RNNT, Whisper (ru/transcribe). Модельные веса,
-сквозной orchestrator, VAD, экспорт transcript и LLM — следующие этапы;
-искусственных расшифровок в native SDK нет.
+NeMo/GigaAM CTC, transducer RNNT, Whisper (ru/transcribe). Файловый orchestrator, strict transcript JSON и отдельная локальная LLM реализованы.
+VAD и long-file/resume ещё не реализованы. Веса доставляются заранее offline.
 
 Версии и SHA256: `config/audio-toolchain.lock.json`, Python wheels: `uv.lock`.
 После bootstrap CMake не скачивает зависимости. CI выполняет host tests,
 ASan/UBSan и Android cross-compilation; CI ещё не запускался в GitHub.
 Подробное решение и ограничения: `docs/ARCHITECTURE.md`.
+
+
+Сквозной файловый API (max600s в текущем baseline):
+
+```sh
+.venv/bin/python scripts/build_llama_audio.py
+make native-test
+.build/audio/nh-audio transcribe meeting.mp3 transcript.json models/giga-v3-ctc/model.int8.onnx models/giga-v3-ctc/tokens.txt models/diarization/segmentation-model.onnx models/diarization/embedding.onnx /tmp 4 0.8 20
+.build/audio/nh-audio summarize transcript.json models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf summary.txt 4
+```
+
+Android test host (модели заранее скачаны developer bootstrap):
+
+```sh
+.venv/bin/python scripts/bootstrap_android_audio.py
+.venv/bin/python scripts/build_llama_audio.py --android arm64-v8a
+.venv/bin/python scripts/build_llama_audio.py --android x86_64
+make mobile-build
+.venv/bin/python scripts/build_android_host.py
+scripts/package_offline_models.sh
+.venv/bin/python scripts/install_android_audio.py
+.venv/bin/python eval/scripts/run_android_pipeline.py --experiment exp_1001 --summary
+```
+
+APK: `.build/android-host/audio-sdk-host.apk`; offline bundle:
+`.build/offline-models.tar` (лицензии и SHA manifest включены).
+Для ручного сценария: запустить Audio SDK host → импорт MP3 через SAF →
+обработка → просмотр реплик → экспорт JSON; «Резюме» — отдельное действие.
+Test installer адресует только изолированный emulator-5558/adb5039.

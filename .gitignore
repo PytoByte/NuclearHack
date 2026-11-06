@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.audio-runs/
+models/
+third_party/
+eval/data/audio/
+eval/data/references/
+**/.gradle/
+**/.idea/
+**/build/
+**/local.properties

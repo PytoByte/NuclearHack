@@ -1,5 +1,6 @@
 export PATH := $(CURDIR)/.venv/bin:$(CURDIR)/.tools/bin:$(PATH)
 .PHONY: help doctor check hooks test android-check audio-bootstrap mobile-bootstrap native-build native-test native-sanitize mobile-build
+.PHONY: research-bootstrap research-test
 help:
 	@echo 'doctor        Show missing native audio tools (strict)'
 	@echo 'check         Check task protection and source manifests'
@@ -11,6 +12,8 @@ help:
 	@echo 'native-sanitize ASan/UBSan build and tests'
 	@echo 'mobile-bootstrap Also install NDK for cross-compilation'
 	@echo 'mobile-build  Cross-compile ARM64 and x86_64 SDK (no UI)'
+	@echo 'research-bootstrap Prepare pinned models and FLEURS validation40'
+	@echo 'research-test Test fixed WER normalization and scoring'
 	@echo 'More: python3 scripts/audio_tools.py --help'
 doctor:
 	. scripts/audio-env.sh && python3 scripts/audio_tools.py doctor
@@ -40,3 +43,10 @@ native-sanitize:
 	.venv/bin/ctest --test-dir .build/audio-asan --output-on-failure
 mobile-build:
 	.venv/bin/python scripts/build_mobile_audio.py
+research-bootstrap: audio-bootstrap
+	uv sync --frozen --group research
+	$(MAKE) native-build
+	.venv/bin/python scripts/bootstrap_models.py
+	.venv/bin/python eval/scripts/prepare_fleurs.py --split validation
+research-test:
+	.venv/bin/python -m unittest discover -s eval/tests -v

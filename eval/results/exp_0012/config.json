@@ -1,0 +1,34 @@
+{
+  "experiment_id": "exp_0012",
+  "model": {
+    "id": "giga-v3-ctc",
+    "family": "ctc",
+    "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+    "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+    "files": [
+      "models/giga-v3-ctc/model.int8.onnx",
+      "models/giga-v3-ctc/tokens.txt",
+      "models/giga-v3-ctc/LICENSE"
+    ]
+  },
+  "audio": {
+    "audio_id": "fleurs-ru-validation-0001",
+    "audio": "eval/data/audio/fleurs-ru-validation-0001.wav",
+    "reference": "eval/data/references/fleurs-ru-validation-0001.txt",
+    "audio_sha256": "363087f90513f5484750d8076da3cf7d029065d6b09f7ea68170bcf10b487d27",
+    "reference_sha256": "266496341f1b8a44803b5a97bdb07b0fb4922d51b38c6e7953103bfb709bab4e",
+    "source_id": 1554,
+    "source_filename": "10042203520901241191.wav",
+    "num_samples": 119040,
+    "gender": 1,
+    "split": "validation",
+    "domain": "read-speech",
+    "source": "google/fleurs ru_ru",
+    "revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+    "license": "CC-BY-4.0"
+  },
+  "threads": 4,
+  "cycles": 5,
+  "glibc_malloc_trim_diagnostic": false,
+  "sdk_sha256": "8eb0c284a1f7a9ead1b73415be5963ac46d0be64a70a60539243dd349458c0ce"
+}

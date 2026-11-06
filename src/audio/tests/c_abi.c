@@ -25,10 +25,14 @@ int main(void) {
   CHECK(nh_asr_create_ctc("missing.onnx", "missing.txt", 2, &asr) == NH_IO_ERROR);
   CHECK(asr == NULL);
   CHECK(nh_asr_create_ctc("missing", "missing", 0, &asr) == NH_INVALID_ARGUMENT);
+  CHECK(nh_asr_create_transducer("missing", "missing", "missing", "missing", 2, &asr) == NH_IO_ERROR);
+  CHECK(nh_asr_create_whisper("missing", "missing", "missing", 2, &asr) == NH_IO_ERROR);
   CHECK(nh_asr_decode(NULL, NULL, 0, NULL, NULL) == NH_INVALID_ARGUMENT);
   nh_asr_destroy(NULL);
   nh_diarizer *diarizer = NULL;
   CHECK(nh_diarizer_create("missing", "missing", 2, 0.5f, &diarizer) == NH_IO_ERROR);
+  CHECK(nh_diarizer_create("missing", "missing", 2, 1.2f, &diarizer) == NH_IO_ERROR);
+  CHECK(nh_diarizer_create("missing", "missing", 2, 2.1f, &diarizer) == NH_INVALID_ARGUMENT);
   CHECK(diarizer == NULL);
   CHECK(nh_diarizer_process(NULL, NULL, 0, NULL, NULL) == NH_INVALID_ARGUMENT);
   nh_diarizer_destroy(NULL);

@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_0012",
+  "observations": [
+    {
+      "cycle": 1,
+      "before_load": 45204,
+      "after_load": 409456,
+      "load_seconds": 2.067938382999273,
+      "before_release": 412612,
+      "after_release": 410360
+    },
+    {
+      "cycle": 2,
+      "before_load": 410360,
+      "after_load": 410388,
+      "load_seconds": 1.7412516999975196,
+      "before_release": 412768,
+      "after_release": 412624
+    },
+    {
+      "cycle": 3,
+      "before_load": 412624,
+      "after_load": 412624,
+      "load_seconds": 1.8012935139995534,
+      "before_release": 412768,
+      "after_release": 126612
+    },
+    {
+      "cycle": 4,
+      "before_load": 126676,
+      "after_load": 400364,
+      "load_seconds": 2.099361158994725,
+      "before_release": 402744,
+      "after_release": 126676
+    },
+    {
+      "cycle": 5,
+      "before_load": 126676,
+      "after_load": 380736,
+      "load_seconds": 1.7997398630031967,
+      "before_release": 383116,
+      "after_release": 126676
+    }
+  ],
+  "process_peak_rss_kib": 412332,
+  "scope": "Linux glibc host-only lifetime diagnostic; not Android RSS/allocator behavior"
+}

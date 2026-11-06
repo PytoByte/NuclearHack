@@ -1,0 +1,6 @@
+{
+  "stage": "metric-import",
+  "error": "pyannote.metrics 4.0 missing undeclared typing_extensions",
+  "native_turns_saved": true,
+  "timing_and_rss_not_recorded": true
+}

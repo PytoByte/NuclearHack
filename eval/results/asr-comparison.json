@@ -1,0 +1,350 @@
+{
+  "scope": "desktop FLEURS screening; paired bootstrap is not a dialogue/Android validation",
+  "experiments": [
+    {
+      "experiment_id": "exp_0002",
+      "model": "giga-v3-ctc",
+      "threads": 2,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 2.39249408500109,
+      "inference_seconds": 72.62716903899491,
+      "decode_seconds": 0.040642334999574814,
+      "inference_rtf": 0.15908172129275616,
+      "full_rtf": 0.1644112355083795,
+      "first_inference_seconds": 1.2646406530002423,
+      "median_inference_seconds": 1.7271983669998008,
+      "process_peak_rss_kib": 449652,
+      "normalized": {
+        "substitutions": 39,
+        "deletions": 5,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.071334214002642
+      },
+      "raw": {
+        "substitutions": 221,
+        "deletions": 4,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.05040589012648669,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 26,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20202020202020202
+      },
+      "reference_without_digits": {
+        "substitutions": 13,
+        "deletions": 0,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.025044722719141325
+      }
+    },
+    {
+      "experiment_id": "exp_0003",
+      "model": "giga-v2-ctc",
+      "threads": 2,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 2.0889149329996144,
+      "inference_seconds": 132.60436201000994,
+      "decode_seconds": 0.03297902499616612,
+      "inference_rtf": 0.2904550795330309,
+      "full_rtf": 0.2951028518158446,
+      "first_inference_seconds": 2.191837949998444,
+      "median_inference_seconds": 3.1891552435008634,
+      "process_peak_rss_kib": 786692,
+      "normalized": {
+        "substitutions": 43,
+        "deletions": 5,
+        "insertions": 11,
+        "reference_words": 757,
+        "wer": 0.07793923381770146
+      },
+      "raw": {
+        "substitutions": 222,
+        "deletions": 3,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.050972248442514634,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 27,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20707070707070707
+      },
+      "reference_without_digits": {
+        "substitutions": 16,
+        "deletions": 0,
+        "insertions": 2,
+        "reference_words": 559,
+        "wer": 0.03220035778175313
+      }
+    },
+    {
+      "experiment_id": "exp_0004",
+      "model": "giga-v3-rnnt",
+      "threads": 2,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 4.150212306998583,
+      "inference_seconds": 78.59819638402041,
+      "decode_seconds": 0.037809060002473416,
+      "inference_rtf": 0.1721605913699137,
+      "full_rtf": 0.18133398552376892,
+      "first_inference_seconds": 1.4548034710023785,
+      "median_inference_seconds": 1.8597408140012703,
+      "process_peak_rss_kib": 703548,
+      "normalized": {
+        "substitutions": 38,
+        "deletions": 7,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.0726552179656539
+      },
+      "raw": {
+        "substitutions": 220,
+        "deletions": 5,
+        "insertions": 21,
+        "reference_words": 744,
+        "wer": 0.33064516129032256
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.050972248442514634,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 25,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.19696969696969696
+      },
+      "reference_without_digits": {
+        "substitutions": 13,
+        "deletions": 2,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.028622540250447227
+      }
+    },
+    {
+      "experiment_id": "exp_0005",
+      "model": "whisper-base-int8",
+      "threads": 2,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 1.5547738320019562,
+      "inference_seconds": 140.7905647060179,
+      "decode_seconds": 0.03253485300228931,
+      "inference_rtf": 0.3083860443904541,
+      "full_rtf": 0.3118628671989796,
+      "first_inference_seconds": 1.7197441329990397,
+      "median_inference_seconds": 3.2146449479987496,
+      "process_peak_rss_kib": 664416,
+      "normalized": {
+        "substitutions": 156,
+        "deletions": 22,
+        "insertions": 29,
+        "reference_words": 757,
+        "wer": 0.27344782034346105
+      },
+      "raw": {
+        "substitutions": 216,
+        "deletions": 21,
+        "insertions": 29,
+        "reference_words": 744,
+        "wer": 0.3575268817204301
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.08136681140268076,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 46,
+        "deletions": 12,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.3383838383838384
+      },
+      "reference_without_digits": {
+        "substitutions": 110,
+        "deletions": 10,
+        "insertions": 20,
+        "reference_words": 559,
+        "wer": 0.2504472271914132
+      }
+    },
+    {
+      "experiment_id": "exp_0006",
+      "model": "giga-v3-ctc",
+      "threads": 1,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 2.031919018998451,
+      "inference_seconds": 121.93289394101157,
+      "decode_seconds": 0.030033040035050362,
+      "inference_rtf": 0.2670804177969325,
+      "full_rtf": 0.2715968940290995,
+      "first_inference_seconds": 1.9508667410045746,
+      "median_inference_seconds": 3.0130740114982473,
+      "process_peak_rss_kib": 464244,
+      "normalized": {
+        "substitutions": 39,
+        "deletions": 5,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.071334214002642
+      },
+      "raw": {
+        "substitutions": 221,
+        "deletions": 4,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.05040589012648669,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 26,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20202020202020202
+      },
+      "reference_without_digits": {
+        "substitutions": 13,
+        "deletions": 0,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.025044722719141325
+      }
+    },
+    {
+      "experiment_id": "exp_0007",
+      "model": "giga-v3-ctc",
+      "threads": 4,
+      "clips": 40,
+      "audio_seconds": 456.54,
+      "load_seconds": 2.0836900529975537,
+      "inference_seconds": 47.90986648699618,
+      "decode_seconds": 0.03447142799268477,
+      "inference_rtf": 0.10494122417969111,
+      "full_rtf": 0.1095808208875157,
+      "first_inference_seconds": 0.8203811850034981,
+      "median_inference_seconds": 1.1658830095038866,
+      "process_peak_rss_kib": 458012,
+      "current_rss_kib_by_stage": {
+        "before_load": 47904,
+        "after_load": 409208,
+        "before_release": 459032,
+        "after_release": 312452
+      },
+      "normalized": {
+        "substitutions": 39,
+        "deletions": 5,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.071334214002642
+      },
+      "raw": {
+        "substitutions": 221,
+        "deletions": 4,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+      "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+      "normalized_cer": 0.05040589012648669,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 26,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20202020202020202
+      },
+      "reference_without_digits": {
+        "substitutions": 13,
+        "deletions": 0,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.025044722719141325
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "a": "exp_0002",
+      "b": "exp_0003",
+      "delta_wer_b_minus_a_95ci": [
+        -0.004070556309362279,
+        0.019255455712451863
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0002",
+      "b": "exp_0004",
+      "delta_wer_b_minus_a_95ci": [
+        -0.007978723404255319,
+        0.01335113484646195
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0002",
+      "b": "exp_0005",
+      "delta_wer_b_minus_a_95ci": [
+        0.1583210606274438,
+        0.25062082336440883
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0002",
+      "b": "exp_0006",
+      "delta_wer_b_minus_a_95ci": [
+        0.0,
+        0.0
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0002",
+      "b": "exp_0007",
+      "delta_wer_b_minus_a_95ci": [
+        0.0,
+        0.0
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    }
+  ]
+}

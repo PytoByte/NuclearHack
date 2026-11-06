@@ -1,0 +1,243 @@
+{
+  "models": [
+    {
+      "id": "giga-v3-ctc",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "files": [
+        "models/giga-v3-ctc/model.int8.onnx",
+        "models/giga-v3-ctc/tokens.txt",
+        "models/giga-v3-ctc/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v2-ctc",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "revision": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "files": [
+        "models/giga-v2-ctc/model.int8.onnx",
+        "models/giga-v2-ctc/tokens.txt",
+        "models/giga-v2-ctc/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-rnnt",
+      "family": "transducer",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "files": [
+        "models/giga-v3-rnnt/encoder.int8.onnx",
+        "models/giga-v3-rnnt/decoder.onnx",
+        "models/giga-v3-rnnt/joiner.onnx",
+        "models/giga-v3-rnnt/tokens.txt",
+        "models/giga-v3-rnnt/LICENSE"
+      ]
+    },
+    {
+      "id": "whisper-base-int8",
+      "family": "whisper",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "revision": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "files": [
+        "models/whisper-base-int8/base-encoder.int8.onnx",
+        "models/whisper-base-int8/base-decoder.int8.onnx",
+        "models/whisper-base-int8/base-tokens.txt",
+        "models/whisper-base-int8/LICENSE"
+      ]
+    },
+    {
+      "id": "pyannote-eres2net-fp32",
+      "family": "diarization",
+      "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+      "revision": "pinned-per-file-sha256",
+      "files": [
+        "models/diarization/segmentation-model.onnx",
+        "models/diarization/embedding.onnx",
+        "models/diarization/embedding.LICENSE",
+        "models/diarization/segmentation.LICENSE"
+      ]
+    },
+    {
+      "id": "pyannote-eres2net-int8",
+      "family": "diarization",
+      "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+      "revision": "pinned-per-file-sha256",
+      "files": [
+        "models/diarization/segmentation-model.int8.onnx",
+        "models/diarization/embedding.onnx",
+        "models/diarization/embedding.LICENSE",
+        "models/diarization/segmentation.LICENSE"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "models/giga-v3-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/model.int8.onnx",
+      "sha256": "f86ebfa0429ced91be6054fc344827e9c6c2572f3c318416cd974b06f66437ec",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19/resolve/f5555086f28ef11d600e30d76b61d75fd9685196/model.int8.onnx",
+      "sha256": "d0ce4aef25f58d495781ee8f05320d9e51b821f47804e07aa6549b53a72f67e8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "version": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19/resolve/f5555086f28ef11d600e30d76b61d75fd9685196/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "version": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/LICENSE",
+      "url": "https://raw.githubusercontent.com/salute-developers/GigaAM/2dfdad6195286784b496e6ec8d08e4de3b07313b/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://raw.githubusercontent.com/salute-developers/GigaAM/2dfdad6195286784b496e6ec8d08e4de3b07313b/LICENSE",
+      "version": "2dfdad6195286784b496e6ec8d08e4de3b07313b",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/encoder.int8.onnx",
+      "sha256": "0ec54e5f130a91c0f228d21795ede10b31c992a1f73e45dcd827e843a71a9b50",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/decoder.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/decoder.onnx",
+      "sha256": "5d1cfef155d8e07f213bd2f3229b5f6c5c29355c7fa5c1b9eb62cb1925725254",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/joiner.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/joiner.onnx",
+      "sha256": "fd1d02f45c2ad3d6b67cc149811ad794ab4b020ed49a0a9e2790a8619d1cddd8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-encoder.int8.onnx",
+      "sha256": "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-decoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-decoder.int8.onnx",
+      "sha256": "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-tokens.txt",
+      "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/LICENSE",
+      "url": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "sha256": "b5d65a59060e68c4ff940e1eddfa6f94b2d68fdf58ed7f4dd57721c997e35e9d",
+      "source": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "version": "6e3be77e1a105e59086e3e21ff5f609fd6fa89a5",
+      "license": "MIT"
+    },
+    {
+      "path": "models/diarization/segmentation-model.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/segmentation-model.int8.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "d582f4b4c6b48205de7e0643c57df0df5615a3c176189be3fc461e9d18827b5d",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.int8.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/segmentation.LICENSE",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "14d7016ad68e7394d6e6b78d96cc2ae431c905287b89674cfdf021e79e62b8ba",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/LICENSE",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/embedding.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+      "sha256": "1a331345f04805badbb495c775a6ddffcdd1a732567d5ec8b3d5749e3c7a5e4b",
+      "source": "https://modelscope.cn/models/iic/speech_eres2net_base_sv_zh-cn_3dspeaker_16k",
+      "version": "sherpa-speaker-recongition-models",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/diarization/embedding.LICENSE",
+      "url": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "version": "065629c313eaf1a01c65c640c46d77e61e9607b4",
+      "license": "Apache-2.0"
+    }
+  ]
+}

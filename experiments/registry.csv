@@ -1,2 +1,14 @@
 experiment_id,date,scope,baseline,status,metrics
 exp_0001,2026-11-07,host_decoder_synthetic_mp3,none,inconclusive,eval/results/exp_0001/metrics.json
+exp_0002,2026-11-07,host_asr_fleurs_val40,none,baseline,eval/results/exp_0002/metrics.json
+exp_0003,2026-11-07,host_asr_fleurs_val40,exp_0002,reject,eval/results/exp_0003/metrics.json
+exp_0004,2026-11-07,host_asr_fleurs_val40,exp_0002,reject,eval/results/exp_0004/metrics.json
+exp_0005,2026-11-07,host_asr_fleurs_val40,exp_0002,reject,eval/results/exp_0005/metrics.json
+exp_0006,2026-11-07,host_asr_fleurs_val40,exp_0002,reject,eval/results/exp_0006/metrics.json
+exp_0007,2026-11-07,host_asr_fleurs_val40,exp_0002,accept-host-preset,eval/results/exp_0007/metrics.json
+exp_0008,2026-11-07,host_asr_fleurs_test40,exp_0007,confirm-read-speech-only,eval/results/exp_0008/metrics.json
+exp_0009,2026-11-07,host_diarization_ami180,none,inconclusive-metric-import-failed,eval/results/exp_0009/failure.json
+exp_0010,2026-11-07,host_diarization_ami180,exp_0009,reject-fragmented-speakers,eval/results/exp_0010/metrics.json
+exp_0011,2026-11-07,host_diarization_ami180,exp_0010,reject-fragmented-speakers,eval/results/exp_0011/metrics.json
+exp_0012,2026-11-07,host_asr_lifetime,none,inconclusive-no-monotonic-growth,eval/results/exp_0012/metrics.json
+exp_0013,2026-11-07,host_asr_lifetime_trim,exp_0012,diagnostic-allocator-retention,eval/results/exp_0013/metrics.json

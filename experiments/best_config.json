@@ -1,0 +1,14 @@
+{
+  "model": "giga-v3-ctc",
+  "threads": 4,
+  "provider": "cpu",
+  "sample_rate": 16000,
+  "channels": 1,
+  "asr_max_frames": 400000,
+  "decoder": "miniaudio",
+  "decoder_lpf_order": 8,
+  "normalization": "v1",
+  "selected_by": "FLEURS validation40 screening",
+  "validation_experiment": "exp_0007",
+  "scope": "developer-host i5-12450H only; Android policy not calibrated"
+}

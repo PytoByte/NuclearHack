@@ -23,6 +23,18 @@ bool valid_pcm(const float *samples, uint32_t n, uint32_t max) {
     if (!std::isfinite(samples[i])) return false;
   return true;
 }
+nh_status create_recognizer(SherpaOnnxOfflineRecognizerConfig &config, uint32_t threads, nh_asr **out) {
+  config.feat_config.sample_rate = 16000;
+  config.feat_config.feature_dim = 80;
+  config.model_config.num_threads = static_cast<int32_t>(threads);
+  config.model_config.provider = "cpu";
+  config.decoding_method = "greedy_search";
+  auto handle = std::make_unique<nh_asr>();
+  handle->native = SherpaOnnxCreateOfflineRecognizer(&config);
+  if (!handle->native) return nh::fail(NH_RUNTIME_ERROR, "Could not initialize ASR model");
+  *out = handle.release();
+  return NH_OK;
+}
 }
 extern "C" {
 const char *nh_sherpa_version(void) { return SherpaOnnxGetVersionStr(); }
@@ -66,13 +78,48 @@ nh_status nh_asr_decode(nh_asr *handle, const float *samples, uint32_t frames,
     return NH_OK;
   });
 }
+nh_status nh_asr_create_transducer(const char *encoder, const char *decoder, const char *joiner,
+                                  const char *tokens, uint32_t threads, nh_asr **out) {
+  return nh::guard([&]() -> nh_status {
+    if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
+    *out = nullptr;
+    if (!threads || threads > 16) return nh::fail(NH_INVALID_ARGUMENT, "threads must be 1..16");
+    if (!readable(encoder) || !readable(decoder) || !readable(joiner) || !readable(tokens))
+      return nh::fail(NH_IO_ERROR, "Transducer model/tokens not readable");
+    SherpaOnnxOfflineRecognizerConfig config{};
+    config.model_config.transducer.encoder = encoder;
+    config.model_config.transducer.decoder = decoder;
+    config.model_config.transducer.joiner = joiner;
+    config.model_config.tokens = tokens;
+    return create_recognizer(config, threads, out);
+  });
+}
+nh_status nh_asr_create_whisper(const char *encoder, const char *decoder, const char *tokens,
+                               uint32_t threads, nh_asr **out) {
+  return nh::guard([&]() -> nh_status {
+    if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
+    *out = nullptr;
+    if (!threads || threads > 16) return nh::fail(NH_INVALID_ARGUMENT, "threads must be 1..16");
+    if (!readable(encoder) || !readable(decoder) || !readable(tokens))
+      return nh::fail(NH_IO_ERROR, "Whisper model/tokens not readable");
+    SherpaOnnxOfflineRecognizerConfig config{};
+    config.model_config.whisper.encoder = encoder;
+    config.model_config.whisper.decoder = decoder;
+    config.model_config.whisper.language = "ru";
+    config.model_config.whisper.task = "transcribe";
+    config.model_config.whisper.tail_paddings = -1;
+    config.model_config.tokens = tokens;
+    return create_recognizer(config, threads, out);
+  });
+}
 void nh_asr_destroy(nh_asr *handle) { delete handle; }
 nh_status nh_diarizer_create(const char *segmentation, const char *embedding,
                             uint32_t threads, float threshold, nh_diarizer **out) {
   return nh::guard([&]() -> nh_status {
     if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
     *out = nullptr;
-    if (!threads || threads > 16 || !std::isfinite(threshold) || threshold <= 0 || threshold >= 1)
+    // sherpa clusters by cosine dissimilarity (1 - cosine), whose range is [0,2].
+    if (!threads || threads > 16 || !std::isfinite(threshold) || threshold <= 0 || threshold > 2)
       return nh::fail(NH_INVALID_ARGUMENT, "Invalid diarization threads/threshold");
     if (!readable(segmentation) || !readable(embedding)) return nh::fail(NH_IO_ERROR, "Diarization models not readable");
     SherpaOnnxOfflineSpeakerDiarizationConfig config{};

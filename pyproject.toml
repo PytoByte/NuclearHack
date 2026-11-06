@@ -10,3 +10,12 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+research = [
+    "jiwer==4.0.0",
+    "numpy==2.2.6",
+    "pyannote-metrics==4.0.0",
+    "pyarrow==19.0.1",
+    "typing-extensions==4.15.0",
+]

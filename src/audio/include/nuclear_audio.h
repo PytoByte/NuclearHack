@@ -38,6 +38,12 @@ NH_API nh_status nh_decode_file(const char *path, uint32_t sample_rate,
 typedef struct nh_asr nh_asr;
 NH_API nh_status nh_asr_create_ctc(const char *model, const char *tokens,
                                   uint32_t threads, nh_asr **out);
+NH_API nh_status nh_asr_create_transducer(const char *encoder, const char *decoder,
+                                         const char *joiner, const char *tokens,
+                                         uint32_t threads, nh_asr **out);
+/* Multilingual Whisper, fixed Russian/transcribe mode for this SDK revision. */
+NH_API nh_status nh_asr_create_whisper(const char *encoder, const char *decoder,
+                                      const char *tokens, uint32_t threads, nh_asr **out);
 typedef int32_t (*nh_asr_callback)(const char *text, const char *backend_json, void *user);
 /* Mono 16-kHz PCM, nominally [-1,1] (finite decoder headroom is accepted),
  * 1..400000 frames (25s). Backend JSON is a
@@ -49,7 +55,8 @@ NH_API void nh_asr_destroy(nh_asr *handle);
 
 /* Whole-window diarization: IDs are scoped to this call. Cross-window matching
  * belongs to the future file orchestrator. 16-kHz mono, <=600s per call.
- * Runtime owns segmentation + embedding + clustering; speaker count is auto. */
+ * Runtime owns segmentation + embedding + clustering; speaker count is auto.
+ * cluster_threshold is cosine dissimilarity in (0,2], not a probability. */
 typedef struct nh_diarizer nh_diarizer;
 typedef int32_t (*nh_turn_callback)(int32_t speaker, double start_seconds,
                                    double end_seconds, void *user);

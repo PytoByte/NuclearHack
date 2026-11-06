@@ -11,17 +11,16 @@
 
 ## Audio development workflow
 
-- Read `docs/AGENT_AUDIO_HACKATHON.md` and `docs/AUDIO_WORKFLOW.md` before audio work.
-- Current scope: standalone performance-focused native SDK, C++17/C ABI. Read
-  `docs/AUDIO_ARCHITECTURE.md`. The user's headless SDK scope overrides the earlier
-  Android-app-first sequence in the audio planning document.
-- Work on `dev` for the current audio integration; preserve unrelated user changes.
-- Run `make check`, `make native-test`, and `make native-sanitize` for native
-  changes. Use `make mobile-build` for ABI verification; Android execution/memory
-  verification remains separate from cross-compilation. No UI work is required.
-- Validate exported transcripts with `scripts/audio_tools.py transcript` and pinned
-  model files with `scripts/audio_tools.py models` before accepting a baseline.
-- Record experiments with `scripts/audio_tools.py run -- <command>`; distinguish
-  developer-host results from Android measurements. Never invent missing metrics.
-- Keep audio, weights and raw logs out of Git. Model downloads run on the developer
-  machine; all user-audio processing in the shipped application stays offline.
+- Read `docs/ARCHITECTURE.md` and `docs/RESEARCH.md` before audio work.
+  `docs/AGENT_AUDIO_HACKATHON.md` is the user's preserved planning reference;
+  the current headless SDK scope overrides its Android-app-first sequence.
+- Work on `dev`; preserve unrelated user changes. Native SDK: C++17/C ABI.
+- Keep `docs/ARCHITECTURE.md` aligned with implemented/accepted code. Record
+  stages, concise experiments and ADRs in `docs/RESEARCH.md`; avoid extra docs.
+- Run `make check`, `make native-test`, `make native-sanitize` for native changes;
+  `make mobile-build` checks ABI only, not Android execution or RAM.
+- Validate transcript exports and pinned model files with `scripts/audio_tools.py`.
+- Keep unique experiment IDs/configs/raw logs. Distinguish host and Android
+  metrics; never invent missing measurements or treat read speech as dialogues.
+- Keep audio, model weights and raw logs out of Git. Downloads run only on the
+  developer machine; user-audio processing in the shipped SDK stays offline.

@@ -1,0 +1,89 @@
+{
+  "experiment_id": "exp_0008",
+  "model": {
+    "id": "giga-v3-ctc",
+    "family": "ctc",
+    "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+    "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+    "files": [
+      "models/giga-v3-ctc/model.int8.onnx",
+      "models/giga-v3-ctc/tokens.txt",
+      "models/giga-v3-ctc/LICENSE"
+    ]
+  },
+  "threads": 4,
+  "manifest": "eval/data/fleurs-ru-test.jsonl",
+  "manifest_sha256": "b78feda0af56455cdb57c207c7933d092c4a62b8b455b3aebc1e5b464d30148c",
+  "selected_audio_ids": [
+    "fleurs-ru-test-0010",
+    "fleurs-ru-test-0050",
+    "fleurs-ru-test-0062",
+    "fleurs-ru-test-0076",
+    "fleurs-ru-test-0109",
+    "fleurs-ru-test-0110",
+    "fleurs-ru-test-0111",
+    "fleurs-ru-test-0120",
+    "fleurs-ru-test-0125",
+    "fleurs-ru-test-0139",
+    "fleurs-ru-test-0148",
+    "fleurs-ru-test-0166",
+    "fleurs-ru-test-0188",
+    "fleurs-ru-test-0205",
+    "fleurs-ru-test-0227",
+    "fleurs-ru-test-0249",
+    "fleurs-ru-test-0251",
+    "fleurs-ru-test-0299",
+    "fleurs-ru-test-0338",
+    "fleurs-ru-test-0339",
+    "fleurs-ru-test-0351",
+    "fleurs-ru-test-0359",
+    "fleurs-ru-test-0365",
+    "fleurs-ru-test-0422",
+    "fleurs-ru-test-0438",
+    "fleurs-ru-test-0469",
+    "fleurs-ru-test-0516",
+    "fleurs-ru-test-0519",
+    "fleurs-ru-test-0558",
+    "fleurs-ru-test-0589",
+    "fleurs-ru-test-0596",
+    "fleurs-ru-test-0630",
+    "fleurs-ru-test-0653",
+    "fleurs-ru-test-0689",
+    "fleurs-ru-test-0706",
+    "fleurs-ru-test-0724",
+    "fleurs-ru-test-0730",
+    "fleurs-ru-test-0747",
+    "fleurs-ru-test-0761",
+    "fleurs-ru-test-0767"
+  ],
+  "normalization": "v1: NFC, lowercase, yo->ye, punctuation/symbols->space; keep numbers/fillers",
+  "decoder": "native miniaudio; 16kHz mono; original WAV",
+  "model_lock_sha256": "9f1657a2677d0e8b2973ae7779d63afeeb0f325d9273ebaba66d0f5d88b9c487",
+  "sdk_sha256": "8eb0c284a1f7a9ead1b73415be5963ac46d0be64a70a60539243dd349458c0ce",
+  "model_files": [
+    {
+      "path": "models/giga-v3-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/model.int8.onnx",
+      "sha256": "f86ebfa0429ced91be6054fc344827e9c6c2572f3c318416cd974b06f66437ec",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    }
+  ]
+}

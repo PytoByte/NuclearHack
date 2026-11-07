@@ -5,6 +5,7 @@ Leak detection needs a Linux toolchain (MSVC ASan does not report leaks), so run
 this target on the Linux host or inside WSL. Raw logs land under .audio-runs/.
 """
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -66,18 +67,37 @@ def cppcheck(logs, cppcheck_path):
 
 
 def clang_tidy(logs, tidy_path, database):
-    files = sorted(str(path) for path in SOURCE.rglob('*')
-                   if path.suffix in {'.c', '.h', '.cpp', '.hpp'} and path.is_file()
-                   and 'android' not in path.parts)
     # -p uses the CMake compile_commands.json: without it clang-tidy cannot resolve
     # headers and reports spurious "file not found" noise instead of real diagnostics.
+    # Only translation units the build actually compiles are passed. Dev-only tools
+    # outside that list (src/audio/tools/quantize.cpp needs the optional llama.cpp
+    # runtime) have no recorded compile command, so their absent optional header turns
+    # into clang-diagnostic-error and fails the gate on the host toolchain, not on code.
+    # Headers stay in the list: clang-tidy analyses them through the TUs that include them.
+    db_path = database / 'compile_commands.json'
+    if not db_path.is_file():
+        return 1, 0, 0, ['no compile_commands.json in ' + str(database) + '; configure with -DCMAKE_EXPORT_COMPILE_COMMANDS=ON']
+    compiled = {entry['file'].replace('\\', '/') for entry in json.loads(db_path.read_text(encoding='utf-8'))}
+    files, skipped = [], []
+    for path in sorted(SOURCE.rglob('*')):
+        if not path.is_file() or path.suffix not in {'.c', '.h', '.cpp', '.hpp'}:
+            continue
+        if 'android' in path.parts:  # JNI bridge needs jni.h: not analysable standalone
+            continue
+        relative = path.relative_to(ROOT).as_posix()
+        if path.suffix in ('.h', '.hpp') or any(entry.endswith('/' + relative) for entry in compiled):
+            files.append(relative)
+        else:
+            skipped.append(relative)
+    save(logs, 'clang-tidy-scope.txt',
+         'analysed: ' + ', '.join(files) + '\nnot built on this host (no compile command): ' + ', '.join(skipped))
     code, output = run(logs, 'clang-tidy.txt',
                        [tidy_path, '-quiet', '-warnings-as-errors=', '-p', str(database)] + files)
     warnings = [line for line in output.splitlines() if ': warning:' in line]
     analyzer = [line for line in warnings
                 if (match := CHECK_NAME.search(line)) and 'clang-analyzer' in match[1]]
     leaks = [line for line in analyzer if LEAK_CHECKS.search(line)]
-    return code, len(warnings), len(analyzer), leaks
+    return code, len(warnings), len(analyzer), leaks, files, skipped
 
 
 def asan_run(logs, cmake, ctest):
@@ -206,9 +226,9 @@ def main():
         churn = pool.submit(plain_churn, logs, args.churn_cycles)
         tidy = pool.submit(clang_tidy, logs, tidy_path, BUILD / 'audio')
 
-        code, warnings, analyzer, leaks = tidy.result()
+        code, warnings, analyzer, leaks, analysed, skipped = tidy.result()
         results['clang_tidy'] = {'exit': code, 'warnings': warnings, 'clang_analyzer': analyzer,
-                                 'leak_warnings': leaks}
+                                 'leak_warnings': leaks, 'files': len(analysed), 'skipped': skipped}
 
         code, passed, _ = asan.result()
         results['asan_ctest'] = {'exit': code, 'passed_tests': passed}
@@ -220,8 +240,11 @@ def main():
         results['valgrind'] = {'exit': code, 'lost_bytes': lost}
 
     lost_total = sum(lost.get(kind, 0) for kind in ('definitely', 'indirectly', 'possibly')) if isinstance(lost, dict) else 0
+    # leak_warnings is the list of offending clang-analyzer lines, so test it with
+    # truthiness: `== 0` on a list is always False and made the gate FAIL even when
+    # every stage passed with zero leak evidence.
     leak_free = (results['cppcheck']['findings'] == 0 and results['cppcheck']['leak_findings'] == 0
-                 and results['clang_tidy']['leak_warnings'] == 0
+                 and not results['clang_tidy']['leak_warnings']
                  and results['native_build']['exit'] == 0
                  and results['asan_ctest']['exit'] == 0 and results['asan_ctest']['passed_tests'] >= 4
                  and results['plain_churn']['exit'] == 0

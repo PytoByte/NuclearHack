@@ -27,11 +27,35 @@ GigaAM остаётся ASR,а Nemotron — только diarizer. NeMo-Speech.c
 Автоматическое число активных голосов,до8model slots; это не гарантия распознавания
 всех8участников. ID канонизируются по первому слову и стабильны внутри файла.
 
-Default0 в новой конфигурации означает4threads/600s. Доступный явный лимит1..600s.
+Default0 в новой конфигурации означает4threads/3600s. Доступный явный лимит1..3600s.
 Профиль buffered,chunk20s и anchor160ms фиксированы основным API.
 Это обработка готового файла; low-latency speaker profile не выдаётся за готовый
-real-time микрофонный ASR. Полный600s synthetic soak не является проверкой
-качества естественного десятиминутного разговора.
+real-time микрофонный ASR.
+
+## Model contract
+
+- ASR: GigaAM-v3 CTC INT8 emits punctuated text. Do not rewrite, smooth,
+  summarize, normalize spoken words, or remove fillers in transcript output.
+- Diarization: Nemotron3 Q8 is diarization only. It cannot replace ASR.
+- Qwen summary remains an optional compatibility capability, outside the current
+  user scope. It is not used by transcription or required in the selected bundle.
+  Existing summary generation must never change transcript JSON.
+- All model execution is offline. Weights are supplied before build/deployment.
+- Automatic voice count can use up to 8 slots; this is not a guarantee that
+  all 8 speakers are recognized.
+- Speaker IDs are stable inside one file and canonicalized by first word; they
+  are not cross-file identities.
+
+## Non-goals and evaluator gaps
+
+- Realtime microphone ASR is not implemented; SDK is buffered file processing.
+- In-app audio recording is not implemented; import is SAF only.
+- Full Android app benchmark is not claimed here; only state provenance of
+  measurements.
+- ARM physical RAM/RTF/quality are not measured.
+- Word timestamp MAE is unknown without manual word-level ground truth.
+- Cross-file speaker identity, channel-aware diarization, and in-app recording
+  are non-targets or planned goals; see `GOALS.md`.
 
 ## Слои и владение ресурсами
 
@@ -157,7 +181,7 @@ build, под ASan arenas он ложно срабатывает); `make leak-ch
 (scripts/leak_check.py, ~3 мин) прогоняет параллельно cppcheck, clang-tidy
 (clang-analyzer), ASan/LSan через ctest и Valgrind на обычном build — Valgrind по
 умолчанию только VAD-путь (`--valgrind-all-models` для полного набора моделей),
-логи — в `.audio-runs/leak-<stamp>/`. Результаты зафиксированы в RESEARCH.md (246–254).
+логи — в `.audio-runs/leak-<stamp>/`. Результаты зафиксированы в RESEARCH.md (246–255).
 
 `make sdk-package` создаёт `.build/nuclear-audio-sdk-ru-v1.tar`: public header,
 C-пример,CLI/runtimes Linux x86_64 и Android ARM64/x86_64,только выбранные модели,

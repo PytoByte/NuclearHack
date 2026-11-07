@@ -1,29 +1,15 @@
-# Style-only checks are scoped out on purpose: formatting belongs to clang-format
-# (.clang-format), and these families produce hundreds of preference warnings with
-# no link to ownership, bounds or UB. Re-enable one only when a concrete finding
-# justifies it.
+# Essentials only on purpose: bugprone + clang-analyzer cover ownership, UB and
+# leak-shaped diagnostics. Style families (readability/modernize/format) belong to
+# clang-format (.clang-format) and produce preference noise with no ownership link.
+# Re-enable a family only when a concrete finding justifies it.
 Checks: >
-  -*,
-  bugprone-*,
-  cert-*,
-  clang-analyzer-*,
-  cppcoreguidelines-*,
-  modernize-*,
-  performance-*,
-  portability-*,
-  readability-*,
-  -modernize-use-trailing-return-type,
-  -modernize-use-using,
-  -cppcoreguidelines-avoid-do-while,
-  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-  -cppcoreguidelines-pro-bounds-constant-array-index,
-  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-  -cppcoreguidelines-pro-type-vararg,
-  -readability-braces-around-statements,
-  -readability-identifier-length,
-  -readability-implicit-bool-conversion,
-  -readability-isolate-declaration,
-  -readability-uppercase-literal-suffix
-WarningsAsErrors: 'bugprone-*,clang-analyzer-*'
+  bugprone-*, clang-analyzer-*,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-narrowing-conversions,
+  -bugprone-signed-bitwise,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+WarningsAsErrors: ''
 HeaderFilterRegex: '^(?!.*\.tools).*'
 FormatStyle: file

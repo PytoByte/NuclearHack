@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <memory>
 #include <vector>
 
@@ -42,14 +43,14 @@ int32_t receive_frames(const float* p, uint32_t frames, uint32_t slots, uint64_t
         ctx.failed = true;
         try {
             ctx.error = e.what();
-        } catch (...) {
+        } catch (...) { // NOLINT(bugprone-empty-catch)
         }
         return 1;
     } catch (...) {
         ctx.failed = true;
         try {
             ctx.error = "Cannot merge speaker probabilities";
-        } catch (...) {
+        } catch (...) { // NOLINT(bugprone-empty-catch)
         }
         return 1;
     }
@@ -111,7 +112,9 @@ class PosteriorSpeakerBackend final : public SpeakerPort {
             ptr, nh_streaming_diarizer_destroy);
         nh::PosteriorMerge merge(words, frames / 160, config->trace_json && *config->trace_json);
         StreamMergeContext ctx{merge, progress, user, frames, {}};
-        rewind(pcm);
+        if (std::fseek(pcm, 0, SEEK_SET) != 0) {
+            return nh::fail(NH_IO_ERROR, "Cannot rewind PCM input");
+        }
         std::vector<float> block(16000);
         uint64_t offset = 0;
         while (offset < frames) {

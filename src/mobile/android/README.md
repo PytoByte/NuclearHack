@@ -5,7 +5,10 @@
 через JNI и сохраняет строгий JSON. Сеть не используется: permission
 `INTERNET` отсутствует в манифесте.
 
-## Возможности
+## Документация
+
+Цели и статусы: [docs/GOALS.md](../../../../docs/GOALS.md)
+(от корня репозитория). Архитектура: [docs/ARCHITECTURE.md](../../../../docs/ARCHITECTURE.md).
 - импорт MP3/M4A/WAV через Storage Access Framework;
 - реальный локальный конвейер `nh_transcribe` → ASR → диаризация → speaker turns;
 - прогресс по стадиям native SDK и отмена задания;
@@ -41,6 +44,10 @@ sh gradlew :app:assembleDebug -PrequireNativeAudio=true
 Без `-PrequireNativeAudio=true` Gradle собирает UI-заглушку без native
 библиотек и моделей; такой APK не выполняет распознавание.
 
+Если `JAVA_HOME` не экспортирован, Gradle берёт системный JDK: AGP 8.7.3
+отказывается запускаться на JDK 25 (в сообщении остаётся только версия —
+`What went wrong: 25.0.5`). Явный обход: `gradlew -Dorg.gradle.java.home=<jdk17>`.
+
 ## Модели и runtime
 `AudioModelStore` один раз копирует `assets/models` в `filesDir/models`.
 Если присутствует финальный preset, используется
@@ -50,7 +57,7 @@ sh gradlew :app:assembleDebug -PrequireNativeAudio=true
 Модели и веса не входят в Git.
 
 ## Ограничения
-- Обрабатывается готовый файл до 600 секунд; это не real-time микрофон.
+- Обрабатывается готовый файл до 3600 секунд (1 часа); это лимит SDK, а не файловый формат. Для гарантируемого качества и RAM более длинные записи должны быть сегментированы или обработаны с более строгими ресурсными профилями; это не real-time микрофон.
 - Запуск на физическом Android-устройстве и ARM-метрики качества/RTF/RAM
   не измерены; проверены cross-build и упаковка APK.
 - JSON содержит `transcript` с `speaker_id`, `start_ms`, `end_ms`, `text`.

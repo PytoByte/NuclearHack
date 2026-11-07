@@ -2,9 +2,21 @@
 
 07.11.2026. Рабочая ветка `dev`. Реализованный пайплайн — [ARCHITECTURE.md](ARCHITECTURE.md).
 
-## Текущий этап по AGENT_AUDIO_HACKATHON.md
+## Текущий срез и навигация
 
-**Текущий срез: выбран финальный SDK `ru-offline-v1`, основной API `nh_transcribe`; пунктуация включена, C++ рефакторинг и квалификация230–244 завершены. Комплект проверяется отдельно в245.**
+Единая инструкция для продолжения исследований — [AUDIO_RESEARCH_AGENT.md](AUDIO_RESEARCH_AGENT.md).
+Ниже сохранена история; её старые планы и статусы не являются актуальным списком работ.
+
+**Уточнение пользователя,07.11.2026:** путь приложения проверен им и работает;
+LLM/summary исключены из текущих целей. Приоритет — качество текста и спикеров,
+особенно music/rap:пользователь наблюдает лишние буквы/слияния слов и ошибки
+диаризации. Обычную речь он ещё не проверял. Это qualitative feedback без новых
+run IDs/разметки,не замена метрик244. Последний приоритет пользователя: ASR/текст с пунктуацией важнее улучшения
+диаризации;overlap,таймкоды и RTF/RAM продолжают измеряться. Размер APK не
+является критерием отбора модели,но лимит RAM4GB и стоимость inference сохраняются.
+Наблюдаемость развивается в клиенте. Актуальные задачи — в GOALS.
+
+**Текущий срез: выбран финальный SDK `ru-offline-v1`, основной API `nh_transcribe`; пунктуация включена, C++ рефакторинг и квалификация230–244 завершены. Комплект проверен отдельно в245.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -245,8 +257,9 @@ Validation/test аудио, эталоны и ID спикеров различн
 
 **ADR-011 — baseline file pipeline.** Disk spool вместо полного heap PCM,
 ASR→release→diar→release→optional LLM. Char timestamps дают приближение,
-не forced alignment; fallback не меняет текст. max600s — измеряемый baseline
-лимит, не обещание поддержки часовых записей. Выход/trace атомарны и раздельны.
+не forced alignment; fallback не меняет текст. Выход/trace атомарны и раздельны.
+
+**Обоснование лимита длительности:** Default0 означает 4 потока/3600 секунд, явный лимит — 1..3600 секунд. Лимит 3600 секунд выбран как граница одного SDK-вызова для управления памятью и длительным inference: scratch PCM занимает около 64 КБ/сек, ASR работает ограниченными 20-секундными chunk-ами, но speaker/trace state и peak RAM всё равно растут с длительностью. Более часа запись следует сегментировать. Полный 3600-секундный soak ещё не заменяет проверку качества на реальных длинных диалогах и не подтверждает качество естественного десятиминутного разговора; он не является обещанием поддерживать все часовые записи на всех устройствах.
 
 **ADR-012 — минимальный Android host.** Java/JNI без Gradle/Compose:
 SAF импорт/экспорт, просмотр, отдельное summary. Это проверка standalone SDK.
@@ -1308,6 +1321,22 @@ UI показывает только сохранённые реальные р�
 `requireNativeAudio` Gradle оставляет UI-заглушку. Запуск на физическом
 ARM-устройстве, качество и RTF приложения остаются неизмеренными.
 
+## ADR — приоритет ASR и бюджет модели,07.11.2026
+
+Пользователь уточнил:предпочесть более качественный ASR более сильной диаризации;
+оценивать WER с пунктуацией,RTF,overlap и диаризацию. В `task/QnA_full.md`
+прямо сказано,что размер APK не учитывается. **Решение:** расширить screening
+более тяжёлых ASR/контекста/decoder,не отбрасывая по размеру весов и не выбирая
+квантизацию автоматически.4GB относится ко всему AVD,а не доступному model heap;
+CPU/runtime совместимость,peak PSS и RTF остаются обязательными измерениями.
+Последовательная загрузка позволяет выделять бюджет прежде всего ASR.
+
+Это изменение критериев исследования,не измеренный прирост и не замена
+текущего `ru-offline-v1`. В прошлых51/60 FP32 на FLEURS не улучшил INT8;
+более крупная/точная по dtype модель не считается победителем без целевого A/B.
+Для overlap отдельно измерять восстановление слов обоих голосов и их attribution.
+Наш punctuation-token WER и scoring жюри не отождествлять без известного protocol.
+
 ## Аудит утечек памяти native-кода (`src/audio`), 07.11.2026
 
 Задача: проверить весь C/C++ код SDK на утечки памяти четырьмя независимыми
@@ -1394,11 +1423,12 @@ VmRSS-плато ~35 MB, дельта после warm-up −3568…+2656 kB), л
 8192 kB, чтобы шум плато не давал ложных падений; RSS-гейт выключён под
 санитизером (ASan arenas: 31 MB → 510 MB, инструмент, а не SDK). Valgrind-бинари
 идут параллельно (2 одновременно: 4 упирались в память WSL), статика и dynamic
-builds — параллельно. Итог после изменений: **3m25s**, PASS — cppcheck 0
-findings, clang-tidy 0 clang-analyzer, ASan/LSan ctest 4/4, plain churn 30
-циклов `VmRSS 37648 -> 35676 kB (delta -1972)`, Valgrind
+builds — параллельно. Итог после изменений: **3m25s**, все стадии чистые —
+cppcheck 0 findings, clang-tidy 0 clang-analyzer, ASan/LSan ctest 4/4, plain
+churn 30 циклов `VmRSS 37648 -> 35676 kB (delta -1972)`, Valgrind
 `definitely/indirectly/possibly lost 0`, `still reachable 5742 B` суммарно по
-четырем бинарям.
+четырем бинарям. Формальная строка verdict тогда всё равно была `FAIL`: в
+условии verdict `leak_warnings == 0` сравнивало список с числом — разбор в 256.
 Побочный вывод из отладки: `#if defined(__SANITIZE_ADDRESS__) ||
 (defined(__has_feature) && __has_feature(address_sanitizer))` не компилируется
 GCC (препроцессор раскрывает `__has_feature(...)` даже когда
@@ -1441,29 +1471,33 @@ since minSdkVersion is API 26 you should also set android:fullBackupContent").
 отвергается (`expected one of file, database, sharedpref, external, root,
 device_file, …`), поэтому правила написаны на `root`/`file`. Проверено локально
 на копии проекта (локальный SDK — только `android-36`, в CI `android-35`;
-AGP одна и та же): `:app:lintDebug` exit 0, 0 новых issues, 7 ошибок по-прежнему
-фильтруются baseline. Stale-запись `UnusedResources` для `backup_rules.xml`
+AGP одна и та же): `:app:lintDebug` exit 0, новых issues нет; до фикса
+`1 error, 7 filtered by baseline`, на merged-дереве после канонической пары
+атрибутов — `0 errors, 0 warnings (6 errors filtered by baseline
+lint-baseline.xml)`, и Kotlin-файлы из dev (`M4aDecoder.kt`) новых
+baseline-записей не добавляют (`grep -c M4aDecoder lint-baseline.xml` = 0).
+Stale-запись `UnusedResources` для `backup_rules.xml`
 в baseline не мешает: unstale-записи lint не считает ошибками.
 
-**254 Форматирование и шум clang-tidy.** Форматирование native-кода — одна
+**254 Форматирование и scope clang-tidy.** Форматирование native-кода — одна
 команда: `make native-format` (`scripts/format_audio.py`, pinned clang-format
 19.1.7, `src/audio/.clang-format`), проверка — `make native-format-check`
-(33 файла PASS). clang-format скобки вокруг одиночных `if` не добавляет физически
-(это не формат, а синтаксический стиль), поэтому 300 предупреждений
-`readability-braces-around-statements` — не "неотформатировано", а отдельная
-tidy-проверка. Эксперимент: `clang-tidy -quiet -p .build/audio --fix-it
-examples/transcribe_file.c` реально ставит скобки (30 вставок/30 удалений, затем
-откат через `git checkout --`). Скобки массово не добавляли: 300 механических
-правок раздувают diff leak-пула без изменения поведения. Вместо этого из
-`src/audio/.clang-tidy` исключены style-only проверки (braces-around-statements,
-implicit-bool-conversion, identifier-length, isolate-declaration,
-uppercase-literal-suffix, modernize-use-trailing-return-type, modernize-use-using,
-cppcoreguidelines-avoid-do-while, pro-bounds-*, pro-type-vararg): предупреждений
-**1688 → 663**, состав gate'а не меняется (`WarningsAsErrors:
-bugprone-*,clang-analyzer-*`, clang-analyzer по-прежнему 0). Оставшееся осмысленно
-для аудита: `cert-err33-c` 74 (непроверенные return-значения C-функций),
-`cppcoreguidelines-special-member-functions` 13, cognitive-complexity 21,
-`modernize-use-nodiscard` 21, `cppcoreguidelines-owning-memory` 9.
+(33 файла PASS на merged-дереве). clang-format скобки вокруг одиночных `if` не
+добавляет физически: это синтаксический стиль, а не whitespace.
+`readability-braces-around-statements` — отдельная tidy-проверка, и в итоговом
+конфиге она не включена: dev уже сузил `.clang-tidy` до `bugprone-*` +
+`clang-analyzer-*` с 6 исключениями, readability/modernize слой не включается
+вообще. Прогон merged-дереве с этим списком (`clang-tidy -quiet -p .build/audio`
+по всем `.c/.cpp/.h/.hpp` кроме JNI): **0 предупреждений**, единственный
+`clang-diagnostic-error` — `tools/quantize.cpp` без `llama.h` (llama не
+установлен на host; CI тоже его не видит, так как ограничена `src/audio/src/`).
+Эксперимент с автофиксом: `clang-tidy -quiet -p .build/audio --fix-it
+examples/transcribe_file.c` действительно ставит скобки (30 вставок/30 удалений,
+затем откат через `git checkout --`). В SDK-источниках dev часть скобок уже
+добавлена (`ebc235d`); 42 одиночных `if/for/while` без скобок остаются в файлах
+этого пула — механическая правка без изменения поведения, gate на неё не
+опирается. Вывод: "скобки" лечатся либо `--fix-it` по конкретным файлам, либо
+оставляются, потому что проверка выключена намеренно.
 
 **Итог.** Подтверждённая утечка за всё исследование — одна, в тестовом C-файле
 (`c_abi.c:115`, незакрытый `FILE*`), исправлена. SDK-код (create/process/destroy
@@ -1494,3 +1528,52 @@ bugprone-*,clang-analyzer-*`, clang-analyzer по-прежнему 0). Оста�
 (`make mobile-build` проверяет только ABI, не execution/RAM); vendored ORT/sherpa
 бинарики неinstrumentируются;Valgrind-прогон — host x86_64, реальные долгие
 записи в этом аудите не использовались (синтетический 3s сигнал).
+
+## Слиявление leak-пула (`cpp-check`) в `dev`, 07.11.2026
+
+**255 Конфликты слияния и их разрешение.** `git merge origin/dev` даёт только два
+конфликтующих файла; код сливается автоматически (`Makefile`,
+`src/audio/CMakeLists.txt`, `src/audio/tests/c_abi.c`, `docs/ARCHITECTURE.md`).
+- `src/audio/.clang-tidy`: широкая выборка семейств с style-исключениями против
+  essentials-only списка dev. **Разрешено в пользу dev** — `bugprone-*` +
+  `clang-analyzer-*` минус 6 исключений, `WarningsAsErrors: ''`. Leak-покрытие
+  gate'а не теряется: `scripts/leak_check.py` сам разбирает `clang-analyzer-*`
+  и не зависит от `WarningsAsErrors`. Комментарий о scope добавлен поверх.
+- `docs/RESEARCH.md`: обе ветки добавили хвост после Compose-ADR. **Разрешено
+  как "оба"**: сначала dev-ADR про приоритет ASR и бюджет модели, затем аудит
+  утечек (246–254). Нумерация не конфликтует (в dev максимальный номер 216,
+  experiment-разделы заканчиваются `exp_0219–0245`).
+
+Проверка merged-дереве: `cppcheck` (scope `scripts/cppcheck.sh`) exit 0, 0
+error/warning, 0 leak/uninitialized; `make native-format-check` 33 файла PASS;
+`clang-tidy` по всем `src/audio` файлам (кроме JNI) — 0 предупреждений, один
+`clang-diagnostic-error` на `tools/quantize.cpp` (`llama.h` не установлен на
+host; CI ограничена `src/audio/src/`, поэтому её не видит).
+
+**256 Почему gate печатал `FAIL` при чистых стадиях, и scope clang-tidy внутри
+него.** `scripts/leak_check.py` складывает `leak_warnings` как список
+offending-строк clang-analyzer, а в verdict-условии сравнивал его с числом:
+`[] == 0` — всегда `False`. Поэтому gate говорил `FAIL: leak evidence or a
+failed stage` даже когда cppcheck, clang-tidy, ASan/LSan и Valgrind были
+чистыми. Ни один прогон в `.audio-runs/leak-*` не печатал `PASS` — формулировки
+"PASS" в пунктах 246–254 описывают стадийные числа, а не строку verdict.
+Исправлено на `not results['clang_tidy']['leak_warnings']`.
+Scope clang-tidy внутри gate'а: файлы берутся из `compile_commands.json` (те
+TU, которые реально компилирует build) плюс заголовки; JNI-мост исключается
+(нужен `jni.h`). На merged-дереве — 30 analysed, 2 skipped:
+`src/audio/examples/transcribe_file.c` (не входит в build) и
+`src/audio/tools/quantize.cpp` (нужен optional `llama.h`; без compile-command
+clang-tidy даёт `clang-diagnostic-error: 'llama.h' file not found` и роняет
+gate из-за host-toolchain, а не кода). Список scope пишется в
+`clang-tidy-scope.txt`, чтобы он был частью доказательства run'а. cppcheck
+не сужается — он по-прежнему идёт по всему `src/audio`, включая tools и
+examples.
+Прогон после фикса verdict — run ID `leak-20261107T170950Z`, platform
+`host/WSL` (x86_64, 12 ядер), ≈2m55s wall-clock: **PASS**. cppcheck exit 0,
+0 findings, 0 leak/uninitialized; native build exit 0; clang-tidy exit 0,
+0 warnings, 30 файлов, 2 skipped; ASan/LSan ctest 4/4 Passed; plain churn
+30 циклов `VmRSS 35492 -> 35672 kB (delta 180, limit 8192)`; Valgrind по
+четыре бинарям: `definitely/indirectly/possibly lost 0`, `still reachable
+2,871 B` у `audio-c-abi-test` и `audio-lifecycle-smoke-test`,
+"All heap blocks were freed -- no leaks are possible" у `audio-merge-test`
+и `audio-stream-core-test`, `ERROR SUMMARY: 0 errors` у всех четырёх.

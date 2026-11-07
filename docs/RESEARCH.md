@@ -1423,6 +1423,48 @@ GCC (препроцессор раскрывает `__has_feature(...)` даже
 SAF-файлы, микрофон не открывается); artifacts eval-прогонов
 `/data/local/tmp/nuclear-*-eval` не очищаются.
 
+**253 Почему `:app:lintDebug` упал после `allowBackup="false"`.** CI-gate
+(AGP 8.7.3 / lint 31.7.3, `abortOnError` + `warningsAsErrors = true`) дал
+`Error: The attribute android:allowBackup is deprecated from Android 12 and
+higher … [DataExtractionRules]` на `AndroidManifest.xml:4`. Причина — не в
+значении атрибута, а в ветке детектора (разобран байткод
+`com/android/tools/lint/checks/ManifestDetector` из lint-артефакта): при
+`minSdk < 31 && targetSdk >= 31` (у нас 26/35) `allowBackup="false"` без
+`dataExtractionRules` репортится всегда; `allowBackup="true"` без
+`fullBackupContent` и без `dataExtractionRules` — не репортится вообще, поэтому
+до правки gate был зелёным. Фикс не `tools:ignore`, а каноническая пара
+атрибутов: `android:dataExtractionRules="@xml/data_extraction_rules"` и
+`android:fullBackupContent="@xml/backup_rules"` (второй обязателен, пока
+`minSdk < 31`: без него lint говорит "only applies for Android 12 and higher;
+since minSdkVersion is API 26 you should also set android:fullBackupContent").
+Подводка: lint валидирует и содержимое XML — `<exclude domain="shared">`
+отвергается (`expected one of file, database, sharedpref, external, root,
+device_file, …`), поэтому правила написаны на `root`/`file`. Проверено локально
+на копии проекта (локальный SDK — только `android-36`, в CI `android-35`;
+AGP одна и та же): `:app:lintDebug` exit 0, 0 новых issues, 7 ошибок по-прежнему
+фильтруются baseline. Stale-запись `UnusedResources` для `backup_rules.xml`
+в baseline не мешает: unstale-записи lint не считает ошибками.
+
+**254 Форматирование и шум clang-tidy.** Форматирование native-кода — одна
+команда: `make native-format` (`scripts/format_audio.py`, pinned clang-format
+19.1.7, `src/audio/.clang-format`), проверка — `make native-format-check`
+(33 файла PASS). clang-format скобки вокруг одиночных `if` не добавляет физически
+(это не формат, а синтаксический стиль), поэтому 300 предупреждений
+`readability-braces-around-statements` — не "неотформатировано", а отдельная
+tidy-проверка. Эксперимент: `clang-tidy -quiet -p .build/audio --fix-it
+examples/transcribe_file.c` реально ставит скобки (30 вставок/30 удалений, затем
+откат через `git checkout --`). Скобки массово не добавляли: 300 механических
+правок раздувают diff leak-пула без изменения поведения. Вместо этого из
+`src/audio/.clang-tidy` исключены style-only проверки (braces-around-statements,
+implicit-bool-conversion, identifier-length, isolate-declaration,
+uppercase-literal-suffix, modernize-use-trailing-return-type, modernize-use-using,
+cppcoreguidelines-avoid-do-while, pro-bounds-*, pro-type-vararg): предупреждений
+**1688 → 663**, состав gate'а не меняется (`WarningsAsErrors:
+bugprone-*,clang-analyzer-*`, clang-analyzer по-прежнему 0). Оставшееся осмысленно
+для аудита: `cert-err33-c` 74 (непроверенные return-значения C-функций),
+`cppcoreguidelines-special-member-functions` 13, cognitive-complexity 21,
+`modernize-use-nodiscard` 21, `cppcoreguidelines-owning-memory` 9.
+
 **Итог.** Подтверждённая утечка за всё исследование — одна, в тестовом C-файле
 (`c_abi.c:115`, незакрытый `FILE*`), исправлена. SDK-код (create/process/destroy
 успех и error-пути) утечек не даёт ни в статике, ни в ASan/LSan, ни в Valgrind.

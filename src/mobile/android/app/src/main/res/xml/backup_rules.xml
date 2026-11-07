@@ -1,1 +1,8 @@
-<full-backup-content><exclude domain="file" path="." /></full-backup-content>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Legacy (Android 11 and below) counterpart of data_extraction_rules.xml.
+     Backup is already disabled by android:allowBackup="false"; these rules are
+     the fallback for devices below API 31 if it is ever re-enabled. -->
+<full-backup-content>
+    <exclude domain="root" path="." />
+    <exclude domain="file" path="." />
+</full-backup-content>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ (API 31) replacement for android:fullBackupContent.
+     Backup is already disabled by android:allowBackup="false"; these rules keep
+     app-private data out of cloud backup and device transfer if it is re-enabled. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+    </device-transfer>
+</data-extraction-rules>

@@ -157,7 +157,7 @@ build, под ASan arenas он ложно срабатывает); `make leak-ch
 (scripts/leak_check.py, ~3 мин) прогоняет параллельно cppcheck, clang-tidy
 (clang-analyzer), ASan/LSan через ctest и Valgrind на обычном build — Valgrind по
 умолчанию только VAD-путь (`--valgrind-all-models` для полного набора моделей),
-логи — в `.audio-runs/leak-<stamp>/`. Результаты зафиксированы в RESEARCH.md (246–251).
+логи — в `.audio-runs/leak-<stamp>/`. Результаты зафиксированы в RESEARCH.md (246–254).
 
 `make sdk-package` создаёт `.build/nuclear-audio-sdk-ru-v1.tar`: public header,
 C-пример,CLI/runtimes Linux x86_64 и Android ARM64/x86_64,только выбранные модели,

@@ -33,24 +33,44 @@ object M4aDecoder {
         var pcmBytes: Long = 0,
     )
 
-    fun needsConversion(file: File): Boolean = file.extension.lowercase() in setOf("m4a", "mp4", "aac")
+    fun needsConversion(file: File): Boolean =
+        file.extension.lowercase() in
+            setOf(
+                "m4a",
+                "mp4",
+                "aac",
+            )
 
-    fun decodeToWav(input: File, outputDirectory: File): File {
-        require(input.isFile && input.length() > 0L) { "Выбранный файл пуст или недоступен" }
+    fun decodeToWav(
+        input: File,
+        outputDirectory: File,
+    ): File {
+        require(input.isFile && input.length() > 0L) {
+            "Выбранный файл пуст или недоступен"
+        }
 
         val extractor = MediaExtractor()
         extractor.setDataSource(input.absolutePath)
-        val track = selectAudioTrack(extractor)
-            ?: throw IllegalArgumentException("В файле ${input.name} не найден аудиотрек AAC/M4A")
+        val track =
+            selectAudioTrack(extractor)
+                ?: throw IllegalArgumentException("В файле ${input.name} не найден аудиотрек AAC/M4A")
         extractor.selectTrack(track)
         val format = extractor.getTrackFormat(track)
-        val mime = format.getString(MediaFormat.KEY_MIME)
-            ?: throw IllegalArgumentException("Не удалось определить формат аудио")
-        require(MediaCodecList(MediaCodecList.ALL_CODECS).findDecoderForFormat(format) != null) {
+        val mime =
+            format.getString(MediaFormat.KEY_MIME)
+                ?: throw IllegalArgumentException("Не удалось определить формат аудио")
+        val decoder =
+            MediaCodecList(MediaCodecList.ALL_CODECS)
+                .findDecoderForFormat(format)
+        require(decoder != null) {
             "На устройстве нет декодера для $mime"
         }
 
-        val output = File(outputDirectory, "${input.nameWithoutExtension}-${System.nanoTime()}.wav")
+        val output =
+            File(
+                outputDirectory,
+                "${input.nameWithoutExtension}-${System.nanoTime()}.wav",
+            )
         val codec = MediaCodec.createDecoderByType(mime)
         try {
             codec.configure(format, null, null, 0)
@@ -78,10 +98,12 @@ object M4aDecoder {
         output: File,
         sourceFormat: MediaFormat,
     ) {
+        val channelCount =
+            sourceFormat.getInteger(MediaFormat.KEY_CHANNEL_COUNT).coerceAtLeast(MIN_CHANNEL_COUNT)
         val state =
             DecodeState(
-                sourceFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE),
-                sourceFormat.getInteger(MediaFormat.KEY_CHANNEL_COUNT).coerceAtLeast(MIN_CHANNEL_COUNT),
+                sampleRate = sourceFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE),
+                channelCount = channelCount,
             )
         val info = MediaCodec.BufferInfo()
         output.outputStream().buffered().use { stream ->
@@ -94,13 +116,18 @@ object M4aDecoder {
         writeWavHeader(output, state.sampleRate, state.pcmBytes)
     }
 
-    private fun queueInput(extractor: MediaExtractor, codec: MediaCodec): Boolean {
+    private fun queueInput(
+        extractor: MediaExtractor,
+        codec: MediaCodec,
+    ): Boolean {
         val inputIndex = codec.dequeueInputBuffer(INPUT_TIMEOUT_US)
         return if (inputIndex < 0) {
             false
         } else {
             val inputBuffer =
-                requireNotNull(codec.getInputBuffer(inputIndex)) { "Декодер не предоставил входной буфер" }
+                requireNotNull(codec.getInputBuffer(inputIndex)) {
+                    "Декодер не предоставил входной буфер"
+                }
             val size = extractor.readSampleData(inputBuffer, BUFFER_OFFSET)
             if (size == END_OF_INPUT) {
                 codec.queueInputBuffer(
@@ -112,7 +139,13 @@ object M4aDecoder {
                 )
                 true
             } else {
-                codec.queueInputBuffer(inputIndex, BUFFER_OFFSET, size, extractor.sampleTime, NO_BUFFER_FLAGS)
+                codec.queueInputBuffer(
+                    inputIndex,
+                    BUFFER_OFFSET,
+                    size,
+                    extractor.sampleTime,
+                    NO_BUFFER_FLAGS,
+                )
                 extractor.advance()
                 false
             }
@@ -129,17 +162,30 @@ object M4aDecoder {
         if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
             val changed = codec.outputFormat
             state.sampleRate = changed.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-            state.channelCount = changed.getInteger(MediaFormat.KEY_CHANNEL_COUNT).coerceAtLeast(MIN_CHANNEL_COUNT)
+            state.channelCount =
+                changed.getInteger(MediaFormat.KEY_CHANNEL_COUNT).coerceAtLeast(MIN_CHANNEL_COUNT)
         } else if (outputIndex >= BUFFER_OFFSET) {
-            if (info.size > 0) state.pcmBytes += writeDecodedPcm(codec, outputIndex, info, stream, state.channelCount)
+            if (info.size > 0) {
+                state.pcmBytes +=
+                    writeDecodedPcm(
+                        codec,
+                        outputIndex,
+                        info,
+                        stream,
+                        state.channelCount,
+                    )
+            }
             codec.releaseOutputBuffer(outputIndex, false)
         } else {
             check(
                 outputIndex == MediaCodec.INFO_TRY_AGAIN_LATER ||
                     outputIndex == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED,
-            ) { "Декодер вернул неизвестный статус $outputIndex" }
+            ) {
+                "Декодер вернул неизвестный статус $outputIndex"
+            }
         }
-        return outputIndex >= BUFFER_OFFSET && (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0
+        return outputIndex >= BUFFER_OFFSET &&
+            (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0
     }
 
     private fun writeDecodedPcm(
@@ -150,7 +196,10 @@ object M4aDecoder {
         channels: Int,
     ): Long {
         val bytes = ByteArray(info.size)
-        val buffer = requireNotNull(codec.getOutputBuffer(outputIndex)) { "Декодер не предоставил выходной буфер" }
+        val buffer =
+            requireNotNull(codec.getOutputBuffer(outputIndex)) {
+                "Декодер не предоставил выходной буфер"
+            }
         buffer.position(info.offset)
         buffer.limit(info.offset + info.size)
         buffer.get(bytes)
@@ -160,13 +209,18 @@ object M4aDecoder {
         return mono.size.toLong()
     }
 
-    private fun toMono16Bit(pcm: ByteArray, channels: Int): ByteArray {
+    private fun toMono16Bit(
+        pcm: ByteArray,
+        channels: Int,
+    ): ByteArray {
         if (channels <= 1) return pcm
         val input = ByteBuffer.wrap(pcm).order(ByteOrder.nativeOrder())
         val bytesPerFrame = channels * BYTES_PER_SAMPLE
         val frames = pcm.size / bytesPerFrame
         val output = ByteArray(frames * BYTES_PER_SAMPLE)
-        val result = ByteBuffer.wrap(output).order(ByteOrder.LITTLE_ENDIAN)
+        val result =
+            ByteBuffer.wrap(output)
+                .order(ByteOrder.LITTLE_ENDIAN)
         for (frame in 0 until frames) {
             var sum = 0
             for (channel in 0 until channels) {
@@ -178,11 +232,19 @@ object M4aDecoder {
         return output
     }
 
-    private fun writeWavHeader(output: File, sampleRate: Int, pcmBytes: Long) {
-        require(pcmBytes <= Int.MAX_VALUE.toLong()) { "Расшифровываемое PCM-аудио слишком велико для WAV" }
+    private fun writeWavHeader(
+        output: File,
+        sampleRate: Int,
+        pcmBytes: Long,
+    ) {
+        require(pcmBytes <= Int.MAX_VALUE.toLong()) {
+            "Расшифровываемое PCM-аудио слишком велико для WAV"
+        }
         val byteRate = sampleRate * BYTES_PER_SAMPLE
         val header = ByteArray(WAV_HEADER_SIZE)
-        val buffer = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN)
+        val buffer =
+            ByteBuffer.wrap(header)
+                .order(ByteOrder.LITTLE_ENDIAN)
         buffer.put("RIFF".toByteArray(Charsets.US_ASCII))
         buffer.putInt((WAV_HEADER_BYTES_BEFORE_DATA + pcmBytes).toInt())
         buffer.put("WAVE".toByteArray(Charsets.US_ASCII))
@@ -196,6 +258,8 @@ object M4aDecoder {
         buffer.putShort(WAV_BITS_PER_SAMPLE.toShort())
         buffer.put("data".toByteArray(Charsets.US_ASCII))
         buffer.putInt(pcmBytes.toInt())
-        RandomAccessFile(output, "rw").use { wav -> wav.write(header, 0, header.size) }
+        RandomAccessFile(output, "rw").use { wav ->
+            wav.write(header, 0, header.size)
+        }
     }
 }

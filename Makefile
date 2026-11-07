@@ -26,6 +26,7 @@ help:
 	@echo 'mobile-bootstrap Also install NDK for cross-compilation'
 	@echo 'mobile-build  Cross-compile ARM64 and x86_64 SDK (no UI)'
 	@echo 'android-app   Build offline Compose APK with native SDK and models'
+	@echo 'android-release Build, zipalign and sign an offline release APK'
 	@echo 'research-bootstrap Prepare pinned models and FLEURS validation40'
 	@echo 'research-test Test fixed WER normalization and scoring'
 	@echo 'More: python3 scripts/audio_tools.py --help'
@@ -61,6 +62,8 @@ mobile-build:
 	.venv/bin/python scripts/build_mobile_audio.py
 android-app:
 	.venv/bin/python scripts/build_android_app.py
+android-release:
+	.venv/bin/python scripts/build_android_release.py
 research-bootstrap: audio-bootstrap
 	uv sync --frozen --group research
 	$(MAKE) native-build

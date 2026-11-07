@@ -1,0 +1,7 @@
+{
+  "stage": "harness model path map",
+  "error": "NativeSdk.create expects relative file paths; supplied basenames caused unreadable model",
+  "native_status": 2,
+  "inference_started": false,
+  "rerun": "exp_0075"
+}

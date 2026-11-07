@@ -145,6 +145,19 @@
         "models/qwen3-0.6b-q8/LICENSE"
       ],
       "note": "Locally requantized from official Q8, not an official Qwen Q4 artifact"
+    },
+    {
+      "id": "rupunct-small-int8",
+      "family": "punctuation",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "revision": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "files": [
+        "models/rupunct-small-int8/README.md",
+        "models/rupunct-small-int8/config.json",
+        "models/rupunct-small-int8/rupunct_small_int8.onnx",
+        "models/rupunct-small-int8/tokenizer.json"
+      ],
+      "scope": "research CPU tagger; not mobile integrated"
     }
   ],
   "files": [
@@ -458,6 +471,42 @@
       "sha256": "15e434d8ddf0af38fe3f7003af6ce6eac4edada6df34324aa45979f9cc79f02e",
       "size_bytes": 396704416,
       "quantizer_sha256": "da783b62a387a7b0711cc2f1b853207b5ad85690d010481feb20b46943e1daeb"
+    },
+    {
+      "path": "models/rupunct-small-int8/README.md",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/README.md",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "a793c033ec91bfc33f2d926fd1fc5cc7b2b95b4afcd302a41dfe9ac125c382bd",
+      "size_bytes": 1553
+    },
+    {
+      "path": "models/rupunct-small-int8/config.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/config.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "6924a8cf41ec2bd3a3aa73a387ae0ccd0aed253ec7cac4d2f53c7d27440891eb",
+      "size_bytes": 2527
+    },
+    {
+      "path": "models/rupunct-small-int8/rupunct_small_int8.onnx",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/rupunct_small_int8.onnx",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "b105da023474d98aa13ba18953ae67b04b17bd0595034bc06030c17536893933",
+      "size_bytes": 29259673
+    },
+    {
+      "path": "models/rupunct-small-int8/tokenizer.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/tokenizer.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "7ca617388c2092a3a84272025c52bbf3c6db0aee225c0351186295c0b5d3ddc6",
+      "size_bytes": 2413439
     }
   ]
 }

@@ -11,7 +11,7 @@ import sys
 import zipfile
 from native_sdk import ROOT,record_harness
 from android_device import AndroidDevice,PACKAGE
-from scoring import aggregate,counts
+from scoring import aggregate,counts,speaker_coverage,text_metrics
 from run_file_pipeline import cpwer
 sys.path.insert(0,str(ROOT/'scripts'))
 from bootstrap_models import sha256
@@ -97,10 +97,12 @@ def main():
             truth=json.loads(reference.read_text())['transcript']
             case['normalized']=counts(' '.join(t['text'] for t in truth),' '.join(t['text'] for t in output['transcript']))
             case['speaker_attributed']=cpwer(truth,output['transcript'])
+            case['text_metrics']=text_metrics(' '.join(t['text'] for t in truth),' '.join(t['text'] for t in output['transcript']))
+        case.update(speaker_coverage(output['transcript']))
         case.update(json_valid=True,transcript_sha256=sha256(output_path),
             predicted_speakers=len({r['speaker_id'] for r in output['transcript']}),expected_speakers=fixture.get('speakers'))
     metrics['normalized']=aggregate([c['normalized'] for c in metrics['cases'] if 'normalized' in c])
-    metrics['scope']='Android4096MiB/x86_64 native file pipeline; timings and sampled PSS on actual AVD'
+    metrics['scope']='Android4096MiB '+device.execution+'; translated timings are not physical ARM performance'
     (out/'scored-metrics.json').write_text(json.dumps(metrics,indent=2))
     report=ROOT/'eval/results'/args.experiment;report.mkdir(parents=True,exist_ok=False)
     for source,target in [('scored-metrics.json','metrics.json'),('config.json','config.json'),('environment.json','environment.json')]:

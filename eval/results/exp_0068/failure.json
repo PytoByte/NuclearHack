@@ -1,0 +1,10 @@
+{
+  "exit_code": 0,
+  "stage": "instrumentation",
+  "signal": "SIGSEGV",
+  "guest_architecture": "arm64",
+  "fault_address": "0x8",
+  "backtrace": "/memfd:exec (deleted)",
+  "retry": "non-incremental ARM64 install also crashed",
+  "quality_measured": false
+}

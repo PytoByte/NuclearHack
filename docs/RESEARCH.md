@@ -4,10 +4,32 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап 2, exp_0045 — реальный cancel/resume; далее window shift и FP32.**
-Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной SAF import/export
-ещё проверяется отдельно и не считается пройденным только по instrumentation. Отдельный ASR screening не считается прохождением gate 1.5.
-После baseline работа продолжается по E01–E23; останавливаться на baseline нельзя.
+**Сейчас: этап 2, приоритет A–D из AUDIO_RESEARCH_AGENT_SHORT.md: натуральные русские диалоги → ASR/пунктуация → diarization → границы → ARM.**
+Рекомендации короткого агента приняты как ориентиры, не жёсткие правила. Дальнейшая работа — audio/native/eval;
+UI/SAF/APK-поставка, LLM и длительный stress не расширяются. Существующий test host используется только для inference.
+Baseline и подготовка завершены, исследование продолжается. Gate A/C ещё **не пройдены**: нет независимо проверенного
+русского verbatim/word GT и разделения по людям; синтетический Dialogs и английский AMI этого не заменяют.
+
+Новые условия пользователя: сравнить ASR с собственной пунктуацией и отдельный русский пунктуатор;
+одновременно normalized WER, raw/punctuation-aware WER, CER и отдельные precision/recall/F1 пунктуации;
+проверить ARM-бинарник и деградацию при коротких фрагментах. Chunked offline inference не называется causal streaming.
+
+Завершено после exp_0046: checkpoints v2 на host и Android (47,57–59); FP32 ASR на host/Android хуже INT8 (51,60);
+window shift (48–50,62–67); e2e CTC, hotwords,25s chunks,INT8 segmentation (52–55). .5 ускоряет diarization
+в парном host dev опыте, но **AMI holdout DER36.10% против31.75%**, поэтому не принят глобально.
+Synthetic cpWER gain не перекрывает holdout-регрессию. Между сериями произошёл сдвиг wall-time host/AVD:
+не приписывать его алгоритмическим изменениям.
+
+Сейчас собран silver pilot: три натуральных русских YouTube-разговора, ~8.9мин,2–3 голоса,
+публичные Label Studio-аннотации с ручными исправлениями (7/10/29 текстовых сегментов относительно предсказаний).
+Это **не независимо проверенный gold**; происхождение лицензии исходных видео не документировано,
+publisher декларирует Apache-2.0. Данные не публикуем, храним revision/SHA и локальные RTTM/JSON.
+Другой открытый источник DataHive CC-BY4:20 естественных разговоров,3ч,стереоканалы участников,но **без транскриптов**.
+[YouTube источник](https://huggingface.co/datasets/leshinsky/ru-youtube-diarization),
+[DataHive источник](https://huggingface.co/datasets/datahiveai/russian-conversations-sample).
+
+Следующее: baseline на pilot и честное сравнение CTC/e2e/CTC+RUPunct; сегменты без разметки слов не использовать
+для заявления timestamp MAE. Нужны проверка silver эталонов, независимые люди/сессии и полноценный русский test.
 
 | Исходный пункт | Статус | Что осталось / свидетельство |
 | --- | --- | --- |
@@ -22,7 +44,7 @@ Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной
 | 1.3 — diarization/merge | baseline выполнен | Auto diar + word overlap merge реализованы; dev threshold .8 выбран, короткие реплики проблемны |
 | 1.4 — LLM/JSON | baseline выполнен | JSON3/3 и genuine Qwen3 summary3/3 на Android; SAF export проверить отдельно |
 | 1.5 — gate baseline | pipeline пройден; SAF pending | Offline Android3/3 + LLM, WER3.53%, fullRTF .773, pipelinePSS314MiB, LLMPSS1166MiB |
-| 6 — метрики и журнал | частично | WER/CER/DER/time/RSS, hashes, CI и raw logs; cpWER есть; Android PSS profile идёт, JER/ошибка timestamps ещё нужны |
+| 6 — метрики и журнал | частично | WER/CER/DER/time/RSS, hashes, CI и raw logs; cpWER есть; Android PSS/JER измерены; word timestamp GT/ошибки ещё отсутствуют |
 | 8 — автономный цикл | действует | A/B, worst cases, ≥3 гипотезы, accept/reject, сохранение лучшей конфигурации, следующий run |
 | 9 — Anti-Vocale | исследован | Ports/chunks/lifecycle/eval полезны; сетевые части/remote/Firebase не копируются |
 | 10 — команды/проверки | частично | Host tests/ABI есть; APK manifest без INTERNET, offline Android smoke идёт |
@@ -40,27 +62,27 @@ Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной
 | ID | Проверяемая группа | Статус |
 | --- | --- | --- |
 | E01 | GigaAM v3/v2/Whisper | Android val40 exp_0028–31 завершён; CTC v3 сохраняет лучший компромисс |
-| E02 | CTC/RNNT/e2e | e2e CTC Android WER6.47%, CI включает0; BPE timestamps исправлены, сквозной тест впереди |
-| E03 | greedy/beam | RNNT modified beam реально поддержан; exp_0026 идёт; CTC/Whisper greedy-only без FST graph |
-| E04 | ru/autodetect | explicit language/auto API реализован; exp_0027 в текущей очереди |
+| E02 | CTC/RNNT/e2e | e2e CTC Android WER6.47%, CI включает0; exp52/64/65: WER smoke прежний, но unknown 1/4/1; сравнение на натуральном pilot exp70 |
+| E03 | greedy/beam | RNNT modified beam реально поддержан; exp26/34 завершены, тексты40/40 одинаковы; beam медленнее; CTC/Whisper greedy-only без FST graph |
+| E04 | ru/autodetect | explicit language/auto API реализован; exp27 завершён: тексты40/40 одинаковы с ru |
 | E05 | chunks/overlap/silence/dedup | 10s ухудшает WER8.19%,20/25s7.13%; overlap/dedup ещё не включён |
 | E06 | VAD off/on и padding | Silero .5/pad250ms WER7.00%, .35/400ms7.13%; ускорения нет, off сохранён; short strata впереди |
-| E07 | INT8/FP32/FP16 | diar smoke начат; ASR и Android A/B впереди |
-| E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; resample/codec/denoise A/B впереди |
-| E09 | hints/hotwords | проверить capability выбранного decoder; без LLM-подстановок |
+| E07 | INT8/FP32/FP16 | FP32 ASR exp51/60 WER7.66%, Android~984MiB PSS; INT8 сохранён; FP32 segmentation лучшеINT8 |
+| E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; codec lag exp46~.125ms; denoise A/B не измерен |
+| E09 | hints/hotwords | RNNT поддерживает; exp53 hints ухудшили WER7.66%, отвергнуты |
 | E10 | segmentation/embeddings/clustering | WeSpeaker LM .4/.55/.8: DER26.05/24.04/35.31% dev; хуже ERes2Net13.10%, не принят |
 | E11 | auto/oracle dev | exp_0024: oracle4 даёт DER16.19% хуже auto .8 (13.10%); production остаётся auto |
-| E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; следующий window shift |
+| E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; window.5 exp66 ухудшил AMI testDER36.10%; русский pilot exp71 |
 | E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; frame posteriors C API не отдаёт, не имитировать |
 | E14 | short/overlap/similar voices/gain | Short cpWER46.67% остаётся; minDuration не исправил. Нужны альтернативная segmentation/embedding и отдельные strata |
 | E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
 | E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
 | E17 | Android CPU threads 1/2/4 | exp_0020–22: RTF1.632/1.013/.826, WER одинаковый; 4t provisional, повтор впереди |
-| E18 | quantization/load/inference/memory | host ASR/diar начат; LLM + Android впереди |
-| E19 | lazy load/release ASR→diar→LLM | ASR lifecycle probe есть; полный pipeline + Android впереди |
+| E18 | quantization/load/inference/memory | ASR host+Android FP32/INT8 завершён; Q4 модель подготовлена, LLM research отложен |
+| E19 | lazy load/release ASR→diar→LLM | ASR lifecycle probe есть; полный pipeline+Android measured; Q4 LLM не исследуется сейчас |
 | E20 | streaming PCM/ограниченные chunks | файловый disk spool + ограниченные ASR chunks реализованы; long-file profile впереди |
-| E21 | 5/15/30/60 min, cancel/resume | ASR checkpoint реализован; exp_0045 идёт. Long stress ещё не измерен |
-| E22 | NNAPI/NPU/CPU fallback | проверить возможности реального AVD/runtime; hardware-only варианты отдельно |
+| E21 | 5/15/30/60 min, cancel/resume | checkpoint v2 exp47/57–59 passed; long stress отложен ради точности |
+| E22 | NNAPI/NPU/CPU fallback | CPU measured x86 AVD; ARM64 translation exp68 SIGSEGV; NPU/physical ARM не measured |
 | E23 | explicit memory budget/config | после Android RAM profile; без silent fallback |
 
 Продвинутые realtime/cross-session/separation/UI из §7.4 — только после
@@ -315,3 +337,116 @@ chunks25, INT8 segmentation, Android cancel/resume/cache и FP32 deployment.
 Qwen Q4 подготовлен локально из pinned Q8 (604→373MiB tensor data);
 это ещё не измеренный peak RAM/качество. Source GGUF, quantizer SHA и
 результирующий SHA в model lock; официальный Q4 артефакт не утверждается.
+
+
+## ADR — дополнительные условия, 07.11.2026
+
+- **Метрики text-v2 (до новых результатов):** прежняя NFC/lower/ё→е normalization v1 неизменна. Raw WER сохраняет case/пунктуацию;
+  punctuation-token WER отделяет каждый знак от lexical tokens и нормализует только case/ё. CER — normalized и raw.
+  Пунктуация `. , ? ! : ; — - … « » " ( )` считается по отдельным символам: TP только после совпавшего слова
+  в edit alignment (и BOS), остальные FP/FN; micro/per-mark P/R/F1. Дополнительно conditional F1 только на совпавших
+  словах: не скрывать lexical errors за этим условным числом. Повторы/междометия/числа не удаляются.
+- **Кандидат:** [RUPunct_small INT8 ONNX](https://huggingface.co/ekhodzitsky/rupunct-small-onnx),
+  revision `c4a35be7e4a413cdfb08427db75b621b571569c9`,29.3MB,MIT по card,русский tagger33labels.
+  Eval backend ORT CPU1.23.2 отдельно от native ORT1.28.2; не объявлять mobile integration готовой.
+  Реконструируем исходные слова, разрешаем только case/marks; lexical invariant проверяется. Контекст100слов,без truncation.
+- **Спикеры:** старый `predicted_speakers` включает `speaker_unknown`. Добавлены `known_speakers_count`, unknown utterance/word fractions;
+  исторические метрики не перезаписываются. Улучшение cpWER с ростом unknown не принимается автоматически.
+- **ARM:** AVD API35 объявляет arm64-v8a через `libndk_translation.so`. exp_0068 реально установил ARM64-вариант,
+  но получил SIGSEGV в translated `/memfd:exec`,до результата; повтор с non-incremental install тоже упал.
+  Это блокер данного способа проверки, **не** доказательство дефекта на физическом ARM и **не** подтверждение ARM-качества.
+  Native cross-build остаётся пройденным отдельно; для скорости/памяти целевого ARM требуется физический девайс.
+
+
+## Натуральные русские данные: выбор источников
+
+Популярные [OpenSTT](https://github.com/snakers4/open_stt) и [Golos](https://openslr.org/114/) подходят для ASR-проверки,
+но не заменяют размеченные speaker turns. В OpenSTT `asr_calls_2_val` publisher указывает ручную разметку телефонной речи;
+[описание Microsoft](https://learn.microsoft.com/en-us/azure/open-datasets/dataset-open-speech-text).
+Архив Zenodo4899885:805251737bytes,MD5`5146eef0aa64af41e17c5ec18a9cab5c`,CC-BY-NC4.0;
+используется только для исследования,не для поставки. В отличие от него `asr_public_phone_calls_2` помечен Internet+ASR:
+не выдавать автоматические тексты за ручной эталон. YouTube silver pilot выбран для первоначального совместного ASR/diar анализа,
+потому что сохраняет длинные реальные разговоры и исправленные speaker labels; его малый размер/неясный speaker split отмечены явно.
+
+| Опыты | Проверка | Решение |
+| --- | --- | --- |
+| 47,57–59 | checkpoints v2 host/Android,cancel/resume и fully cached без ASR load | принято, текст byte-equal |
+| 48–50,62–67 | window shift.1/.25/.5; AMI и русский smoke | .5 кандидат,не общий default: holdout DER+4.35pp |
+| 51,60,61 | действительный FP32 checkpoint vs INT8 | FP32 отвергнут: WER7.66%,больше RAM; разные экспорты — confound |
+| 52,64,65 | e2e CTC в полном pipeline | inconclusive: normalized WER прежний,ранние слова чаще unknown |
+| 53–55 | hotwords,chunk25,INT8 segmentation | отвергнуты,выигрыша нет/есть ухудшения |
+| 68 | ARM64 runtime через native bridge | crash,качество не измерено |
+| 69–71 | натуральный silver pilot: baseline,e2e,window.5 | завершено; предварительные метрики,не независимый test |
+| 72–79 | punctuation/короткие offline фрагменты/DER-JER/OpenSTT | завершено; ARM и gold-валидация впереди |
+
+
+### exp_0069–0072 — первый натуральный silver pilot (3 записи,1203 нормализованных слова)
+
+| Вариант | normalized WER | punctuation-token WER | normalized CER | punctuation micro F1 | cpWER |
+| --- | --- | --- | --- | --- | --- |
+| CTC,window.1 | 14.30% | 30.55% | 7.67% | 0 | 54.20% |
+| e2e CTC,window.1 | 14.21% | 21.67% | 7.56% | 65.18% | 52.95% |
+| CTC + RUPunct INT8 | 14.30% | 27.15% | 7.67% | 40.68% | не пересчитывался: ASR-текст/спикеры не менялись |
+| CTC,window.5 | 14.30% | — | — | — | 43.64% |
+
+E2e−CTC lexical WER CI95 по3записям: [-1.02;+1.53]pp,2000bootstrap,seed42: **inconclusive**.
+RUPunct lexical sequence сохранена во всех файлах; пунктуация помогает относительно отсутствующей,но уступает e2e.
+Не переносить эти цифры на gold: publisher исправлял исходные ASR-гипотезы,неизвестна полнота проверки/стиль знаков.
+Window.5 даёт2/3/3 известных голоса против6/8/5 baseline и меньше cpWER; это поддерживает гипотезу over-splitting,
+но не отменяет английскую holdout-регрессию. Основной preset не изменён.
+exp73 остановлен **до inference** из-за ошибочного формата путей в новом fragment harness; сохранён как failure,
+исправленный повтор получает новый ID75,не затирает73.
+
+
+### exp_0074–0075 — diarization и короткие фрагменты
+
+На silver pilot DER26.07%→21.52% при window.5,но JER34.81%→40.59%.
+Последний файл DER33.87%→34.20%: выигрыш неравномерен,редкие голоса остаются проблемой.
+Политика: collar250ms,UEM0..clip_end,overlap включён; время ошибок суммируется для DER,
+JER учитывает эталонных говорящих. Никакого word timestamp MAE без word GT.
+
+Fragment test75: **только4 не-overlap реплики /97слов**,8–25s по publisher turns.
+Одинаковое аудио и CTC: целая реплика WER10.31%;10s11.34%;5s14.43%;2s23.71%.
+Это потеря контекста на малом диагностическом срезе host; не целый длинный файл,не ARM,не causal streaming.
+Далее гипотеза76: threshold1.1 с исходным window.1 может уменьшить fragmentation без изменения ASR;
+критерии: DER+cpWER,minority JER и ошибки по файлам,а не только число найденных голосов.
+
+
+### exp_0076–0077 — число кластеров не является метрикой качества
+
+Threshold1.1 при window.1: известные голоса2/2/3 вместо6/8/5,но DER26.27% (baseline26.07%),
+JER48.70% (34.81%),cpWER54.45% (54.20%). **Reject**: over-merging теряет меньшинство,
+простое уменьшение числа спикеров не решает задачу. Следующие причинные гипотезы:
+(1) другой embedding с собственным порогом;(2) границы/слова у коротких turn;
+(3) boundary-aware chunking вместо2s нарезки. Не возвращаться к blind threshold sweep на test.
+
+
+### exp_0078–0079 — популярный OpenSTT, ручные телефонные транскрипты
+
+Заморожены40 lexical-dev фрагментов,140.65s,408слов: hash-ranked выбор из source validation,
+2..20s,>=3слова. Архив проверен по publisher MD5,дополнительно сохранён SHA256.
+Никаких speaker/word-time/punctuation gold; принадлежность людей/исходных звонков неизвестна,
+поэтому эта выборка не объявляется speaker-disjoint test и не используется для доказательства значимости.
+
+CTC INT8 WER17.65%,CER6.62%; e2e CTC WER20.59%,CER10.02%.
+**Не заменять CTC на e2e глобально:** улучшение пунктуации на YouTube silver не компенсирует lexical-регрессию телефона.
+Отдельный RUPunct пока остаётся research-кандидатом: lexical-preserving,но F1 недостаточен для принятия в SDK.
+
+Воспроизведение: `make research-pilot` подготавливает pinned runtime/модели,YouTube silver+OpenSTT40
+и исполняет `experiments/phase3-russian-pilot.json` последовательно. Имеющиеся завершённые IDs пропускаются,
+частично упавшие не перезаписываются; ошибка73 сохранена отдельно,исправленный job75 включён в очередь.
+Данные/сырые результаты остаются локально,в Git — manifests/хеши/агрегаты. Тесты scoring/automation проходят.
+
+**Текущий итог:** этап2 продвинут до натурального silver baseline,пунктуации и fragment-quality; это не завершение gate A–D.
+**Далее:** проверенный независимый русский conversational gold,другой embedding/границы слов,
+физический ARM64 (вопрос о доступном устройстве задан),chunk boundary/overlap policy с сохранением слов.
+UI/LLM/длинный stress не расширяются. Timestamp MAE и ARM throughput по-прежнему не измерены.
+
+
+### exp_0080 — проверка обновлённого Android eval
+
+Actual app ABI x86_64,AVD4096MiB,offline,APK SHA verified; provenance соответствует выбранной ABI.
+FLEURS40 WER7.1334% совпал с baseline,все text-v2 метрики выгружены. Это functional revalidation,
+не ARM-подтверждение и не доказательство ускорения: wall-time между сериями существенно дрейфовал.
+`make research-pilot` проверен до конца; frozen datasets воспроизвелись без изменения hashes,
+готовые опыты сохранены. Проверены model SHA,Python syntax,scoring и automation; `task/` не изменён.

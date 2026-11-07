@@ -1,6 +1,7 @@
 """Verified access to the project's isolated offline 4GB emulator only."""
 import json
 import subprocess
+import re
 import sys
 from pathlib import Path
 from native_sdk import ROOT
@@ -21,6 +22,11 @@ class AndroidDevice:
         self.memory=self.shell('cat','/proc/meminfo')
         kib=int(next(l.split()[1] for l in self.memory.splitlines() if l.startswith('MemTotal:')))
         if not 3700*1024<=kib<=4096*1024:raise RuntimeError('AVD memory differs from 4GB profile')
+        package_info=self.shell('dumpsys','package',PACKAGE)
+        self.device_abi=self.abi
+        self.abi=re.search(r'primaryCpuAbi=(\S+)',package_info).group(1)
+        if self.abi not in ('x86_64','arm64-v8a'):raise RuntimeError('Unsupported app ABI')
+        self.execution='ARM64 translated by libndk_translation on x86_64 AVD' if self.abi=='arm64-v8a' else 'x86_64 AVD'
         self.apk=ROOT/'.build/android-host/audio-sdk-host.apk';self.apk_sha256=sha256(self.apk)
         installed=self.shell('pm','path',PACKAGE).strip().removeprefix('package:')
         actual=self.shell('toybox','sha256sum',installed).split()[0]
@@ -34,6 +40,6 @@ class AndroidDevice:
         with (destination/'logcat.txt').open('w') as log:
             subprocess.run(self.adb+['logcat','-d','-t','3000'],env=self.env,stdout=log)
     def metadata(self):
-        return dict(meminfo=self.memory,cpuinfo=self.shell('cat','/proc/cpuinfo'),
+        return dict(app_abi=self.abi,device_abi=self.device_abi,execution=self.execution,native_bridge=self.shell('getprop','ro.dalvik.vm.native.bridge'),meminfo=self.memory,cpuinfo=self.shell('cat','/proc/cpuinfo'),
             build=self.shell('getprop','ro.build.fingerprint'),airplane_mode=True,
             connectivity=self.shell('dumpsys','connectivity'),git_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip())

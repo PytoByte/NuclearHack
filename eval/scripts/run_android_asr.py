@@ -5,12 +5,15 @@ import json
 import shlex
 import subprocess
 import sys
+import zipfile
+import hashlib
 from pathlib import Path
 import jiwer
-from native_sdk import ROOT
-from scoring import aggregate,counts,normalize
+from native_sdk import ROOT,record_harness
+from scoring import aggregate,counts,normalize,text_metrics
+from compare_punctuation import summarize
+from android_device import AndroidDevice
 sys.path.insert(0,str(ROOT/'scripts'))
-from bootstrap_android_audio import environment
 from bootstrap_models import sha256
 
 
@@ -21,10 +24,7 @@ def main():
     p.add_argument('--language',default='ru');args=p.parse_args()
     if not args.experiment.startswith('exp_') or not args.experiment[4:].isdigit():p.error('Use exp_NNNN')
     out=ROOT/'.audio-runs'/args.experiment;out.mkdir(parents=True,exist_ok=False)
-    env=environment();adb=[str(ROOT/'.tools/android-sdk/platform-tools/adb'),'-P','5039','-s','emulator-5558']
-    def shell(*cmd):return subprocess.check_output(adb+['shell',*cmd],env=env,text=True)
-    if shell('settings','get','global','airplane_mode_on').strip()!='1':raise RuntimeError('Airplane mode required')
-    if shell('getprop','ro.kernel.qemu').strip()!='1':raise RuntimeError('Expected isolated AVD')
+    device=AndroidDevice();env=device.env;adb=device.adb;shell=device.shell
     catalog=json.loads((ROOT/'config/audio-models.lock.json').read_text())
     model=next(m for m in catalog['models'] if m['id']==args.model)
     model_file=next(Path(f).name for f in model['files'] if Path(f).name in
@@ -33,8 +33,12 @@ def main():
     rows={r['audio_id']:r for r in (json.loads(l) for l in manifest.read_text().splitlines())}
     config=dict(experiment_id=args.experiment,model=model,threads=args.threads,method=args.method,language=args.language,
         model_files=[f for f in catalog['files'] if f['path'] in model['files']],manifest=str(manifest.relative_to(ROOT)),manifest_sha256=sha256(manifest),
-        apk_sha256=sha256(ROOT/'.build/android-host/audio-sdk-host.apk'),abi=shell('getprop','ro.product.cpu.abi').strip(),
+        apk_sha256=sha256(ROOT/'.build/android-host/audio-sdk-host.apk'),abi=device.abi,execution=device.execution,
         configured_ram_mib=4096,scope='Android4GB native ASR, FLEURS validation40, no dialogue/DER claim')
+    record_harness(out,config)
+    with zipfile.ZipFile(device.apk) as apk:
+        data=apk.read('assets/buildinfo/'+device.abi+'.json');(out/'build-provenance.json').write_bytes(data)
+        config['build_provenance_sha256']=hashlib.sha256(data).hexdigest()
     (out/'config.json').write_text(json.dumps(config,indent=2))
     (out/'environment.json').write_text(json.dumps(dict(build=shell('getprop','ro.build.fingerprint'),
         meminfo=shell('cat','/proc/meminfo'),cpuinfo=shell('cat','/proc/cpuinfo'),airplane_mode=True,
@@ -63,13 +67,13 @@ def main():
         c=jiwer.process_characters(normalize(truth),normalize(hypothesis))
         errors+=c.substitutions+c.deletions+c.insertions;chars+=c.hits+c.substitutions+c.deletions
         scored.append(dict(audio_id=row['audio_id'],normalized=counts(truth,hypothesis),raw=counts(truth,hypothesis,False),
-            audio_seconds=row['num_samples']/16000,decode_inference_ms=actual['decode_inference_ms']))
+            audio_seconds=row['num_samples']/16000,decode_inference_ms=actual['decode_inference_ms'],text_metrics=text_metrics(truth,hypothesis)))
     seconds=sum(r['audio_seconds'] for r in scored)
     measured.update(experiment_id=args.experiment,model=args.model,threads=args.threads,audio_seconds=seconds,
         decode_inference_rtf=measured['decode_inference_ms']/1000/seconds,
         full_rtf=(measured['load_ms']+measured['decode_inference_ms'])/1000/seconds,
         normalized=aggregate([r['normalized'] for r in scored]),raw=aggregate([r['raw'] for r in scored]),
-        cer=errors/chars if chars else None,scope=config['scope'])
+        cer=errors/chars if chars else None,scope=config['scope'],text_metrics=summarize([r['text_metrics'] for r in scored]))
     (out/'scored-metrics.json').write_text(json.dumps(measured,indent=2))
     (out/'scores.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in scored))
     report=ROOT/'eval/results'/args.experiment;report.mkdir(parents=True,exist_ok=False)

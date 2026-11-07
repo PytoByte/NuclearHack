@@ -63,3 +63,13 @@ research-bootstrap: audio-bootstrap
 	.venv/bin/python eval/scripts/prepare_fleurs.py --split validation
 research-test:
 	.venv/bin/python -m unittest discover -s eval/tests -v
+
+.PHONY: research-pilot
+research-pilot: audio-bootstrap
+	uv sync --frozen --group research
+	$(MAKE) native-build
+	.venv/bin/python scripts/bootstrap_models.py giga-v3-ctc giga-v3-ctc-punct pyannote-eres2net-fp32 rupunct-small-int8
+	.venv/bin/python eval/scripts/prepare_russian_pilot.py
+	.venv/bin/python eval/scripts/prepare_openstt_calls.py
+	.venv/bin/python eval/scripts/run_research_queue.py experiments/phase3-russian-pilot.json
+	.venv/bin/python scripts/sync_audio_registry.py

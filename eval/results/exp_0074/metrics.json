@@ -1,0 +1,150 @@
+{
+  "experiment_id": "exp_0074",
+  "scope": "Russian conversational silver pilot: publisher turns, not independently audited gold; diagnostic DER/JER",
+  "runs": {
+    "exp_0069": {
+      "der": 0.2606971694125699,
+      "jer": 0.34808502098475136,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "der_details": {
+            "total": 155.52800000000002,
+            "confusion": 22.919000000000008,
+            "correct": 130.478,
+            "false alarm": 2.953000000000017,
+            "missed detection": 2.1310000000000144,
+            "diarization error rate": 0.18005118049483074
+          },
+          "jer": 0.1935997244300406,
+          "reference_speakers": 2,
+          "predicted_speakers": 8
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "der_details": {
+            "total": 149.90700000000007,
+            "confusion": 35.51399999999997,
+            "correct": 113.53000000000009,
+            "false alarm": 4.1950000000000145,
+            "missed detection": 0.8630000000000049,
+            "diarization error rate": 0.27064780163701474
+          },
+          "jer": 0.32807667699855597,
+          "reference_speakers": 3,
+          "predicted_speakers": 8
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "der_details": {
+            "total": 141.71600000000007,
+            "confusion": 32.27000000000005,
+            "correct": 103.42300000000003,
+            "false alarm": 9.703,
+            "missed detection": 6.022999999999993,
+            "diarization error rate": 0.33867735470941907
+          },
+          "jer": 0.47108356267408724,
+          "reference_speakers": 3,
+          "predicted_speakers": 5
+        }
+      ]
+    },
+    "exp_0070": {
+      "der": 0.2606971694125699,
+      "jer": 0.34808502098475136,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "der_details": {
+            "total": 155.52800000000002,
+            "confusion": 22.919000000000008,
+            "correct": 130.478,
+            "false alarm": 2.953000000000017,
+            "missed detection": 2.1310000000000144,
+            "diarization error rate": 0.18005118049483074
+          },
+          "jer": 0.1935997244300406,
+          "reference_speakers": 2,
+          "predicted_speakers": 8
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "der_details": {
+            "total": 149.90700000000007,
+            "confusion": 35.51399999999997,
+            "correct": 113.53000000000009,
+            "false alarm": 4.1950000000000145,
+            "missed detection": 0.8630000000000049,
+            "diarization error rate": 0.27064780163701474
+          },
+          "jer": 0.32807667699855597,
+          "reference_speakers": 3,
+          "predicted_speakers": 8
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "der_details": {
+            "total": 141.71600000000007,
+            "confusion": 32.27000000000005,
+            "correct": 103.42300000000003,
+            "false alarm": 9.703,
+            "missed detection": 6.022999999999993,
+            "diarization error rate": 0.33867735470941907
+          },
+          "jer": 0.47108356267408724,
+          "reference_speakers": 3,
+          "predicted_speakers": 5
+        }
+      ]
+    },
+    "exp_0071": {
+      "der": 0.21521812542071925,
+      "jer": 0.40587670361243877,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "der_details": {
+            "total": 155.52800000000002,
+            "confusion": 10.52699999999997,
+            "correct": 143.09700000000004,
+            "false alarm": 3.2850000000000428,
+            "missed detection": 1.9040000000000052,
+            "diarization error rate": 0.10104932873823373
+          },
+          "jer": 0.14848134469870883,
+          "reference_speakers": 2,
+          "predicted_speakers": 4
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "der_details": {
+            "total": 149.90700000000007,
+            "confusion": 26.342999999999993,
+            "correct": 122.85000000000007,
+            "false alarm": 4.999000000000024,
+            "missed detection": 0.714000000000004,
+            "diarization error rate": 0.21383924699980658
+          },
+          "jer": 0.4733808641323088,
+          "reference_speakers": 3,
+          "predicted_speakers": 3
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "der_details": {
+            "total": 141.71600000000007,
+            "confusion": 31.157000000000032,
+            "correct": 105.78300000000003,
+            "false alarm": 12.529999999999983,
+            "missed detection": 4.7760000000000105,
+            "diarization error rate": 0.34197267774986595
+          },
+          "jer": 0.5099694490350554,
+          "reference_speakers": 3,
+          "predicted_speakers": 4
+        }
+      ]
+    }
+  }
+}

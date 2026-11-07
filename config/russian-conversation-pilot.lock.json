@@ -1,0 +1,27 @@
+{
+  "source": "https://huggingface.co/datasets/leshinsky/ru-youtube-diarization",
+  "revision": "e3aaa8a28211afe56c913fcacb26db029b1fb10e",
+  "files": [
+    {
+      "path": "youtube-1.json",
+      "sha256": "0ec3643f28f540028e7d3897d049d3cf5cc42553d8c11e066f7093630543511a"
+    },
+    {
+      "path": "clips/yCX4MRy14zw.opus",
+      "sha256": "9b4cfca74056b89e8749852ec539a6568cf5fffbc7057e4c04fe3a6887fc935a"
+    },
+    {
+      "path": "clips/p0_iIC13bs8.opus",
+      "sha256": "8b612bc08a1b55300e1d1fb2675bf44480e8fd4c763c16000ad72619df796543"
+    },
+    {
+      "path": "youtube-2.json",
+      "sha256": "644e06da6ac64cfbdcd7d54a9385fb588405ad40b76a0b481ca730bc98f19f20"
+    },
+    {
+      "path": "clips/nr3hmL9bcPU.opus",
+      "sha256": "2e28e7c7201b2b2d69b89699c1498bb2d93725c875106a4c7510855463440262"
+    }
+  ],
+  "scope": "silver pilot only; no Gate A or independent-test claim"
+}

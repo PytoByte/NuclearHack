@@ -1,0 +1,97 @@
+{
+  "experiment_id": "exp_0054",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "exit_code": 0,
+      "wall_seconds": 7.075934102998872,
+      "process_peak_rss_kib": 408400,
+      "sampled_peak_pss_kib": 405306,
+      "sampled_peak_rss_kib": 409068,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 31.3564375,
+      "full_rtf": 0.22566128894581447,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 62
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "expected_speakers": 2,
+      "predicted_speakers": 2,
+      "unknown_utterances": 0,
+      "json_valid": true,
+      "transcript_sha256": "449ea7264c201bc79fb0022cd2da854b4e0918a8459ed383213c940776ab8806",
+      "alignment_fallback_chunks": 0
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "exit_code": 0,
+      "wall_seconds": 4.269000279993634,
+      "process_peak_rss_kib": 415808,
+      "sampled_peak_pss_kib": 412393,
+      "sampled_peak_rss_kib": 416140,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 23.5210625,
+      "full_rtf": 0.18149691494564218,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 30
+      },
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 30,
+        "cpwer": 0.4666666666666667
+      },
+      "expected_speakers": 3,
+      "predicted_speakers": 2,
+      "unknown_utterances": 0,
+      "json_valid": true,
+      "transcript_sha256": "e1817eae12ae78b41eac1d2a67bdba927b587511d512be6026900cbd34154f3d",
+      "alignment_fallback_chunks": 0
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "exit_code": 0,
+      "wall_seconds": 8.621388303996355,
+      "process_peak_rss_kib": 451528,
+      "sampled_peak_pss_kib": 448399,
+      "sampled_peak_rss_kib": 452372,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 39.7831875,
+      "full_rtf": 0.2167093399440745,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 1,
+        "insertions": 0,
+        "reference_words": 78
+      },
+      "speaker_attributed": {
+        "errors": 16,
+        "reference_words": 78,
+        "cpwer": 0.20512820512820512
+      },
+      "expected_speakers": 3,
+      "predicted_speakers": 3,
+      "unknown_utterances": 0,
+      "json_valid": true,
+      "transcript_sha256": "477e0e0baae5e293edb73029637ca7124332159f7d88cbad35d3e6b190a5275c",
+      "alignment_fallback_chunks": 0
+    }
+  ],
+  "normalized": {
+    "substitutions": 6,
+    "deletions": 1,
+    "insertions": 0,
+    "reference_words": 170,
+    "wer": 0.041176470588235294
+  },
+  "scope": "Linux native file pipeline; acted/reassembled Russian structural MP3 smoke; not Android/natural meetings"
+}

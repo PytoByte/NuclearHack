@@ -1,0 +1,93 @@
+{
+  "experiment": "exp_0072",
+  "baseline": "exp_0069",
+  "e2e": "exp_0070",
+  "manifest": "eval/data/russian-conversation-pilot.jsonl",
+  "model": {
+    "id": "rupunct-small-int8",
+    "family": "punctuation",
+    "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+    "revision": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+    "files": [
+      "models/rupunct-small-int8/README.md",
+      "models/rupunct-small-int8/config.json",
+      "models/rupunct-small-int8/rupunct_small_int8.onnx",
+      "models/rupunct-small-int8/tokenizer.json"
+    ],
+    "scope": "research CPU tagger; not mobile integrated"
+  },
+  "model_files": [
+    {
+      "path": "models/rupunct-small-int8/README.md",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/README.md",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "a793c033ec91bfc33f2d926fd1fc5cc7b2b95b4afcd302a41dfe9ac125c382bd",
+      "size_bytes": 1553
+    },
+    {
+      "path": "models/rupunct-small-int8/config.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/config.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "6924a8cf41ec2bd3a3aa73a387ae0ccd0aed253ec7cac4d2f53c7d27440891eb",
+      "size_bytes": 2527
+    },
+    {
+      "path": "models/rupunct-small-int8/rupunct_small_int8.onnx",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/rupunct_small_int8.onnx",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "b105da023474d98aa13ba18953ae67b04b17bd0595034bc06030c17536893933",
+      "size_bytes": 29259673
+    },
+    {
+      "path": "models/rupunct-small-int8/tokenizer.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/tokenizer.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "7ca617388c2092a3a84272025c52bbf3c6db0aee225c0351186295c0b5d3ddc6",
+      "size_bytes": 2413439
+    }
+  ],
+  "policy": "text-v2",
+  "context_words": 100,
+  "manifest_sha256": "2662029235605d267c2b616b090c8550233f1b518589c1764b2fc1aca61dcd15",
+  "scope": "silver conversational pilot; CPU ORT1.23.2, not mobile punctuation inference",
+  "harness_files": {
+    "android_device.py": "919d5710c1579b1f677fdad0a6be7193c864cad806abcf94e5d84a4d3e4580f9",
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "compare_punctuation.py": "91930dfbd947924b1af503e227232a7c45743370f3849e217c9ab627868fea1f",
+    "native_sdk.py": "02f0568d880670d961c6035ddf84d3fc86a5b809e8cf970adfebb79bea470ed5",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_audio_variants.py": "8637cf8057259a0c217e0a84a3c1e87804e3d2df71842b2658901effbab07202",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "prepare_russian_pilot.py": "86878758c15fe49ef15fbcab30764ae5d6377df213cca738870b3af19b6a8bbf",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_codec.py": "f52134e5494c0661f7359efcc58f3f1826d6dfb9226a040feaf1dd3944f2de0b",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "punctuation.py": "d61382da5ee098105a961f3c653cd17682e9213d93179fbb14978554b5b4fe85",
+    "run_android_asr.py": "6fb29f73fe731006c5d8b18a4f459c8ce06108a2889380264debde118dcb02a8",
+    "run_android_pipeline.py": "8bebe28fa45364b74ee1e95ffdd62b8d86034e8e0167d01f2d63f2707fa224c4",
+    "run_asr.py": "2a38e3eda2c039024a65a2fed8a2e375d929081b99135b8339239fa0e5684e94",
+    "run_diarization.py": "c207c6c0f745b61c96efc2c336afcf4faa87fa18aa1a7be0b08efcb4e58b8dc9",
+    "run_file_pipeline.py": "9b3a249183ad3aa1e1d4ed5d9f6c474f2586b3f2ea4131489dc534c7d97bdad6",
+    "run_fragment_asr.py": "c74017c2e12bacf1b176b8941806ffb9f2d00d80ed6b25c9f4eb7f65b901640d",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "score_conversation_diarization.py": "d7f917940386a8b067a53b8696972322c759546d2105fcf1d80e375707c3ee17",
+    "scoring.py": "30cf895fe6c66e0509a44e8bf7c11d00e3ff2c1b540818fd9b8eaee1d13c7faf"
+  },
+  "input_sha256": {
+    ".audio-runs/exp_0069/ru-youtube-yCX4MRy14zw/transcript.json.trace.json": "84dad1c6117593461dd773292e4726476c1cd1075a3ce7393d39ff0dcad4e031",
+    ".audio-runs/exp_0070/ru-youtube-yCX4MRy14zw/transcript.json.trace.json": "ff5dae800f447e5fad40a5dec21d73bff4a7dfc49d27c27c253acee23e2b42ff",
+    ".audio-runs/exp_0069/ru-youtube-p0_iIC13bs8/transcript.json.trace.json": "05d4e5d729be69190cbdf8c90caba9cd1cd0ea0dba4362f09464da1216ffcb1d",
+    ".audio-runs/exp_0070/ru-youtube-p0_iIC13bs8/transcript.json.trace.json": "0094609a36dfcdc1136883d8f3e24bc8958d0853a345e0953e2eaf5fcc9751d7",
+    ".audio-runs/exp_0069/ru-youtube-nr3hmL9bcPU/transcript.json.trace.json": "01580ea6ab4f7b846a39b732683ef9a811247bdcf5d145988e7299496d67bcec",
+    ".audio-runs/exp_0070/ru-youtube-nr3hmL9bcPU/transcript.json.trace.json": "f5123cfc83b9e285338631324918a681bfcc7512650ecd846061b80a4e97e25a"
+  }
+}

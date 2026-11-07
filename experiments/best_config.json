@@ -26,7 +26,8 @@
     "android_baseline_experiment": "exp_0019",
     "threads_experiment": "exp_0022",
     "diar_validation_experiment": "exp_0015",
-    "diar_test_confirmation": "exp_0017"
+    "diar_test_confirmation": "exp_0017",
+    "window_shift_ratio": 0.1
   },
   "summary": {
     "model": "qwen3-0.6b-q8",
@@ -36,5 +37,23 @@
     "decoding": "greedy/no-thinking",
     "separate_output": true,
     "quality": "functional baseline; factuality/grammar not yet validated"
+  },
+  "candidate": {
+    "window_shift_ratio": 0.5,
+    "asr_model": "giga-v3-ctc",
+    "min_duration_on": 0.3,
+    "min_duration_off": 0.5,
+    "cluster_threshold": 0.8,
+    "selected_by": [
+      "exp_0048",
+      "exp_0050",
+      "exp_0063"
+    ],
+    "frozen_before_test": "exp_0066",
+    "scope": "provisional only: English AMI + reassembled Russian smoke; natural Russian gate A/C not passed",
+    "status": "not promoted: AMI holdout regression",
+    "holdout_experiment": "exp_0066",
+    "holdout_der": 0.36097814955918445,
+    "baseline_holdout_der": 0.3174516369711397
   }
 }

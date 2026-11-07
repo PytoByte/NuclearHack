@@ -135,3 +135,17 @@ Post-build provenance сохраняет source tar, SDK/CLI/runtime binaries и
 с локальным и проверяет реальную RAM/ABI/airplane mode.
 Версии/хеши: `config/*lock.json`, `uv.lock`. Веса, аудио и raw logs исключены
 из Git. [src/audio/README.md](../src/audio/README.md) содержит команды API.
+
+
+### Исследование пунктуации и архитектур (не принято в production)
+
+Принятый native pipeline сохраняет CTC INT8,chunk20s,ERes2Net+FP32 segmentation,threshold.8,window shift.1.
+Window.5 остаётся кандидатом: synthetic cpWER лучше,отложенный AMI DER хуже. Отдельный RUPunct INT829MB
+с ORT CPU исследуется после ASR; сейчас это eval-компонент,не часть C ABI. Его output хранится отдельно,
+лексическая последовательность обязана совпадать с ASR. Метрики различают lexical/punctuation ошибки и unknown speakers.
+Короткие фрагменты — повторный offline decode,не causal streaming. Android ARM64 cross-build существует,
+но execution через x86 AVD native bridge падает: качество/RTF физического ARM пока не измерены.
+
+Исследование79 подтвердило риск смены ASR: на вручную размеченных телефонных OpenSTT40 e2e WER20.59%
+против CTC17.65%. В production ничего не переключено. `make research-pilot` воспроизводит ограниченную
+последовательную очередь,включая разговорный silver/телефонный lexical eval,пунктуацию и короткие offline фрагменты.

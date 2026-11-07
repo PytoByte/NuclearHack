@@ -1,0 +1,10 @@
+{
+  "url": "https://zenodo.org/api/records/4899885/files/asr_calls_2_val.tar.gz/content",
+  "archive_md5": "5146eef0aa64af41e17c5ec18a9cab5c",
+  "archive_sha256": "aea64611133129e8c9b5d829953f5bfb9cc2d1bd95b9e429fa8e00e2c83f6461",
+  "archive_size": 805251737,
+  "selection": "lowest SHA256(source stem),2..20s,>=3words,40of160 retained candidates",
+  "archive_audio_files": 12950,
+  "license": "CC-BY-NC-4.0",
+  "scope": "lexical dev only; no punctuation/speaker/time gold"
+}

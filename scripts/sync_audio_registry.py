@@ -19,7 +19,7 @@ def main():
     previous = {r['experiment_id']: r for r in csv.DictReader(path.open())}
     fields = ['experiment_id','date','scope','git_sha','config_sha256','model_sha256','model_lock_sha256','dataset_split',
         'hardware','seed','changed_parameter','baseline','wer','cer','der','rtf','peak_ram_kib',
-        'crashes','status','metrics','logs']
+        'crashes','status','metrics','logs','cpwer','jer','punctuation_wer','punctuation_f1','unknown_word_fraction','timestamp_mae_ms']
     rows = []
     for report in sorted((ROOT / 'eval/results').glob('exp_*')):
         eid = report.name
@@ -28,7 +28,7 @@ def main():
         row.update(experiment_id=eid, date=row['date'] or '2026-11-07',
             git_sha=env.get('git_sha', row['git_sha']), scope=m.get('scope', row['scope']),
             hardware=c.get('abi', env.get('host', row['hardware'])),
-            dataset_split=m.get('dataset_split', c.get('manifest',{}).get('source_split','') if isinstance(c.get('manifest'),dict) else ''),
+            dataset_split=m.get('dataset_split', c.get('manifest',{}).get('source_split','') if isinstance(c.get('manifest'),dict) else c.get('manifest','')),
             config_sha256=sha256(report/'config.json') if (report/'config.json').exists() else '',
             metrics=str((report/('metrics.json' if m else 'failure.json')).relative_to(ROOT)),
             logs='.audio-runs/'+eid)
@@ -39,6 +39,18 @@ def main():
         row['cer'] = m.get('cer',row['cer'])
         row['der'] = m.get('der_details',{}).get('diarization error rate',row['der'])
         cases=m.get('cases',[])
+        attributed=[x['speaker_attributed'] for x in cases if 'speaker_attributed' in x]
+        total_words=sum(x.get('reference_words',0) for x in attributed)
+        if total_words:row['cpwer']=sum(x['errors'] for x in attributed)/total_words
+        covered=[x for x in cases if 'unknown_word_fraction' in x and 'normalized' in x]
+        def hypothesis_words(x):
+            score=x['normalized'];return score['reference_words']-score['deletions']+score['insertions']
+        covered_words=sum(hypothesis_words(x) for x in covered)
+        if covered_words:row['unknown_word_fraction']=sum(x['unknown_word_fraction']*hypothesis_words(x) for x in covered)/covered_words
+        row['jer']=m.get('jer',row['jer'])
+        text=m.get('text_metrics',{})
+        row['punctuation_wer']=text.get('punctuation_token_wer',{}).get('wer',row['punctuation_wer'])
+        row['punctuation_f1']=text.get('punctuation',{}).get('end_to_end',{}).get('f1',row['punctuation_f1'])
         seconds=sum(x.get('audio_seconds',0) for x in cases)
         row['rtf'] = (sum(x.get('wall_ms',x.get('wall_seconds',0)*1000) for x in cases)/1000/seconds
                       if seconds else m.get('inference_rtf',row['rtf']))

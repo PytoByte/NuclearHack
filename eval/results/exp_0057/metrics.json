@@ -1,0 +1,29 @@
+{
+  "run_id": "exp_0057",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "status": 4,
+      "expected_cancel": true,
+      "wall_ms": 4141,
+      "sampled_peak_pss_kib": 321890,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 47,
+        "decode": 187,
+        "checkpoint_identity": 1578,
+        "asr_load": 628,
+        "asr": 1576
+      }
+    }
+  ],
+  "normalized": {
+    "substitutions": 0,
+    "deletions": 0,
+    "insertions": 0,
+    "reference_words": 0,
+    "wer": null
+  },
+  "scope": "Android4096MiB/x86_64 native file pipeline; timings and sampled PSS on actual AVD"
+}

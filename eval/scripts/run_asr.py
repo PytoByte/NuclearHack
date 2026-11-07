@@ -14,7 +14,8 @@ import time
 import jiwer
 
 from native_sdk import NativeSdk, ROOT, record_build
-from scoring import aggregate, counts, normalize
+from scoring import aggregate, counts, normalize, text_metrics
+from compare_punctuation import summarize
 sys.path.insert(0, str(ROOT / 'scripts'))
 from bootstrap_models import sha256
 
@@ -118,7 +119,7 @@ def main():
                     audio_seconds=len(samples) / 16000, decode_seconds=decode_seconds,
                     inference_seconds=inference_seconds, normalized=counts(text, hypothesis['text']),
                     vad_seconds=vad_seconds,vad_regions=raw_regions,padded_regions=regions,
-                    raw=counts(text, hypothesis['text'], normalized=False))
+                    raw=counts(text, hypothesis['text'], normalized=False),text_metrics=text_metrics(text,hypothesis['text']))
                 target.write(json.dumps(result, ensure_ascii=False) + '\n')
                 target.flush()
                 results.append(result)
@@ -144,7 +145,9 @@ def main():
         process_peak_rss_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
         current_rss_kib_by_stage=rss_stages,
         normalized=aggregate([r['normalized'] for r in results]), raw=aggregate([r['raw'] for r in results]),
-        scope=environment['measurement_scope'], manifest_sha256=config['manifest_sha256'])
+        scope=environment['measurement_scope'], manifest_sha256=config['manifest_sha256'],
+        text_metrics=summarize([r['text_metrics'] for r in results]),
+        punctuation_reference_available=all(r.get('punctuation_reference_available',True) for r in dataset))
     (out / 'metrics.json').write_text(json.dumps(metrics, indent=2))
     summary = ROOT / 'eval/results' / args.experiment
     summary.mkdir(parents=True, exist_ok=False)

@@ -1,0 +1,117 @@
+[
+  {
+    "experiment": "exp_0069",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4"
+    ],
+    "hypothesis": "Frozen natural conversational silver baseline"
+  },
+  {
+    "experiment": "exp_0070",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "E2e punctuation may improve both lexical accuracy and punctuation"
+  },
+  {
+    "experiment": "exp_0071",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--window-shift-ratio",
+      ".5"
+    ],
+    "hypothesis": "Larger shift may reduce speaker fragmentation; AMI holdout regression prevents global promotion"
+  },
+  {
+    "experiment": "exp_0072",
+    "script": "eval/scripts/compare_punctuation.py",
+    "args": [
+      "--baseline",
+      "exp_0069",
+      "--e2e",
+      "exp_0070"
+    ],
+    "hypothesis": "Small Russian tagger restores punctuation without changing words"
+  },
+  {
+    "experiment": "exp_0074",
+    "script": "eval/scripts/score_conversation_diarization.py",
+    "args": [
+      "--runs",
+      "exp_0069",
+      "exp_0070",
+      "exp_0071"
+    ],
+    "hypothesis": "Score DER/JER against frozen silver turns separately from cpWER"
+  },
+  {
+    "experiment": "exp_0075",
+    "script": "eval/scripts/run_fragment_asr.py",
+    "args": [],
+    "hypothesis": "Correct harness path input after exp73 failed before inference"
+  },
+  {
+    "experiment": "exp_0076",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--threshold",
+      "1.1"
+    ],
+    "hypothesis": "Larger cosine-distance threshold may reduce baseline speaker fragmentation; watch minority-speaker JER"
+  },
+  {
+    "experiment": "exp_0077",
+    "script": "eval/scripts/score_conversation_diarization.py",
+    "args": [
+      "--runs",
+      "exp_0069",
+      "exp_0071",
+      "exp_0076"
+    ],
+    "hypothesis": "Threshold1.1 over-merges minority voices; evaluate DER/JER rather than cluster count"
+  },
+  {
+    "experiment": "exp_0078",
+    "script": "eval/scripts/run_asr.py",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/openstt-calls-validation.jsonl"
+    ],
+    "hypothesis": "Independent lexical screening on popular manually annotated OpenSTT phone dev40; no punctuation gold"
+  },
+  {
+    "experiment": "exp_0079",
+    "script": "eval/scripts/run_asr.py",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/openstt-calls-validation.jsonl"
+    ],
+    "hypothesis": "Independent lexical screening on popular manually annotated OpenSTT phone dev40; no punctuation gold"
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "experiment_id": "exp_0048",
+  "model": {
+    "id": "pyannote-eres2net-fp32",
+    "family": "diarization",
+    "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+    "revision": "pinned-per-file-sha256",
+    "files": [
+      "models/diarization/segmentation-model.onnx",
+      "models/diarization/embedding.onnx",
+      "models/diarization/embedding.LICENSE",
+      "models/diarization/segmentation.LICENSE"
+    ]
+  },
+  "threads": 4,
+  "threshold": 0.8,
+  "model_files": [
+    {
+      "path": "models/diarization/segmentation-model.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/segmentation.LICENSE",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "14d7016ad68e7394d6e6b78d96cc2ae431c905287b89674cfdf021e79e62b8ba",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/LICENSE",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/embedding.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+      "sha256": "1a331345f04805badbb495c775a6ddffcdd1a732567d5ec8b3d5749e3c7a5e4b",
+      "source": "https://modelscope.cn/models/iic/speech_eres2net_base_sv_zh-cn_3dspeaker_16k",
+      "version": "sherpa-speaker-recongition-models",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/diarization/embedding.LICENSE",
+      "url": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "version": "065629c313eaf1a01c65c640c46d77e61e9607b4",
+      "license": "Apache-2.0"
+    }
+  ],
+  "embedding": "eres2net",
+  "min_duration_on": 0.3,
+  "min_duration_off": 0.5,
+  "oracle_speakers": -1,
+  "window_shift_ratio": 0.1,
+  "collar_seconds": 0.25,
+  "skip_overlap": false,
+  "uem": [
+    0,
+    180
+  ],
+  "manifest": {
+    "audio_id": "ami-ihm-validation-row0-first180",
+    "audio": "eval/data/audio/ami-ihm-validation-row0-first180.wav",
+    "reference": "eval/data/references/ami-ihm-validation-row0-first180.json",
+    "audio_sha256": "d208ddc26de0859f8710ef9dec72c63b5ea2790032195fe28d7220eec6921813",
+    "reference_sha256": "5f33e005147888d159aa222e8b033b447e82ec068dac2058aa797bf0b8e3033b",
+    "source": "diarizers-community/ami",
+    "source_revision": "8cdaae2eaf968f3b000b6eb1204ab9b8db006ed0",
+    "source_split": "validation",
+    "source_row": 0,
+    "source_audio_sha256": "996c2f77648eb34adc9221a08d1cf4a4d7a4c1daddbe2b25cd9bff4e6495b3e0",
+    "excerpt_start_seconds": 0,
+    "excerpt_end_seconds": 180,
+    "license": "CC-BY-4.0",
+    "language": "English",
+    "domain": "meeting IHM; calibration excerpt, not Russian"
+  },
+  "manifest_sha256": "5dcb285b5a7d3ac7e09aa79625b459cfea13bab824a3b5aa11991b8c27685d0e",
+  "sdk_sha256": "c9483a6ff4100a7af8750426cd0b661d87c93cecba1b1f0edcce220da3b62ef5",
+  "harness_files": {
+    "android_device.py": "a020bd60cad8e0ecd06222042e76da4a09500b20403bcdac2387fe2040f5ae67",
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "native_sdk.py": "02f0568d880670d961c6035ddf84d3fc86a5b809e8cf970adfebb79bea470ed5",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_codec.py": "f52134e5494c0661f7359efcc58f3f1826d6dfb9226a040feaf1dd3944f2de0b",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "run_android_asr.py": "6fb29f73fe731006c5d8b18a4f459c8ce06108a2889380264debde118dcb02a8",
+    "run_android_pipeline.py": "2ee60e87686f3ced3448a72da125a588e99ac0689bf8ef0a669b5494fd024f6b",
+    "run_asr.py": "2a38e3eda2c039024a65a2fed8a2e375d929081b99135b8339239fa0e5684e94",
+    "run_diarization.py": "c207c6c0f745b61c96efc2c336afcf4faa87fa18aa1a7be0b08efcb4e58b8dc9",
+    "run_file_pipeline.py": "af1e49b41db47324d2fdeadec36378ba8212bbb3fb77b67b152172020cfd192f",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "scoring.py": "fe3c99dff6ffd13be23a3b59983b3a4665aa5e84a48711e83a96b480c24dcf3a"
+  },
+  "build_provenance_sha256": "b0ebb56b833432e1e131c1116738232cedcfb2000dc68812a80d73ce9ac6f30b",
+  "source_snapshot": ".audio-runs/builds/949f0c5efdf5f4601a59cba2e0a4c5618b9dbe12cf8b41fa11fd4aaf7b82e626/source.tar"
+}

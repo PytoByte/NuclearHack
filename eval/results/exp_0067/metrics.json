@@ -1,0 +1,118 @@
+{
+  "run_id": "exp_0067",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "wall_ms": 4227,
+      "sampled_peak_pss_kib": 320209,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 395964,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 9,
+        "decode": 92,
+        "asr_load": 714,
+        "asr": 2121,
+        "diarization_load": 264,
+        "diarization": 922,
+        "merge": 2
+      },
+      "audio_seconds": 31.3564375,
+      "full_rtf": 0.134804854665011,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 62
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "json_valid": true,
+      "transcript_sha256": "449ea7264c201bc79fb0022cd2da854b4e0918a8459ed383213c940776ab8806",
+      "predicted_speakers": 2,
+      "expected_speakers": 2
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "wall_ms": 3211,
+      "sampled_peak_pss_kib": 328897,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 404592,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 9,
+        "decode": 127,
+        "asr_load": 665,
+        "asr": 1534,
+        "diarization_load": 272,
+        "diarization": 511,
+        "merge": 4
+      },
+      "audio_seconds": 23.5210625,
+      "full_rtf": 0.13651594182873328,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 30
+      },
+      "speaker_attributed": {
+        "errors": 11,
+        "reference_words": 30,
+        "cpwer": 0.36666666666666664
+      },
+      "json_valid": true,
+      "transcript_sha256": "cca476a7d21538d31897a2d0cacc2ba7103fdc598c80c54850de6161117474ea",
+      "predicted_speakers": 2,
+      "expected_speakers": 3
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "wall_ms": 5221,
+      "sampled_peak_pss_kib": 329213,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 405080,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 8,
+        "decode": 67,
+        "asr_load": 736,
+        "asr": 2644,
+        "diarization_load": 268,
+        "diarization": 1463,
+        "merge": 3
+      },
+      "audio_seconds": 39.7831875,
+      "full_rtf": 0.13123634198491513,
+      "normalized": {
+        "substitutions": 1,
+        "deletions": 1,
+        "insertions": 0,
+        "reference_words": 78
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 78,
+        "cpwer": 0.02564102564102564
+      },
+      "json_valid": true,
+      "transcript_sha256": "0ec3da5e6282f724dcbd010d93fe59e44202a99e20e6ff54054b539d37333d2a",
+      "predicted_speakers": 3,
+      "expected_speakers": 3
+    }
+  ],
+  "scope": "Android4096MiB/x86_64 native file pipeline; timings and sampled PSS on actual AVD",
+  "normalized": {
+    "substitutions": 5,
+    "deletions": 1,
+    "insertions": 0,
+    "reference_words": 170,
+    "wer": 0.03529411764705882
+  }
+}

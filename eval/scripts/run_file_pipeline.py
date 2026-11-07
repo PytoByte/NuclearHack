@@ -12,7 +12,7 @@ import time
 
 from scipy.optimize import linear_sum_assignment
 from native_sdk import ROOT,record_build
-from scoring import aggregate, counts, normalize
+from scoring import aggregate, counts, normalize, speaker_coverage, text_metrics
 import jiwer
 sys.path.insert(0, str(ROOT / 'scripts'))
 from bootstrap_models import sha256
@@ -72,6 +72,7 @@ def cpwer(reference, hypothesis):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--experiment', required=True)
+    parser.add_argument('--manifest', type=Path, default=ROOT/'eval/data/dialogs-smoke.jsonl')
     parser.add_argument('--threads', type=int, default=4)
     parser.add_argument('--threshold', type=float, default=0.8)
     parser.add_argument('--chunk-seconds', type=int, default=20)
@@ -86,7 +87,7 @@ def main():
     args = parser.parse_args()
     if not args.experiment.startswith('exp_') or not args.experiment[4:].isdigit():
         parser.error('Use exp_NNNN')
-    manifest = ROOT / 'eval/data/dialogs-smoke.jsonl'
+    manifest = args.manifest.resolve()
     rows = [json.loads(line) for line in manifest.read_text().splitlines()]
     catalog=json.loads((ROOT/'config/audio-models.lock.json').read_text())
     model=next(m for m in catalog['models'] if m['id']==args.model)
@@ -107,7 +108,7 @@ def main():
         chunk_seconds=args.chunk_seconds, summary=args.summary, manifest_sha256=sha256(manifest),
         sdk_sha256=sha256(ROOT / '.build/audio/libnuclear_audio.so'),
         model_lock_sha256=sha256(ROOT / 'config/audio-models.lock.json'),
-        scope='Linux native file pipeline; acted/reassembled Russian structural MP3 smoke; not Android/natural meetings')
+        scope='Linux native file pipeline; reference quality and split limits follow manifest', manifest=str(manifest.relative_to(ROOT)))
     record_build(out,config)
     (out / 'config.json').write_text(json.dumps(config, indent=2))
     metrics = []
@@ -134,7 +135,8 @@ def main():
             full_rtf=timing['wall_seconds'] / duration, normalized=asr,
             speaker_attributed=cpwer(truth, actual['transcript']),
             expected_speakers=row['speakers'], predicted_speakers=len({t['speaker_id'] for t in actual['transcript']}),
-            unknown_utterances=sum(t['speaker_id'] == 'speaker_unknown' for t in actual['transcript']),
+            **speaker_coverage(actual['transcript']),
+            text_metrics=text_metrics(' '.join(t['text'] for t in truth), ' '.join(t['text'] for t in actual['transcript'])),
             json_valid=True, transcript_sha256=sha256(output),
             alignment_fallback_chunks=sum(s['alignment'] not in ('ctc_chars','ctc_tokens') for s in trace['asr']))
         if args.summary:

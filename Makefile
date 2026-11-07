@@ -78,3 +78,8 @@ research-pilot: audio-bootstrap
 	.venv/bin/python eval/scripts/prepare_openstt_calls.py
 	.venv/bin/python eval/scripts/run_research_queue.py experiments/phase3-russian-pilot.json
 	.venv/bin/python scripts/sync_audio_registry.py
+
+.PHONY: nemo-reference-bootstrap
+nemo-reference-bootstrap:
+	.venv/bin/python scripts/bootstrap_nemo_reference.py
+	.venv/bin/python scripts/bootstrap_models.py nemotron35-asr-q8 nemotron3-diarization-gguf-q8

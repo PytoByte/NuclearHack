@@ -1,0 +1,310 @@
+{
+  "experiment_id": "exp_0187",
+  "scope": "official NeMo-Speech.cpp 0.3.0 native CPU reference; host x86_64, not SDK/Android/ARM qualification",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 188.95200340799784,
+      "process_peak_rss_kib": 2975112,
+      "sampled_peak_pss_kib": 2973500,
+      "memory_samples": 2140,
+      "audio_seconds": 175.1717659482104,
+      "full_rtf": 1.07866700084454,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 36,
+          "deletions": 15,
+          "insertions": 17,
+          "reference_words": 377
+        },
+        "raw": {
+          "substitutions": 80,
+          "deletions": 8,
+          "insertions": 18,
+          "reference_words": 359
+        },
+        "punctuation_token_wer": {
+          "substitutions": 53,
+          "deletions": 42,
+          "insertions": 20,
+          "reference_words": 496
+        },
+        "normalized_cer": {
+          "errors": 169,
+          "reference_characters": 2174
+        },
+        "raw_cer": {
+          "errors": 237,
+          "reference_characters": 2275
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 66,
+            "false_positive": 29,
+            "false_negative": 53
+          },
+          "conditional_equal_words": {
+            "true_positive": 66,
+            "false_positive": 9,
+            "false_negative": 27
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 18,
+              "false_positive": 10,
+              "false_negative": 19
+            },
+            ",": {
+              "true_positive": 39,
+              "false_positive": 18,
+              "false_negative": 20
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 3
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "-": {
+              "true_positive": 9,
+              "false_positive": 1,
+              "false_negative": 10
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "languages": [
+        "ru-RU"
+      ],
+      "word_count": 369,
+      "word_text_reconstruction_equal": true
+    }
+  ],
+  "text_metrics": {
+    "normalized": {
+      "substitutions": 36,
+      "deletions": 15,
+      "insertions": 17,
+      "reference_words": 377,
+      "wer": 0.18037135278514588
+    },
+    "raw": {
+      "substitutions": 80,
+      "deletions": 8,
+      "insertions": 18,
+      "reference_words": 359,
+      "wer": 0.29526462395543174
+    },
+    "punctuation_token_wer": {
+      "substitutions": 53,
+      "deletions": 42,
+      "insertions": 20,
+      "reference_words": 496,
+      "wer": 0.2318548387096774
+    },
+    "normalized_cer": {
+      "errors": 169,
+      "reference_characters": 2174,
+      "cer": 0.07773689052437903
+    },
+    "raw_cer": {
+      "errors": 237,
+      "reference_characters": 2275,
+      "cer": 0.10417582417582417
+    },
+    "punctuation": {
+      "end_to_end": {
+        "true_positive": 66,
+        "false_positive": 29,
+        "false_negative": 53,
+        "precision": 0.6947368421052632,
+        "recall": 0.5546218487394958,
+        "f1": 0.616822429906542
+      },
+      "conditional_equal_words": {
+        "true_positive": 66,
+        "false_positive": 9,
+        "false_negative": 27,
+        "precision": 0.88,
+        "recall": 0.7096774193548387,
+        "f1": 0.7857142857142857
+      },
+      "per_mark": {
+        ".": {
+          "true_positive": 18,
+          "false_positive": 10,
+          "false_negative": 19,
+          "precision": 0.6428571428571429,
+          "recall": 0.4864864864864865,
+          "f1": 0.5538461538461539
+        },
+        ",": {
+          "true_positive": 39,
+          "false_positive": 18,
+          "false_negative": 20,
+          "precision": 0.6842105263157895,
+          "recall": 0.6610169491525424,
+          "f1": 0.6724137931034483
+        },
+        "?": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 3,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "!": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ":": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ";": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2014": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 1,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "-": {
+          "true_positive": 9,
+          "false_positive": 1,
+          "false_negative": 10,
+          "precision": 0.9,
+          "recall": 0.47368421052631576,
+          "f1": 0.6206896551724138
+        },
+        "\u2026": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00ab": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00bb": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\"": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "(": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ")": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      }
+    }
+  },
+  "inference_rtf": 1.07866700084454,
+  "process_peak_rss_kib": 2975112,
+  "normalized": {
+    "substitutions": 36,
+    "deletions": 15,
+    "insertions": 17,
+    "reference_words": 377,
+    "wer": 0.18037135278514588
+  },
+  "cer": 0.07773689052437903
+}

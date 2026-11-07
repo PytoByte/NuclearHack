@@ -243,3 +243,10 @@ Q4 зафиксирован только для воспроизводимост
 
 File orchestrator пока использует ERes2Net. Следующий этап — opt-in integration
 Q8 buffered; default promotion не принят.
+
+Внешний reference `NeMo-Speech.cpp 0.3.0` установлен отдельно в `.tools` для
+сравнения целого ASR/diarization pipeline (187–194). На6 известных записях
+протестированная связка хуже по WER/cpWER; default не заменён. Прямое posterior
+назначение спикера первым160ms слова улучшило cpWER нашего GigaAM/ONNX варианта
+в research190; в файловом C API ещё не реализовано. Внешний runtime не линкуется
+с SDK; Linux ARM64 binary не считается проверкой Android NDK.

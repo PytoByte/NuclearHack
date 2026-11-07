@@ -271,6 +271,28 @@
         "models/nemotron3-diarization/MODEL_UPSTREAM.md"
       ],
       "scope": "experimental third-party Q4 MatMulNBits export; quality and runtime support must be measured; not SDK preset"
+    },
+    {
+      "id": "nemotron35-asr-q8",
+      "family": "experimental_gguf_rnnt",
+      "source": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "revision": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron35-asr/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf"
+      ],
+      "scope": "Research-only native NeMo-Speech.cpp comparison; ru-RU, CPU Q8; not SDK preset; native Android unqualified"
+    },
+    {
+      "id": "nemotron3-diarization-gguf-q8",
+      "family": "experimental_gguf_diarization",
+      "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "revision": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron3-diarization/Nemotron-3-Diarization.q8_0.gguf"
+      ],
+      "scope": "Research-only official GGUF NeMo-Speech.cpp pipeline; not ONNX Q8 parity; not SDK preset"
     }
   ],
   "files": [
@@ -819,6 +841,22 @@
       "sha256": "4513ed877d7cb83944bcb27c747221a7180e03f790d1c703e50af01792b7b8f4",
       "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
       "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron35-asr/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf",
+      "url": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b/resolve/ea30d66debe3740a08b573244286791d423d6b3e/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf",
+      "sha256": "3fc991d3badad7277c11030a7519832cddaf2057aafed6d4b25147e953a070b1",
+      "source": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "version": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/Nemotron-3-Diarization.q8_0.gguf",
+      "url": "https://huggingface.co/nvidia/Nemotron-3-Diarization/resolve/f667ed73aee57d40cc39428eb768b4fd87a0a29e/Nemotron-3-Diarization.q8_0.gguf",
+      "sha256": "08456d9e22cd9a323c0364d98375f3746d6e68507ebb705cd46438c534c7a3a1",
+      "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "version": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
       "license": "OpenMDW-1.1"
     }
   ]

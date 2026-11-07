@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0190",
+    "script": "eval/scripts/probe_posterior_attribution.py",
+    "args": [],
+    "hypothesis": "Borrow official 160ms posterior word anchor without changing ASR/diarizer/runtime; frozen policies whole-word vs first160ms against reproduced threshold-turn baseline on all six known silver records; no GT count/no independent test claim"
+  }
+]

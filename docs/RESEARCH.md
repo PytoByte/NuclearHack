@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, native/AVD проверки175–183 и Q4 screening184–185 завершены.**
+**Сейчас: этап2, завершено сравнение готового native pipeline187–194; далее интеграция лучших компонентов.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -12,7 +12,8 @@ v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs win
 несмотря на dev выигрыш. Frontend control164 завершён;новая8slot-модель smoke165 прошла,
 natural dev/known transfer166–174 завершены. Additive native streaming CABI реализован/проверен175;
 Natural parity176 и4GBx86AVD177–183 завершены; low-профиль не выдерживает real-time.
-Далее Q4 A/B, затем opt-in интеграция файлового orchestrator. Основной файловыйpreset не меняется.
+Q4 A/B184–185 завершён и отклонён. Проверен целиком NeMo-Speech.cpp187–194,
+заимствование posterior merge190 улучшило cpWER. Далее opt-in интеграция файлового orchestrator. Основной файловыйpreset не меняется.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -88,7 +89,7 @@ Baseline,embeddings,punctuation и native refinement завершены (69–12
 | E10 | segmentation/embeddings/clustering | WeSpeaker/TitaNet отвергнуты; native ERes global.4 opt-in проверен99–128; Sortformer143–147 исследуется |
 | E11 | auto/oracle dev | exp_0024: oracle4 даёт DER16.19% хуже auto .8 (13.10%); production остаётся auto |
 | E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; window.5 exp66 ухудшил AMI testDER36.10%; русский pilot exp71 |
-| E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; frame posteriors C API не отдаёт, не имитировать |
+| E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; старый diarizer API не отдаёт posteriors; новый Nemotron C ABI отдаёт, posterior merge190 проверен |
 | E14 | short/overlap/similar voices/gain | Short baseline46.67%; turn/selective135–139 дают6.67%,но clean регрессирует — reject; другая segmentation143–147 |
 | E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
 | E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
@@ -914,3 +915,104 @@ cpWER/DER регрессию; непарные времена не доказы�
 Следующий шаг: Q8 buffered в file pipeline через отдельный opt-in API;
 online turn postprocessing, cancel/checkpoint parity и полный target pipeline.
 Основной ERes preset сохранён; независимый RU gold и ARM runtime пока отсутствуют.
+
+### exp_0186 — повторная проверка полного файлового API
+
+Завершено: native `nh_transcribe_file_with_options` через CLI, без checkpoint/кешированного ASR.
+Movie 175.172 s → decode → GigaAM-v3 CTC INT8 → pyannote/ERes2Net
+→ word/speaker attribution → strict JSON. Exit0, JSON validation passed,
+22 utterances; processing wall 30.626 s, full RTF 0.1748,
+sampled peak PSS 614540 KiB. Word alignment fallback chunks: 0.
+Это host execution текущего default, не новый Nemotron backend; summary не запускался.
+Код полного pipeline реализован; новая speaker-модель пока доступна отдельно.
+
+### Сравнение готовых native пайплайнов — начато после186
+
+Пробел предыдущего цикла: сравнивали отдельные ASR/embedding/diarization модели,
+но не измеряли целиком альтернативный готовый native runtime. Замена одного
+threshold не отвечает на вопрос, лучше ли архитектура другого проекта.
+
+| Решение | Соответствие платформе и действие |
+| --- | --- |
+| [sherpa-onnx](https://k2-fsa.github.io/sherpa/onnx/index.html) | Текущая база, C/C++, Android/iOS/ARM, offline; уже исполняется нашим SDK. Сохранить контроль186. |
+| [NeMo-Speech.cpp](https://github.com/NVIDIA/NeMo-Speech.cpp/tree/v0.3.0) | Официальный C++/ggml ASR + word timestamps + diarization. Есть Linux ARM64 CPU binaries; Android NDK ещё не квалифицирован. Проверить готовый pipeline на host. |
+| [whisper.cpp](https://github.com/ggml-org/whisper.cpp) | C/C++, Android, квантование/VAD. Tinydiarize example использует small.en и выдаёт speaker turns, не готовую русскую идентификацию участников. Отдельный вариант ASR, не полная замена speaker pipeline. |
+| [WhisperX](https://github.com/m-bain/whisperX) | VAD → Whisper → language-specific forced alignment → pyannote; есть CPU int8. Полезен как reference для alignment, но весь Python pipeline не является готовым NDK SDK. |
+
+Выбран для первого исполнения NeMo-Speech.cpp **0.3.0**, source tag20999cc…,
+официальный Linux x86_64 CPU archive SHA255f12b7…; установлен отдельной
+`python scripts/bootstrap_nemo_reference.py`, не включается в shipped SDK.
+Nemotron3.5 ASR Q8:742090464 bytes, rev ea30d66…, SHA3fc991d3…;
+Nemotron3 Diarization GGUF Q8:107012128 bytes, rev f667ed7…, SHA08456d9e….
+Оба ungated, pinned в model lock. Это другие quantization/runtime,
+нельзя объявлять эквивалентность уже проверенному ONNX Q8.
+
+187/188/189: одна frozen movie запись, native CLI, CPU4 threads, explicit ru-RU,
+без warmup/batching/ITN; offline ASR, recorded streaming160ms ASR, streaming ASR +
+официальный buffered diarizer v3-offline. Считаем text-v2 WER/CER/punctuation F1,
+wall/RTF/PSS/RSS; cpWER только при полном воспроизведении текста word list.
+JSON ASR содержит word speaker labels, не сырые speaker spans: DER из них не выдумывать.
+Default offline ASR использует attention right3, streaming right1: это сравнение
+готовых режимов, не чистое влияние transport chunk size. Raw settings/logs сохраняются.
+Пока идут прогоны, никаких заявлений о победителе/Android performance/default promotion.
+
+187 завершён: официальный offline ASR, WER18.04%, CER7.77%, punctuation F1 61.68%,
+wall188.952 s / audio175.172 s (RTF1.0787), sampled PSS2973500 KiB.
+У GigaAM CTC в186 на этом же источнике WER15.38%, полный ASR+ERes pipeline30.626 s;
+это не paired timing/same work, поэтому не вычислять из него чистое ASR ускорение.
+Word list полностью воспроизводит текст, интервалы в пределах исходной записи.
+188/189 ещё идут. Команда подготовки: `make nemo-reference-bootstrap`.
+
+Из source tag20999cc… отдельно взята **гипотеза назначения спикера**, не код целиком:
+`sortformer_model.h::word_anchor_frames` и `diar_pipeline.cpp::speaker_for_word_time`
+усредняют posteriors первых160ms слова и выбирают argmax без пороговых turns.
+190 сравнит этот подход, whole-word posterior mean и прежний threshold/turn overlap
+на всех6 известных silver files. ASR слова/время и ONNX Q8 posterior arrays фиксированы;
+baseline обязан воспроизвестись, число говорящих из GT не используется.
+Это самостоятельный опыт по архитектуре merge; DER не меняется, поскольку diarization field тот же.
+
+188: recorded streaming ASR160ms, WER20.16%, CER8.69%, punctuation F1 58.10%,
+wall46.937 s, RTF.26795, PSS920284 KiB. Это финальный текст, не оценка live partials.
+189: тот же ASR + официальный diarizer: wall52.416 s, RTF.29923,
+PSS1057518 KiB, **3 speakers**, cpWER20.69%; ASR текст совпал с188.
+Для сравнения:186 default GigaAM+ERes cpWER43.24%, movie GigaAM+ONNXQ8 cpWER30.50%.
+Один известный source не доказывает общее превосходство; pipeline выбран до191–193,
+которые проверяют оставшиеся5 известных записей без настройки по ответам.
+
+190 завершён, все6 threshold-turn baselines воспроизвелись:
+общий cpWER25.70% → whole-word posterior23.47% / first160ms23.43%.
+Anchor улучшил все6 относительно turn overlap; относительно whole-word выигрыш всего1слово
+(568 vs569 ошибок /2424 words), поэтому не заявлять доказанную лучшую длину anchor.
+Words и timestamps сохранены; прямой argmax всегда назначает слот, включая слабую уверенность.
+Это кандидат для native merge A/B, не автоматическое изменение default.
+Runtime0.3.0 тестируется с явно выбранным официальным ASR export ea30d66…;
+встроенный model index релиза указывает другой export1c8deae…/SHAa5c435f….
+Все результаты относятся к записанной паре runtime/weights, не ко всем версиям NeMo.
+
+### exp_0191–0194 — перенос готового pipeline и итог архитектурного сравнения
+
+Завершено: runtime/ASR/diarizer/threads/language/preset одинаковы для6 записей,
+проверены194; все source/reference denominators совпали. Bootstrap10000, seed42.
+189 +191–193 — полный native NeMo ASR + diarization, не переиспользование GigaAM.
+
+| Все6 известных silver записей /2424 reference words | WER | cpWER |
+| --- | --- | --- |
+| GigaAM + ONNX Q8, threshold-turn merge | 13.45% | 25.70% |
+| Те же GigaAM/ONNX posteriors + first160ms posterior merge190 | 13.45% | **23.43%** |
+| Полная native связка NeMo-Speech.cpp + Nemotron3.5 ASR + GGUF diarizer | 19.51% | 28.59% |
+
+Полная NeMo связка: RTF.281–.302, sampled PSS1057518–1060052 KiB (~1.01 GiB).
+На movie она улучшила cpWER до20.69%, но на yCX/p0/astrology/sFt хуже ONNX Q8 baseline.
+Третий трудный dev остаётся плохим:cpWER65.99%, против67.26% threshold baseline
+и61.68% нашего posterior-anchor варианта. Качество ASR хуже GigaAM на всех6.
+Для cpWER NeMo−threshold delta+2.89pp, record CI95[-2.82,+7.92]pp;
+NeMo−anchor+5.16pp, CI95[-.08,+9.16]pp. Не заявлять статистическое превосходство:
+все записи известные, серебряные эталоны, независимость участников не установлена.
+
+**ADR:** весь протестированный runtime/model pair не продвигать в default;
+GigaAM сохраняется. Взять для native merge A/B идею прямого posterior attribution,
+после проверки коротких реплик и профилей официального diarizer с фиксированным GigaAM.
+Следующие конкретные проверки: hybrid GigaAM + official diarizer geometry/word assignment;
+потом bounded интеграция выигравшего варианта в полный file API и x86 AVD.
+Новые runtime/models/CLI зафиксированы отдельно; проверка моделей и30 research tests пройдены.
+Это расширяет исследование архитектур; текущий shipped SDK не заменён непроверенной библиотекой.

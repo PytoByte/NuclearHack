@@ -1,0 +1,11 @@
+[
+  {
+    "experiment": "exp_0186",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Revalidate actual native full file API after streaming changes: decode + fresh GigaAMv3 CTC INT8 + default pyannote/ERes + attribution + strict JSON; no reused ASR/checkpoint, no new Nemotron backend, no UI"
+  }
+]

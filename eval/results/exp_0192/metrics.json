@@ -1,0 +1,321 @@
+{
+  "experiment_id": "exp_0192",
+  "scope": "official NeMo-Speech.cpp 0.3.0 native CPU reference; host x86_64, not SDK/Android/ARM qualification",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 53.74936042199988,
+      "process_peak_rss_kib": 1059572,
+      "sampled_peak_pss_kib": 1057712,
+      "memory_samples": 769,
+      "audio_seconds": 177.9,
+      "full_rtf": 0.30213243632377673,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 45,
+          "deletions": 15,
+          "insertions": 18,
+          "reference_words": 465
+        },
+        "raw": {
+          "substitutions": 87,
+          "deletions": 15,
+          "insertions": 18,
+          "reference_words": 456
+        },
+        "punctuation_token_wer": {
+          "substitutions": 61,
+          "deletions": 38,
+          "insertions": 26,
+          "reference_words": 591
+        },
+        "normalized_cer": {
+          "errors": 224,
+          "reference_characters": 2747
+        },
+        "raw_cer": {
+          "errors": 282,
+          "reference_characters": 2864
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 75,
+            "false_positive": 36,
+            "false_negative": 51
+          },
+          "conditional_equal_words": {
+            "true_positive": 75,
+            "false_positive": 14,
+            "false_negative": 28
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 16,
+              "false_positive": 10,
+              "false_negative": 19
+            },
+            ",": {
+              "true_positive": 49,
+              "false_positive": 16,
+              "false_negative": 20
+            },
+            "?": {
+              "true_positive": 8,
+              "false_positive": 2,
+              "false_negative": 5
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 1,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 2,
+              "false_positive": 7,
+              "false_negative": 7
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "languages": [
+        "ru-RU"
+      ],
+      "word_count": 459,
+      "word_text_reconstruction_equal": true,
+      "speaker_attributed": {
+        "errors": 97,
+        "reference_words": 465,
+        "cpwer": 0.2086021505376344
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "der_unavailable_reason": "ASR JSON exposes word labels, not raw diarizer frame spans; do not invent DER from words"
+    }
+  ],
+  "text_metrics": {
+    "normalized": {
+      "substitutions": 45,
+      "deletions": 15,
+      "insertions": 18,
+      "reference_words": 465,
+      "wer": 0.16774193548387098
+    },
+    "raw": {
+      "substitutions": 87,
+      "deletions": 15,
+      "insertions": 18,
+      "reference_words": 456,
+      "wer": 0.2631578947368421
+    },
+    "punctuation_token_wer": {
+      "substitutions": 61,
+      "deletions": 38,
+      "insertions": 26,
+      "reference_words": 591,
+      "wer": 0.21150592216582065
+    },
+    "normalized_cer": {
+      "errors": 224,
+      "reference_characters": 2747,
+      "cer": 0.0815435020021842
+    },
+    "raw_cer": {
+      "errors": 282,
+      "reference_characters": 2864,
+      "cer": 0.09846368715083799
+    },
+    "punctuation": {
+      "end_to_end": {
+        "true_positive": 75,
+        "false_positive": 36,
+        "false_negative": 51,
+        "precision": 0.6756756756756757,
+        "recall": 0.5952380952380952,
+        "f1": 0.6329113924050633
+      },
+      "conditional_equal_words": {
+        "true_positive": 75,
+        "false_positive": 14,
+        "false_negative": 28,
+        "precision": 0.8426966292134831,
+        "recall": 0.7281553398058253,
+        "f1": 0.78125
+      },
+      "per_mark": {
+        ".": {
+          "true_positive": 16,
+          "false_positive": 10,
+          "false_negative": 19,
+          "precision": 0.6153846153846154,
+          "recall": 0.45714285714285713,
+          "f1": 0.5245901639344263
+        },
+        ",": {
+          "true_positive": 49,
+          "false_positive": 16,
+          "false_negative": 20,
+          "precision": 0.7538461538461538,
+          "recall": 0.7101449275362319,
+          "f1": 0.7313432835820896
+        },
+        "?": {
+          "true_positive": 8,
+          "false_positive": 2,
+          "false_negative": 5,
+          "precision": 0.8,
+          "recall": 0.6153846153846154,
+          "f1": 0.6956521739130435
+        },
+        "!": {
+          "true_positive": 0,
+          "false_positive": 1,
+          "false_negative": 0,
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0
+        },
+        ":": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ";": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2014": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "-": {
+          "true_positive": 2,
+          "false_positive": 7,
+          "false_negative": 7,
+          "precision": 0.2222222222222222,
+          "recall": 0.2222222222222222,
+          "f1": 0.2222222222222222
+        },
+        "\u2026": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00ab": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00bb": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\"": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "(": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ")": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      }
+    }
+  },
+  "inference_rtf": 0.30213243632377673,
+  "process_peak_rss_kib": 1059572,
+  "normalized": {
+    "substitutions": 45,
+    "deletions": 15,
+    "insertions": 18,
+    "reference_words": 465,
+    "wer": 0.16774193548387098
+  },
+  "cer": 0.0815435020021842
+}

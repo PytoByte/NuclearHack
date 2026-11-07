@@ -24,7 +24,7 @@ def freeze(path,data):
     if path.exists() and path.read_bytes()!=data:raise ValueError('Refusing to change frozen artifact '+str(path))
     path.write_bytes(data)
 
-def wave_prefix(url,path,seconds=180):
+def wave_prefix(url,path,seconds=180,expected_rate=48000):
     """A byte-range derivative, never represented as a complete source download."""
     if path.exists():return path
     def get(end):
@@ -42,7 +42,7 @@ def wave_prefix(url,path,seconds=180):
         kind,size=struct.unpack_from('<4sI',header,pos)
         if kind==b'fmt ':
             fmt,channels,rate,byte_rate,align,bits=struct.unpack_from('<HHIIHH',header,pos+8)
-            if fmt!=1 or channels!=2 or rate!=48000 or bits!=16:raise ValueError('Unexpected frozen movie WAV format')
+            if fmt!=1 or channels!=2 or rate!=expected_rate or bits!=16:raise ValueError('Unexpected frozen source WAV format')
         if kind==b'data':
             if rate is None:raise ValueError('Missing audio format')
             needed=pos+8+math.ceil(seconds*rate)*align
@@ -53,11 +53,13 @@ def wave_prefix(url,path,seconds=180):
     raise ValueError('WAV data not found in source header')
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);group=parser.add_mutually_exclusive_group();group.add_argument('--heldout-session',action='store_true');group.add_argument('--movie-session',action='store_true');args=parser.parse_args()
-    tag='russian-conversation-movie-session' if args.movie_session else 'russian-conversation-heldout-session' if args.heldout_session else 'russian-conversation-pilot'
+    parser=argparse.ArgumentParser(description=__doc__);group=parser.add_mutually_exclusive_group();group.add_argument('--heldout-session',action='store_true');group.add_argument('--movie-session',action='store_true');group.add_argument('--astrology-session',action='store_true');args=parser.parse_args()
+    tag='russian-conversation-astrology-session' if args.astrology_session else 'russian-conversation-movie-session' if args.movie_session else 'russian-conversation-heldout-session' if args.heldout_session else 'russian-conversation-pilot'
+    ranged=args.movie_session or args.astrology_session
+    heldout=args.heldout_session or ranged
     cache=ROOT/'.tools/datasets/ru-youtube';cache.mkdir(parents=True,exist_ok=True)
     manifest=[];sources=[]
-    filenames=['movie_podcast.json'] if args.movie_session else ['project-35-at-2025-05-08-20-14-e3016d43.json'] if args.heldout_session else ['youtube-1.json','youtube-2.json']
+    filenames=['astrology.json'] if args.astrology_session else ['movie_podcast.json'] if args.movie_session else ['project-35-at-2025-05-08-20-14-e3016d43.json'] if args.heldout_session else ['youtube-1.json','youtube-2.json']
     for filename in filenames:
         path=cache/filename
         if not path.exists():urllib.request.urlretrieve(f'{SOURCE}/resolve/{REV}/{filename}',path)
@@ -73,10 +75,10 @@ def main():
                    for k,v in labels.items() if v['end']<=end+1e-5 and texts.get(k)]
             turns.sort(key=lambda t:(t['start_ms'],t['end_ms']))
             remote=row['data']['audio'];source=cache/Path(remote).name
-            if args.movie_session:source=wave_prefix(f'{SOURCE}/resolve/{REV}/{remote}',cache/'movie_podcast.first180s.wav.prefix')
+            if ranged:source=wave_prefix(f'{SOURCE}/resolve/{REV}/{remote}',cache/(Path(remote).stem+'.first180s.wav.prefix'),expected_rate=44100 if args.astrology_session else 48000)
             elif not source.exists():urllib.request.urlretrieve(f'{SOURCE}/resolve/{REV}/{remote}',source)
             sources.append(dict(path=remote,sha256=sha256(source)))
-            if args.movie_session:sources[-1].update(source_file_complete=False,source_byte_range=[0,source.stat().st_size-1],full_source_bytes=1145098590)
+            if ranged:sources[-1].update(source_file_complete=False,source_byte_range=[0,source.stat().st_size-1],full_source_bytes=1030418366 if args.astrology_session else 1145098590)
             ident='ru-youtube-'+Path(remote).stem
             wav=ROOT/'eval/data/audio'/f'{ident}.wav';wav.parent.mkdir(parents=True,exist_ok=True)
             if not wav.exists():subprocess.run([str(ROOT/'.tools/bin/ffmpeg'),'-v','error','-i',str(source),'-t',str(end),'-ar','16000','-ac','1','-c:a','pcm_s16le',str(wav)],check=True)
@@ -88,12 +90,12 @@ def main():
                 audio_sha256=sha256(wav),reference_sha256=sha256(ref),rttm=str(rttm.relative_to(ROOT)),rttm_sha256=sha256(rttm),
                 speakers=len({t['speaker_id'] for t in turns}),audio_seconds=end,source=SOURCE,revision=REV,source_audio=remote,
                 source_annotation=filename,license='Apache-2.0 declared by publisher; underlying video provenance undocumented',
-                split='silver-session-holdout2' if args.movie_session else 'silver-session-holdout' if args.heldout_session else 'pilot-development',speaker_disjoint_verified=False,reference_quality='publisher-reviewed ASR silver; not independently verified verbatim; no word GT',
+                split='silver-session-holdout3' if args.astrology_session else 'silver-session-holdout2' if args.movie_session else 'silver-session-holdout' if args.heldout_session else 'pilot-development',speaker_disjoint_verified=False,reference_quality='publisher-reviewed ASR silver; not independently verified verbatim; no word GT',
                 annotation_lead_seconds=annotation.get('lead_time'),text_edits_vs_prediction=sum(texts[k]!=original[k] for k in texts.keys()&original.keys()),
                 reviewed_turns=len(texts),domain='natural Russian YouTube interview/conversation',timing_reference='publisher turn boundaries; no independent manual accuracy audit'))
-            if args.movie_session:manifest[-1].update(source_file_complete=False,source_byte_range=[0,source.stat().st_size-1],source_prefix_sha256=sha256(source))
+            if ranged:manifest[-1].update(source_file_complete=False,source_byte_range=[0,source.stat().st_size-1],source_prefix_sha256=sha256(source))
     freeze(ROOT/'eval/data'/(tag+'.jsonl'),''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in manifest).encode())
-    freeze(ROOT/'config'/(tag+'.lock.json'),(json.dumps(dict(source=SOURCE,revision=REV,files=sources,scope='silver session holdout; speaker independence unverified' if args.heldout_session or args.movie_session else 'silver pilot only; no Gate A or independent-test claim'),indent=2)+'\n').encode())
+    freeze(ROOT/'config'/(tag+'.lock.json'),(json.dumps(dict(source=SOURCE,revision=REV,files=sources,scope='silver session holdout; speaker independence unverified' if heldout else 'silver pilot only; no Gate A or independent-test claim'),indent=2)+'\n').encode())
     print(json.dumps([dict(id=r['audio_id'],seconds=r['audio_seconds'],speakers=r['speakers'],edited=r['text_edits_vs_prediction']) for r in manifest]))
 
 if __name__=='__main__':main()

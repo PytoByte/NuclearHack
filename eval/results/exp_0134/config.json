@@ -1,0 +1,9 @@
+{
+  "experiment_id": "exp_0134",
+  "baseline": "exp_0125",
+  "manifest": "eval/data/dialogs-smoke.jsonl",
+  "unit": "turn",
+  "min_turn_ms": 300,
+  "min_seconds": 0.3,
+  "scope": "harness failed before embedding inference: synthetic manifest lacks audio_seconds"
+}

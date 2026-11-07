@@ -23,7 +23,8 @@ def main():
     rows = []
     for report in sorted((ROOT / 'eval/results').glob('exp_*')):
         eid = report.name
-        m = read(report/'metrics.json'); c = read(report/'config.json'); env = read(report/'environment.json')
+        m = read(report/'metrics.json'); c = read(report/'config.json')
+        env = {**read(report/'dispatch-environment.json'), **read(report/'environment.json')}
         row = {f: previous.get(eid, {}).get(f, '') for f in fields}
         row.update(experiment_id=eid, date=row['date'] or '2026-11-07',
             git_sha=env.get('git_sha', row['git_sha']), scope=m.get('scope', row['scope']),

@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_0156",
+  "scope": "experimental streaming Sortformer; preserved ASR words; no oracle; not SDK preset",
+  "load_seconds": 1.4093286209972575,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-astrology",
+      "audio_seconds": 178.85,
+      "wall_seconds": 4.725039076001849,
+      "inference_rtf": 0.026419005177533404,
+      "model_seconds": 4.655773469006817,
+      "process_peak_rss_kib": 1021948,
+      "speaker_attributed": {
+        "errors": 49,
+        "reference_words": 379,
+        "cpwer": 0.12928759894459102
+      },
+      "known_speakers_count": 4,
+      "unknown_utterances": 3,
+      "unknown_utterance_fraction": 0.15,
+      "unknown_word_fraction": 0.0103359173126615,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 0.7884084670004086,
+      "der_details": {
+        "confusion": 0.6119999999999948,
+        "false alarm": 1.6359999999999695,
+        "correct": 147.77200000000002,
+        "total": 152.853,
+        "missed detection": 4.469000000000008,
+        "diarization error rate": 0.04394418166473652
+      },
+      "jer": 0.04671051287680206
+    }
+  ],
+  "cpwer": 0.12928759894459102,
+  "inference_rtf": 0.026419005177533404,
+  "process_peak_rss_kib": 1083784
+}

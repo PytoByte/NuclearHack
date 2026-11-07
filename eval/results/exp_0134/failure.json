@@ -1,0 +1,6 @@
+{
+  "stage": "fixture duration field",
+  "error": "KeyError audio_seconds",
+  "inference_started": false,
+  "rerun": "exp_0135"
+}

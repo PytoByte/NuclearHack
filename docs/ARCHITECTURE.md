@@ -181,3 +181,10 @@ Decoder проверяет RIFF/RF64 WAVE header до miniaudio filename hints: 
 cpWER42.97→33.16%,median wall+3.2%,sampledPSS~369MiB. Source signal host/AVD SHA-identical;
 ASR outputs имеют5замен междуplatform builds,а внутриdevice A/B words/timestamps exact.
 Default остаётсяoff;независимый gold/ARM runtime не заявляются. Короткий третий голос пока не восстановлен.
+
+Research backends в `eval/scripts` изолированы от SDK: turn/selective embedding splitting
+отклонены по regression-срезам. `probe_sortformer.py` проверяет другой diarizer через Python ORT:
+максимум4speaker slots,кэш188×512float/FIFO,явный left/right context и frozen streaming profiles.
+Sortformer v2.1 FP32/MatMul-INT8 отклонён для интеграции:сильный speaker collapse на regression-сессии
+при улучшениях на других файлах. Это не новый C ABI/default;frontend/state numerical parity с NeMo
+и target-memory не квалифицированы. Все альтернативные модели остаются research-only.

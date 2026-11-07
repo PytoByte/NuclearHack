@@ -1,0 +1,32 @@
+[
+  {
+    "experiment": "exp_0146",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Frozen NeMo buffered vs low-latency profiles on 3 natural Russian silver dev recordings; no tuning on transfer files, unchanged ASR words; compare DER/JER/cpWER and bounded-state speed"
+  },
+  {
+    "experiment": "exp_0147",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "low",
+      "--frontend",
+      "window"
+    ],
+    "hypothesis": "Frozen NeMo buffered vs low-latency profiles on 3 natural Russian silver dev recordings; no tuning on transfer files, unchanged ASR words; compare DER/JER/cpWER and bounded-state speed"
+  }
+]

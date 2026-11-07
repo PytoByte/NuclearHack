@@ -77,14 +77,15 @@ def diarization(truth,turns,duration):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--experiment',required=True)
     p.add_argument('--baseline',default='exp_0069');p.add_argument('--manifest',default='eval/data/russian-conversation-pilot.jsonl')
-    p.add_argument('--embedding',default='embedding.onnx');p.add_argument('--thresholds',nargs='+',type=float,default=[.2,.3,.4]);args=p.parse_args()
+    p.add_argument('--embedding',default='embedding.onnx');p.add_argument('--thresholds',nargs='+',type=float,default=[.2,.3,.4]);p.add_argument('--unit',choices=['cluster','turn'],default='cluster');p.add_argument('--min-seconds',type=float,default=2);p.add_argument('--min-turn-ms',type=int,default=800);args=p.parse_args()
+    if not math.isfinite(args.min_seconds) or not .2<=args.min_seconds<=20 or not 200<=args.min_turn_ms<=8000:p.error('Invalid embedding evidence budget')
     if any(not 0<t<2 for t in args.thresholds):p.error('Cosine distance threshold must be in (0,2)')
     if not re.fullmatch(r'exp_[0-9]+',args.experiment):p.error('Use exp_NNNN')
     out=ROOT/'.audio-runs'/args.experiment;out.mkdir(parents=True,exist_ok=False)
     model_path='models/diarization/'+args.embedding;lock=json.loads((ROOT/'config/audio-models.lock.json').read_text())
     model=next(f for f in lock['files'] if f['path']==model_path)
     if sha256(ROOT/model_path)!=model['sha256']:raise ValueError('Embedding hash differs')
-    config=dict(vars(args),thresholds=args.thresholds,min_turn_ms=800,max_span_ms=8000,max_spans=3,max_seconds=20,min_seconds=2,
+    config=dict(vars(args),thresholds=args.thresholds,min_turn_ms=args.min_turn_ms,max_span_ms=8000,max_spans=3,max_seconds=20,min_seconds=args.min_seconds,
         threads=4,method='complete-link cosine, simultaneous-speaker cannot-link',model_files=[model],
         manifest_sha256=sha256(ROOT/args.manifest),sdk_sha256=sha256(ROOT/'.build/audio/libnuclear_audio.so'),
         input_sha256={},scope='research global reclustering; no oracle, whole-PCM research harness, not production integration')
@@ -94,19 +95,27 @@ def main():
             trace_path=ROOT/'.audio-runs'/args.baseline/f['audio_id']/'transcript.json.trace.json';config['input_sha256'][str(trace_path.relative_to(ROOT))]=sha256(trace_path)
             audio=ROOT/f['audio'];reference=ROOT/f['reference']
             if sha256(audio)!=f['audio_sha256'] or sha256(reference)!=f['reference_sha256']:raise ValueError('Changed corpus')
-            trace=json.loads(trace_path.read_text());pcm=sdk.decode(audio,max_frames=math.ceil(f['audio_seconds']*16000)+16)
+            trace=json.loads(trace_path.read_text());pcm=sdk.decode(audio,max_frames=180*16000+16)
+            if len(pcm)>=180*16000+16:raise ValueError('Research PCM clip exceeds180s budget')
+            duration=len(pcm)/16000
+            if f.get('audio_seconds') is not None and abs(duration-f['audio_seconds'])>.002:raise ValueError('Frozen clip duration differs from decoded source')
             ids={};turns=[]
             for t in trace['speaker_turns']:
                 if t['speaker'] not in ids:ids[t['speaker']]='speaker_'+str(len(ids)+1)
                 turns.append(dict(start_ms=t['start_ms'],end_ms=t['end_ms'],speaker_id=ids[t['speaker']]))
-            labels=list(ids.values());vectors={};start=time.perf_counter()
+            original_turns=[dict(t) for t in turns]
+            if args.unit=='turn':
+                for i,t in enumerate(turns):t['speaker_id']='turn_'+str(i)
+            labels=[t['speaker_id'] for t in turns] if args.unit=='turn' else list(ids.values())
+            if len(labels)>256:raise ValueError('Research unit budget exceeds256')
+            vectors={};start=time.perf_counter()
             for speaker in labels:
-                spans=sorted([t for t in turns if t['speaker_id']==speaker and t['end_ms']-t['start_ms']>=800],key=lambda t:t['end_ms']-t['start_ms'],reverse=True)[:3]
+                spans=sorted([t for t in turns if t['speaker_id']==speaker and t['end_ms']-t['start_ms']>=args.min_turn_ms],key=lambda t:t['end_ms']-t['start_ms'],reverse=True)[:3]
                 pieces=[];remaining=20*16000
                 for t in spans:
                     width=min(8000,t['end_ms']-t['start_ms']);left=t['start_ms']+(t['end_ms']-t['start_ms']-width)//2
                     piece=pcm[left*16:(left+width)*16][:remaining];pieces.append(piece);remaining-=len(piece)
-                if pieces and sum(map(len,pieces))>=2*16000:vectors[speaker]=extract(np.concatenate(pieces))
+                if pieces and sum(map(len,pieces))>=args.min_seconds*16000:vectors[speaker]=extract(np.concatenate(pieces))
             seconds=time.perf_counter()-start;n=len(labels);distance=np.full((n,n),2.0);np.fill_diagonal(distance,0);forbidden=[]
             for i,a in enumerate(labels):
                 for j,b in enumerate(labels[:i]):
@@ -114,22 +123,28 @@ def main():
                     if simultaneous:forbidden.append([a,b])
                     if not simultaneous and vectors.get(a) is not None and vectors.get(b) is not None:distance[i,j]=distance[j,i]=float(np.clip(1-np.dot(vectors[a],vectors[b]),0,2))
             tree=linkage(squareform(distance,checks=False),method='complete') if n>1 else None
-            truth=json.loads(reference.read_text())['transcript'];predicted_base=attribute(trace['words'],turns)
-            variants={'baseline':dict(speaker_attributed=cpwer(truth,predicted_base),**speaker_coverage(predicted_base),**diarization(truth,turns,f['audio_seconds']))};lexical=normalize(' '.join(w['text'] for w in trace['words']))
+            truth=json.loads(reference.read_text())['transcript']
+            def timing_metrics(rows):
+                if f.get('rttm'):return diarization(truth,rows,duration)
+                return dict(timing_metrics_unavailable='source utterance occupancy includes silence; not true speech RTTM')
+            predicted_base=attribute(trace['words'],original_turns)
+            variants={'baseline':dict(speaker_attributed=cpwer(truth,predicted_base),**speaker_coverage(predicted_base),**timing_metrics(original_turns))};lexical=normalize(' '.join(w['text'] for w in trace['words']))
             for threshold in config['thresholds']:
                 groups=fcluster(tree,t=threshold,criterion='distance') if tree is not None else [1]*n
                 mapping=dict(zip(labels,['recluster_'+str(int(g)) for g in groups]));changed=[dict(t,speaker_id=mapping[t['speaker_id']]) for t in turns]
                 predicted=attribute(trace['words'],changed)
                 if normalize(' '.join(t['text'] for t in predicted))!=lexical:raise ValueError('Reclustering altered words')
-                variants[str(threshold)]=dict(mapping=mapping,speaker_attributed=cpwer(truth,predicted),**speaker_coverage(predicted),**diarization(truth,changed,f['audio_seconds']))
+                variants[str(threshold)]=dict(mapping=mapping,speaker_attributed=cpwer(truth,predicted),**speaker_coverage(predicted),**timing_metrics(changed))
             cases.append(dict(audio_id=f['audio_id'],embedding_seconds=seconds,embedding_clusters=sum(v is not None for v in vectors.values()),reference_speakers=len({t['speaker_id'] for t in truth}),cannot_links=forbidden,variants=variants))
             (out/(f['audio_id']+'.distances.json')).write_text(json.dumps(dict(labels=labels,distance=distance.tolist()),indent=2))
     finally:extract.close()
     aggregate={}
     for t in cases[0]['variants']:
         values=[c['variants'][t] for c in cases];errors=sum(v['speaker_attributed']['errors'] for v in values);words=sum(v['speaker_attributed']['reference_words'] for v in values)
-        total=sum(v['der_details']['total'] for v in values);diar_errors=sum(sum(v['der_details'][k] for k in ['confusion','false alarm','missed detection']) for v in values)
-        aggregate[t]=dict(cpwer=errors/words,der=diar_errors/total,jer=sum(c['variants'][t]['jer']*c['reference_speakers'] for c in cases)/sum(c['reference_speakers'] for c in cases))
+        aggregate[t]=dict(cpwer=errors/words)
+        if all('der_details' in v for v in values):
+            total=sum(v['der_details']['total'] for v in values);diar_errors=sum(sum(v['der_details'][k] for k in ['confusion','false alarm','missed detection']) for v in values)
+            aggregate[t].update(der=diar_errors/total,jer=sum(c['variants'][t]['jer']*c['reference_speakers'] for c in cases)/sum(c['reference_speakers'] for c in cases))
     metrics=dict(experiment_id=args.experiment,scope=config['scope'],load_seconds=load,cases=cases,variants=aggregate)
     (out/'config.json').write_text(json.dumps(config,indent=2));(out/'metrics.json').write_text(json.dumps(metrics,indent=2))
     report=ROOT/'eval/results'/args.experiment;report.mkdir(parents=True,exist_ok=False)

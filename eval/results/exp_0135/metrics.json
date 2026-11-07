@@ -1,0 +1,284 @@
+{
+  "experiment_id": "exp_0135",
+  "scope": "research global reclustering; no oracle, whole-PCM research harness, not production integration",
+  "load_seconds": 0.25935836500138976,
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "embedding_seconds": 0.648542973001895,
+      "embedding_clusters": 6,
+      "reference_speakers": 2,
+      "cannot_links": [],
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 62,
+            "cpwer": 0.03225806451612903
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.2": {
+          "mapping": {
+            "turn_0": "recluster_1",
+            "turn_1": "recluster_3",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_1",
+            "turn_4": "recluster_3",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 62,
+            "cpwer": 0.22580645161290322
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.3": {
+          "mapping": {
+            "turn_0": "recluster_1",
+            "turn_1": "recluster_3",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_1",
+            "turn_4": "recluster_3",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 62,
+            "cpwer": 0.22580645161290322
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.4": {
+          "mapping": {
+            "turn_0": "recluster_1",
+            "turn_1": "recluster_3",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_1",
+            "turn_4": "recluster_3",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 62,
+            "cpwer": 0.22580645161290322
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        }
+      }
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "embedding_seconds": 0.15097186099592363,
+      "embedding_clusters": 6,
+      "reference_speakers": 3,
+      "cannot_links": [],
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 30,
+            "cpwer": 0.4666666666666667
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.2": {
+          "mapping": {
+            "turn_0": "recluster_3",
+            "turn_1": "recluster_1",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_1",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 30,
+            "cpwer": 0.06666666666666667
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.3": {
+          "mapping": {
+            "turn_0": "recluster_3",
+            "turn_1": "recluster_1",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_1",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 30,
+            "cpwer": 0.06666666666666667
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.4": {
+          "mapping": {
+            "turn_0": "recluster_3",
+            "turn_1": "recluster_1",
+            "turn_2": "recluster_2",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_1",
+            "turn_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 30,
+            "cpwer": 0.06666666666666667
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        }
+      }
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "embedding_seconds": 0.46896162800112506,
+      "embedding_clusters": 7,
+      "reference_speakers": 3,
+      "cannot_links": [
+        [
+          "turn_1",
+          "turn_0"
+        ]
+      ],
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 78,
+            "cpwer": 0.1794871794871795
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.2": {
+          "mapping": {
+            "turn_0": "recluster_4",
+            "turn_1": "recluster_2",
+            "turn_2": "recluster_1",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_5",
+            "turn_5": "recluster_1",
+            "turn_6": "recluster_3"
+          },
+          "speaker_attributed": {
+            "errors": 26,
+            "reference_words": 78,
+            "cpwer": 0.3333333333333333
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.3": {
+          "mapping": {
+            "turn_0": "recluster_4",
+            "turn_1": "recluster_2",
+            "turn_2": "recluster_1",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_5",
+            "turn_5": "recluster_1",
+            "turn_6": "recluster_3"
+          },
+          "speaker_attributed": {
+            "errors": 26,
+            "reference_words": 78,
+            "cpwer": 0.3333333333333333
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        },
+        "0.4": {
+          "mapping": {
+            "turn_0": "recluster_4",
+            "turn_1": "recluster_2",
+            "turn_2": "recluster_1",
+            "turn_3": "recluster_3",
+            "turn_4": "recluster_4",
+            "turn_5": "recluster_1",
+            "turn_6": "recluster_3"
+          },
+          "speaker_attributed": {
+            "errors": 20,
+            "reference_words": 78,
+            "cpwer": 0.2564102564102564
+          },
+          "known_speakers_count": 4,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "timing_metrics_unavailable": "source utterance occupancy includes silence; not true speech RTTM"
+        }
+      }
+    }
+  ],
+  "variants": {
+    "baseline": {
+      "cpwer": 0.17647058823529413
+    },
+    "0.2": {
+      "cpwer": 0.24705882352941178
+    },
+    "0.3": {
+      "cpwer": 0.24705882352941178
+    },
+    "0.4": {
+      "cpwer": 0.21176470588235294
+    }
+  }
+}

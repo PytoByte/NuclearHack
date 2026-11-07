@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_0138",
+  "scope": "research selective short-turn split; no reference inputs; no SDK integration",
+  "load_seconds": 0.2653223410015926,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "refinement_seconds": 1.0872602489980636,
+      "anchored_speakers": 2,
+      "candidate_turns": 1,
+      "new_speakers": 0,
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 96,
+            "reference_words": 465,
+            "cpwer": 0.2064516129032258
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 3,
+          "unknown_utterance_fraction": 0.23076923076923078,
+          "unknown_word_fraction": 0.008048289738430584,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "false alarm": 13.322000000000028,
+            "missed detection": 3.2240000000000038,
+            "correct": 134.22899999999998,
+            "confusion": 1.485999999999997,
+            "total": 138.939,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761
+        },
+        "selective": {
+          "speaker_attributed": {
+            "errors": 96,
+            "reference_words": 465,
+            "cpwer": 0.2064516129032258
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 3,
+          "unknown_utterance_fraction": 0.23076923076923078,
+          "unknown_word_fraction": 0.008048289738430584,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "false alarm": 13.322000000000028,
+            "missed detection": 3.2240000000000038,
+            "correct": 134.22899999999998,
+            "confusion": 1.485999999999997,
+            "total": 138.939,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761
+        }
+      }
+    }
+  ],
+  "variants": {
+    "baseline": {
+      "cpwer": 0.2064516129032258
+    },
+    "selective": {
+      "cpwer": 0.2064516129032258
+    }
+  }
+}

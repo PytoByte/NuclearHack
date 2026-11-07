@@ -4,7 +4,12 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, native speaker refinement проверен; далее короткие голоса/сегментация.**
+**Сейчас: этап2, разбор speaker collapse и следующий streaming backend.**
+Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
+метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
+v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
+149–161: MatMul-only INT8/transfer завершены; **Sortformer v2.1 не проходит regression**,
+несмотря на dev выигрыш. Далее — новая8slot-модель и frontend/state conformance,без смены SDK default.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -12,7 +17,7 @@ WAV filename-hint bug найден/исправлен; decoder PCM host/Android 
 **ARM runtime/Word timestamp MAE не измерены**: пользователь подтвердил только доступное окружение;
 ручных word GT нет. UI/SAF/LLM/длинный stress не расширяются. Исследование продолжается,а не останавливается на gates.
 
-Данные:3 natural RU silver dev +2 отложенных source-file snippets,OpenSTT manual phone40,FLEURS40/40,
+Данные:3 natural RU silver dev +3 source-file transfer snippets,OpenSTT manual phone40,FLEURS40/40,
 AMI English,Dialogs3 structural. Source corpus small/publisher-reviewed,люди не верифицированы как disjoint;
 strict gold gate A/C не заявлен. Шесть full-source аннотаций дополнительно проверены на shared6grams:
 ни одна пара не превысила2%;это исключает крупные текстовые дубликаты,не доказывает независимость людей.
@@ -44,7 +49,7 @@ Baseline,embeddings,punctuation и native refinement завершены (69–12
 | 3 — архитектура | частично | Native SDK принят пользователем; минимальный Android test host, без разработки визуального продукта |
 | K.1 — окружение | готово | JDK17, API35/NDK27d, AVD4096MiB/x86_64/4cores; версии и хеши pinned |
 | K.2/K.2a — runtime, веса, референсы | готово для baseline | sherpa/llama/ASR/diar/Qwen pinned; offline tar + лицензии; SHA проверены на AVD |
-| K.3 — данные | частично | FLEURS40/40,OpenSTT40,AMI,Dialogs3,5naturalRU silver RTTM; manual word CTM нет |
+| K.3 — данные | частично | FLEURS40/40,OpenSTT40,AMI,Dialogs3,6naturalRU silver RTTM; manual word CTM нет |
 | K.4 — gate подготовки | пройден | APK/JNI/веса работают offline на AVD4096MiB, exp_0019 |
 | 1.1 — desktop ASR screening | основное выполнено | CTC v3/v2, RNNT v3, Whisper base; дальнейшие ASR A/B по этапу 2 |
 | 1.2 — ASR Android / файл | выполнено | Тот же C API через APK/JNI, Android текст совпал с host |
@@ -77,11 +82,11 @@ Baseline,embeddings,punctuation и native refinement завершены (69–12
 | E07 | INT8/FP32/FP16 | FP32 ASR exp51/60 WER7.66%, Android~984MiB PSS; INT8 сохранён; FP32 segmentation лучшеINT8 |
 | E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; codec lag exp46~.125ms; denoise A/B не измерен |
 | E09 | hints/hotwords | RNNT поддерживает; exp53 hints ухудшили WER7.66%, отвергнуты |
-| E10 | segmentation/embeddings/clustering | WeSpeaker LM .4/.55/.8: DER26.05/24.04/35.31% dev; хуже ERes2Net13.10%, не принят |
+| E10 | segmentation/embeddings/clustering | WeSpeaker/TitaNet отвергнуты; native ERes global.4 opt-in проверен99–128; Sortformer143–147 исследуется |
 | E11 | auto/oracle dev | exp_0024: oracle4 даёт DER16.19% хуже auto .8 (13.10%); production остаётся auto |
 | E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; window.5 exp66 ухудшил AMI testDER36.10%; русский pilot exp71 |
 | E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; frame posteriors C API не отдаёт, не имитировать |
-| E14 | short/overlap/similar voices/gain | Short cpWER46.67% остаётся; minDuration не исправил. Нужны альтернативная segmentation/embedding и отдельные strata |
+| E14 | short/overlap/similar voices/gain | Short baseline46.67%; turn/selective135–139 дают6.67%,но clean регрессирует — reject; другая segmentation143–147 |
 | E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
 | E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
 | E17 | Android CPU threads 1/2/4 | exp_0020–22: RTF1.632/1.013/.826, WER одинаковый; 4t provisional, повтор впереди |
@@ -505,7 +510,7 @@ deletions20 против14,inference RTF.059 против.036 и process RSS~648
 ARM остаётся deferred по подтверждённому ограничению окружения. Без UI/LLM и повторных запросов устройства.
 
 
-## Текущий этап — TitaNet и диагностика alignment (85–89)
+## TitaNet и диагностика alignment (85–89, завершено)
 
 TitaNet-large ONNX pinned:csukuangfj revision0743f301…,SHA d51abcf3…,101405493bytes.
 [Upstream NVIDIA card](https://huggingface.co/nvidia/speakerverification_en_titanet_large),CC-BY4,
@@ -589,7 +594,7 @@ punctuation-token WER24.93% против27.15% и21.67%. Lexical sequence сох
 Большая модель улучшает RUPunct,но не оправдывает production integration против текущего e2e tradeoff;
 ни один отдельный пунктуатор пока не принят в SDK.
 
-**Сейчас:** перенос global ERes2Net.4 в native как opt-in `nh_transcribe_file_with_refinement`.
+**План перед99–128 (выполнен ниже):** перенос global ERes2Net.4 в native как opt-in `nh_transcribe_file_with_refinement`.
 Существующие структуры и default API не меняются. После diarizer/release — embedding/release → clustering → merge.
 Рабочая PCM-выборка≤20s/cluster,до3spans,cluster cap128default/256max; cannot-links сохраняются complete linkage.
 Далее native/prototype parity,ASan/UBSan,ABI cross-build,Android4GB и callback cancel/budget checks.
@@ -652,3 +657,123 @@ Oracle3 diagnostic131 всё ещё возвращает2голоса иcpWER46.
 даёт6.67% при тех же ASR words. Точное число голосов не входит вproduction.
 Это свидетельствует о проблеме segmentation/local speaker visibility,не только финальногоthreshold;
 следующая гипотеза — локальные voice masks/другая segmentation и embeddings отдельных speech turns.
+
+### exp_0132–0139 — видимость короткого голоса и цена splitting
+
+Window shift.25/.5 +global.4 на structural smoke: короткие реплики cpWER46.67→36.67%;
+шумный случай17.95→20.51%/.5→2.56%. Оба режима всё ещё пропускают короткий третий голос.
+Прежняя AMI/natural JER-регрессия.5 сохраняет запрет глобального переключения.
+
+Turn-unit embeddings135 (300ms minimum, complete-link.2/.3/.4) восстанавливают3голоса и
+cpWER6.67% на коротком случае. Но clean3.23→22.58%,noise17.95→25.64–33.33%:
+общий cpWER17.65→21.18–24.71%.134 — сохранённая ошибка harness доinference
+(synthetic manifest безaudio_seconds); исправлено получение duration изPCM.
+Dialogs occupancy содержит тишину: DER/JER для этих fixtures намеренно не вычисляются.
+
+Selective136–139: только isolated300–1500ms turns; assigned speaker имеет long-turn anchor
+из≥2s; distance>.4 ко **всем** anchors; novel embeddings complete-link.25;
+новая группа≥2turns/≥1s с разницейstart≥2s. Пороги заморожены до запуска; эталоны только scoring.
+Short46.67→6.67%,noise17.95% unchanged,но clean3.23→22.58% с ложным третьим голосом.
+Итог17.65% unchanged: общий показатель скрывает противоположные срезы.
+На3natural dev и2известных transfer sessions ни одного принятогоsplit,метрики unchanged.
+**ADR: reject whole-turn и selective splitting для SDK.** Cosine novelty короткой реплики
+не отличает нового человека от вариативности того же голоса; repetition одного фрагмента
+в structural fixture не является независимым подтверждением speaker identity.
+
+Следующая гипотеза — заменить локальные masks/кластеризацию на slot-based streaming model.
+Публичный Sortformer v2.1 ONNX492242946bytes закреплён revision/SHA,лицензия
+[NVIDIA Open Model License](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/).
+[Official card/config](https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1/tree/cd03eee90fbec18297ac31b8c21546e596b7f71c),
+[ONNX export](https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx/tree/6418561696a11506e38eb0babd64d7d1081554d5).
+Model имеет4sigmoid slots,число голосов не подаётся; больше4неподдерживается.
+Research NumPy frontend/state по
+[NeMo](https://github.com/NVIDIA-NeMo/NeMo/blob/cd61689d41b1962d3e1957ae8faf28bf8bee0e3b/nemo/collections/asr/modules/sortformer_modules.py),
+CPU ORT1.23.2/4threads,безTorch; NeMo numerical parity пока не доказана.
+Frontend:128Slaney,FFT512/hop160,symmetricHann400,preemph.97,no norm,ditheroff.
+Config извлечён первым tar member из pinned upstream.nemo; полные upstream веса не скачаны.
+140 — harness provenance error до загрузки модели:не был передан sdk_sha256; сохранён,
+повтор143 с правильным hash существующего SDK.141/142 не запускались.
+
+### exp_0143–0148 — stateful Sortformer screening (завершён)
+
+Frozen profiles из official card: buffered chunk340/right40/FIFO40/update300 (buffer30.4s),
+low chunk6/right7/FIFO188/update144 (buffer1.04s),cache188,left1 — frames по80ms.
+Это buffer latency без compute; postprocessing пока offline (.5posterior,.3s speech,.5s gap),
+не готовый causal API. Host research хранит≤180s PCM,но attention/state окна ограничены.
+Ни слово,ни word timestamp не пересчитываются: используется тот же frozen ASR trace.
+
+Smoke143/144/145 (buffered-whole/low-whole/low-window): общийcpWER25.29% во всех3режимах
+против17.65% ERes; clean6.45%,short20.00%,noise42.31%.
+RTF толькоdiarizer .022/.523/.569; process-lifetimeRSS1332352/755676/747712KiB.
+Whole vs window **не exact**: centeredSTFT/preemphasis на границах окон меняют posteriors;
+фактические intervals/cpWER в этих fixtures совпадают. Не путать это с NeMo parity.
+Четыре model-free tests проверяют LC/RC trimming,arrival-window пределы,cache compression/reset,
+finite silence/subframe features. Model inference в этих tests не симулирует качество.
+
+Natural buffered146:cpWER30.51% против44.64% принятогоnativeopt-in99;
+per-file21.53/14.07/56.35% против22.73/46.29/66.24%.
+Host diarizerRTF.0355,peak processRSS1472196KiB≈1.40GiB,без одновременногоASR.
+
+| Native opt-in99 / Sortformer | DER | JER | cpWER | Host diarizer RTF | peak process RSS KiB |
+| --- | --- | --- | --- | --- | --- |
+| ERes global.4 | 21.16% | 32.97% | 44.64% | не парный current замер | 763500 (весьpipeline) |
+| Buffered146 | 14.67% | 25.49% | 30.51% | .0355 | 1472196 |
+| Low/window147 | 14.41% | 23.59% | 29.93% | .8318 | 824640 |
+
+Analysis148: lexical sequence/timestamps/attribution воспроизводятся из одногоASRtrace.
+Paired10k bootstrap по3записям,seed42: buffered−native cpWER95%CI[-32.23,-1.20]pp,
+DER[-17.16,+.63]pp,JER[-23.30,+4.82]pp. Low−native cp[-30.69,-3.83]pp,
+DER[-16.04,-.65]pp,JER[-22.34,+2.36]pp. Малые exploratory CI на known silver
+не подтверждают people-disjoint обобщение; no gold gate. Whole/window controls144/145
+дают posterior maxdelta .071/.101/.042 и1/0/2 flips по.5threshold,хотя экспорт/счёт совпал.
+**Решение:** сохранитьоба как research candidates,SDK/default не менять; low существенно дорожеCPU,
+buffered требует30.4sвходного буфера. Postprocessing offline,arrival-paced end-to-end latency не измерена.
+
+Далее149–152: [ORT dynamic quantization](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+только constant-weightMatMul,per-channelQInt8,Conv остаётсяFP32,без calibration/reference данных.
+492242946→182478884bytes; SHA718f5457…,две независимые конверсии byte-identical.
+Алгоритм/parentSHA/onnx1.17.0/ORT1.23.2 закреплены вlock; `bootstrap_models.py` воспроизводит derivation.
+Сначала dev+smoke A/B,затем выбрать доtransfer и проверить2известные regression sessions.
+
+**До transfer153–159:** по149 выбран **buffered MatMul-INT8 для file-mode исследования**:
+dev cpWER29.34% противFP32buffered30.51%,diarizerRTF.0247,peakRSS1171748KiB.
+Это выбор кандидата,не SDK/default. Low151 ещё завершается;1.04sрежим — отдельный latency tradeoff.
+Дополнительно заморожен план нового source-file holdout `astrology.wav` из того жеpublisher:
+сначала native baseline155,затем единственный заранее выбранный кандидат156;без подборапорогов.
+Исходный WAV1,030,418,366bytes:Range-префикс44.1kHz/stereo16bit,полныйsourceне скачивается.
+Разделение людей/независимыйgold всё ещё не подтверждены;2старых transfer уже known regressions.
+
+### exp_0149–0161 — INT8 и переносимость: кандидат отклонён
+
+Buffered INT8:dev DER13.38%,JER24.07%,cpWER29.34%,RTF.0247,RSS1171748KiB.
+Low INT8:DER15.11%,JER24.69%,cpWER30.59%,RTF.4630,RSS516896KiB;
+FP32low29.93%cp/.8318RTF/824640KiB. Direct low quantization analysis161:
+cp delta+.665pp,record bootstrap95%CI[0,+2.03]pp — экономия ресурсов с риском качества.
+Buffered vsFP32 cp delta−1.16pp,CI[-2.87,0]pp; не объявлять достоверное улучшение квантованием.
+Smoke150 остаётся25.29%cpWER (хужеERes17.65%); короткий третийslot неактивен даже вFP32.
+
+Frozen bufferedINT8 transfer (baseline — native EResglobal.4,тот жеASR):
+
+| Source file / baseline→candidate | DER | JER | cpWER |
+| --- | --- | --- | --- |
+| sFt153/157 | 12.98→52.13% | 11.13→72.08% | 20.65→100.22% |
+| movie154/158 | 21.25→18.29% | 16.59→19.21% | 33.42→30.77% |
+| new astrology155–156/159 | 10.23→4.39% | 26.09→4.67% | 15.57→12.93% |
+
+Astrology:178.85s,3reference voices,379words,normalizedWER8.71% одинаковый;
+85publisher text edits по full-sourceannotation,по-прежнему silver/no manualwordGT.
+Range0..31752077,sourceprefixSHA7584633d…,безfullsourceSHA;models/пороги выбраны доquality outputs.
+157–159 имеютn=1:bootstrap intervals вырожденные,не использовать как статистическое доказательство.
+
+**ADR: reject promotion Sortformer v2.1 FP32/MatMul-INT8 в текущем frontend/state.**
+FP32 control160 наsFt повторяетcp100.22%,DER52.07%: ошибка не вызванаINT8.
+Пересеченияpredicted/GT по27.2sокнам показываютslot0 на обоихreferenceголосах почти весьфайл,
+slot1только~3.4s — speaker collapse,а не доказанная перестановка двухstableID.
+Точная первопричина/model-vs-frontend parity не локализована; это отказ кандидату,не всему семейству моделей.
+Native SDK/default и принятый opt-in остаются прежними.
+
+Все19research tests,task/manifest checks иmodel SHA verification прошли.
+Dispatch теперь сам фиксируетgit/host/CPU/affinity/thread env **перед** каждым следующимjob,
+включаяfailure; новые161артефакты это проверяют. Историческим timings эти поля заднимчислом не приписываются.
+Далее: [Nemotron3Diarization](https://huggingface.co/nvidia/Nemotron-3-Diarization)8slots
+и frontend/state conformance; найденpublicONNXQ8≈120MB externalweights,но пока не измерен.

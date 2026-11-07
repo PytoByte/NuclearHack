@@ -1,0 +1,67 @@
+[
+  {
+    "experiment": "exp_0149",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "sortformer-streaming-matmul-int8",
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Same pinned Sortformer/frontend/state, only constant-weight MatMul dynamically INT8 per-channel; measure speaker quality, memory and RTF before considering SDK"
+  },
+  {
+    "experiment": "exp_0150",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "sortformer-streaming-matmul-int8",
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Same pinned Sortformer/frontend/state, only constant-weight MatMul dynamically INT8 per-channel; measure speaker quality, memory and RTF before considering SDK"
+  },
+  {
+    "experiment": "exp_0151",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "sortformer-streaming-matmul-int8",
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "low",
+      "--frontend",
+      "window"
+    ],
+    "hypothesis": "Same pinned Sortformer/frontend/state, only constant-weight MatMul dynamically INT8 per-channel; measure speaker quality, memory and RTF before considering SDK"
+  },
+  {
+    "experiment": "exp_0152",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--candidates",
+      "exp_0146",
+      "exp_0149",
+      "exp_0147",
+      "exp_0151",
+      "--comparison-baseline",
+      "exp_0146"
+    ],
+    "hypothesis": "Paired silver quality deltas vs FP32 buffered, same words, recording bootstrap; quantify quantization quality cost separately from speed"
+  }
+]

@@ -187,6 +187,52 @@
         "models/horizon-punct-small/model_quantized.onnx"
       ],
       "scope": "research-only multilingual INT8-embedding ONNX tagger; no mobile integration"
+    },
+    {
+      "id": "sortformer-streaming",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "revision": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "upstream": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "upstream_revision": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+      "files": [
+        "models/sortformer-streaming/model.onnx",
+        "models/sortformer-streaming/MODEL_EXPORT.md",
+        "models/sortformer-streaming/MODEL_UPSTREAM.md"
+      ],
+      "scope": "research candidate only; maximum4speaker slots, no native SDK integration",
+      "upstream_config": {
+        "member": "model_config.yaml",
+        "archive_url": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1/resolve/cd03eee90fbec18297ac31b8c21546e596b7f71c/diar_streaming_sortformer_4spk-v2.1.nemo",
+        "member_sha256": "2865d469c4d2aac54aa5b8a956b2423c053806dd20d5bf5d08675942a1acface",
+        "full_archive_downloaded": false,
+        "preprocessor": {
+          "sample_rate": 16000,
+          "normalize": "NA",
+          "window_size": 0.025,
+          "window_stride": 0.01,
+          "window": "hann",
+          "features": 128,
+          "n_fft": 512,
+          "dither": 1e-05
+        },
+        "max_num_of_spks": 4
+      }
+    },
+    {
+      "id": "sortformer-streaming-matmul-int8",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "revision": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "upstream": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "upstream_revision": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+      "files": [
+        "models/sortformer-streaming/model.matmul-int8.onnx",
+        "models/sortformer-streaming/model.onnx"
+      ],
+      "scope": "research-only MatMul constant-weight dynamic INT8; convolution stays FP32; max4 slots; not SDK preset"
     }
   ],
   "files": [
@@ -617,6 +663,53 @@
       "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
       "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
       "license": "Apache-2.0"
+    },
+    {
+      "path": "models/sortformer-streaming/model.onnx",
+      "url": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx/resolve/6418561696a11506e38eb0babd64d7d1081554d5/diar_streaming_sortformer_4spk-v2.1.onnx",
+      "sha256": "82b9c735e1cfc6b36b4ff8a994d9a0573e922d0e80a58a8553b2c58f7aff0c00",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/MODEL_EXPORT.md",
+      "url": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx/resolve/6418561696a11506e38eb0babd64d7d1081554d5/README.md",
+      "sha256": "49a690acf4ca7b3ec5baacdf4b9e39a9664ef352d8f3d968641e5704556d9d1e",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/MODEL_UPSTREAM.md",
+      "url": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1/resolve/cd03eee90fbec18297ac31b8c21546e596b7f71c/README.md",
+      "sha256": "0cfd901cb5e44b20b107f939532f772905a4f1da453182a4047963e6eb87d619",
+      "source": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "version": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/model.matmul-int8.onnx",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)",
+      "derivation": {
+        "kind": "ort-matmul-dynamic-int8-v1",
+        "input": "models/sortformer-streaming/model.onnx",
+        "input_sha256": "82b9c735e1cfc6b36b4ff8a994d9a0573e922d0e80a58a8553b2c58f7aff0c00",
+        "onnx_version": "1.17.0",
+        "ort_version": "1.23.2",
+        "op_types": [
+          "MatMul"
+        ],
+        "per_channel": true,
+        "weight_type": "QInt8",
+        "extra_options": {
+          "MatMulConstBOnly": true
+        }
+      },
+      "sha256": "718f5457068f8e97c28a347363100202ec0a94c10c75e56abe109cadf4107e53",
+      "size_bytes": 182478884
     }
   ]
 }

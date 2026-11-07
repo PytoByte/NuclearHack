@@ -1,0 +1,15 @@
+[
+  {
+    "experiment": "exp_0148",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--candidates",
+      "exp_0146",
+      "exp_0147",
+      "--frontend-pair",
+      "exp_0144",
+      "exp_0145"
+    ],
+    "hypothesis": "Aggregate paired DER/JER/cpWER vs native global.4; recording bootstrap CI and frozen frontend-only control, lexical sequence must reproduce"
+  }
+]

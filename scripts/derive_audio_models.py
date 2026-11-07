@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic metadata-only adaptation of a pinned GigaAM FP32 ONNX export."""
+"""Reproduce pinned local model derivations; source weights stay unchanged."""
 import hashlib
 from pathlib import Path
 from bootstrap_models import ROOT,sha256
@@ -12,6 +12,22 @@ def derive(item):
         if not p.is_relative_to(ROOT) or p.is_relative_to(ROOT/'task'):raise ValueError('Invalid derivation path')
     if sha256(source)!=spec['input_sha256']:raise ValueError('Invalid derivation source')
     if source==output:raise ValueError('Derivation cannot overwrite its source')
+    if spec['kind']=='ort-matmul-dynamic-int8-v1':
+        import tempfile
+        import onnx
+        import onnxruntime
+        from onnxruntime.quantization import quantize_dynamic,QuantType
+        if onnx.__version__!=spec['onnx_version'] or onnxruntime.__version__!=spec['ort_version']:
+            raise ValueError('Unexpected ONNX/ORT quantizer versions')
+        output.parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=output.parent) as temp:
+            temporary=Path(temp)/'model.onnx'
+            quantize_dynamic(source,temporary,op_types_to_quantize=['MatMul'],per_channel=True,
+                weight_type=QuantType.QInt8,extra_options={'MatMulConstBOnly':True})
+            actual=sha256(temporary)
+            if item.get('sha256') and actual!=item['sha256']:raise ValueError('Derived ONNX SHA mismatch')
+            temporary.replace(output)
+        return dict(sha256=actual,size_bytes=output.stat().st_size)
     if spec['kind']=='llama-q8-to-q4-k-m-v1':
         import subprocess
         import tempfile

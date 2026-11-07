@@ -16,9 +16,11 @@ Measured results and ADRs: `RESEARCH.md`.
   sounds/meaning. These are qualitative observations, not measured WER/DER.
 - The user has not yet tested ordinary speech. Keep it a separate control slice.
 - Observability is being improved in the client.
-- Evaluate text, speakers, timing, punctuation and resources together. The user
-  reports substantial scoring across components; do not optimize only WER/RTF
-  or invent a new numerical score without an agreed evaluation protocol.
+- Latest priority: stronger ASR/text with punctuation first; diarization, overlap
+  and timing remain measured, but do not trade away ASR quality for speaker quality.
+  Evaluate all components and RTF/RAM without inventing numerical scoring weights.
+- APK size is not graded according to the Q&A. Do not reject larger weights solely
+  for distribution size; the4GB AVD memory limit and runtime cost still apply.
 
 ## Outstanding quality goals
 
@@ -26,8 +28,11 @@ Measured results and ADRs: `RESEARCH.md`.
   hashes and annotation provenance, and define what counts as each speaker.
 - Trace incorrect words through backend ASR text, word assembly and final JSON;
   separate acoustic/decoding errors from boundaries/merge and attribution errors.
+- Compare stronger ASR/context/decoding candidates against the current model;
+  quantization/FP32 is an experimental factor, not an automatic quality ranking.
 - Test causal block changes for musical accompaniment, short/overlapping voices
   and chunk boundaries. Check gains against ordinary Russian dialogue controls.
+- Report ASR recovery and speaker attribution separately for overlapping speech.
 - Keep separate per-domain reports and a Pareto/tradeoff view of WER/CER,
   punctuation, DER/JER/cpWER, timestamps when annotated, and RTF/RAM.
 - Investigate the "Серёга Пират" speaker case; do not assign unrelated historical

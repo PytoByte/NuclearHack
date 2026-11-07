@@ -12,8 +12,8 @@
 ## Audio development workflow
 
 - Read `docs/ARCHITECTURE.md` and `docs/RESEARCH.md` before audio work.
-  `docs/AGENT_AUDIO_HACKATHON.md` is the user's preserved planning reference;
-  the current headless SDK scope overrides its Android-app-first sequence.
+  `task/task.md` is the original competition brief and Android-app-first
+  reference; the current headless SDK scope overrides that sequence.
 - Work on `dev`; preserve unrelated user changes. Native SDK: C++17/C ABI.
 - Keep `docs/ARCHITECTURE.md` aligned with implemented/accepted code. Record
   stages, concise experiments and ADRs in `docs/RESEARCH.md`; avoid extra docs.
@@ -27,7 +27,7 @@
 
 ## Качество кода
 
-- Установить Git-хуки: `./gradlew installGitHooks`
-- Локальный прогон ktlint и detekt: `./gradlew ktlintCheck detekt`
-- Локальный прогон Android Lint: `./gradlew :app:lintDebug`
+- Установить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`
+- Локальный прогон ktlint и detekt: `cd src/mobile/android && ./gradlew ktlintCheck detekt`
+- Локальный прогон Android Lint: `cd src/mobile/android && ./gradlew :app:lintDebug`
 - Перед коммитом хуки запускаются автоматически; не используй `--no-verify`.

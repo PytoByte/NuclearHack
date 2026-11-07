@@ -96,22 +96,27 @@ object M4aDecoder {
 
     private fun queueInput(extractor: MediaExtractor, codec: MediaCodec): Boolean {
         val inputIndex = codec.dequeueInputBuffer(INPUT_TIMEOUT_US)
-        if (inputIndex < 0) return false
-        val inputBuffer = requireNotNull(codec.getInputBuffer(inputIndex)) { "Декодер не предоставил входной буфер" }
-        val size = extractor.readSampleData(inputBuffer, BUFFER_OFFSET)
-        if (size == END_OF_INPUT) {
-            codec.queueInputBuffer(
-                inputIndex,
-                BUFFER_OFFSET,
-                BUFFER_OFFSET,
-                EOS_PRESENTATION_TIME_US,
-                MediaCodec.BUFFER_FLAG_END_OF_STREAM,
-            )
-            return true
+        return if (inputIndex < 0) {
+            false
+        } else {
+            val inputBuffer =
+                requireNotNull(codec.getInputBuffer(inputIndex)) { "Декодер не предоставил входной буфер" }
+            val size = extractor.readSampleData(inputBuffer, BUFFER_OFFSET)
+            if (size == END_OF_INPUT) {
+                codec.queueInputBuffer(
+                    inputIndex,
+                    BUFFER_OFFSET,
+                    BUFFER_OFFSET,
+                    EOS_PRESENTATION_TIME_US,
+                    MediaCodec.BUFFER_FLAG_END_OF_STREAM,
+                )
+                true
+            } else {
+                codec.queueInputBuffer(inputIndex, BUFFER_OFFSET, size, extractor.sampleTime, NO_BUFFER_FLAGS)
+                extractor.advance()
+                false
+            }
         }
-        codec.queueInputBuffer(inputIndex, BUFFER_OFFSET, size, extractor.sampleTime, NO_BUFFER_FLAGS)
-        extractor.advance()
-        return false
     }
 
     private fun drainOutput(
@@ -125,17 +130,16 @@ object M4aDecoder {
             val changed = codec.outputFormat
             state.sampleRate = changed.getInteger(MediaFormat.KEY_SAMPLE_RATE)
             state.channelCount = changed.getInteger(MediaFormat.KEY_CHANNEL_COUNT).coerceAtLeast(MIN_CHANNEL_COUNT)
-            return false
+        } else if (outputIndex >= BUFFER_OFFSET) {
+            if (info.size > 0) state.pcmBytes += writeDecodedPcm(codec, outputIndex, info, stream, state.channelCount)
+            codec.releaseOutputBuffer(outputIndex, false)
+        } else {
+            check(
+                outputIndex == MediaCodec.INFO_TRY_AGAIN_LATER ||
+                    outputIndex == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED,
+            ) { "Декодер вернул неизвестный статус $outputIndex" }
         }
-        if (outputIndex == MediaCodec.INFO_TRY_AGAIN_LATER ||
-            outputIndex == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED
-        ) {
-            return false
-        }
-        check(outputIndex >= BUFFER_OFFSET) { "Декодер вернул неизвестный статус $outputIndex" }
-        if (info.size > 0) state.pcmBytes += writeDecodedPcm(codec, outputIndex, info, stream, state.channelCount)
-        codec.releaseOutputBuffer(outputIndex, false)
-        return (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0
+        return outputIndex >= BUFFER_OFFSET && (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0
     }
 
     private fun writeDecodedPcm(

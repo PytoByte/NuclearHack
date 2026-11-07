@@ -232,16 +232,9 @@ nh_status FileTranscriber::run() {
         const uint32_t budget = speaker && speaker->max_audio_seconds
                                     ? std::min(config->max_audio_seconds, speaker->max_audio_seconds)
                                     : config->max_audio_seconds;
-        DecodeContext decoded{
-            spool.file(),
-            0,
-            static_cast<uint64_t>(budget) * 16000 + (speaker ? 0 : 16),
-            progress,
-            user,
-            NH_OK,
-            false,
-            false,
-            {}};
+        DecodeContext decoded{spool.file(), 0,     static_cast<uint64_t>(budget) * 16000 + (speaker ? 0 : 16),
+                              progress,     user,  NH_OK,
+                              false,        false, {}};
         if (speaker || (options && options->checkpoint_directory && *options->checkpoint_directory))
             decoded.pcm_hash = std::make_unique<picosha2::hash256_one_by_one>();
         {

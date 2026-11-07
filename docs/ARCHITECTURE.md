@@ -38,8 +38,9 @@ real-time микрофонный ASR. Полный600s synthetic soak не яв�
 - ASR: GigaAM-v3 CTC INT8 emits punctuated text. Do not rewrite, smooth,
   summarize, normalize spoken words, or remove fillers in transcript output.
 - Diarization: Nemotron3 Q8 is diarization only. It cannot replace ASR.
-- Qwen summary is optional and isolated. Transcript JSON must remain unchanged
-  by summary generation.
+- Qwen summary remains an optional compatibility capability, outside the current
+  user scope. It is not used by transcription or required in the selected bundle.
+  Existing summary generation must never change transcript JSON.
 - All model execution is offline. Weights are supplied before build/deployment.
 - Automatic voice count can use up to 8 slots; this is not a guarantee that
   all 8 speakers are recognized.

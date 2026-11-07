@@ -13,7 +13,8 @@
 - Create a separate branch from the current base branch (`dev`) for the task;
   preserve unrelated user changes.
 - Read `docs/ARCHITECTURE.md`, `docs/GOALS.md`, `docs/RESEARCH.md` before
-  audio work.
+  audio work. For audio research, follow the single playbook
+  [`docs/AUDIO_RESEARCH_AGENT.md`](docs/AUDIO_RESEARCH_AGENT.md).
 - `task/task.md` is the original competition brief and Android-app-first
   reference; the current headless SDK scope overrides that sequence.
 - Native SDK: C++17 / C ABI.
@@ -33,6 +34,8 @@
 
 - `docs/ARCHITECTURE.md`: keep aligned with implemented/accepted code.
 - `docs/RESEARCH.md`: record stages, concise experiments, and ADRs. Avoid extra docs.
+- `docs/AUDIO_RESEARCH_AGENT.md`: the research loop, measurement rules, and tool map;
+  keep completed checklists and historical results out of this instruction.
 - Update related docs in the same change when behavior, API, config, build command,
   model availability, or public limitations change.
   - `src/audio` API/config -> `docs/ARCHITECTURE.md`, `docs/GOALS.md`
@@ -58,8 +61,9 @@
 - Offline invariant: `INTERNET` must stay absent from the manifest. Models remain
   assets copied to `filesDir/models`. Shipped SDK/app have no network access.
   Models are bootstrapped by developer tooling only.
-- Presets: final preset first, legacy preset as fallback. Optional Qwen summary
-  only when runtime and weights are present; it does not change transcript JSON.
+- Presets: final preset first, legacy preset as fallback. LLM/summary is outside
+  the current user scope; do not add its weights or features by default. Existing
+  optional summary APIs remain isolated and never change transcript JSON.
 - Keep blocking native calls on the IO dispatcher.
 - Quality tools (run before finalizing, not every iteration):
   - `cd src/mobile/android && ./gradlew ktlintCheck detekt`

@@ -1,57 +1,63 @@
 # Goals and Task Alignment
 
-Short planning and goal view. Technical truth is in `ARCHITECTURE.md`;
-research history and measurement provenance are in `RESEARCH.md`. Keep this
-file focused on outstanding goals and non-targets.
+Current priorities, not a completed checklist. Architecture: `ARCHITECTURE.md`.
+Research loop and tools: [AUDIO_RESEARCH_AGENT.md](AUDIO_RESEARCH_AGENT.md).
+Measured results and ADRs: `RESEARCH.md`.
 
-## Outstanding goals
+## Current user decisions — 07.11.2026
 
-### Processing UX
+- The user verified the application journey and confirmed it works. Do not
+  reopen it as a functional blocker. This is user verification, not a new
+  instrumented APK quality/time/memory benchmark.
+- LLM/summary is outside current scope: it does not serve a transcription block,
+  is not wanted as an extra feature, and adds substantial model weight.
+- Main work is quality. On personal music/rap files the user reports speaker
+  errors and word errors: extra letters or merged words despite intelligible
+  sounds/meaning. These are qualitative observations, not measured WER/DER.
+- The user has not yet tested ordinary speech. Keep it a separate control slice.
+- Observability is being improved in the client.
+- Evaluate text, speakers, timing, punctuation and resources together. The user
+  reports substantial scoring across components; do not optimize only WER/RTF
+  or invent a new numerical score without an agreed evaluation protocol.
 
-- Add a visible elapsed timer while transcription is running.
-- Add a live "what is happening now" indicator using native SDK progress
-  stages.
-- Add on-demand detailed logs or diagnostics for debug and user explanation.
-- Make clear whether processing is frozen or progressing.
-- Show percentage long enough only as part of the live stage state, not as
-  ambiguous frozen progress.
-- Add an audible/visual processing-state label on the transcript card.
+## Outstanding quality goals
 
-### App build clarity
+- Reproduce music/rap failures when the recordings are available, record source
+  hashes and annotation provenance, and define what counts as each speaker.
+- Trace incorrect words through backend ASR text, word assembly and final JSON;
+  separate acoustic/decoding errors from boundaries/merge and attribution errors.
+- Test causal block changes for musical accompaniment, short/overlapping voices
+  and chunk boundaries. Check gains against ordinary Russian dialogue controls.
+- Keep separate per-domain reports and a Pareto/tradeoff view of WER/CER,
+  punctuation, DER/JER/cpWER, timestamps when annotated, and RTF/RAM.
+- Investigate the "Серёга Пират" speaker case; do not assign unrelated historical
+  metrics to it without a matching source/run.
+- Add independent dialogue data/word timing references where feasible. Existing
+  known silver files are regression controls, not a fresh blind test.
 
-- Display build/version label in the app.
-- Make it obvious whether the APK is an old or current build.
-- Link build label to Git commit/build provenance where practical.
+## Client and delivery follow-up
 
-### Quality and documentation
+- Continue timer/live-stage/diagnostics work and show the build/version identity.
+- Select packaged files from the active preset/lock manifest; avoid copying
+  unused Qwen, alternative weights and unrelated legacy models merely because
+  they exist on the developer machine.
+- Keep evaluator delivery instructions consistent with actual model IDs/hashes.
+- Record full-app performance separately when measured. SDK CLI runs do not
+  become app benchmarks because the user journey was verified manually.
 
-- Add evaluator model delivery guidance: exact presets, scripts, model sets,
-  and hashes.
-- Label every metric as host, AVD4096MiB, or physical ARM.
-- Run Android app benchmarks where feasible, with run IDs.
-- Investigate and improve quality on the "Серёга Пират" speaker case.
+## Optional and non-target work
 
-## Optional goals
-
-- Real-time transcription mode: Android setting stays disabled until the core
-  buffered SDK gains an explicit streaming profile.
-- Local LLM audit or summary: planned as a separate optional path; transcript
-  JSON is never replaced.
-- In-app audio recording: planned. Import through SAF already works.
-
-## Non-targets
-
-- Cross-session / cross-file speaker identity.
-- Channel-aware diarization.
-- Realtime microphone ASR as default product behavior.
-- Forced alignment or manual word timestamps unless new ground truth exists.
-- Full Android app performance claim when no measured artifact exists.
-- Physical ARM quality claim from cross-compile alone.
+- Real-time transcription and in-app recording are separate future tasks;
+  buffered file processing is the current mode.
+- No new LLM audit/summary feature or required Qwen delivery. Existing optional
+  APIs may remain for compatibility; they never rewrite transcript JSON.
+- Cross-file speaker identity and channel-aware diarization are not immediate
+  product goals. Explore only under an explicit useful quality hypothesis.
+- No accuracy claim for word timestamps without manual ground truth, physical
+  ARM performance from cross-build, or synthetic soak as natural-dialogue quality.
 
 ## Metric rules
 
-- Label each metric with run ID and platform.
-- Use `not measured` when no artifact exists.
-- Host screening metrics are not final Android evidence.
-- Word timestamp accuracy cannot be claimed without manual word-level ground
-  truth.
+Every number names its run ID, corpus/protocol and platform. Missing measurements
+stay `null`/`not measured` with a reason. User observations, host screening,
+AVD4096MiB SDK runs and full-app measurements remain distinct evidence.

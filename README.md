@@ -51,6 +51,7 @@ uv run python scripts/audio_tools.py models config/audio-models.lock.json
 - Архитектура: `docs/ARCHITECTURE.md`
 - Цели и статусы: `docs/GOALS.md`
 - Исследования: `docs/RESEARCH.md`
+- Цикл и правила research-агента: [docs/AUDIO_RESEARCH_AGENT.md](docs/AUDIO_RESEARCH_AGENT.md)
 - Правила репозитория: `AGENTS.md`
 - SDK: `src/audio/README.md`
 - Android-клиент: `src/mobile/android/README.md`

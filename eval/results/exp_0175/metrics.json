@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_0175",
+  "scope": "native streaming C ABI, caller retains <=180s research PCM; host, not Android/ARM qualification",
+  "load_seconds": 0.057250667006883305,
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "audio_seconds": 31.3564375,
+      "wall_seconds": 1.3309739010001067,
+      "inference_rtf": 0.04244659174053515,
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 501703,
+        "emitted_frames": 3135,
+        "model_calls": 2,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 486440,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 3040,
+        "inference_seconds": 0.9821913
+      },
+      "process_peak_rss_kib": 289856,
+      "prototype_comparison": {
+        "max_posterior_delta": 1.519918441772461e-06,
+        "threshold_flips": 0
+      }
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "audio_seconds": 23.5210625,
+      "wall_seconds": 0.44784123900171835,
+      "inference_rtf": 0.019040008885726076,
+      "speaker_attributed": {
+        "errors": 6,
+        "reference_words": 30,
+        "cpwer": 0.2
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 2,
+      "unknown_utterance_fraction": 0.25,
+      "unknown_word_fraction": 0.06666666666666667,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 376337,
+        "emitted_frames": 2352,
+        "model_calls": 1,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 376337,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 2352,
+        "inference_seconds": 0.272184877
+      },
+      "process_peak_rss_kib": 290928,
+      "prototype_comparison": {
+        "max_posterior_delta": 7.748603820800781e-07,
+        "threshold_flips": 0
+      }
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "audio_seconds": 39.7831875,
+      "wall_seconds": 0.850400103998254,
+      "inference_rtf": 0.021375866476215716,
+      "speaker_attributed": {
+        "errors": 8,
+        "reference_words": 78,
+        "cpwer": 0.10256410256410256
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 2,
+      "unknown_utterance_fraction": 0.2222222222222222,
+      "unknown_word_fraction": 0.03896103896103896,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 636531,
+        "emitted_frames": 3978,
+        "model_calls": 2,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 486440,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 3040,
+        "inference_seconds": 0.770654689
+      },
+      "process_peak_rss_kib": 316016,
+      "prototype_comparison": {
+        "max_posterior_delta": 2.384185791015625e-06,
+        "threshold_flips": 0
+      }
+    }
+  ],
+  "controls": {
+    "transport_partition_exact": {
+      "block_frames": [
+        997,
+        400000
+      ],
+      "emitted_frames": 3135,
+      "max_posterior_delta": 0.0
+    },
+    "cancel_reentry": {
+      "status": 4,
+      "nested_reset_status": [
+        5
+      ],
+      "flush_after_cancel_status": 1,
+      "callbacks": [
+        {
+          "frames": 2720,
+          "slots": 8,
+          "start_sample": 0
+        }
+      ]
+    },
+    "duration_budget": {
+      "extra_sample_status": 1,
+      "received_samples": 16000,
+      "flush_idempotent": true
+    },
+    "nonfinite_input_rejected_without_consumption": true
+  },
+  "cpwer": 0.09411764705882353,
+  "inference_rtf": 0.027775154749431534,
+  "process_peak_rss_kib": 316016
+}

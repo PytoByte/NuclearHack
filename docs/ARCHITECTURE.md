@@ -190,6 +190,38 @@ Sortformer v2.1 FP32/MatMul-INT8 отклонён для интеграции:с
 при улучшениях на других файлах. Это не новый C ABI/default;frontend/state numerical parity с NeMo
 и target-memory не квалифицированы. Все альтернативные модели остаются research-only.
 Nemotron3Q8 улучшил DER/cpWER на3known transfer files;но имеет dev/JER-регрессии,
-поэтому принят только для отдельного native prototype. Изменений C ABI/default пока нет.
+поэтому реализован отдельным experimental native API;основнойfilepreset прежний.
 Torch/librosa устанавливается отдельной dev-командой `make frontend-reference-bootstrap` для контроля
 спектрограммы;в runtime SDK не входит. Native ASR words/timestamps при этих diarization A/B сохраняются.
+
+### Stateful speaker API (experimental)
+
+`nh_streaming_diarizer_create/accept/flush/reset/get_stats/destroy` — additive CABI1.
+ПрямойCPUORT1.28.2 из тех же pinnedruntimeбиблиотек;C++headers1.28.2 скачиваютсяbootstrap,
+приватны SDK и включены вbuildprovenance. Runtime самостоятельный C++17/C ABI;
+reference Torch остаётся только инструментом разработчика.
+
+```text
+16kmono PCM blocks → bounded ring + global-timeline preemphasis/STFT/logmel
+  → Nemotron3Q8 + cache264/FIFO → 8 probabilities per10ms → client callback
+```
+
+Profile0:chunk9/right4/FIFO264/update222,nominalbuffer1.04s;
+profile1:340/40/40/300,30.4s;STFTstartup+2.5ms,computeдополнительно.
+Ring сохраняет201предыдущийsample и200lookahead;wholePCM не накапливает.
+МаксимальныйlogicalPCM486641samples (~1.86MiB) дляbuffered,
+features≤3040×128float;cache≤264×512float,FIFO≤40/264×512float.
+Это ограничения собственныхbufferов,не верхняя граница RSS всегоORT.
+
+Callback возвращаетrow-major `[frames][8]` borrowedf32posteriors иabsolute `start_sample`;
+шаг160source samples. IDs/slots scopedperstream;speaker count не подаётся.
+Транспортныеблоки1..400000samples не сбрасываютсостояние,flush завершаетреальныйEOF;
+последние<10msне образуютполнойrow. Configbudget0→600s,max3600s наstream/reset.
+Callbacks могутотменитьпосленейросетевогошага;cancel/runtimeerror требуетreset.
+Reset очищаетPCM/timeline/cache,сохраняяmodel session;stats даютcounters/NNtime/buffer sizes.
+Per-handlebusyguard запрещаетreentry;бюджетнесколькихlow-levelhandles контролируетклиент.
+
+Текст/word spans этотAPI не создаёт;существующийfileorchestrator используетERes2Net какпрежде.
+Нативныйbufferedsmoke175 совпалпоcpWER/threshold decisions сresearchprototype;
+split997vs400000samples exact. ASan/UBSan иcross-buildпройдены;новоеAndroidexecution,
+полныйnaturalnativeeval/low-profile иtargetRAMещёвпереди. Это не defaultpromotion.

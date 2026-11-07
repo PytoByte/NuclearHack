@@ -101,6 +101,57 @@ NH_API nh_status nh_diarizer_process(nh_diarizer *handle, const float *samples,
                                      void *user);
 NH_API void nh_diarizer_destroy(nh_diarizer *handle);
 
+/* Experimental stateful Nemotron3 ONNX diarization. This is independent of the
+ * existing file pipeline/default preset. Local graph and external weights must
+ * already be present. CPU only; eight model slots, automatic activity, no
+ * reference speaker count or cross-stream identity. Input is mono 16-kHz f32.
+ * Profile 0: 1.04s nominal input buffer; profile 1: 30.4s. Centered STFT adds
+ * 2.5ms at the first full window; computation time is additional.
+ * No transcript text or word timestamps are generated/changed by this API. */
+typedef struct nh_streaming_diarizer nh_streaming_diarizer;
+typedef struct nh_streaming_diarizer_config {
+  uint32_t struct_size;
+  const char *model;
+  uint32_t threads; /* 1..16 */
+  uint32_t profile; /* 0 = low latency, 1 = buffered file-mode */
+  uint32_t max_audio_seconds; /* 0 = 600, maximum 3600 per stream/reset */
+} nh_streaming_diarizer_config;
+/* Row-major probabilities[frames][speaker_slots], borrowed during callback.
+ * Each posterior row covers 160 original PCM samples (10ms); start_sample is
+ * an absolute source PCM offset. The final <160 samples have no complete row.
+ * Slots are stable within a stream. Rows are emitted once and never revised.
+ * Nonzero cancels after this inference step; reset before another stream. */
+typedef int32_t (*nh_speaker_frames_callback)(const float *probabilities,
+    uint32_t frames, uint32_t speaker_slots, uint64_t start_sample, void *user);
+typedef struct nh_streaming_diarizer_stats {
+  uint32_t struct_size;
+  uint32_t speaker_slots;
+  uint64_t received_samples;
+  uint64_t emitted_frames;
+  uint64_t model_calls;
+  uint64_t buffered_samples;
+  uint64_t peak_buffered_samples;
+  uint32_t cache_frames;
+  uint32_t fifo_frames;
+  uint32_t max_feature_frames;
+  double inference_seconds; /* synchronous model calls only */
+} nh_streaming_diarizer_stats;
+NH_API const char *nh_onnxruntime_version(void);
+NH_API nh_status nh_streaming_diarizer_create(const nh_streaming_diarizer_config *config,
+                                              nh_streaming_diarizer **out);
+/* 1..400000 finite PCM samples per call; transport block sizes do not reset
+ * model/frontend state. Cancellation is cooperative between inference calls.
+ * Runtime failure or cancellation terminates the stream until reset. */
+NH_API nh_status nh_streaming_diarizer_accept(nh_streaming_diarizer *handle,
+    const float *samples, uint32_t frames, nh_speaker_frames_callback callback, void *user);
+NH_API nh_status nh_streaming_diarizer_flush(nh_streaming_diarizer *handle,
+    nh_speaker_frames_callback callback, void *user);
+/* Reset source timeline/cache, retaining the model session for reuse. */
+NH_API nh_status nh_streaming_diarizer_reset(nh_streaming_diarizer *handle);
+NH_API nh_status nh_streaming_diarizer_get_stats(nh_streaming_diarizer *handle,
+                                                nh_streaming_diarizer_stats *out);
+NH_API void nh_streaming_diarizer_destroy(nh_streaming_diarizer *handle);
+
 /* Incremental Silero VAD. Emits unpadded source-frame ranges at 16 kHz;
  * caller applies padding and joins overlaps without changing source offsets. */
 typedef struct nh_vad nh_vad;

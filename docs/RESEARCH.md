@@ -4,14 +4,14 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, подготовка native opt-in Nemotron3Q8 после166–174.**
+**Сейчас: этап2, native Nemotron3Q8 smoke175 пройден; далее natural/target.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
 149–161: MatMul-only INT8/transfer завершены; **Sortformer v2.1 не проходит regression**,
 несмотря на dev выигрыш. Frontend control164 завершён;новая8slot-модель smoke165 прошла,
-natural dev/known transfer166–174 завершены. Далее — отдельный native backend и target-проверки;
-SDK/default сейчас не меняются.
+natural dev/known transfer166–174 завершены. Additive native streaming CABI реализован/проверен175;
+далее natural parity/low-profile и4GBx86AVD. Основной файловыйpreset не меняется.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -830,3 +830,26 @@ collapse прежнеймодели не повторился;но thirddev/JERm
 это покаPythonORT1.23.2,не Android/ARM. Следующее: C++17/CABI additive streaming handle,
 bounded PCM/features/cache,host parity/resource/cancel tests,затем4GBx86AVD.
 Существующие API/preset остаются прежними;frontends имеют измеренные floating-point differences.
+
+### exp_0175 — native streaming C ABI: smoke/controls завершены
+
+Добавлен отдельный `nh_streaming_diarizer_*`:C++17,прямой pinnedORT1.28.2CPU,
+16kPCMring→sparseSlaney128/FFT512→8slotmodel→boundedcache→10msposterior callbacks.
+Старые структуры/ABI1/filepreset сохранены. Config:threads1..16,profile0low/1buffered,
+duration0→600s/hard3600;accept≤400000finite samples;flush/reset/stats/destroy.
+LC0;stable source offset,однократная выдача;последние<160PCM samples не даютполной10msrow.
+model runtime/cancel failure требуетreset;onehandlebusyguard;model sessionreuseнаreset.
+Native нельзя называть готовым whole ASRstreaming:новыйAPI выдаёт speaker posteriors.
+
+175hostbuffered:smoke cpWER9.41% (3.23/20.00/10.26%),какпрототип165;
+posterior maxdelta≤2.39e-6,0thresholdflips. RTF.02778,load.0573s,
+peakprocessRSS316016KiB (~308.6MiB);отдельныйраунд,не paired speedup claim.
+Транспорт997vs400000samples даёт **exact** posterior arrays/callbackoffsets наclean31.36s.
+Cancel→4,nestedreset→5,flushпослеcancel→1;reset очищаетtimeline;
+1sbudgetextra sample→1 безconsumption,flushidempotent,NaNrejected безconsumption.
+Модель/decoderнеперезапускаются на каждом transport fragment;Oraclecount отсутствует.
+
+Проверки:3nativeCTest +14PythonCABI,3ASan/UBSanCTest,20research tests,
+ARM64/x86_64cross-build/16KiBELF ивсеmodelSHA прошли.
+ФизическийARM/Androidexecution новогоbackend **ещё не** проверены.
+Usercheckpoint:послеближайшегоэксперимента commit/pushdev,затем продолжить176+.

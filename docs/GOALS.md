@@ -8,14 +8,15 @@ file focused on outstanding goals and non-targets.
 
 ### Processing UX
 
-- Add a visible elapsed timer while transcription is running.
-- Add a live "what is happening now" indicator using native SDK progress
-  stages.
-- Add on-demand detailed logs or diagnostics for debug and user explanation.
-- Make clear whether processing is frozen or progressing.
-- Show percentage long enough only as part of the live stage state, not as
-  ambiguous frozen progress.
-- Add an audible/visual processing-state label on the transcript card.
+- Implemented: visible elapsed timer while transcription is running.
+- Implemented: live "what is happening now" indicator based on native SDK
+  progress stages.
+- Implemented: on-demand detailed diagnostics/logs dialog.
+- Implemented: clear progress health state showing whether processing is
+  progressing, waiting, or has no updates.
+- Implemented: percentage is displayed as part of the live stage state only.
+- Implemented: audible/visual processing-state label exposed semantically on
+  the processing card.
 
 ### App build clarity
 

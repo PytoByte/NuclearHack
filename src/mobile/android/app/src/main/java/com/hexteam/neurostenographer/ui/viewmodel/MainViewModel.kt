@@ -10,11 +10,21 @@ import com.hexteam.neurostenographer.audio.AudioEngine
 import com.hexteam.neurostenographer.data.model.Transcript
 import com.hexteam.neurostenographer.data.repository.TranscriptRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+enum class ProgressHealth {
+    Idle,
+    Progressing,
+    Waiting,
+    Stalled,
+}
 
 sealed interface ProcessingStage {
     data object Idle : ProcessingStage
@@ -38,6 +48,15 @@ data class MainState(
     val processing: ProcessingStage = ProcessingStage.Idle,
     val progress: Int = 0,
     val stageLabel: String = "",
+    val processingStartedAt: Long = 0L,
+    val elapsedMs: Long = 0L,
+    val lastProgressAt: Long = 0L,
+    val progressHealth: ProgressHealth = ProgressHealth.Idle,
+    val nativeStage: String = "",
+    val nativeDone: Long = 0L,
+    val nativeTotal: Long = 0L,
+    val progressUpdateCount: Int = 0,
+    val diagnosticLog: List<String> = emptyList(),
     val error: String? = null,
     val nativeAvailable: Boolean = false,
     val summaryAvailable: Boolean = false,
@@ -60,6 +79,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     @Volatile private var cancelRequested = false
     private var progressFloor = 0
+    private var processingTimer: Job? = null
 
     fun select(transcript: Transcript) {
         _state.update { it.copy(selected = transcript) }
@@ -76,6 +96,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun json(transcript: Transcript = _state.value.selected ?: _state.value.transcripts.first()): String =
         repository.toJson(transcript)
 
+    @Suppress("LongMethod")
     fun process(
         uri: Uri,
         displayName: String,
@@ -83,6 +104,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (_state.value.processing != ProcessingStage.Idle) return
         cancelRequested = false
         progressFloor = 0
+        processingTimer?.cancel()
+        val startedAt = System.currentTimeMillis()
         _state.update {
             it.copy(
                 processing = ProcessingStage.Preparing,
@@ -90,8 +113,44 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 stageLabel = "Подготовка",
                 error = null,
                 summary = null,
+                processingStartedAt = startedAt,
+                elapsedMs = 0L,
+                lastProgressAt = startedAt,
+                progressHealth = ProgressHealth.Progressing,
+                nativeStage = "",
+                nativeDone = 0L,
+                nativeTotal = 0L,
+                progressUpdateCount = 0,
+                diagnosticLog = listOf(formatProcessingLog(startedAt, startedAt, "start", 0L, 0L, 0)),
             )
         }
+        val timer =
+            viewModelScope.launch {
+                while (isActive) {
+                    delay(1_000L)
+                    val now = System.currentTimeMillis()
+                    _state.update { current ->
+                        if (current.processing == ProcessingStage.Idle) {
+                            current
+                        } else {
+                            val health =
+                                processingHealth(current.processing, now - current.lastProgressAt)
+                            val baseTime =
+                                if (current.processingStartedAt > 0L) {
+                                    current.processingStartedAt
+                                } else {
+                                    startedAt
+                                }
+                            current.copy(
+                                elapsedMs = now - baseTime,
+                                progressHealth = health,
+                            )
+                        }
+                    }
+                }
+            }
+        processingTimer = timer
+
         viewModelScope.launch {
             val result =
                 withContext(Dispatchers.IO) {
@@ -102,12 +161,32 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                             engine.transcribe(input) { stage, done, total ->
                                 onNativeProgress(stage, done, total)
                             }
+                        val now = System.currentTimeMillis()
+                        val startedAt = _state.value.processingStartedAt
+                        val entry =
+                            formatProcessingLog(
+                                now,
+                                startedAt,
+                                "export",
+                                output.length(),
+                                output.length(),
+                                99,
+                            )
                         _state.update {
-                            it.copy(processing = ProcessingStage.Exporting, progress = 99, stageLabel = "Сохранение")
+                            it.copy(
+                                processing = ProcessingStage.Exporting,
+                                progress = 99,
+                                stageLabel = "Сохранение",
+                                lastProgressAt = now,
+                                progressHealth = ProgressHealth.Progressing,
+                                diagnosticLog = (it.diagnosticLog + entry).takeLast(120),
+                            )
                         }
                         repository.create(displayName, output.readText())
                     }
                 }
+            processingTimer?.cancel()
+            processingTimer = null
             result.fold(
                 onSuccess = { transcript ->
                     _state.update { current ->
@@ -121,6 +200,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                             progress = 0,
                             stageLabel = "",
                             error = null,
+                            processingStartedAt = 0L,
+                            elapsedMs = 0L,
+                            lastProgressAt = 0L,
+                            progressHealth = ProgressHealth.Idle,
+                            nativeStage = "",
+                            nativeDone = 0L,
+                            nativeTotal = 0L,
+                            progressUpdateCount = 0,
+                            diagnosticLog = emptyList(),
                         )
                     }
                 },
@@ -131,6 +219,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                             progress = 0,
                             stageLabel = "",
                             error = if (cancelRequested) null else error.message ?: "Не удалось обработать файл",
+                            processingStartedAt = 0L,
+                            elapsedMs = 0L,
+                            lastProgressAt = 0L,
+                            progressHealth = ProgressHealth.Idle,
+                            nativeStage = "",
+                            nativeDone = 0L,
+                            nativeTotal = 0L,
+                            progressUpdateCount = 0,
+                            diagnosticLog = emptyList(),
                         )
                     }
                 },
@@ -141,7 +238,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun cancel() {
         if (_state.value.processing == ProcessingStage.Idle) return
         cancelRequested = true
-        _state.update { it.copy(stageLabel = "Отмена…") }
+        val startedAt = _state.value.processingStartedAt
+        val cancelEntry =
+            formatProcessingLog(
+                System.currentTimeMillis(),
+                startedAt,
+                "cancel_requested",
+                _state.value.nativeDone,
+                _state.value.nativeTotal,
+                _state.value.progressUpdateCount,
+            )
+        _state.update {
+            it.copy(
+                stageLabel = "Отмена…",
+                diagnosticLog = it.diagnosticLog + cancelEntry,
+            )
+        }
     }
 
     fun summarize(transcript: Transcript) {
@@ -210,15 +322,49 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val fraction = if (total > 0) (done.toDouble() / total).coerceIn(0.0, 1.0) else 0.0
         val percent = range.first + ((range.last - range.first) * fraction).toInt()
         progressFloor = maxOf(progressFloor, percent)
+        val now = System.currentTimeMillis()
+        val startedAt = _state.value.processingStartedAt
+        val entry = formatProcessingLog(now, startedAt, stage, done, total, percent)
         _state.update {
             it.copy(
                 processing = mapped,
                 progress = if (mapped == ProcessingStage.Complete) 100 else progressFloor,
                 stageLabel = StageProgress.label(mapped),
+                nativeStage = stage,
+                nativeDone = done,
+                nativeTotal = total,
+                progressUpdateCount = it.progressUpdateCount + 1,
+                lastProgressAt = now,
+                progressHealth = ProgressHealth.Progressing,
+                diagnosticLog = (it.diagnosticLog + entry).takeLast(120),
             )
         }
         return cancelRequested
     }
+}
+
+private fun processingHealth(
+    stage: ProcessingStage,
+    ageMs: Long,
+): ProgressHealth =
+    when {
+        stage == ProcessingStage.Complete -> ProgressHealth.Progressing
+        ageMs <= 5_000L -> ProgressHealth.Progressing
+        ageMs <= 20_000L -> ProgressHealth.Waiting
+        else -> ProgressHealth.Stalled
+    }
+
+@Suppress("LongParameterList")
+private fun formatProcessingLog(
+    now: Long,
+    startedAt: Long,
+    stage: String,
+    done: Long,
+    total: Long,
+    percent: Int,
+): String {
+    val elapsed = ((now - startedAt).coerceAtLeast(0L) / 100.0).let { (it * 10).toLong() / 10.0 }
+    return "${elapsed}s: $stage ($done/$total) ${percent.coerceIn(0, 100)}%"
 }
 
 private object StageProgress {

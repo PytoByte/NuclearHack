@@ -27,8 +27,7 @@
 
 ```text
 MP3/WAV → mono16k PCM spool
-  → GigaAM-v3 CTC INT8 с пунктуацией,20s chunks → release ASR
-  → Nemotron3 Q8 buffered → first160ms word posterior merge → strict JSON
+  → GigaAM-v3 CTC INT8 с пунктуацией,25s chunks → release ASR  → Nemotron3 Q8 buffered → first160ms word posterior merge → strict JSON
 ```
 
 Это точка сравнения, а не запрет на улучшения. Старый `nh_transcribe_file*`

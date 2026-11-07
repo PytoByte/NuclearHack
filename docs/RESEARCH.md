@@ -1214,8 +1214,7 @@ Native код после квалификации215 не менялся.
 
 **ADR: `ru-offline-v1` / `nh_transcribe`.** Один blocking C ABI вызов с
 `nh_transcription_config`: input/models/scratch/output,optional trace/checkpoint.
-Default4threads/600s;chunk20s,buffered NemotronQ8,anchor160ms фиксированы.
-GigaAM-v3 CTC INT8 **с собственной пунктуацией** → release → Nemotron3Q8 →
+Default4threads/600s;chunk25s,buffered NemotronQ8,anchor160ms фиксированы.GigaAM-v3 CTC INT8 **с собственной пунктуацией** → release → Nemotron3Q8 →
 posterior merge → strict JSON. Не требуются Python/UI/сеть/внешний reference runtime.
 Старые ABI1 entry points сохранены как совместимые адаптеры:они используются
 существующими клиентами/тестами,не объявляются «мёртвым кодом» и не меняют свой backend.
@@ -1577,3 +1576,67 @@ examples.
 2,871 B` у `audio-c-abi-test` и `audio-lifecycle-smoke-test`,
 "All heap blocks were freed -- no leaks are possible" у `audio-merge-test`
 и `audio-stream-core-test`, `ERROR SUMMARY: 0 errors` у всех четырёх.
+
+
+## ROVER/recoding Step 1 — анализ пересечения ошибок (exp_0269)
+
+Источники: saved ASR traces from `exp_0266` (GigaAM CTC v3), `exp_0265` (GigaAM RNNT v3)
+на phone40 (`eval/data/openstt-calls-validation.jsonl`, 408 слов) и FLEURS (`fleurs-ru-validation.jsonl`, 757 слов).
+Новый ASR-инференс анализатором не выполнялся; `exp_0266/0265/0268/0267` воспроизводят pinned traces.
+
+Результат:
+- phone40: union error positions 72; CTC верна/RNNT ошиблась 6; RNNT верна/CTC ошиблась 10;
+  обе deletion 14; обе same substitution 35; both substitution different 6; mixed 1.
+  RNNT исправляет 5 из 14 CTC deletions; CTC не исправляет RNNT deletions.
+  `one_correct / union_errors = 22.2%` → **green light**.
+- FLEURS: union error positions 227; CTC верна/RNNT ошиблась 2; RNNT верна/CTC ошиблась 3;
+  обе same substitution 213; mixed 0. RNNT — 1 rescued CTC deletion, CTC — 0 RNNT deletions.
+  `one_correct / union_errors = 2.2%` → **red**.
+
+Решение: идти в шаг 2 только на phone40. ROVER не обещает выигрыша на FLEURS, ошибки почти одинаковые substitutions.
+Полный JSON: `.audio-runs/exp_0269/error_overlap.json`, `eval/results/exp_0269/error_overlap.json`.
+
+
+## ROVER/recoding Step 2 — phone40 prototype (exp_0270)
+
+Прототип выполнил word-level alignment CTC/RNNT по эталону phone40 и голосование simple majority
+с tie-break CTC, как предусмотрено при отсутствии confidence. Результат:
+- fused normalized WER 17.65% (45 S / 14 D / 13 I / 408 слов);
+- RNNT lexical WER 16.42% не достигнут, результат равен baseline CTC.
+- Insertions не выросли (13), но и не дали прироста; фактического переноса competing corrections нет.
+
+Решение: **REJECT**. Без надёжного per-word confidence ROVER с tie-break CTC не улучшает качество.
+Дальше — шаг 3: проверить surrogate-confidence routing CTC, или закрыть гипотезу, если корреляции нет.
+Полный JSON: `.audio-runs/exp_0270/metrics.json`, `eval/results/exp_0270/metrics.json`.
+
+
+## Correction to ROVER Step 1 (exp_0272)
+
+Предыдущий `exp_0269` mistakenly compared traces after whitespace-only normalization.
+Повторный анализ использует normalization v1 (тот же normalize, что scoring/metrics).
+
+Исправленные результаты:
+- phone40: union error positions 65; `one_correct / union_errors = 24.6%`; green light.
+  CTC верна/RNNT ошиблась 6; RNNT верна/CTC ошиблась 10; обе same substitution 28; обе deletion 14; both substitution different 6; mixed 1.
+  RNNT спасает 5 из 14 CTC-удалений; CTC спасает 0 RNNT-удалений.
+- FLEURS: union error positions 49; `one_correct / union_errors = 20.4%`; green light.
+  CTC верна/RNNT ошиблась 5; RNNT верна/CTC ошиблась 5; обе same substitution 33; both substitution different 1; both deletion 5; mixed 0.
+  RNNT спасает 2 CTC-удаления; CTC спасает 0 RNNT-удалений.
+
+Вывод остается: есть комплементарные ошибки в обоих доменах, Step 2 имел смысл.
+Но `exp_0270` ROVER с tie-break CTC дал WER 17.65% на phone40 — REJECT, потому что без confidence differing corrections не выбираются.
+Step 3 surrogate-анализ (`exp_0273`) не нашел надежной корреляции confidence с ошибками: precision 0.171, recall 0.593 при пороге 0.15s, error rate 17.1% vs 11.8%. Гипотеза confidence routing закрывается.
+Полные исправленные JSON: `.audio-runs/exp_0272/error_overlap.json`, `.audio-runs/exp_0273/ctc_surrogate_correlation.json`.
+
+
+## Handoff summary from deleted RESEARCHING.md (08.11.2026)
+
+Сценарий/приоритеты (сохранены как контекст):
+- приоритет пользователя: ASR-текст с пунктуацией важнее диаризации; музыка/rap — интересующий домен, но без корпуса;
+- pilot corpus: 3 RU YouTube-разговора, cpWER baseline; чанки 25s показали лучший pilot cpWER (10s/15s хуже);
+- PBS A/B (Prefix Beam Search + kenlm) заблокирован: нет русского LM/corpus, kenlm lmplz не собран;
+- chunk-границы не являются источником ошибок (attribution diagnostics: errors acoustic in ASR decode), seam dedup отклонён;
+- датасеты: ru-book-mix-60 для DER/JER; GTSinger/PotatoHD/Balalaika research-only; пользовательские файлы нужны для music/rap;
+- предложенное одиночное изменение: `pipeline.cpp`: `chunk_seconds 20 -> 25` (+gates/docs), не SDK ABI change.
+
+Full experiment/run provenance remains in deleted handoff only as narrative; metrics in `eval/results` and `.audio-runs`.

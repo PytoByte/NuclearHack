@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_0273",
+  "step": 3,
+  "analysis_type": "ctc_surrogate_confidence_correlation",
+  "run": ".audio-runs/exp_0266",
+  "fixed_threshold_seconds": 0.15,
+  "surrogate": "char-timestamp span of the aligned CTC word; missing/deleted word = 0.0 s",
+  "total_reference_words": 408,
+  "ctc_errors": 59,
+  "correct_words": 349,
+  "mean_duration_correct": 0.17638968481375358,
+  "mean_duration_error": 0.15728813559322033,
+  "confusion": {
+    "true_positive": 35,
+    "false_positive": 170,
+    "true_negative": 179,
+    "false_negative": 24
+  },
+  "precision": 0.17073170731707318,
+  "recall": 0.5932203389830508,
+  "error_rate_low_confidence": 0.17073170731707318,
+  "error_rate_high_confidence": 0.11822660098522167,
+  "decision": "reject_routing_hypothesis",
+  "reason": "Duration correlation is weak: error rate differs only slightly between low and high confidence buckets, with many false positives. Routing on this surrogate would risk worse transcripts; no reliable confidence exists in traces."
+}

@@ -3,12 +3,16 @@
 package com.hexteam.neurostenographer.ui.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hexteam.neurostenographer.audio.AudioEngine
 import com.hexteam.neurostenographer.data.model.Transcript
 import com.hexteam.neurostenographer.data.repository.TranscriptRepository
+import com.hexteam.neurostenographer.service.TranscriptionDiagnostics
+import com.hexteam.neurostenographer.service.TranscriptionJobController
+import com.hexteam.neurostenographer.service.TranscriptionService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -77,9 +81,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         )
     val state = _state.asStateFlow()
 
-    @Volatile private var cancelRequested = false
-    private var progressFloor = 0
     private var processingTimer: Job? = null
+
+    init {
+        collectTranscriptionJob()
+    }
 
     fun select(transcript: Transcript) {
         _state.update { it.copy(selected = transcript) }
@@ -102,10 +108,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         displayName: String,
     ) {
         if (_state.value.processing != ProcessingStage.Idle) return
-        cancelRequested = false
-        progressFloor = 0
         processingTimer?.cancel()
         val startedAt = System.currentTimeMillis()
+        val initialEntry =
+            TranscriptionDiagnostics.formatProcessingLog(startedAt, startedAt, "start", 0L, 0L, 0)
+        TranscriptionJobController.resetForStart(displayName, startedAt)
+        TranscriptionJobController.update { snapshot -> snapshot.copy(diagnosticLog = listOf(initialEntry)) }
         _state.update {
             it.copy(
                 processing = ProcessingStage.Preparing,
@@ -121,7 +129,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 nativeDone = 0L,
                 nativeTotal = 0L,
                 progressUpdateCount = 0,
-                diagnosticLog = listOf(formatProcessingLog(startedAt, startedAt, "start", 0L, 0L, 0)),
+                diagnosticLog = listOf(initialEntry),
             )
         }
         val timer =
@@ -151,101 +159,21 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             }
         processingTimer = timer
 
-        viewModelScope.launch {
-            val result =
-                withContext(Dispatchers.IO) {
-                    runCatching {
-                        requireNative()
-                        val input = repository.importAudio(uri, displayName)
-                        val prepared = engine.prepareInput(input)
-                        val output =
-                            try {
-                                engine.transcribe(prepared) { stage, done, total ->
-                                    onNativeProgress(stage, done, total)
-                                }
-                            } finally {
-                                if (prepared != input) prepared.delete()
-                            }
-                        val now = System.currentTimeMillis()
-                        val startedAt = _state.value.processingStartedAt
-                        val entry =
-                            formatProcessingLog(
-                                now,
-                                startedAt,
-                                "export",
-                                output.length(),
-                                output.length(),
-                                99,
-                            )
-                        _state.update {
-                            it.copy(
-                                processing = ProcessingStage.Exporting,
-                                progress = 99,
-                                stageLabel = "Сохранение",
-                                lastProgressAt = now,
-                                progressHealth = ProgressHealth.Progressing,
-                                diagnosticLog = (it.diagnosticLog + entry).takeLast(120),
-                            )
-                        }
-                        repository.create(displayName, output.readText())
-                    }
-                }
-            processingTimer?.cancel()
-            processingTimer = null
-            result.fold(
-                onSuccess = { transcript ->
-                    _state.update { current ->
-                        val updated =
-                            listOf(transcript) +
-                                current.transcripts.filterNot { item -> item.id == transcript.id }
-                        current.copy(
-                            transcripts = updated,
-                            selected = transcript,
-                            processing = ProcessingStage.Idle,
-                            progress = 0,
-                            stageLabel = "",
-                            error = null,
-                            processingStartedAt = 0L,
-                            elapsedMs = 0L,
-                            lastProgressAt = 0L,
-                            progressHealth = ProgressHealth.Idle,
-                            nativeStage = "",
-                            nativeDone = 0L,
-                            nativeTotal = 0L,
-                            progressUpdateCount = 0,
-                            diagnosticLog = emptyList(),
-                        )
-                    }
-                },
-                onFailure = { error ->
-                    _state.update {
-                        it.copy(
-                            processing = ProcessingStage.Idle,
-                            progress = 0,
-                            stageLabel = "",
-                            error = if (cancelRequested) null else error.message ?: "Не удалось обработать файл",
-                            processingStartedAt = 0L,
-                            elapsedMs = 0L,
-                            lastProgressAt = 0L,
-                            progressHealth = ProgressHealth.Idle,
-                            nativeStage = "",
-                            nativeDone = 0L,
-                            nativeTotal = 0L,
-                            progressUpdateCount = 0,
-                            diagnosticLog = emptyList(),
-                        )
-                    }
-                },
-            )
-        }
+        val intent =
+            Intent(getApplication(), TranscriptionService::class.java).apply {
+                action = TranscriptionService.ACTION_START
+                putExtra(TranscriptionService.EXTRA_URI, uri.toString())
+                putExtra(TranscriptionService.EXTRA_NAME, displayName)
+            }
+        getApplication<Application>().startForegroundService(intent)
     }
 
     fun cancel() {
         if (_state.value.processing == ProcessingStage.Idle) return
-        cancelRequested = true
+        TranscriptionJobController.cancelRequested.set(true)
         val startedAt = _state.value.processingStartedAt
         val cancelEntry =
-            formatProcessingLog(
+            TranscriptionDiagnostics.formatProcessingLog(
                 System.currentTimeMillis(),
                 startedAt,
                 "cancel_requested",
@@ -253,10 +181,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 _state.value.nativeTotal,
                 _state.value.progressUpdateCount,
             )
+        val intent =
+            Intent(getApplication(), TranscriptionService::class.java).apply {
+                action = TranscriptionService.ACTION_CANCEL
+            }
+        getApplication<Application>().startService(intent)
         _state.update {
             it.copy(
                 stageLabel = "Отмена…",
-                diagnosticLog = it.diagnosticLog + cancelEntry,
+                diagnosticLog = (it.diagnosticLog + cancelEntry).takeLast(120),
             )
         }
     }
@@ -308,43 +241,99 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun onNativeProgress(
-        stage: String,
-        done: Long,
-        total: Long,
-    ): Boolean {
-        val mapped =
-            when {
-                stage == "queued" || stage == "checkpoint_identity" -> ProcessingStage.Preparing
-                stage == "decode" -> ProcessingStage.Decoding
-                stage.startsWith("asr") -> ProcessingStage.Transcribing
-                stage.startsWith("diarization") || stage.startsWith("speaker") -> ProcessingStage.Separating
-                stage == "merge" -> ProcessingStage.Exporting
-                stage == "done" -> ProcessingStage.Complete
-                else -> null
-            } ?: return cancelRequested
-        val range = StageProgress.range(mapped)
-        val fraction = if (total > 0) (done.toDouble() / total).coerceIn(0.0, 1.0) else 0.0
-        val percent = range.first + ((range.last - range.first) * fraction).toInt()
-        progressFloor = maxOf(progressFloor, percent)
-        val now = System.currentTimeMillis()
-        val startedAt = _state.value.processingStartedAt
-        val entry = formatProcessingLog(now, startedAt, stage, done, total, percent)
-        _state.update {
-            it.copy(
-                processing = mapped,
-                progress = if (mapped == ProcessingStage.Complete) 100 else progressFloor,
-                stageLabel = StageProgress.label(mapped),
-                nativeStage = stage,
-                nativeDone = done,
-                nativeTotal = total,
-                progressUpdateCount = it.progressUpdateCount + 1,
-                lastProgressAt = now,
-                progressHealth = ProgressHealth.Progressing,
-                diagnosticLog = (it.diagnosticLog + entry).takeLast(120),
-            )
+    @Suppress("Indentation", "LongMethod", "ComplexCondition")
+    private fun collectTranscriptionJob() {
+        viewModelScope.launch {
+            TranscriptionJobController.state.collect { job ->
+                if (job.running) {
+                    _state.update { current ->
+                        current.copy(
+                            processing = job.processingStage,
+                            progress = job.progress,
+                            stageLabel = job.stageLabel,
+                            processingStartedAt =
+                                if (job.startedAt > 0L) {
+                                    job.startedAt
+                                } else {
+                                    current.processingStartedAt
+                                },
+                            lastProgressAt =
+                                if (job.lastProgressAt > 0L) {
+                                    job.lastProgressAt
+                                } else {
+                                    current.lastProgressAt
+                                },
+                            nativeStage = job.nativeStage,
+                            nativeDone = job.nativeDone,
+                            nativeTotal = job.nativeTotal,
+                            progressUpdateCount = job.progressUpdateCount,
+                            diagnosticLog =
+                                if (job.diagnosticLog.isNotEmpty()) {
+                                    job.diagnosticLog
+                                } else {
+                                    current.diagnosticLog
+                                },
+                        )
+                    }
+                } else if (job.resultId != null && !job.completionHandled) {
+                    processingTimer?.cancel()
+                    processingTimer = null
+                    val fresh = repository.load()
+                    val selected = fresh.firstOrNull { item -> item.id == job.resultId }
+                    _state.update { current ->
+                        current.copy(
+                            transcripts = fresh,
+                            selected = selected ?: current.selected,
+                            processing = ProcessingStage.Idle,
+                            progress = 0,
+                            stageLabel = "",
+                            error = null,
+                            processingStartedAt = 0L,
+                            elapsedMs = 0L,
+                            lastProgressAt = 0L,
+                            progressHealth = ProgressHealth.Idle,
+                            nativeStage = "",
+                            nativeDone = 0L,
+                            nativeTotal = 0L,
+                            progressUpdateCount = 0,
+                            diagnosticLog = emptyList(),
+                        )
+                    }
+                    TranscriptionJobController.markCompletionHandled()
+                } else if (
+                    !job.running &&
+                    job.resultId == null &&
+                    job.error != null &&
+                    !job.completionHandled
+                ) {
+                    processingTimer?.cancel()
+                    processingTimer = null
+                    _state.update { current ->
+                        current.copy(
+                            processing = ProcessingStage.Idle,
+                            progress = 0,
+                            stageLabel = "",
+                            error =
+                                if (job.cancelled) {
+                                    null
+                                } else {
+                                    job.error ?: "Не удалось обработать файл"
+                                },
+                            processingStartedAt = 0L,
+                            elapsedMs = 0L,
+                            lastProgressAt = 0L,
+                            progressHealth = ProgressHealth.Idle,
+                            nativeStage = "",
+                            nativeDone = 0L,
+                            nativeTotal = 0L,
+                            progressUpdateCount = 0,
+                            diagnosticLog = emptyList(),
+                        )
+                    }
+                    TranscriptionJobController.markCompletionHandled()
+                }
+            }
         }
-        return cancelRequested
     }
 }
 

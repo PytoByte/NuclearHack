@@ -127,7 +127,6 @@ auto FileTranscriber::validate_paths() const -> nh_status {
 }
 auto FileTranscriber::recognize(FILE* pcm, uint64_t frames, const std::string& pcm_hash, std::vector<Word>& words,
                                 Json& raw_asr) -> nh_status {
-    nh_status code = NH_OK;
     storage::AsrCheckpoint checkpoint;
     if ((options != nullptr) && (options->checkpoint_directory != nullptr) && emit("checkpoint_identity", 0, frames)) {
         return nh::fail(NH_CANCELLED, "Cancelled before checkpoint identity");
@@ -137,6 +136,7 @@ auto FileTranscriber::recognize(FILE* pcm, uint64_t frames, const std::string& p
         return nh::fail(checkpoint.status(), "Checkpoint is in use by another job");
     }
     {
+        nh_status code = NH_OK;
         std::unique_ptr<AsrPort> asr;
         if (std::fseek(pcm, 0, SEEK_SET) != 0) {
             return nh::fail(NH_IO_ERROR, "Cannot rewind PCM input");

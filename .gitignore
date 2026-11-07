@@ -12,3 +12,4 @@ eval/data/references/
 **/.idea/
 **/build/
 **/local.properties
+*.iml

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>FunctionNaming:App.kt$@Composable fun App(vm: MainViewModel)</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun HomeScreen( latest: Transcript?, processing: ProcessingStage, progress: Int, vm: MainViewModel, open: (Transcript) -&gt; Unit, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun LibraryScreen( items: List&lt;Transcript&gt;, vm: MainViewModel, open: (Transcript) -&gt; Unit, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun ProcessingCard( stage: ProcessingStage, progress: Int, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun SettingSwitch( title: String, subtitle: String, checked: Boolean, onChecked: (Boolean) -&gt; Unit, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun SettingsScreen( settings: com.hexteam.neurostenographer.data.model.AppSettings, vm: MainViewModel, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun TranscriptCard( t: Transcript, onClick: () -&gt; Unit, )</ID>
+    <ID>FunctionNaming:App.kt$@Composable private fun TranscriptScreen( t: Transcript, vm: MainViewModel, onBack: () -&gt; Unit, )</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun NeuroTheme(content: @Composable () -&gt; Unit)</ID>
+    <ID>Indentation:App.kt$ </ID>
+    <ID>Indentation:TranscriptRepository.kt$TranscriptRepository$ </ID>
+    <ID>LongMethod:App.kt$@Composable private fun HomeScreen( latest: Transcript?, processing: ProcessingStage, progress: Int, vm: MainViewModel, open: (Transcript) -&gt; Unit, )</ID>
+    <ID>MagicNumber:App.kt$1000</ID>
+    <ID>MagicNumber:App.kt$60</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$650</ID>
+    <ID>MagicNumber:Theme.kt$0xFF101117</ID>
+    <ID>MagicNumber:Theme.kt$0xFF191A22</ID>
+    <ID>MagicNumber:Theme.kt$0xFF211A4A</ID>
+    <ID>MagicNumber:Theme.kt$0xFF292A35</ID>
+    <ID>MagicNumber:Theme.kt$0xFF3A3172</ID>
+    <ID>MagicNumber:Theme.kt$0xFF474955</ID>
+    <ID>MagicNumber:Theme.kt$0xFF65DDBB</ID>
+    <ID>MagicNumber:Theme.kt$0xFFB7A8FF</ID>
+    <ID>MagicNumber:Theme.kt$0xFFF3F3F7</ID>
+    <ID>ModifierMissing:App.kt$App</ID>
+    <ID>NoWildcardImports:App.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>NoWildcardImports:App.kt$import androidx.compose.material.icons.filled.*</ID>
+    <ID>NoWildcardImports:App.kt$import androidx.compose.material3.*</ID>
+    <ID>NoWildcardImports:App.kt$import androidx.compose.runtime.*</ID>
+    <ID>NoWildcardImports:Theme.kt$import androidx.compose.material3.*</ID>
+    <ID>ParameterNaming:App.kt$onChecked</ID>
+    <ID>SerialVersionUIDInSerializableClass:Models.kt$Utterance : Serializable</ID>
+    <ID>ViewModelForwarding:App.kt$HomeScreen(state.transcripts.firstOrNull(), state.processing, state.progress, vm) { nav.navigate("transcript/${it.id}") }</ID>
+    <ID>ViewModelForwarding:App.kt$LibraryScreen(state.transcripts, vm) { nav.navigate("transcript/${it.id}") }</ID>
+    <ID>ViewModelForwarding:App.kt$SettingsScreen(state.settings, vm)</ID>
+    <ID>ViewModelForwarding:App.kt$TranscriptScreen(t, vm) { nav.popBackStack() }</ID>
+    <ID>WildcardImport:App.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:App.kt$import androidx.compose.material.icons.filled.*</ID>
+    <ID>WildcardImport:App.kt$import androidx.compose.material3.*</ID>
+    <ID>WildcardImport:App.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:Theme.kt$import androidx.compose.material3.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

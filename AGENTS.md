@@ -24,3 +24,10 @@
   metrics; never invent missing measurements or treat read speech as dialogues.
 - Keep audio, model weights and raw logs out of Git. Downloads run only on the
   developer machine; user-audio processing in the shipped SDK stays offline.
+
+## Качество кода
+
+- Установить Git-хуки: `./gradlew installGitHooks`
+- Локальный прогон ktlint и detekt: `./gradlew ktlintCheck detekt`
+- Локальный прогон Android Lint: `./gradlew :app:lintDebug`
+- Перед коммитом хуки запускаются автоматически; не используй `--no-verify`.

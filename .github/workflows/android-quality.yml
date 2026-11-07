@@ -1,0 +1,59 @@
+name: Android Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+        working-directory: src/mobile/android
+
+      - name: ktlint and detekt
+        run: ./gradlew ktlintCheck detekt
+        working-directory: src/mobile/android
+
+      - name: Android Lint
+        run: ./gradlew :app:lintDebug
+        working-directory: src/mobile/android
+
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest --continue
+        working-directory: src/mobile/android
+
+      - name: Assemble debug
+        run: ./gradlew assembleDebug
+        working-directory: src/mobile/android
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-reports
+          path: |
+            src/mobile/android/app/build/reports/lint-results-debug.html
+            src/mobile/android/app/build/reports/detekt/

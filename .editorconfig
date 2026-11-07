@@ -1,0 +1,12 @@
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 120
+ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+ktlint_compose = enabled
+ktlint_function_naming_ignore_when_annotated_with = Composable,Test
+
+[src/mobile/android/app/src/main/java/com/hexteam/neurostenographer/ui/navigation/App.kt]
+ktlint_standard_no-wildcard-imports = disabled
+
+[src/mobile/android/app/src/main/java/com/hexteam/neurostenographer/ui/theme/Theme.kt]
+ktlint_standard_no-wildcard-imports = disabled

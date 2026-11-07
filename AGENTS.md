@@ -27,7 +27,7 @@
 
 ## Качество кода
 
-- Установить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`
+- Установить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`; в корне репозитория дополнительно выполнить `pre-commit install -f`, чтобы убрать устаревший migration hook `pre-commit.legacy` с Gradle
 - Локальный прогон ktlint и detekt: `cd src/mobile/android && ./gradlew ktlintCheck detekt`
 - Локальный прогон Android Lint: `cd src/mobile/android && ./gradlew :app:lintDebug`
 - Перед коммитом хуки запускаются автоматически; не используй `--no-verify`.

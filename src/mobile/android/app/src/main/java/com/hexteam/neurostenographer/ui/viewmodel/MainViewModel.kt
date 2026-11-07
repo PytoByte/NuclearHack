@@ -72,7 +72,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             MainState(
                 transcripts = repository.load(),
                 nativeAvailable = engine.isAvailable(),
-                summaryAvailable = engine.summaryAvailable(),
+                summaryAvailable = false,
             ),
         )
     val state = _state.asStateFlow()

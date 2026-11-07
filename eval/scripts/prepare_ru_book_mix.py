@@ -106,16 +106,31 @@ def main():
             # normalize speaker ids to consistent format
             rttm_text = rttm_bytes.decode()
             rttm_out.write_text(rttm_text)
+        # Build reference JSON from RTTM for DER/JER scoring.
+        ref_out = out_ref/(f'{ident}.json')
+        if not ref_out.exists():
+            turns = []
+            for line in rttm_out.read_text().splitlines():
+                parts = line.split()
+                if len(parts) < 8 or parts[0] != 'SPEAKER':
+                    continue
+                start_s = float(parts[3]); dur_s = float(parts[4])
+                speaker = parts[7]
+                turns.append({'speaker_id': speaker, 'start_ms': round(start_s*1000), 'end_ms': round((start_s+dur_s)*1000), 'text': ''})
+            ref_out.write_text(json.dumps({'transcript': turns}, ensure_ascii=False, indent=2)+'\n')
         sha_wav = sha256(wav_out)
         sha_rttm = sha256(rttm_out)
+        sha_ref = sha256(ref_out)
         n_speakers = j['n_speakers']
         has_overlap = j.get('overlap_stats', {}).get('overlap2', 0) > 0
         manifest.append({
             'audio_id': ident,
             'audio': str(wav_out.relative_to(ROOT)),
             'rttm': str(rttm_out.relative_to(ROOT)),
+            'reference': str(ref_out.relative_to(ROOT)),
             'audio_sha256': sha_wav,
             'rttm_sha256': sha_rttm,
+            'reference_sha256': sha_ref,
             'speakers': n_speakers,
             'audio_seconds': 60,
             'source': 'mexus/ru-book-mix-10h',

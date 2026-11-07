@@ -89,3 +89,13 @@ Spec要求 A/B Prefix Beam Search с kenlm. Status: **BLOCKED**.
 **Single actionable change**: apply `25s chunk` patch now + DE metrics on 6th session. Это улучшает measured quality, не нарушает constraints (RAM/RTF budget unchanged), и можно показать как снижение DER on pilot. После согласия — внесу и прогоню gates.
 
 Альтернатива: всё single-stop patch set: chunk 25 + docs/config updates + подготовка ADR-018 для ru-book-mix. То же — pending user OK.
+
+---
+
+## Update Log (09.11.2026, code mode) — attribution diagnostics + postprocess hypothesis
+- Diagnostics on yCX4/P0/nr3hm: reading `trace.asr[].backend.text`, `words`, `transcript` shows zero ASR->words drift (0/0/0) and seam-dup count 0. **Errors are acoustic in ASR decode**, not at chunk seams or in posterior-merge.
+- Chunk boundary dedup rejected (p.4 of priority task) — would not help.
+- Leading-letter dedup rule (`eval/scripts/experiment_letter_dedupe.py`) produced −0.24pp / −0.26pp but unsafe (proper nouns/alphanumerics). Not merged into SDK; kept as R&D.
+- ru-book-mix import updated with reference-JSON generation; `exp_0263` run (50 × 60s) produced DER 4.14% / JER 4.09%. PT turkey.
+- PBS remains primary recommended direction (pending public RU LM).
+- Weather/recording audio untouched; no music/rap corpus available yet.

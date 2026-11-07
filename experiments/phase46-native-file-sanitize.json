@@ -1,0 +1,10 @@
+[
+  {
+    "experiment": "exp_0215",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--asan"
+    ],
+    "hypothesis": "Actual real-model complete new file C ABI under ASan/UBSan, smoke3 with preserved ASR words/times; sanitizer memory/time diagnostic only, no performance inference"
+  }
+]

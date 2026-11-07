@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, проверены готовый native pipeline187–194 и отдельные блоки195–202; далее интеграция выигравшего merge.**
+**Сейчас: этап2, posterior merge перенесён в полный native file API; квалификация203–214 завершена.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -13,7 +13,8 @@ v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs win
 natural dev/known transfer166–174 завершены. Additive native streaming CABI реализован/проверен175;
 Natural parity176 и4GBx86AVD177–183 завершены; low-профиль не выдерживает real-time.
 Q4 A/B184–185 завершён и отклонён. Проверен целиком NeMo-Speech.cpp187–194,
-заимствование posterior merge190 улучшило cpWER. Далее opt-in интеграция файлового orchestrator. Основной файловыйpreset не меняется.
+заимствование posterior merge190 улучшило cpWER. Новый opt-in file API203–214
+реализован и проверен на host/x86 AVD; основной файловыйpreset сохранён.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -84,19 +85,19 @@ Baseline,embeddings,punctuation и native refinement завершены (69–12
 | E05 | chunks/overlap/silence/dedup | 10s ухудшает WER8.19%,20/25s7.13%; overlap/dedup ещё не включён |
 | E06 | VAD off/on и padding | Silero .5/pad250ms WER7.00%, .35/400ms7.13%; ускорения нет, off сохранён; short strata впереди |
 | E07 | INT8/FP32/FP16 | FP32 ASR exp51/60 WER7.66%, Android~984MiB PSS; INT8 сохранён; FP32 segmentation лучшеINT8 |
-| E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; codec lag exp46~.125ms; denoise A/B не измерен |
+| E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; codec lag exp46~.125ms; DPDFNet A/B202 без выигрыша (WER3.53→4.12%), off |
 | E09 | hints/hotwords | RNNT поддерживает; exp53 hints ухудшили WER7.66%, отвергнуты |
-| E10 | segmentation/embeddings/clustering | WeSpeaker/TitaNet отвергнуты; native ERes global.4 opt-in проверен99–128; Sortformer143–147 исследуется |
+| E10 | segmentation/embeddings/clustering | WeSpeaker/TitaNet отвергнуты; native ERes global.4 opt-in проверен99–128; Sortformer v2 отклонён; Q8 posterior file API203–214 проверен |
 | E11 | auto/oracle dev | exp_0024: oracle4 даёт DER16.19% хуже auto .8 (13.10%); production остаётся auto |
 | E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; window.5 exp66 ухудшил AMI testDER36.10%; русский pilot exp71 |
-| E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; старый diarizer API не отдаёт posteriors; новый Nemotron C ABI отдаёт, posterior merge190 проверен |
+| E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; старый diarizer API не отдаёт posteriors; новый Nemotron C ABI отдаёт, posterior merge190 перенесён в file API203–214 |
 | E14 | short/overlap/similar voices/gain | Short baseline46.67%; turn/selective135–139 дают6.67%,но clean регрессирует — reject; другая segmentation143–147 |
 | E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
 | E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
 | E17 | Android CPU threads 1/2/4 | exp_0020–22: RTF1.632/1.013/.826, WER одинаковый; 4t provisional, повтор впереди |
 | E18 | quantization/load/inference/memory | ASR host+Android FP32/INT8 завершён; Q4 модель подготовлена, LLM research отложен |
 | E19 | lazy load/release ASR→diar→LLM | ASR lifecycle probe есть; полный pipeline+Android measured; Q4 LLM не исследуется сейчас |
-| E20 | streaming PCM/ограниченные chunks | файловый disk spool + ограниченные ASR chunks реализованы; long-file profile впереди |
+| E20 | streaming PCM/ограниченные chunks | disk spool/ASR chunks + bounded speaker pass203–214 реализованы; long-file stress впереди |
 | E21 | 5/15/30/60 min, cancel/resume | checkpoint v2 exp47/57–59 passed; long stress отложен ради точности |
 | E22 | NNAPI/NPU/CPU fallback | CPU measured x86 AVD; ARM64 translation exp68 SIGSEGV; NPU/physical ARM не measured |
 | E23 | explicit memory budget/config | после Android RAM profile; без silent fallback |
@@ -1086,3 +1087,58 @@ ONNX/native parity с оригинальным Torch checkpoint не заявл�
 остаётся posterior merge190:25.70→23.43%cpWER без замены GigaAM/diarizer/word times.
 Дальнейшее расширение — через конкретные блоковые гипотезы с первичным источником,
 фиксацией остальных компонентов и accept/reject; arbitrary parameter sweep не приоритет.
+
+### exp_0203–0214 — перенос результата в полный C++ pipeline
+
+Завершено: additive `nh_transcribe_file_with_streaming_diarizer` и CLI
+`nh-audio transcribe-stream`. Это реальный полный путь decode→GigaAM→release ASR
+→bounded speaker inference→word posterior merge→strict JSON, не подстановка host ASR.
+Старые C ABI структуры и entry points сохранены. Базовый ERes default не переключается.
+
+203 повторил old-default movie JSON186 **exact**. 204 smoke: cpWER5.88%
+(clean3.23/short20.00/noise2.56%) против threshold-turn Q8 9.41%; третий короткий голос
+всё ещё не восстановлен (2known), снижение общего cpWER не выдавать за решение этого кейса.
+205–208: все6 known natural source files: ASR words/times exact с исходными baseline,
+slot assignments exact с prototype190. Полный host RTF.0768–.0860,
+PSS551698–582027KiB. Новый код не накапливает полные posteriors; word accumulators
+и опциональные diagnostic turns ограничены source duration/65536 turns.
+
+| Все6 known RU /2424 words | cpWER |
+| --- | --- |
+| Старый native ERes с global refinement (99/101/104/155) |33.75% |
+| Q8 с прежним threshold-turn overlap |25.70% |
+| Новый полный native API с first160ms posterior merge |**23.43%** |
+
+Новый vs ERes: −10.31pp, record bootstrap10000/seed42 CI95[−19.56,−5.05]pp.
+Это exploratory known silver corpus, не новый blind/people-disjoint test.
+WER не менялся:13.45% на тех же6 источниках. Трудный nr остаётся61.68%cpWER;
+movie имеет4known вместо3. Улучшение не означает, что все speaker ошибки устранены.
+
+209:7 real-model C ABI controls: cancel before speaker load/after completed NN,
+nested NH_BUSY, resume, shared ASR cache с legacy backend, duration reject до ASR,
+защита external weights от output alias. Отмена/ошибка до export сохраняет существующие JSON/trace;
+PCM SHA exact; cache ASR words/backend JSON exact. Progress исправлен на монотонные
+emitted frames; input read-ahead не подменяет выполненную speaker работу.
+210 повторил latest host movie для source/build-сопоставления с target.
+
+211–213: полная standalone SDK обработка на offline AVD4096MiB/x86_64,
+свежие процессы, настоящие device ASR+speaker NN. Movie175.172s:
+30.156/28.496/28.392s, RTF.17215/.16268/.16208; PSSpeak≤340132KiB (~332MiB),
+kernel RSS≤364652KiB. cpWER27.85%, WER15.12%; host movie cpWER28.12%,WER15.38%.
+Source PCM SHA совпадает, raw speaker turns exact; ASR words междуplatform builds отличаются,
+не приписывать текстовое изменение diarizer. Все3target transcript/words/slots/turns exact.
+Sampling nominal50ms, actualmedian110ms; OS cache не очищался. Это не ARM/coldboot
+и не доказательство causal speedup относительно старых несинхронных AVD серий.
+214 подтвердил code/model/source identity,6case prototype parity,controls и3target repeats.
+
+**ADR:** принять как проверенный opt-in file backend. Никакого обязательного Python/reference
+runtime в shipped SDK; sequential models, raw source timeline, atomic exports сохранены.
+Глобальную смену default отложить до независимого corpus/short-speaker/stress проверок.
+Следующие блоковые гипотезы: source-based CTC forced alignment и официальный diarizer
+geometry/word assignment при фиксированном GigaAM; никакого произвольного threshold sweep.
+
+215: полный новый file API прошёл3 real-model диалога под ASan/UBSan с
+`halt_on_error=1`; GigaAM words/times иcpWER совпалиrelease. Sanitizer timings/RSS
+диагностические, не используются для performance claims. Проверки:3nativeCTest,
+14PythonCABI,3ASan/UBSanCTest,32research tests,ARM64/x86_64 cross-build/16KiBELF,
+всеmodelSHA,ktlint/detekt/AndroidLint passed.

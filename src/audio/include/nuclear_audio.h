@@ -214,6 +214,17 @@ typedef struct nh_speaker_refinement_config {
 NH_API nh_status nh_transcribe_file_with_refinement(const char *input_path, const nh_pipeline_config *config,
     const nh_pipeline_options *options, const nh_speaker_refinement_config *refinement,
     nh_progress_callback progress, void *user);
+/* Experimental file pipeline: existing CTC/checkpoint stage, then streaming
+ * Nemotron speaker probabilities and fixed first-160ms posterior word merge.
+ * config segmentation/embedding/cluster_threshold are unused and may be zero.
+ * options may only set checkpoint_directory; other tuning fields must be zero.
+ * speaker max_audio_seconds=0 inherits the file budget; a lower explicit budget
+ * limits decoding before ASR. Models run sequentially. PCM is read in 1s blocks.
+ * Trace includes word slots and diagnostic .5/.3s/.5s turns, never full logits.
+ * Existing file APIs/defaults are unchanged. No refinement or oracle count. */
+NH_API nh_status nh_transcribe_file_with_streaming_diarizer(const char *input_path,
+    const nh_pipeline_config *config, const nh_pipeline_options *options,
+    const nh_streaming_diarizer_config *speaker, nh_progress_callback progress, void *user);
 typedef struct nh_llm_config {
   uint32_t struct_size;
   const char *model;

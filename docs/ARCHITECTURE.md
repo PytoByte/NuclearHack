@@ -17,6 +17,10 @@ ARM64/x86_64. Android Java/JNI host — тонкий тестовый клиен
     decode → temporary disk PCM → CTC chunks → release ASR
       → mmap PCM → segmentation + embeddings + auto clustering → release diarizer
       → CTC word spans + maximum speaker overlap → strict transcript JSON
+  nh_transcribe_file_with_streaming_diarizer (opt-in):
+    decode → disk PCM → same CTC chunks → release ASR
+      → read PCM 1s blocks → bounded Nemotron3 Q8
+      → accumulate first160ms speaker probabilities per word → strict JSON
   nh_summarize_file (отдельное действие):
     transcript JSON → local llama.cpp / Qwen3 → отдельный summary.txt
 ```
@@ -91,7 +95,7 @@ ASR/diar/VAD handles используют atomic busy guard, безопасны�
 Progress: queued/decode/asr_load/asr/diarization_load/diarization/merge/done;
 LLM имеет отдельные load/prefill/generate/done stages. Отмена кооперативная
 между PCM-блоками, ASR-чанками, LLM batches/tokens и стадиями. Whole-file
-вызов diarization пока непрерываемый: upstream progress callback игнорирует
+вызов базового whole-file diarizer непрерываемый: upstream progress callback игнорирует
 возвращаемый код. Отмена проверяется до/после него; это реальное ограничение
 latency отмены, не обещание мгновенного прерывания.
 
@@ -221,7 +225,8 @@ Callbacks могутотменитьпосленейросетевогошага
 Reset очищаетPCM/timeline/cache,сохраняяmodel session;stats даютcounters/NNtime/buffer sizes.
 Per-handlebusyguard запрещаетreentry;бюджетнесколькихlow-levelhandles контролируетклиент.
 
-Текст/word spans этотAPI не создаёт;существующийfileorchestrator используетERes2Net какпрежде.
+Низкоуровневый API не создаёт текст/word spans. Базовый file API сохраняет ERes2Net;
+новый opt-in file API ниже использует эти callbacks после собственного ASR.
 Native smoke175/natural176 совпали по cpWER и threshold decisions с прототипом;
 transport997 vs400000 samples даёт exact arrays. ASan/UBSan и cross-build пройдены.
 
@@ -236,22 +241,62 @@ Device runner проверяет SHA артефактов/PCM и собирае�
 177–181: buffered на 4GB x86 AVD обрабатывает movie175.172 s за7.08–11.10 s,
 sampled PSS ≤285 MiB. Три повторных posterior arrays exact; решения порога совпали с host.
 Low182–183: AVD RTF1.192, cpWER36.34% против buffered30.50%; этот профиль
-не рекомендован для real-time в доступном окружении. Это speaker-only execution
-с фиксированной host ASR attribution; ARM и полный target ASR не квалифицированы.
+не рекомендован для real-time в доступном окружении. Это были speaker-only execution с фиксированной host ASR attribution;
+полный target pipeline проверен отдельно в211–214, ARM execution по-прежнему отсутствует.
 Q4 зафиксирован только для воспроизводимости: screening184–185 отклонён
 по quality regression и отсутствию low RTF выигрыша.
 
-File orchestrator пока использует ERes2Net. Следующий этап — opt-in integration
-Q8 buffered; default promotion не принят.
+Основной file API использует ERes2Net; Q8 buffered доступен через отдельный opt-in
+file API. Автоматическая смена default не принята.
 
 Внешний reference `NeMo-Speech.cpp 0.3.0` установлен отдельно в `.tools` для
 сравнения целого ASR/diarization pipeline (187–194). На6 известных записях
 протестированная связка хуже по WER/cpWER; default не заменён. Прямое posterior
 назначение спикера первым160ms слова улучшило cpWER нашего GigaAM/ONNX варианта
-в research190; в файловом C API ещё не реализовано. Внешний runtime не линкуется
+в research190 и перенесено в новый файловый C API203–214. Внешний runtime не линкуется
 с SDK; Linux ARM64 binary не считается проверкой Android NDK.
 
 Блоковые исследования195+: LS-EEND recurrent diarization проверен отдельно и
 не принят из-за quality regression. DPDFNet enhancement→ASR проверен202 через
 существующий native sherpa C API с явным DSP right-padding/cropping до исходного
 N samples. Выигрыша WER в smoke нет, в основной SDK/preset не включён. Исходный звук остаётся входом для diarization.
+
+### Файловый API с posterior merge (experimental opt-in)
+
+`nh_transcribe_file_with_streaming_diarizer(input, config, options, speaker, progress, user)`
+сохраняет GigaAM/CTC word spans, disk spool, ASR checkpoint и общий heavy-job guard.
+ASR освобождается до загрузки Nemotron3 Q8. Второй проход читает PCM блоками16000,
+модель выдаёт posteriors в callback; полная матрица вероятностей не хранится.
+Для каждого слова накапливаются8 double sums только для первых min(word duration,160ms).
+Argmax выбирает слот, ties — меньший индекс; все ASR слова и интервалы сохраняются.
+Это присваивает слот и на слабоуверенных spans: нельзя считать отсутствие unknown доказательством качества.
+IDs канонизируются по первому слову спикера; соседние слова объединяются при gap≤1200ms.
+
+Структуры ABI1 не изменены. `config.segmentation/embedding/cluster_threshold` не используются,
+`options` разрешает checkpoint_directory, остальные tuning fields должны быть0.
+Speaker profile/threads берутся из отдельного config; duration0 наследует file budget,
+меньший явный лимит ограничивает decode до загрузки ASR. Новый режим строго считает samples
+без старого codec-rounding допуска16samples. Возвращаемые статусы — прежние NH_*.
+Отмена проверяется между PCM-блоками и после NN шага; speaker_stream progress считает
+выданные source frames монотонно. Checkpoint переиспользуется между старым и новым backend.
+Output/trace не могут перезаписать graph или стандартный sibling external weights `<model>_data`.
+
+Trace: original words, word_speaker_slots, decoded PCM SHA256, counters/NN time,
+и diagnostic speaker turns (.5 threshold, gaps<.5s merge перед min speech.3s).
+Trace ограничен65536 turns; word accumulator растёт с числом ASR words, не числом posterior frames.
+Основной transcript JSON сохраняет прежнюю строгую схему. Атомарность обеспечивается
+для каждого файла отдельно. Отмена/ошибка до export сохраняет существующие output/trace,
+что проверено209; trace записывается перед основным JSON.
+
+CLI: `nh-audio transcribe-stream INPUT OUTPUT ASR TOKENS SPEAKER_MODEL SCRATCH
+[THREADS PROFILE CHUNK_SECONDS MAX_SECONDS CHECKPOINT]`.
+Stdout содержит source samples, полный processing time и kernel peak RSS; stderr — progress.
+Ни Python, ни APK/UI, ни внешний reference runtime в этом пути не участвуют.
+
+203–214: old-default JSON exact; native/prototype word slots exact6/6;
+7 real-model control cases passed; full real-model smoke215 прошёл ASan/UBSan. В полном x86 AVD4096MiB movie175.172s:
+28.39–30.16s, median RTF.16268, sampled PSS≤340132KiB (~332MiB).
+Три повторных target transcript/word/slot/turn массива exact. PCM SHA совпадает с host;
+ASR слова между host/Android различаются, поэтому target cpWER27.85% /host28.12% считаются отдельно.
+Все ASR и speaker NN в target опытах исполняются на устройстве, host words не подставляются.
+Физический ARM и часовой stress не квалифицированы. Default ERes остаётся доступен.

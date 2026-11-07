@@ -94,6 +94,13 @@ int main(void) {
   CHECK(nh_transcribe_file_with_refinement("c-abi-fixture.wav",&pipeline,NULL,&refinement,NULL,NULL)==NH_INVALID_ARGUMENT);
   refinement.cluster_threshold=.4f;refinement.max_clusters=257;
   CHECK(nh_transcribe_file_with_refinement("c-abi-fixture.wav",&pipeline,NULL,&refinement,NULL,NULL)==NH_INVALID_ARGUMENT);
+  nh_streaming_diarizer_config file_speaker = {sizeof(nh_streaming_diarizer_config),"missing",1,1,0};
+  CHECK(nh_transcribe_file_with_streaming_diarizer("c-abi-fixture.wav",&pipeline,NULL,NULL,NULL,NULL)==NH_INVALID_ARGUMENT);
+  file_speaker.profile=2;
+  CHECK(nh_transcribe_file_with_streaming_diarizer("c-abi-fixture.wav",&pipeline,NULL,&file_speaker,NULL,NULL)==NH_INVALID_ARGUMENT);
+  file_speaker.profile=1;pipeline.segmentation=NULL;pipeline.embedding=NULL;pipeline.cluster_threshold=0;
+  CHECK(nh_transcribe_file_with_streaming_diarizer("c-abi-fixture.wav",&pipeline,NULL,&file_speaker,cancel_stage,NULL)==NH_CANCELLED);
+  CHECK(nh_transcribe_file_with_streaming_diarizer("c-abi-fixture.wav",&pipeline,&tuning,&file_speaker,NULL,NULL)==NH_INVALID_ARGUMENT);
   nh_vad *vad = NULL;
   nh_vad_config vad_config = {sizeof(nh_vad_config), "missing", 1, 0.5f, 0.3f, 0.1f, 20};
   CHECK(nh_vad_create(&vad_config, &vad) == NH_IO_ERROR && vad == NULL);

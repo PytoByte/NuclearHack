@@ -1,4 +1,5 @@
 #include "mel.hpp"
+#include "posterior_merge.hpp"
 #include "speaker_cache.hpp"
 #include <algorithm>
 #include <array>
@@ -9,6 +10,33 @@
 #define CHECK(x) do { if (!(x)) { std::cerr << #x << '\n'; return 1; } } while (0)
 
 int main() {
+  std::vector<nh::Word> words{{0,400,"длинное"},{10,20,"да"},{400,410,"ещё"}};
+  std::vector<float> probabilities(40*8,0);
+  for(size_t r=0;r<40;++r)probabilities[r*8+(r<16?1:2)]=.9f;
+  nh::PosteriorMerge posterior_whole(words,40,true), posterior_split(words,40,true);
+  posterior_whole.accept(probabilities.data(),40,8,0);posterior_whole.finish();
+  posterior_split.accept(probabilities.data(),7,8,0);
+  CHECK(posterior_split.completed_samples()==7*160);
+  posterior_split.accept(probabilities.data()+7*8,33,8,7*160);posterior_split.finish();
+  CHECK(posterior_whole.slots==posterior_split.slots);
+  CHECK((posterior_whole.slots==std::vector<int32_t>{1,1,2})); // 160ms anchor, source-tail clamp
+  auto attributed=nh::attribute_word_slots(words,posterior_whole.slots);
+  CHECK(attributed.size()==2 && attributed[0].text=="длинное да" && attributed[1].text=="ещё");
+  CHECK(attributed[0].start_ms==0 && attributed[0].end_ms==400);
+  bool incomplete=false;
+  try {nh::PosteriorMerge missing(words,40,false);missing.finish();}catch(const std::runtime_error&){incomplete=true;}
+  CHECK(incomplete);
+  std::vector<float> bridge(80*8,0);
+  for(size_t r=0;r<20;++r)bridge[r*8]=.9f;
+  for(size_t r=60;r<80;++r)bridge[r*8]=.9f;
+  nh::PosteriorMerge short_spans({},80,true);short_spans.accept(bridge.data(),80,8,0);short_spans.finish();
+  CHECK(short_spans.turns.size()==1 && short_spans.turns[0].start_ms==0 && short_spans.turns[0].end_ms==800);
+  // A gap of exactly500ms must not bridge two individually too-short spans.
+  std::fill(bridge.begin(),bridge.end(),0);
+  for(size_t r=0;r<20;++r)bridge[r*8]=.9f;
+  for(size_t r=70;r<80;++r)bridge[r*8]=.9f;
+  nh::PosteriorMerge gap({},80,true);gap.accept(bridge.data(),80,8,0);gap.finish();CHECK(gap.turns.empty());
+  nh::PosteriorMerge empty({{0,1,"угу"}},0,false);empty.finish();CHECK(empty.slots[0]==-1);
   nh::MelFrontend frontend;
   std::vector<float> silence(16000, 0.f), result;
   frontend.extract(silence, 0, silence.size(), 0, 100, result);

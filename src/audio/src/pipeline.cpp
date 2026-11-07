@@ -1,5 +1,6 @@
 #include "internal.hpp"
 #include "pipeline.hpp"
+#include "posterior_merge.hpp"
 #include "json.hpp"
 #include "picosha2.h"
 #include <algorithm>
@@ -74,6 +75,22 @@ int32_t receive_turn(int32_t speaker, double start, double end, void *opaque) {
   auto &result = *static_cast<DiarResult *>(opaque);
   try { result.turns.push_back({speaker, std::llround(start * 1000), std::llround(end * 1000)}); return 0; }
   catch (...) { result.failed = true; return 1; }
+}
+struct StreamMergeContext {
+  nh::PosteriorMerge &merge;
+  nh_progress_callback progress;
+  void *user;
+  uint64_t total;
+  std::string error;
+  bool failed=false;
+};
+int32_t receive_frames(const float *p,uint32_t frames,uint32_t slots,uint64_t start,void *opaque) noexcept {
+  auto &ctx=*static_cast<StreamMergeContext*>(opaque);
+  try {
+    ctx.merge.accept(p,frames,slots,start);
+    return ctx.progress && ctx.progress("speaker_stream",start+static_cast<uint64_t>(frames)*160,ctx.total,ctx.user);
+  } catch(const std::exception &e) { ctx.failed=true;try {ctx.error=e.what();}catch(...){} return 1; }
+  catch(...) {ctx.failed=true;try{ctx.error="Cannot merge speaker probabilities";}catch(...){}return 1;}
 }
 bool append_words(const Json &result, int64_t offset_ms, int64_t chunk_end_ms, std::vector<nh::Word> &words) {
   return nh::append_ctc_words(result.value("text", ""),
@@ -171,10 +188,29 @@ extern "C" nh_status nh_transcribe_file_with_options(const char *input, const nh
     const nh_pipeline_options *options, nh_progress_callback progress, void *user) {
   return nh_transcribe_file_with_refinement(input,config,options,nullptr,progress,user);
 }
+static nh_status transcribe_file(const char *input,const nh_pipeline_config *config,
+    const nh_pipeline_options *options,const nh_speaker_refinement_config *refinement,
+    const nh_streaming_diarizer_config *speaker,nh_progress_callback progress,void *user);
 extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const nh_pipeline_config *config,
     const nh_pipeline_options *options,const nh_speaker_refinement_config *refinement,
     nh_progress_callback progress,void *user) {
+  return transcribe_file(input,config,options,refinement,nullptr,progress,user);
+}
+extern "C" nh_status nh_transcribe_file_with_streaming_diarizer(const char *input,const nh_pipeline_config *config,
+    const nh_pipeline_options *options,const nh_streaming_diarizer_config *speaker,
+    nh_progress_callback progress,void *user) {
   return nh::guard([&]() -> nh_status {
+    if(!speaker)return nh::fail(NH_INVALID_ARGUMENT,"Speaker streaming configuration is required");
+    return transcribe_file(input,config,options,nullptr,speaker,progress,user);
+  });
+}
+static nh_status transcribe_file(const char *input,const nh_pipeline_config *config,
+    const nh_pipeline_options *options,const nh_speaker_refinement_config *refinement,
+    const nh_streaming_diarizer_config *speaker,nh_progress_callback progress,void *user) {
+  return nh::guard([&]() -> nh_status {
+    if(speaker && (speaker->struct_size!=sizeof(*speaker) || !speaker->model || !*speaker->model ||
+        speaker->threads<1 || speaker->threads>16 || speaker->profile>1 || speaker->max_audio_seconds>3600))
+      return nh::fail(NH_INVALID_ARGUMENT,"Invalid file speaker streaming configuration");
     if(refinement && (refinement->struct_size!=sizeof(*refinement) ||
         !std::isfinite(refinement->cluster_threshold) || refinement->cluster_threshold<=0 ||
         refinement->cluster_threshold>=2 || refinement->max_clusters>256))
@@ -185,17 +221,26 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
         !std::isfinite(options->window_shift_ratio) || (options->window_shift_ratio != 0 &&
             (options->window_shift_ratio < 0.05f || options->window_shift_ratio > 1))))
       return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline options");
+    if(speaker && options && (options->min_duration_on!=0 || options->min_duration_off!=0 ||
+        options->attribution_mode!=0 || options->window_shift_ratio!=0))
+      return nh::fail(NH_INVALID_ARGUMENT,"Posterior file mode accepts only checkpoint options");
     if (!input || !config || config->struct_size != sizeof(nh_pipeline_config) ||
-        !config->asr_model || !config->tokens || !config->segmentation || !config->embedding ||
+        !config->asr_model || !config->tokens || (!speaker && (!config->segmentation || !config->embedding)) ||
         !config->scratch_directory || !config->output_json || config->threads < 1 || config->threads > 16 ||
         !config->chunk_seconds || config->chunk_seconds > 25 || !config->max_audio_seconds || config->max_audio_seconds > 3600 ||
-        !std::isfinite(config->cluster_threshold) || config->cluster_threshold <= 0 || config->cluster_threshold > 2)
+        (!speaker && (!std::isfinite(config->cluster_threshold) || config->cluster_threshold <= 0 || config->cluster_threshold > 2)))
       return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline configuration (duration budget <=3600s)");
     nh::BusyGuard job(nh::heavy_job_busy);
     if (!job.owns_lock()) return nh::fail(NH_BUSY, "Another file/summary job is using the model memory budget");
     for (const char *source : {input, config->asr_model, config->tokens, config->segmentation, config->embedding})
       if (same_file(source, config->output_json) || same_file(source, config->trace_json))
         return nh::fail(NH_INVALID_ARGUMENT, "Output would overwrite an input/model file");
+    if(speaker) {
+      const std::string external=std::string(speaker->model)+"_data";
+      for(const char *path:{speaker->model,external.c_str()})
+        if(same_file(path,config->output_json) || same_file(path,config->trace_json))
+          return nh::fail(NH_INVALID_ARGUMENT,"Output would overwrite speaker model/weights");
+    }
     if (same_file(config->output_json, config->trace_json))
       return nh::fail(NH_INVALID_ARGUMENT, "Transcript and trace paths must differ");
     auto emit = [&](const char *stage, uint64_t done, uint64_t total) {
@@ -204,8 +249,9 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
     if (emit("queued", 0, 0)) return nh::fail(NH_CANCELLED, "Cancelled before processing");
     Spool spool(config->scratch_directory);
     // Resampling/container delay rounding can add a fraction of a millisecond.
-    DecodeContext decoded{spool.file, 0, static_cast<uint64_t>(config->max_audio_seconds) * 16000 + 16, progress, user, NH_OK, {}};
-    if (options && options->checkpoint_directory && *options->checkpoint_directory)
+    const uint32_t budget=speaker && speaker->max_audio_seconds ? std::min(config->max_audio_seconds,speaker->max_audio_seconds) : config->max_audio_seconds;
+    DecodeContext decoded{spool.file,0,static_cast<uint64_t>(budget)*16000+(speaker?0:16),progress,user,NH_OK,{}};
+    if (speaker || (options && options->checkpoint_directory && *options->checkpoint_directory))
       decoded.pcm_hash = std::make_unique<picosha2::hash256_one_by_one>();
     auto code = nh_decode_file(input, 16000, 16000, spool_pcm, &decoded);
     if (decoded.failure != NH_OK) return nh::fail(decoded.failure, "Decode exceeded duration budget or scratch I/O failed");
@@ -213,12 +259,14 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
     if (fflush(spool.file)) return nh::fail(NH_IO_ERROR, "Cannot flush scratch PCM");
     std::vector<nh::Word> words;
     Json raw_asr = Json::array();
+    std::string source_pcm_sha;
     if (decoded.frames) {
       Checkpoint checkpoint;
       if (options && options->checkpoint_directory && emit("checkpoint_identity", 0, decoded.frames))
         return nh::fail(NH_CANCELLED, "Cancelled before checkpoint identity");
       std::string pcm_hash;
       if (decoded.pcm_hash) { decoded.pcm_hash->finish(); pcm_hash = picosha2::get_hash_hex_string(*decoded.pcm_hash); }
+      source_pcm_sha=pcm_hash;
       checkpoint.open(options ? options->checkpoint_directory : nullptr, pcm_hash, config);
       if (checkpoint.status != NH_OK) return nh::fail(checkpoint.status, "Checkpoint is in use by another job");
       nh_asr *ptr = nullptr;
@@ -259,7 +307,34 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
       } // ASR must be released before diarization model load.
     }
     DiarResult diar;
-    if (decoded.frames) {
+    std::vector<int32_t> word_slots;
+    nh_streaming_diarizer_stats stream_stats{};stream_stats.struct_size=sizeof(stream_stats);
+    if(speaker && decoded.frames) {
+      if(emit("speaker_stream_load",0,decoded.frames))return nh::fail(NH_CANCELLED,"Cancelled before speaker model load");
+      nh_streaming_diarizer_config cfg=*speaker;cfg.max_audio_seconds=budget;
+      nh_streaming_diarizer *ptr=nullptr;
+      code=nh_streaming_diarizer_create(&cfg,&ptr);
+      if(code!=NH_OK)return code;
+      std::unique_ptr<nh_streaming_diarizer,decltype(&nh_streaming_diarizer_destroy)> handle(ptr,nh_streaming_diarizer_destroy);
+      nh::PosteriorMerge merge(words,decoded.frames/160,config->trace_json && *config->trace_json);
+      StreamMergeContext ctx{merge,progress,user,decoded.frames,{}};
+      rewind(spool.file);std::vector<float> block(16000);uint64_t offset=0;
+      while(offset<decoded.frames) {
+        if(emit("speaker_stream",merge.completed_samples(),decoded.frames))return nh::fail(NH_CANCELLED,"Cancelled before speaker inference");
+        const auto count=fread(block.data(),sizeof(float),std::min<uint64_t>(block.size(),decoded.frames-offset),spool.file);
+        if(!count || ferror(spool.file))return nh::fail(NH_IO_ERROR,"Cannot read speaker PCM block");
+        code=nh_streaming_diarizer_accept(handle.get(),block.data(),static_cast<uint32_t>(count),receive_frames,&ctx);
+        if(ctx.failed)return nh::fail(NH_RUNTIME_ERROR,ctx.error.empty()?"Cannot merge speaker probabilities":ctx.error.c_str());
+        if(code!=NH_OK)return code;
+        offset+=count;
+      }
+      code=nh_streaming_diarizer_flush(handle.get(),receive_frames,&ctx);
+      if(ctx.failed)return nh::fail(NH_RUNTIME_ERROR,ctx.error.empty()?"Cannot merge speaker probabilities":ctx.error.c_str());
+      if(code!=NH_OK)return code;
+      code=nh_streaming_diarizer_get_stats(handle.get(),&stream_stats);
+      if(code!=NH_OK)return code;
+      merge.finish();word_slots=std::move(merge.slots);diar.turns=std::move(merge.turns);
+    } else if (decoded.frames) {
       if (emit("diarization_load", 0, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before diarization");
       nh_diarizer *ptr = nullptr;
       nh_diarizer_config diar_config{sizeof(nh_diarizer_config), config->segmentation, config->embedding,
@@ -287,7 +362,7 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
       if(code!=NH_OK)return code;
     }
     if (emit("merge", decoded.frames, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before export");
-    auto utterances = nh::attribute_words(words, diar.turns, options && options->attribution_mode == 1);
+    auto utterances = speaker ? nh::attribute_word_slots(words,word_slots) : nh::attribute_words(words, diar.turns, options && options->attribution_mode == 1);
     Json output{{"transcript", Json::array()}};
     for (const auto &u : utterances)
       output["transcript"].push_back({{"speaker_id", u.speaker_id}, {"start_ms", u.start_ms}, {"end_ms", u.end_ms}, {"text", u.text}});
@@ -295,6 +370,15 @@ extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const 
       Json trace{{"asr", std::move(raw_asr)}, {"words", Json::array()}, {"speaker_turns", Json::array()}};
       for (const auto &w : words) trace["words"].push_back({{"start_ms", w.start_ms}, {"end_ms", w.end_ms}, {"text", w.text}});
       for (const auto &t : diar.turns) trace["speaker_turns"].push_back({{"speaker", t.speaker}, {"start_ms", t.start_ms}, {"end_ms", t.end_ms}});
+      if(speaker) {
+        trace["word_speaker_slots"]=word_slots;
+        trace["decoded_pcm_sha256"]=source_pcm_sha;
+        trace["speaker_stream"]={{"profile",speaker->profile},{"threads",speaker->threads},
+            {"word_anchor_ms",160},{"assignment","posterior_mean_start_anchor"},
+            {"ort",nh_onnxruntime_version()},{"model_calls",stream_stats.model_calls},
+            {"emitted_frames",stream_stats.emitted_frames},{"peak_buffered_samples",stream_stats.peak_buffered_samples},
+            {"inference_seconds",stream_stats.inference_seconds}};
+      }
       if(refinement) {
         trace["initial_speaker_turns"]=Json::array();
         for(const auto &t:initial_turns)trace["initial_speaker_turns"].push_back({{"speaker",t.speaker},{"start_ms",t.start_ms},{"end_ms",t.end_ms}});

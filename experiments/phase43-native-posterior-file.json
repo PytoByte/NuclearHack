@@ -1,0 +1,69 @@
+[
+  {
+    "experiment": "exp_0203",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Regression check old default public file API after shared orchestrator refactor: fresh GigaAM/ERes, compare186 source/words/strict JSON; no default change"
+  },
+  {
+    "experiment": "exp_0204",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [],
+    "hypothesis": "Actual new public full file API smoke: GigaAM ASR -> bounded Q8 -> first160ms posterior assignment, no prototype ASR reuse; compare frozen125 words/times"
+  },
+  {
+    "experiment": "exp_0205",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--baseline",
+      "exp_0099",
+      "--prototype",
+      "exp_0190"
+    ],
+    "hypothesis": "Complete native file API on known RU regression: preserve raw ASR words/times exactly; reproduce all prototype190 speaker slots with bounded posterior accumulation; actual decode/ASR/speaker/export memory/time"
+  },
+  {
+    "experiment": "exp_0206",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--prototype",
+      "exp_0190"
+    ],
+    "hypothesis": "Complete native file API on known RU regression: preserve raw ASR words/times exactly; reproduce all prototype190 speaker slots with bounded posterior accumulation; actual decode/ASR/speaker/export memory/time"
+  },
+  {
+    "experiment": "exp_0207",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--baseline",
+      "exp_0104",
+      "--prototype",
+      "exp_0190"
+    ],
+    "hypothesis": "Complete native file API on known RU regression: preserve raw ASR words/times exactly; reproduce all prototype190 speaker slots with bounded posterior accumulation; actual decode/ASR/speaker/export memory/time"
+  },
+  {
+    "experiment": "exp_0208",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--baseline",
+      "exp_0155",
+      "--prototype",
+      "exp_0190"
+    ],
+    "hypothesis": "Complete native file API on known RU regression: preserve raw ASR words/times exactly; reproduce all prototype190 speaker slots with bounded posterior accumulation; actual decode/ASR/speaker/export memory/time"
+  }
+]

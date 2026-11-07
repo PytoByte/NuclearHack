@@ -1,0 +1,63 @@
+[
+  {
+    "experiment": "exp_0209",
+    "script": "eval/scripts/probe_streaming_file_controls.py",
+    "args": [],
+    "hypothesis": "New public file C ABI real-model cancellation after completed NN step, monotonic emitted-frame progress, shared checkpoint replay across new/legacy backends, nested busy, pre-ASR duration cap and external-weight protection"
+  },
+  {
+    "experiment": "exp_0210",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--prototype",
+      "exp_0190"
+    ],
+    "hypothesis": "Latest core after progress-counter correction: fresh complete host file pipeline, source SHA and exact prototype words/slots; anchor counterpart for target executions"
+  },
+  {
+    "experiment": "exp_0211",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--android",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--host-reference",
+      "exp_0210"
+    ],
+    "hypothesis": "Actual complete standalone file C ABI on offline x86AVD4GB: fresh device GigaAM+speaker inference, no host ASR substitution, source PCM SHA and actual CLI/PSS timing; repeat frozen binaries/config"
+  },
+  {
+    "experiment": "exp_0212",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--android",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--host-reference",
+      "exp_0210"
+    ],
+    "hypothesis": "Actual complete standalone file C ABI on offline x86AVD4GB: fresh device GigaAM+speaker inference, no host ASR substitution, source PCM SHA and actual CLI/PSS timing; repeat frozen binaries/config"
+  },
+  {
+    "experiment": "exp_0213",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--android",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--host-reference",
+      "exp_0210"
+    ],
+    "hypothesis": "Actual complete standalone file C ABI on offline x86AVD4GB: fresh device GigaAM+speaker inference, no host ASR substitution, source PCM SHA and actual CLI/PSS timing; repeat frozen binaries/config"
+  }
+]

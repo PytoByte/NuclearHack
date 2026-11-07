@@ -1,0 +1,629 @@
+{
+  "experiment_id": "exp_0204",
+  "scope": "full native GigaAM -> streaming Q8 posterior word merge -> strict JSON; host",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "exit_code": 0,
+      "wall_seconds": 4.449872432996926,
+      "process_peak_rss_kib": 469272,
+      "sampled_peak_pss_kib": 464344,
+      "sampled_peak_rss_kib": 470364,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 31.3564375,
+      "source_samples": 501703,
+      "decoded_pcm_sha256": "1d474997f64449af41ebc98c3403b75207d7db575a24d841322909f492c39342",
+      "full_rtf": 0.14191256366406185,
+      "native_stream": {
+        "assignment": "posterior_mean_start_anchor",
+        "emitted_frames": 3135,
+        "inference_seconds": 0.8489986300000001,
+        "model_calls": 2,
+        "ort": "1.28.2",
+        "peak_buffered_samples": 486440,
+        "profile": 1,
+        "threads": 4,
+        "word_anchor_ms": 160
+      },
+      "baseline_words_exact": true,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 62
+        },
+        "raw": {
+          "substitutions": 26,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 60
+        },
+        "punctuation_token_wer": {
+          "substitutions": 2,
+          "deletions": 20,
+          "insertions": 0,
+          "reference_words": 82
+        },
+        "normalized_cer": {
+          "errors": 2,
+          "reference_characters": 363
+        },
+        "raw_cer": {
+          "errors": 34,
+          "reference_characters": 381
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 20
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 18
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 8
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 10
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 2
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "json_valid": true
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "exit_code": 0,
+      "wall_seconds": 2.768229544002679,
+      "process_peak_rss_kib": 470748,
+      "sampled_peak_pss_kib": 458264,
+      "sampled_peak_rss_kib": 464064,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 23.5210625,
+      "source_samples": 376337,
+      "decoded_pcm_sha256": "df44f2041e642302c5e171e482d2eb60970db7feb7bcd26b4e8fb4e5f55a7b00",
+      "full_rtf": 0.11769151771960469,
+      "native_stream": {
+        "assignment": "posterior_mean_start_anchor",
+        "emitted_frames": 2352,
+        "inference_seconds": 0.278500106,
+        "model_calls": 1,
+        "ort": "1.28.2",
+        "peak_buffered_samples": 376337,
+        "profile": 1,
+        "threads": 4,
+        "word_anchor_ms": 160
+      },
+      "baseline_words_exact": true,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 30
+        },
+        "raw": {
+          "substitutions": 16,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 30
+        },
+        "punctuation_token_wer": {
+          "substitutions": 2,
+          "deletions": 14,
+          "insertions": 0,
+          "reference_words": 44
+        },
+        "normalized_cer": {
+          "errors": 2,
+          "reference_characters": 169
+        },
+        "raw_cer": {
+          "errors": 24,
+          "reference_characters": 183
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 14
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 12
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 2
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 6
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 4
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 2
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "speaker_attributed": {
+        "errors": 6,
+        "reference_words": 30,
+        "cpwer": 0.2
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "json_valid": true
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "exit_code": 0,
+      "wall_seconds": 3.8901630280015524,
+      "process_peak_rss_kib": 497728,
+      "sampled_peak_pss_kib": 492610,
+      "sampled_peak_rss_kib": 498576,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 39.7831875,
+      "source_samples": 636531,
+      "decoded_pcm_sha256": "4fc2fa4ac90fc27df68c57908bc3da10ca73e2b3f07be19899121a2b0d99aa39",
+      "full_rtf": 0.0977840960582043,
+      "native_stream": {
+        "assignment": "posterior_mean_start_anchor",
+        "emitted_frames": 3978,
+        "inference_seconds": 0.8407369739999999,
+        "model_calls": 2,
+        "ort": "1.28.2",
+        "peak_buffered_samples": 486440,
+        "profile": 1,
+        "threads": 4,
+        "word_anchor_ms": 160
+      },
+      "baseline_words_exact": true,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 1,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 78
+        },
+        "raw": {
+          "substitutions": 33,
+          "deletions": 1,
+          "insertions": 2,
+          "reference_words": 76
+        },
+        "punctuation_token_wer": {
+          "substitutions": 1,
+          "deletions": 27,
+          "insertions": 0,
+          "reference_words": 104
+        },
+        "normalized_cer": {
+          "errors": 7,
+          "reference_characters": 471
+        },
+        "raw_cer": {
+          "errors": 48,
+          "reference_characters": 495
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 26
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 24
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 12
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 12
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 2
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 78,
+        "cpwer": 0.02564102564102564
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "json_valid": true
+    }
+  ],
+  "text_metrics": {
+    "normalized": {
+      "substitutions": 5,
+      "deletions": 1,
+      "insertions": 0,
+      "reference_words": 170,
+      "wer": 0.03529411764705882
+    },
+    "raw": {
+      "substitutions": 75,
+      "deletions": 1,
+      "insertions": 4,
+      "reference_words": 166,
+      "wer": 0.4819277108433735
+    },
+    "punctuation_token_wer": {
+      "substitutions": 5,
+      "deletions": 61,
+      "insertions": 0,
+      "reference_words": 230,
+      "wer": 0.28695652173913044
+    },
+    "normalized_cer": {
+      "errors": 11,
+      "reference_characters": 1003,
+      "cer": 0.010967098703888335
+    },
+    "raw_cer": {
+      "errors": 106,
+      "reference_characters": 1059,
+      "cer": 0.10009442870632672
+    },
+    "punctuation": {
+      "end_to_end": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 60,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "conditional_equal_words": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 54,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_mark": {
+        ".": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 22,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        ",": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 28,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "?": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 4,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "!": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 2,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        ":": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ";": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2014": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "-": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 4,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "\u2026": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00ab": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00bb": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\"": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "(": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ")": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      }
+    }
+  },
+  "normalized": {
+    "substitutions": 5,
+    "deletions": 1,
+    "insertions": 0,
+    "reference_words": 170,
+    "wer": 0.03529411764705882
+  },
+  "cer": 0.010967098703888335,
+  "cpwer": 0.058823529411764705,
+  "inference_rtf": 0.11734823925720124,
+  "process_peak_rss_kib": 497728
+}

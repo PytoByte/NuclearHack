@@ -293,6 +293,34 @@
         "models/nemotron3-diarization/Nemotron-3-Diarization.q8_0.gguf"
       ],
       "scope": "Research-only official GGUF NeMo-Speech.cpp pipeline; not ONNX Q8 parity; not SDK preset"
+    },
+    {
+      "id": "lseend-dih3-onnx",
+      "family": "experimental_lseend",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "revision": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "upstream": "https://github.com/Audio-WestlakeU/FS-EEND",
+      "license_url": "https://github.com/Audio-WestlakeU/FS-EEND/blob/main/LICENSE",
+      "files": [
+        "models/lseend-dih3/ls_eend_dih3_step.onnx",
+        "models/lseend-dih3/ls_eend_dih3_step.json",
+        "models/lseend-dih3/reference/ls_eend_onnx_runtime.py",
+        "models/lseend-dih3/reference/ls_eend_streaming_common.py",
+        "models/lseend-dih3/reference/ls_eend_common.py",
+        "models/lseend-dih3/reference/datasets/feature.py"
+      ],
+      "scope": "Research-only 8kHz recurrent LS-EEND DIHARD3, third-party ONNX export; ten real slots; use pinned publisher frontend, actual FFT256 despite metadata1024; not SDK preset"
+    },
+    {
+      "id": "dpdfnet-baseline-16k",
+      "family": "speech_enhancement",
+      "source": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "revision": "dd6818d00f50c836fed43a6243ebe49116de5964",
+      "license_url": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "files": [
+        "models/dpdfnet/baseline.onnx"
+      ],
+      "scope": "Research-only causal speech enhancement before ASR; native sherpa runtime, original audio for diarization; not SDK preset"
     }
   ],
   "files": [
@@ -858,6 +886,62 @@
       "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
       "version": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
       "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/lseend-dih3/ls_eend_dih3_step.onnx",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/DIHARD%20III/ls_eend_dih3_step.onnx",
+      "sha256": "587ad263b46aaa5d4fc7fb9e0524d1990455f7286c3a47b2371d08df8b5671c8",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/ls_eend_dih3_step.json",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/DIHARD%20III/ls_eend_dih3_step.json",
+      "sha256": "ecb42ca07888a297b3e0ae277b19e1a1412e1fa68309233f9e6196b06128f0a9",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_onnx_runtime.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_onnx_runtime.py",
+      "sha256": "316b363511c7af48eee0f21c259abd0b66d560cd2b3b26a48a68b1c9969600e4",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_streaming_common.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_streaming_common.py",
+      "sha256": "60fe4e58b8dd8beeaeb486dc7cab3d06e8b92627c5e64132a50e38c909389cdc",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_common.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_common.py",
+      "sha256": "f3d13f1b53fefe3557ec103f920baaf0072fd476328e8c3aa8f0a83022f82a8e",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/datasets/feature.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/datasets/feature.py",
+      "sha256": "be36d3f429d0b2e87ca23f1126697d443e6d229adff17dc0c69933fcb73647af",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/dpdfnet/baseline.onnx",
+      "url": "https://huggingface.co/Ceva-IP/DPDFNet/resolve/dd6818d00f50c836fed43a6243ebe49116de5964/onnx/baseline.onnx",
+      "sha256": "371d26182aff0e1e0d31354e24c81f79cd57458f5a7dd003fc10a7ebf64255e0",
+      "source": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "version": "dd6818d00f50c836fed43a6243ebe49116de5964",
+      "license": "Apache-2.0"
     }
   ]
 }

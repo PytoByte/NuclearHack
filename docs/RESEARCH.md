@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, завершено сравнение готового native pipeline187–194; далее интеграция лучших компонентов.**
+**Сейчас: этап2, проверены готовый native pipeline187–194 и отдельные блоки195–202; далее интеграция выигравшего merge.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -1016,3 +1016,73 @@ GigaAM сохраняется. Взять для native merge A/B идею пр�
 потом bounded интеграция выигравшего варианта в полный file API и x86 AVD.
 Новые runtime/models/CLI зафиксированы отдельно; проверка моделей и30 research tests пройдены.
 Это расширяет исследование архитектур; текущий shipped SDK не заменён непроверенной библиотекой.
+
+### Блоковый research вместо перебора параметров — следующий цикл
+
+Цель: переносить конкретный алгоритм/инженерный приём с первичным источником,
+держать остальные части фиксированными, измерять вклад блока и его стоимость.
+Не считать популярность GitHub или чужую GPU/Apple метрику доказательством пользы на нашем CPU.
+
+| Блок / проблема | Источник и что берём | Статус |
+| --- | --- | --- |
+| Word→speaker теряет информацию после binarization | NeMo-Speech.cpp: direct posterior mean/160ms word anchor | Проверен190:25.70→23.43% cpWER; native file integration впереди |
+| Recurrent сопровождение спикеров вместо embedding/clustering/cache Sortformer | [LS-EEND](https://github.com/Audio-WestlakeU/FS-EEND), [FluidAudio](https://github.com/FluidInference/FluidAudio), public ONNX export | Проверены195–200; недостаточное качество, не продвигать |
+| Acoustic enhancement отдельно перед ASR, не перед speaker embeddings | [DPDFNet native sherpa](https://k2-fsa.github.io/sherpa/onnx/speech-enhancement/dpdfnet.html); у [speech-core](https://github.com/soniqo/speech-core) изучен DeepFilterNet3 DSP/delay compensation |201 выявил source-grid mismatch;202 проверяет явное padding/latency выравнивание и ASR A/B |
+| Точные интервалы слов вместо CTC peak+40ms | [WhisperX](https://github.com/m-bain/whisperX), [NeMo Forced Aligner](https://github.com/NVIDIA-NeMo/Speech/tree/main/tools/nemo_forced_aligner): CTC Viterbi alignment неизменного ASR текста | Источники разобраны; проверить доступность GigaAM logits и стоимость bounded alignment; word MAE пока без GT не заявлять |
+| Автооценка числа голосов вместо одного cosine threshold | [NME-SC](https://github.com/tango4j/Auto-Tuning-Spectral-Clustering), NeMo offline clustering; FluidAudio VBx | Источники разобраны; нужны исходные segment embeddings/подходящий PLDA, один только distance matrix после constraints недостаточен для честной реплики |
+| Стабильная timeline и ограниченные buffers | FluidAudio finalized/tentative timeline; speech-core model-agnostic C++ interfaces | Применимо архитектурно; наш C ABI пока выдаёт только committed frames. Не добавлять UI/voice-agent/TTS ради копирования проекта |
+
+Приоритет:202 завершён без выигрыша; далее native opt-in posterior merge и A/B alignment/гибридной
+геометрии speaker-модели при сохранении GigaAM. Новый backend добавлять только при
+измеримом выигрыше, не начинать очередной произвольный threshold sweep.
+
+### exp_0195–0200 — LS-EEND как отдельный streaming блок
+
+ONNX44,486,905 bytes, exporter GradientDescent2718/LS-EEND-ONNX,
+revcc40a1e…, SHA587ad263…; DIHARD3,8kHz,10real slots +2special,
+100ms output,6 recurrent/cache tensors, total state1,916,352 bytes.
+Pinned publisher feature/state code исполняется в отдельном frontend-reference env;
+CPU ORT1.23.2/4threads. Python reference RSS не является native/mobile RAM.
+Подготовка: `make lseend-reference-bootstrap`.
+
+Metadata заявляет FFT1024, но publisher code и original LS-EEND feature.py
+(revadcdde1…) вычисляют next-power-of-two(window200)=256. Использован actual code256;
+не подменяли frontend числом из metadata. Полная Torch/checkpoint→ONNX parity не доказана.
+195 whole-feature smoke:cpWER25.88%, против NemotronQ8 9.41%.
+196 input1s: maxposterior delta≤1.73e-5,0threshold flips на всех3; качество совпало195.
+State/transport control пройден, но это не gold quality gate.
+
+197–200: все6 известных натуральных RU записей, прежние GigaAM words и thresholds.
+cpWER yCX97.13%,p041.18%,nr68.27%,movie84.88%,sFt100.22%,astrology95.78%.
+На yCX/sFt модель оставила один known voice; не выдавать скорость за решение задачи.
+Reference processing RTF.069–.087 с tentative previews; generic Python/frontend overhead
+и cold imports отделены в wall_seconds, нет ARM/per-device latency claim.
+**ADR:** этот export/runtime pair не включать в SDK. Выбор другого diarization механизма
+проверен фактически; менять frontend/пороги по этим ответам для спасения метрик не будем.
+
+### exp_0201–0202 — отдельная ветвь enhancement→ASR
+
+DPDFNet baseline16kHz,8,722,707 bytes, revdd6818d…/SHA371d2618…,Apache2;
+native sherpa C API, никаких новых inference frameworks. ASR GigaAM CTC INT8/4threads,
+20s chunks, raw/enhanced на том же PCM. Diarization здесь не пересчитывается.
+201 сохранён как failed diagnostic: native STFT/ISTFT возвращает hop-rounded длину,
+а `ShiftWaveform(2*window_length)` сдвигает сигнал и zero-fills конец.
+Без выравнивания нельзя считать временные метрики или молча менять timeline.
+202: явное right-padding ровно из model metadata (40ms delay + до1hop), проверка
+native padded output, удаление только объявленного padding до исходного Nsamples;
+ASR сравнивается на одинаковых chunk ranges. Число reference speakers не используется.
+
+202 завершён: identical chunk ranges и исходный Nsamples сохранены во всех3 случаях,
+никакого скрытого изменения длительности. Суммарный WER raw3.53% → enhanced4.12%,
+CER1.10% →1.40%. Clean и short лексические ошибки прежние; noisy2/78 →3/78.
+Native denoising занимает1.13–2.20 s на24–40 s аудио; это не ARM timing.
+**ADR:** baseline denoise не включать по умолчанию: выигрыш не наблюдается, выборка мала,
+одна дополнительная ошибка не доказывает общую непригодность DPDFNet.
+
+Итог блока research195–202: модели/state/frontend разных архитектур проверены на коде,
+а не только занесены в таблицу. LS-EEND на6known RU дал81.89%cpWER против25.70% уQ8;
+ONNX/native parity с оригинальным Torch checkpoint не заявлена. DPDFNet выявил реальную
+задачу DSP alignment, но не дал ASR improvement в smoke. Главный положительный результат
+остаётся posterior merge190:25.70→23.43%cpWER без замены GigaAM/diarizer/word times.
+Дальнейшее расширение — через конкретные блоковые гипотезы с первичным источником,
+фиксацией остальных компонентов и accept/reject; arbitrary parameter sweep не приоритет.

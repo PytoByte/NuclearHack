@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0201",
+    "script": "eval/scripts/probe_denoise_asr.py",
+    "args": [],
+    "hypothesis": "Borrow native causal DPDFNet baseline as enhancement only before unchanged GigaAM CTC, paired raw/enhanced; same16k source frame count and20s chunks, clean/short/noise strata; no diarization/word timestamp claims, no attenuation sweep"
+  }
+]

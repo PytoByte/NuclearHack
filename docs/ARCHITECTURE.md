@@ -250,3 +250,8 @@ Q8 buffered; default promotion не принят.
 назначение спикера первым160ms слова улучшило cpWER нашего GigaAM/ONNX варианта
 в research190; в файловом C API ещё не реализовано. Внешний runtime не линкуется
 с SDK; Linux ARM64 binary не считается проверкой Android NDK.
+
+Блоковые исследования195+: LS-EEND recurrent diarization проверен отдельно и
+не принят из-за quality regression. DPDFNet enhancement→ASR проверен202 через
+существующий native sherpa C API с явным DSP right-padding/cropping до исходного
+N samples. Выигрыша WER в smoke нет, в основной SDK/preset не включён. Исходный звук остаётся входом для diarization.

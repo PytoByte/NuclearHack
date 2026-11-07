@@ -83,3 +83,8 @@ research-pilot: audio-bootstrap
 nemo-reference-bootstrap:
 	.venv/bin/python scripts/bootstrap_nemo_reference.py
 	.venv/bin/python scripts/bootstrap_models.py nemotron35-asr-q8 nemotron3-diarization-gguf-q8
+
+.PHONY: lseend-reference-bootstrap
+lseend-reference-bootstrap: frontend-reference-bootstrap
+	uv pip install --python .tools/frontend-env/bin/python 'onnxruntime==1.23.2' 'matplotlib==3.10.7'
+	.venv/bin/python scripts/bootstrap_models.py lseend-dih3-onnx

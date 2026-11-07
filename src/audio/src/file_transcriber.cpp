@@ -249,9 +249,11 @@ nh_status FileTranscriber::run() {
             code = decoder->decode(input, spool_pcm, &decoded);
         }
         if (decoded.duration_exceeded)
-            return fail(decoded.failure, "Decode exceeded duration budget of " + std::to_string(budget) + " seconds");
+            return fail(decoded.failure,
+                        ("Decode exceeded duration budget of " + std::to_string(budget) + " seconds").c_str());
         if (decoded.scratch_write_failed)
-            return fail(decoded.failure, "Scratch PCM write failed in " + std::string(config->scratch_directory));
+            return fail(decoded.failure,
+                        ("Scratch PCM write failed in " + std::string(config->scratch_directory)).c_str());
         if (code != NH_OK)
             return code;
         if (fflush(spool.file()))

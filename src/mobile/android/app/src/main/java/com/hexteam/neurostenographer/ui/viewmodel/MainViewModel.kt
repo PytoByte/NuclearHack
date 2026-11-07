@@ -98,9 +98,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     runCatching {
                         requireNative()
                         val input = repository.importAudio(uri, displayName)
+                        val prepared = engine.prepareInput(input)
                         val output =
-                            engine.transcribe(input) { stage, done, total ->
-                                onNativeProgress(stage, done, total)
+                            try {
+                                engine.transcribe(prepared) { stage, done, total ->
+                                    onNativeProgress(stage, done, total)
+                                }
+                            } finally {
+                                if (prepared != input) prepared.delete()
                             }
                         _state.update {
                             it.copy(processing = ProcessingStage.Exporting, progress = 99, stageLabel = "Сохранение")

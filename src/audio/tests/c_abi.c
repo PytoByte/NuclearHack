@@ -180,7 +180,7 @@ int main(void) {
     final_config.scratch_directory = ".";
     final_config.output_json = "c-abi-final.json";
     CHECK(nh_transcribe("c-abi-fixture.wav", &final_config, cancel_stage, NULL) == NH_CANCELLED);
-    final_config.max_audio_seconds = 601;
+    final_config.max_audio_seconds = 3601;
     CHECK(nh_transcribe("c-abi-fixture.wav", &final_config, NULL, NULL) == NH_INVALID_ARGUMENT);
     final_config.max_audio_seconds = 0;
     final_config.threads = 17;

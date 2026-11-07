@@ -7,7 +7,7 @@ speaker ID и временем → строгий JSON. UI, Python, JVM и се�
 Рекомендуемый API — `nh_transcribe(input, &config, progress, user)`.
 `nh_transcription_config` содержит локальные пути ASR/tokens/speaker model,
 рабочего каталога и выходного JSON. Trace и ASR checkpoint необязательны.
-Значения по умолчанию:4 CPU threads,лимит600s; политика20s ASR chunks,
+Значения по умолчанию:4 CPU threads, лимит3600s (1 час); политика20s ASR chunks,
 buffered speaker profile и first160ms word anchor фиксирована.
 Полный C-клиент: [examples/transcribe_file.c](examples/transcribe_file.c).
 
@@ -79,7 +79,7 @@ Pre-commit проверяет точное staged-содержимое изме�
 Это buffered file processing, не готовая real-time транскрибация микрофона.
 Короткие третьи голоса/одновременная речь остаются сложными; стерео сводится в mono.
 Timestamp MAE без ручных word GT неизвестен. ARM64 собран, но запуск на физическом
-ARM не проверен.600s synthetic soak не заменяет natural long-dialogue quality test.
+ARM не проверен.3600s long-dialogue soak и натворческая проверка качества не заменяют друг друга.
 Выбранный ASR лучше восстанавливает пунктуацию, но на phone40 хуже plain CTC;
 нет утверждения об универсальном качестве или независимом gold test.
 

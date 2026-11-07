@@ -143,10 +143,9 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_transcribe(J
     auto callback = make_callback(env, cls);
     return nh_transcribe_file(in.c_str(), &config, progress, &callback);
 }
-extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_transcribeJob(JNIEnv* env, jclass cls,
-                                                                                  jstring input, jstring output,
-                                                                                  jstring models, jstring scratch,
-                                                                                  jobject options) {
+namespace {
+jint transcribe_job(JNIEnv* env, jclass cls, jstring input, jstring output, jstring models, jstring scratch,
+                    jobject options) {
     if (!options)
         return NH_INVALID_ARGUMENT;
     jclass type = env->GetObjectClass(options);
@@ -190,6 +189,13 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_transcribeJo
                ? nh_transcribe_file_with_refinement(in.c_str(), &config, &tuning, &refinement, progress, &callback)
                : nh_transcribe_file_with_options(in.c_str(), &config, &tuning, progress, &callback);
 }
+} // namespace
+extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_transcribeJob(JNIEnv* env, jclass cls,
+                                                                                  jstring input, jstring output,
+                                                                                  jstring models, jstring scratch,
+                                                                                  jobject options) {
+    return transcribe_job(env, cls, input, output, models, scratch, options);
+}
 extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_summarize(JNIEnv* env, jclass cls, jstring input,
                                                                               jstring model, jstring output,
                                                                               jint threads) {
@@ -211,7 +217,48 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_llmAvailable
     return nh_llm_available();
 }
 extern "C" JNIEXPORT jlong JNICALL Java_com_hexteam_audiohost_Native_peakRssKib(JNIEnv*, jclass) {
-    struct rusage usage{};
+    struct rusage usage {};
+    getrusage(RUSAGE_SELF, &usage);
+    return usage.ru_maxrss;
+}
+/* Product application bridge. The host APK above remains unchanged. */
+extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_transcribeJob(
+    JNIEnv* env, jclass cls, jstring input, jstring output, jstring models, jstring scratch, jobject options) {
+    return transcribe_job(env, cls, input, output, models, scratch, options);
+}
+extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_transcribeFinal(
+    JNIEnv* env, jclass cls, jstring input, jstring output, jstring asr_model, jstring tokens, jstring speaker_model,
+    jstring scratch, jint threads, jint max_audio_seconds, jstring checkpoint, jstring trace) {
+    const auto in = utf8(env, input), out = utf8(env, output), asr = utf8(env, asr_model), tok = utf8(env, tokens),
+               speaker = utf8(env, speaker_model), tmp = utf8(env, scratch), cache = utf8(env, checkpoint),
+               trace_path = utf8(env, trace);
+    nh_transcription_config config{};
+    config.struct_size = sizeof(config);
+    config.asr_model = asr.c_str();
+    config.tokens = tok.c_str();
+    config.speaker_model = speaker.c_str();
+    config.scratch_directory = tmp.c_str();
+    config.output_json = out.c_str();
+    config.trace_json = trace_path.empty() ? nullptr : trace_path.c_str();
+    config.checkpoint_directory = cache.empty() ? nullptr : cache.c_str();
+    config.threads = static_cast<uint32_t>(threads);
+    config.max_audio_seconds = static_cast<uint32_t>(max_audio_seconds);
+    auto callback = make_callback(env, cls);
+    return nh_transcribe(in.c_str(), &config, progress, &callback);
+}
+extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_summarize(
+    JNIEnv* env, jclass cls, jstring input, jstring model, jstring output, jint threads) {
+    return Java_com_hexteam_audiohost_Native_summarize(env, cls, input, model, output, threads);
+}
+extern "C" JNIEXPORT jstring JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_lastError(JNIEnv* env,
+                                                                                                    jclass) {
+    return env->NewStringUTF(nh_last_error());
+}
+extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_llmAvailable(JNIEnv*, jclass) {
+    return nh_llm_available();
+}
+extern "C" JNIEXPORT jlong JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_peakRssKib(JNIEnv*, jclass) {
+    struct rusage usage {};
     getrusage(RUSAGE_SELF, &usage);
     return usage.ru_maxrss;
 }

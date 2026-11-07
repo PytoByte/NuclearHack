@@ -1293,3 +1293,17 @@ SHAmanifest,preset,build provenance. Qwen weights/research corpus/scripts/Python
 silence-aware/overlapping ASR chunks с дедупликацией,short-speaker/overlap-aware
 обработка,channel-aware stereo,acoustic-aware punctuation и domain adaptation.
 Выбор модели/метода на новом независимом корпусе полезнее очередного threshold sweep.
+
+## ADR — Compose-клиент и native SDK, 07.11.2026
+
+`src/mobile/android` подключён к `src/audio` без копирования inference в Kotlin.
+Gradle использует готовые `.so` из `.build/android-<abi>` и
+`.tools/sherpa-android/<abi>`, а модели — из локального `models/`; сборка SDK
+внутри Gradle не дублируется. JNI-мост `com.hexteam.neurostenographer.audio.NativeAudio`
+вызывает `nh_transcribe` и `nh_summarize_file`; blocking-вызовы выполняются
+в IO-диспетчере. `AudioModelStore` копирует assets в `filesDir/models` один раз,
+финальный preset предпочитается legacy. Фейковые транскрипты удалены,
+UI показывает только сохранённые реальные результаты. `make android-app`
+требует libs/models и проверяет отсутствие `INTERNET`; без флага
+`requireNativeAudio` Gradle оставляет UI-заглушку. Запуск на физическом
+ARM-устройстве, качество и RTF приложения остаются неизмеренными.

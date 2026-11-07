@@ -1,7 +1,7 @@
 export PATH := $(CURDIR)/.venv/bin:$(CURDIR)/.tools/bin:$(PATH)
 .PHONY: help doctor check hooks test android-check audio-bootstrap mobile-bootstrap native-build native-test native-sanitize mobile-build
 .PHONY: research-bootstrap research-test
-.PHONY: llama-build android-host-bootstrap android-host-build offline-package
+.PHONY: llama-build android-host-bootstrap android-host-build offline-package android-app
 llama-build:
 	.venv/bin/python scripts/build_llama_audio.py
 android-host-bootstrap: mobile-bootstrap
@@ -24,6 +24,7 @@ help:
 	@echo 'native-sanitize ASan/UBSan build and tests'
 	@echo 'mobile-bootstrap Also install NDK for cross-compilation'
 	@echo 'mobile-build  Cross-compile ARM64 and x86_64 SDK (no UI)'
+	@echo 'android-app   Build offline Compose APK with native SDK and models'
 	@echo 'research-bootstrap Prepare pinned models and FLEURS validation40'
 	@echo 'research-test Test fixed WER normalization and scoring'
 	@echo 'More: python3 scripts/audio_tools.py --help'
@@ -57,6 +58,8 @@ native-sanitize:
 	.venv/bin/ctest --test-dir .build/audio-asan --output-on-failure
 mobile-build:
 	.venv/bin/python scripts/build_mobile_audio.py
+android-app:
+	.venv/bin/python scripts/build_android_app.py
 research-bootstrap: audio-bootstrap
 	uv sync --frozen --group research
 	$(MAKE) native-build

@@ -129,6 +129,22 @@ VAD не включён в файловый preset без подтверждён
 контекст4096/output≤256,overflow возвращает ошибку. Qwen weights не входят в
 минимальный transcription bundle. Сборки с llama поставляют его runtime libs.
 
+## Android-клиент
+
+`src/mobile/android` — Jetpack Compose/MVVM клиент. Gradle не компилирует
+native SDK: задачи `syncNativeAudio` и `syncAudioAssets` берут готовые
+`.build/android-<abi>/libnuclear_audio*.so`, `.tools/sherpa-android/<abi>/*.so`
+и локальные `models/*`, затем упаковывают их в APK. `NativeAudio.java` —
+app-specific JNI-мост к C ABI; `AudioEngine.kt` выполняет blocking-вызовы
+в IO-диспетчере, `AudioModelStore.kt` один раз копирует assets в
+`filesDir/models`, `TranscriptRepository.kt` импортирует SAF-аудио и хранит
+строгий JSON, `MainViewModel.kt` управляет прогрессом, отменой и ошибками.
+Финальный preset `giga-v3-ctc-punct` + `nemotron3-diarization` выбирается
+при наличии; иначе работает legacy `giga-v3-ctc` + `diarization`.
+Сводка Qwen показывается только при `nh_llm_available() == 1`. Манифест
+не содержит `INTERNET`. `make android-app` проверяет libs/assets и собирает
+APK; физический ARM-запуск и метрики устройства не измерены.
+
 ## Сборка, поставка и подтверждение
 
 `src/audio/.clang-format` + pinned clang-format19.1.7; pre-commit проверяет staged

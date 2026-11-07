@@ -1,8 +1,10 @@
 repos:
-  - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v18.1.8
+  - repo: local
     hooks:
       - id: clang-format
+        name: clang-format
+        entry: .venv/bin/clang-format -i
+        language: system
         types_or: [c++, c]
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.0

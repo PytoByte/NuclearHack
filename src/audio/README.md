@@ -25,6 +25,11 @@ buffered speaker profile и first160ms word anchor фиксирована.
 файла. Веса и runtime поставляются заранее; один `.so` без них недостаточен.
 Пунктуация генерируется ASR, отдельный Python-пунктуатор не используется.
 
+## Документация
+
+Текущие цели и статусы: [docs/GOALS.md](../../docs/GOALS.md).
+Архитектура: [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md).
+
 ## Сборка и проверка
 
 Из корня репозитория, Linux x86_64:

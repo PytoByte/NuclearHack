@@ -33,6 +33,30 @@ Default0 в новой конфигурации означает4threads/600s. �
 real-time микрофонный ASR. Полный600s synthetic soak не является проверкой
 качества естественного десятиминутного разговора.
 
+## Model contract
+
+- ASR: GigaAM-v3 CTC INT8 emits punctuated text. Do not rewrite, smooth,
+  summarize, normalize spoken words, or remove fillers in transcript output.
+- Diarization: Nemotron3 Q8 is diarization only. It cannot replace ASR.
+- Qwen summary is optional and isolated. Transcript JSON must remain unchanged
+  by summary generation.
+- All model execution is offline. Weights are supplied before build/deployment.
+- Automatic voice count can use up to 8 slots; this is not a guarantee that
+  all 8 speakers are recognized.
+- Speaker IDs are stable inside one file and canonicalized by first word; they
+  are not cross-file identities.
+
+## Non-goals and evaluator gaps
+
+- Realtime microphone ASR is not implemented; SDK is buffered file processing.
+- In-app audio recording is not implemented; import is SAF only.
+- Full Android app benchmark is not claimed here; only state provenance of
+  measurements.
+- ARM physical RAM/RTF/quality are not measured.
+- Word timestamp MAE is unknown without manual word-level ground truth.
+- Cross-file speaker identity, channel-aware diarization, and in-app recording
+  are non-targets or planned goals; see `GOALS.md`.
+
 ## Слои и владение ресурсами
 
 ```mermaid

@@ -84,6 +84,12 @@ fun HomeScreen(
                     stage = state.processing,
                     progress = state.progress,
                     label = state.stageLabel,
+                    elapsedMs = state.elapsedMs,
+                    health = state.progressHealth,
+                    nativeStage = state.nativeStage,
+                    nativeDone = state.nativeDone,
+                    nativeTotal = state.nativeTotal,
+                    diagnostics = state.diagnosticLog,
                     onCancel = onCancel,
                 )
 

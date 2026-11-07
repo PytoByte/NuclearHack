@@ -32,6 +32,13 @@ uv run python scripts/bootstrap_models.py giga-v3-ctc-punct nemotron3-diarizatio
 uv run python scripts/audio_tools.py models config/audio-models.lock.json
 ```
 
+Опционально, если нужна функция локального резюме (Qwen):
+```sh
+uv run python scripts/bootstrap_models.py qwen3-0.6b-q8
+```
+Qwen не входит в минимальный SDK/APK bundle. Если GGUF есть локально, `make android-app`
+упакует его как optional model (`models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf`).
+
 ## Ветки проверок
 
 - `make check` — базовые проверки репозитория и whitespace.

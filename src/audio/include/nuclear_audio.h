@@ -188,7 +188,7 @@ typedef int32_t (*nh_progress_callback)(const char* stage, uint64_t completed_fr
 /* Recommended complete file API. Supply the models from the ru-offline-v1
  * bundle: punctuated GigaAM CTC and Nemotron3 Q8. The client supplies local
  * paths; the SDK does not download models or rewrite lexical ASR output.
- * Fixed file policy: 20s ASR chunks, buffered speaker profile, 160ms word anchor.
+ * Fixed file policy: 25s ASR chunks, buffered speaker profile, 160ms word anchor.
  * Zero threads select 4 threads. Zero duration uses 3600s; explicit duration is 1..3600s.
  * Calls block: use a worker thread. One file/summary job per process.
  * trace_json and checkpoint_directory are optional. ABI1 entry points below

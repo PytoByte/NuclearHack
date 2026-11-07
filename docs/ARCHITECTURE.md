@@ -15,8 +15,7 @@ Preset `config/audio-sdk-preset.json` / `ru-offline-v1`:
 ```text
 клиент → nh_transcribe → FileTranscriber
   decode MP3/WAV → mono16k f32 → unlinked disk PCM
-  GigaAM-v3 CTC INT8 с собственной пунктуацией,20s chunks → release ASR
-  read PCM blocks1s → Nemotron3 Diarization Q8 buffered → release speaker model
+  GigaAM-v3 CTC INT8 с собственной пунктуацией,25s chunks → release ASR  read PCM blocks1s → Nemotron3 Diarization Q8 buffered → release speaker model
   first min(word duration,160ms) posterior mean → speaker per word
   merge adjacent same-speaker words,gap≤1200ms → strict transcript JSON
 ```
@@ -28,8 +27,7 @@ GigaAM остаётся ASR,а Nemotron — только diarizer. NeMo-Speech.c
 всех8участников. ID канонизируются по первому слову и стабильны внутри файла.
 
 Default0 в новой конфигурации означает4threads/3600s. Доступный явный лимит1..3600s.
-Профиль buffered,chunk20s и anchor160ms фиксированы основным API.
-Это обработка готового файла; low-latency speaker profile не выдаётся за готовый
+Профиль buffered,chunk25s и anchor160ms фиксированы основным API.Это обработка готового файла; low-latency speaker profile не выдаётся за готовый
 real-time микрофонный ASR.
 
 ## Model contract

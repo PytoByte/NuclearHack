@@ -1214,8 +1214,7 @@ Native код после квалификации215 не менялся.
 
 **ADR: `ru-offline-v1` / `nh_transcribe`.** Один blocking C ABI вызов с
 `nh_transcription_config`: input/models/scratch/output,optional trace/checkpoint.
-Default4threads/600s;chunk20s,buffered NemotronQ8,anchor160ms фиксированы.
-GigaAM-v3 CTC INT8 **с собственной пунктуацией** → release → Nemotron3Q8 →
+Default4threads/600s;chunk25s,buffered NemotronQ8,anchor160ms фиксированы.GigaAM-v3 CTC INT8 **с собственной пунктуацией** → release → Nemotron3Q8 →
 posterior merge → strict JSON. Не требуются Python/UI/сеть/внешний reference runtime.
 Старые ABI1 entry points сохранены как совместимые адаптеры:они используются
 существующими клиентами/тестами,не объявляются «мёртвым кодом» и не меняют свой backend.

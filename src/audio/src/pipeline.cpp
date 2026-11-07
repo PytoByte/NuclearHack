@@ -15,8 +15,7 @@ extern "C" nh_status nh_transcribe(const char* input, const nh_transcription_con
         pipeline.output_json = options->output_json;
         pipeline.trace_json = options->trace_json;
         pipeline.threads = options->threads ? options->threads : 4;
-        pipeline.chunk_seconds = 20;
-        pipeline.max_audio_seconds = options->max_audio_seconds ? options->max_audio_seconds : 3600;
+        pipeline.chunk_seconds = 25;        pipeline.max_audio_seconds = options->max_audio_seconds ? options->max_audio_seconds : 3600;
         nh_pipeline_options checkpoint{};
         checkpoint.struct_size = sizeof(checkpoint);
         checkpoint.checkpoint_directory = options->checkpoint_directory;

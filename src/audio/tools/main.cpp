@@ -99,8 +99,7 @@ int main(int argc, char** argv) {
                 cfg.output_json = argv[3];
                 cfg.trace_json = trace.c_str();
                 cfg.threads = number(8, 4);
-                cfg.chunk_seconds = number(10, 20);
-                cfg.max_audio_seconds = number(11, 600);
+                cfg.chunk_seconds = number(10, 25);                cfg.max_audio_seconds = number(11, 600);
                 nh_streaming_diarizer_config speaker{sizeof(speaker), argv[6], cfg.threads, number(9, 1), 0};
                 nh_pipeline_options options{};
                 options.struct_size = sizeof(options);
@@ -139,8 +138,7 @@ int main(int argc, char** argv) {
             config.trace_json = trace.c_str();
             config.threads = argc > 9 ? std::stoul(argv[9]) : 2;
             config.cluster_threshold = argc > 10 ? std::stof(argv[10]) : 0.8f;
-            config.chunk_seconds = argc > 11 ? std::stoul(argv[11]) : 20;
-            config.max_audio_seconds = argc > 15 ? std::stoul(argv[15]) : 600;
+            config.chunk_seconds = argc > 11 ? std::stoul(argv[11]) : 25;            config.max_audio_seconds = argc > 15 ? std::stoul(argv[15]) : 600;
             nh_pipeline_options options{sizeof(nh_pipeline_options),
                                         argc > 12 ? std::stof(argv[12]) : 0.3f,
                                         argc > 13 ? std::stof(argv[13]) : 0.5f,

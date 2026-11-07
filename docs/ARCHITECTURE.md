@@ -172,9 +172,16 @@ APK; физический ARM-запуск и метрики устройств�
 ## Сборка, поставка и подтверждение
 
 `src/audio/.clang-format` + pinned clang-format19.1.7; pre-commit проверяет staged
-native blobs. Gates: `make check native-test native-sanitize mobile-build
+native blobs. Gates: `make check native-test native-sanitize leak-check mobile-build
 native-format-check research-test`,Android ktlint/detekt/Lint.
-ASan/UBSan покрывают наш код,а не предсобранный ORT/sherpa.
+ASan/UBSan покрывают наш код,а не предсобранный ORT/sherpa. Ctest-набор включает
+`lifecycle-smoke`: полный create→process→destroy каждого handle на pinned моделях,
+плюс VAD churn-циклы с проверкой роста VmRSS (RSS-гейт работает только в обычном
+build, под ASan arenas он ложно срабатывает); `make leak-check`
+(scripts/leak_check.py, ~3 мин) прогоняет параллельно cppcheck, clang-tidy
+(clang-analyzer), ASan/LSan через ctest и Valgrind на обычном build — Valgrind по
+умолчанию только VAD-путь (`--valgrind-all-models` для полного набора моделей),
+логи — в `.audio-runs/leak-<stamp>/`. Результаты зафиксированы в RESEARCH.md (246–255).
 
 `make sdk-package` создаёт `.build/nuclear-audio-sdk-ru-v1.tar`: public header,
 C-пример,CLI/runtimes Linux x86_64 и Android ARM64/x86_64,только выбранные модели,

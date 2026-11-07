@@ -44,6 +44,10 @@ sh gradlew :app:assembleDebug -PrequireNativeAudio=true
 Без `-PrequireNativeAudio=true` Gradle собирает UI-заглушку без native
 библиотек и моделей; такой APK не выполняет распознавание.
 
+Если `JAVA_HOME` не экспортирован, Gradle берёт системный JDK: AGP 8.7.3
+отказывается запускаться на JDK 25 (в сообщении остаётся только версия —
+`What went wrong: 25.0.5`). Явный обход: `gradlew -Dorg.gradle.java.home=<jdk17>`.
+
 ## Модели и runtime
 `AudioModelStore` один раз копирует `assets/models` в `filesDir/models`.
 Если присутствует финальный preset, используется

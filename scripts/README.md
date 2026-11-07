@@ -38,6 +38,7 @@ Android-проверки запускаются из `src/mobile/android`:
 
 ### Сборка и поставка
 - `format_audio.py` — применение/проверка `src/audio/.clang-format`
+- `leak_check.py` — leak-гейт: cppcheck + clang-tidy + ASan/LSan ctest + Valgrind + churn RSS (`make leak-check`, Linux host/WSL, логи в `.audio-runs/`)
 - `stamp_audio_build.py` — фиксация бинарников и hashes после сборки
 - `build_mobile_audio.py` — cross-compile native SDK для Android
 - `build_llama_audio.py` — сборка CPU-only llama runtime

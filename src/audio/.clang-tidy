@@ -1,3 +1,7 @@
+# Essentials only on purpose: bugprone + clang-analyzer cover ownership, UB and
+# leak-shaped diagnostics. Style families (readability/modernize/format) belong to
+# clang-format (.clang-format) and produce preference noise with no ownership link.
+# Re-enable a family only when a concrete finding justifies it.
 Checks: >
   bugprone-*, clang-analyzer-*,
   -bugprone-implicit-widening-of-multiplication-result,

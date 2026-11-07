@@ -112,7 +112,10 @@ int main(void) {
     struct reentry reentry = {&pipeline, NH_OK};
     CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, nested_file, &reentry) == NH_CANCELLED);
     CHECK(reentry.status == NH_BUSY);
-    CHECK(fopen("c-abi-result.json", "rb") == NULL);
+    FILE* result = fopen("c-abi-result.json", "rb");
+    CHECK(result == NULL);
+    if (result)
+        fclose(result);
     pipeline.output_json = "c-abi-fixture.wav";
     CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, NULL, NULL) == NH_INVALID_ARGUMENT);
     nh_llm_config llm = {0};

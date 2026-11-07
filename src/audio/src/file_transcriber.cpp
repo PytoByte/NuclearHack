@@ -19,16 +19,20 @@ struct DecodeContext {
     nh_progress_callback progress = nullptr;
     void* user = nullptr;
     nh_status failure = NH_OK;
+    bool duration_exceeded = false;
+    bool scratch_write_failed = false;
     std::unique_ptr<picosha2::hash256_one_by_one> pcm_hash;
 };
 int32_t spool_pcm(const float* samples, uint32_t frames, uint64_t, void* opaque) {
     auto& ctx = *static_cast<DecodeContext*>(opaque);
     if (ctx.frames + frames > ctx.limit) {
         ctx.failure = NH_INVALID_ARGUMENT;
+        ctx.duration_exceeded = true;
         return 1;
     }
     if (fwrite(samples, sizeof(float), frames, ctx.file) != frames) {
         ctx.failure = NH_IO_ERROR;
+        ctx.scratch_write_failed = true;
         return 1;
     }
     if (ctx.pcm_hash) {
@@ -229,15 +233,25 @@ nh_status FileTranscriber::run() {
                                     ? std::min(config->max_audio_seconds, speaker->max_audio_seconds)
                                     : config->max_audio_seconds;
         DecodeContext decoded{
-            spool.file(), 0, static_cast<uint64_t>(budget) * 16000 + (speaker ? 0 : 16), progress, user, NH_OK, {}};
+            spool.file(),
+            0,
+            static_cast<uint64_t>(budget) * 16000 + (speaker ? 0 : 16),
+            progress,
+            user,
+            NH_OK,
+            false,
+            false,
+            {}};
         if (speaker || (options && options->checkpoint_directory && *options->checkpoint_directory))
             decoded.pcm_hash = std::make_unique<picosha2::hash256_one_by_one>();
         {
             auto decoder = factory_->create_decoder();
             code = decoder->decode(input, spool_pcm, &decoded);
         }
-        if (decoded.failure != NH_OK)
-            return fail(decoded.failure, "Decode exceeded duration budget or scratch I/O failed");
+        if (decoded.duration_exceeded)
+            return fail(decoded.failure, "Decode exceeded duration budget of " + std::to_string(budget) + " seconds");
+        if (decoded.scratch_write_failed)
+            return fail(decoded.failure, "Scratch PCM write failed in " + std::string(config->scratch_directory));
         if (code != NH_OK)
             return code;
         if (fflush(spool.file()))

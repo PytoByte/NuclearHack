@@ -1,0 +1,16 @@
+[
+  {
+    "experiment": "exp_0176",
+    "script": "eval/scripts/probe_native_streaming.py",
+    "args": [
+      "--baseline",
+      "exp_0099",
+      "--prototype",
+      "exp_0166",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--skip-controls"
+    ],
+    "hypothesis": "Native buffered eight-slot backend on three frozen natural dev files; compare exact ASR invariance, quality/posterior grid and measured own buffer caps against prototype166; buffered lifecycle controls already175"
+  }
+]

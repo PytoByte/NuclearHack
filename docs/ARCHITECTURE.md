@@ -222,6 +222,24 @@ Reset очищаетPCM/timeline/cache,сохраняяmodel session;stats да�
 Per-handlebusyguard запрещаетreentry;бюджетнесколькихlow-levelhandles контролируетклиент.
 
 Текст/word spans этотAPI не создаёт;существующийfileorchestrator используетERes2Net какпрежде.
-Нативныйbufferedsmoke175 совпалпоcpWER/threshold decisions сresearchprototype;
-split997vs400000samples exact. ASan/UBSan иcross-buildпройдены;новоеAndroidexecution,
-полныйnaturalnativeeval/low-profile иtargetRAMещёвпереди. Это не defaultpromotion.
+Native smoke175/natural176 совпали по cpWER и threshold decisions с прототипом;
+transport997 vs400000 samples даёт exact arrays. ASan/UBSan и cross-build пройдены.
+
+Standalone `nh-audio-stream INPUT MODEL OUTPUT_F32LE [THREADS PROFILE MAX_SECONDS]`
+вызывает SDK напрямую: decode16k блоками16000 → stream handle → exclusive output.
+PCM SHA256 считается инкрементально; stdout содержит source frames, ORT/counters,
+processing/load time, kernel peak RSS и unpaced callback intervals. Raw posteriors —
+eval artifact. CLI входит в host/Android build и hash provenance.
+Device runner проверяет SHA артефактов/PCM и собирает PSS внутри device shell;
+существующий app driver по умолчанию сохраняет APK checks.
+
+177–181: buffered на 4GB x86 AVD обрабатывает movie175.172 s за7.08–11.10 s,
+sampled PSS ≤285 MiB. Три повторных posterior arrays exact; решения порога совпали с host.
+Low182–183: AVD RTF1.192, cpWER36.34% против buffered30.50%; этот профиль
+не рекомендован для real-time в доступном окружении. Это speaker-only execution
+с фиксированной host ASR attribution; ARM и полный target ASR не квалифицированы.
+Q4 зафиксирован только для воспроизводимости: screening184–185 отклонён
+по quality regression и отсутствию low RTF выигрыша.
+
+File orchestrator пока использует ERes2Net. Следующий этап — opt-in integration
+Q8 buffered; default promotion не принят.

@@ -1,0 +1,23 @@
+[
+  {
+    "experiment": "exp_0182",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--profile",
+      "low"
+    ],
+    "hypothesis": "Native low-input-buffer profile on host, unpaced movie replay: quality, source SHA, throughput and per-step callback service intervals; not live end-to-end latency"
+  },
+  {
+    "experiment": "exp_0183",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--android",
+      "--profile",
+      "low",
+      "--host-reference",
+      "exp_0182"
+    ],
+    "hypothesis": "Actual low-profile throughput on offline4GBx86AVD; buffer1.04s does not imply compute deadline; identical PCM/hash and fixed host ASR attribution,50ms nominalPSSsampling"
+  }
+]

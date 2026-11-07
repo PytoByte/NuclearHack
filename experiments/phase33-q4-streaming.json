@@ -1,0 +1,24 @@
+[
+  {
+    "experiment": "exp_0184",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q4",
+      "--profile",
+      "buffered"
+    ],
+    "hypothesis": "Q4 vs frozen Q8 movie replay, same native core, threads=4, profile=buffered; assess quality AND throughput; no assumption fewer bits is faster; no default promotion"
+  },
+  {
+    "experiment": "exp_0185",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q4",
+      "--profile",
+      "low"
+    ],
+    "hypothesis": "Q4 vs frozen Q8 movie replay, same native core, threads=4, profile=low; assess quality AND throughput; no assumption fewer bits is faster; no default promotion"
+  }
+]

@@ -21,7 +21,7 @@ for abi in ('arm64-v8a', 'x86_64'):
                '-DNH_SHERPA_LIB_DIR=' + str(tools / 'sherpa-android' / abi),
                '-DNH_LLAMA_ROOT=' + str(ROOT / '.build' / ('llama-android-' + abi))]
     subprocess.run(command, check=True)
-    subprocess.run([str(cmake), '--build', str(build), '--target', 'nuclear_audio', 'nuclear_audio_jni', 'nh-audio', '-j', '4'], check=True)
+    subprocess.run([str(cmake), '--build', str(build), '--target', 'nuclear_audio', 'nuclear_audio_jni', 'nh-audio', 'nh-audio-stream', '-j', '4'], check=True)
     readelf = tools / 'ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf'
     machine = 'AArch64' if abi == 'arm64-v8a' else 'Advanced Micro Devices X86-64'
     header = subprocess.check_output([str(readelf), '-h', str(build / 'libnuclear_audio.so')], text=True)

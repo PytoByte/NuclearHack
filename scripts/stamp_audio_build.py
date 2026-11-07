@@ -31,6 +31,7 @@ def stamp(build):
     libraries=list(build.glob('libnuclear_audio*.so*'))
     for directory in runtime:libraries+=list(directory.glob('*.so*'))
     identity['runtime_libraries']={str(p.relative_to(ROOT)):sha256(p) for p in libraries if p.is_file()}
+    identity['executables']={name:sha256(build/name) for name in ['nh-audio','nh-audio-stream'] if (build/name).exists()}
     import hashlib
     key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
     archive=ROOT/'.audio-runs/builds'/key
@@ -47,7 +48,7 @@ def stamp(build):
         if destination.exists() or destination.is_symlink():continue
         if p.is_symlink():destination.symlink_to(p.readlink().name)
         else:shutil.copy2(p,destination)
-    if (build/'nh-audio').exists():shutil.copy2(build/'nh-audio',archive/'nh-audio')
+    for name in identity['executables']:shutil.copy2(build/name,archive/name)
     data=json.dumps(identity,indent=2)+'\n'
     (archive/'provenance.json').write_text(data)
     (build/'build-provenance.json').write_text(data)

@@ -4,14 +4,15 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, native Nemotron3Q8 smoke175 пройден; далее natural/target.**
+**Сейчас: этап2, native/AVD проверки175–183 и Q4 screening184–185 завершены.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
 149–161: MatMul-only INT8/transfer завершены; **Sortformer v2.1 не проходит regression**,
 несмотря на dev выигрыш. Frontend control164 завершён;новая8slot-модель smoke165 прошла,
 natural dev/known transfer166–174 завершены. Additive native streaming CABI реализован/проверен175;
-далее natural parity/low-profile и4GBx86AVD. Основной файловыйpreset не меняется.
+Natural parity176 и4GBx86AVD177–183 завершены; low-профиль не выдерживает real-time.
+Далее Q4 A/B, затем opt-in интеграция файлового orchestrator. Основной файловыйpreset не меняется.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -852,4 +853,64 @@ Cancel→4,nestedreset→5,flushпослеcancel→1;reset очищаетtimelin
 Проверки:3nativeCTest +14PythonCABI,3ASan/UBSanCTest,20research tests,
 ARM64/x86_64cross-build/16KiBELF ивсеmodelSHA прошли.
 ФизическийARM/Androidexecution новогоbackend **ещё не** проверены.
-Usercheckpoint:послеближайшегоэксперимента commit/pushdev,затем продолжить176+.
+Usercheckpoint выполнен:175 и проверки закоммичены94d0929,HEAD проверен наorigin/dev; работа продолжена176+.
+
+### exp_0176–0183 — standalone SDK: натуральная речь и x86 AVD
+
+Завершено. В 176 native buffered на трёх natural dev: cpWER 31.59%, RTF .02046,
+peak RSS 488104 KiB. Против Python166: posterior max delta ≤7.63e-6,
+ни одного изменения решения на пороге .5; исходные ASR words сохранены.
+
+Добавлен `nh-audio-stream`: декодирование блоками → speaker API → f32LE файл,
+без APK/UI/Python runtime. Выход создаётся эксклюзивно, PCM SHA считается
+инкрементально. CLI и его SHA входят в host/Android build provenance.
+Runner проверяет SHA бинарников, модели и источника; PSS снимается внутри device shell.
+ASR слова зафиксированы на host: это оценка diarization, не полный target ASR.
+
+177 host, movie 175.172 s: обработка 4.516 s, RTF .02578, RSS 283136 KiB.
+178–180, три свежих процесса AVD 4096 MiB/x86_64: 7.082/9.228/11.096 s,
+RTF .04043/.05268/.06334, peak PSS ≤291971 KiB (~285 MiB), RSS ≤318120 KiB.
+Аудит181: все три target posterior arrays побитно совпадают; против host
+max delta 2.74e-6, ноль изменений порога. PCM SHA3ed9bd9e… совпал,
+2802748 samples /17517 rows. cpWER/DER/JER одинаковы с host и прототипом170.
+OS page cache не очищался; разброс времени не доказывает ускорения алгоритма.
+Sampling nominal 50 ms, actual median 90–110 ms; PSS — наблюдаемый, не гарантированный peak.
+
+| Movie / профиль | Host RTF | x86 AVD RTF | cpWER | DER | JER |
+| --- | --- | --- | --- | --- | --- |
+| Q8 buffered177–180 | .02578 | .04043–.06334 | 30.50% | 16.67% | 19.04% |
+| Q8 low182–183 | .48989 | **1.19211** | 36.34% | 23.13% | 22.42% |
+
+Low: 244 model calls, peak PCM buffer16881 samples; AVD PSS279456 KiB/RSS305316 KiB.
+Первый callback .260 s, максимальный интервал1.167 s, p95 1.088 s при обычном
+шаге выдачи .72 s. Это unpaced replay файла, не live capture latency.
+**ADR: low Q8 не рекомендовать для real-time в доступном окружении:** RTF>1
+и качество хуже. Короткий nominal buffer1.04 s не гарантирует скорость вычисления.
+Buffered остаётся кандидатом для файлов; основной preset не меняется.
+ARM execution и полный target ASR здесь не измерялись.
+
+Исправлен registry reducer: учитывает CLI `processing_seconds`, не подменяет
+отсутствующее время нулём. Regression tests проверяют units, fallback и duration weighting.
+
+### exp_0184–0185 — Q4: screening завершён, продвижение отклонено
+
+Тот же export353b6f8…: Q4 graph + external weights83127731 bytes против
+120844247 у Q8; SHA закреплены в lock. Stock ORT1.28.2 CPU загружает MatMulNBits.
+Native host/movie/4 threads/postprocess прежние; ASR и PCM SHA неизменны.
+
+| Профиль | Host RTF | Peak RSS, KiB | cpWER | DER | JER |
+| --- | --- | --- | --- | --- | --- |
+| Q4 buffered184 | .02319 | 245472 | 31.03% | 17.61% | 18.68% |
+| Q4 low185 | .49075 | 233548 | 43.50% | 26.15% | 24.16% |
+
+**ADR: Q4 не продвигать.** Low не ускорился в одиночном host screening,
+а качество ухудшилось относительно Q8 low182. Buffered имеет небольшую
+cpWER/DER регрессию; непарные времена не доказывают ускорения.
+Меньшие веса/RSS не компенсируют регрессию. Target Q4 не запускался:
+качество на host не прошло проверку, поэтому дополнительный target замер отложен.
+
+Проверки после изменений: 25 research tests, 3 native CTests +14 Python C ABI,
+3 ASan/UBSan CTests, ARM64/x86_64 cross-build и все pinned model SHA прошли.
+Следующий шаг: Q8 buffered в file pipeline через отдельный opt-in API;
+online turn postprocessing, cancel/checkpoint parity и полный target pipeline.
+Основной ERes preset сохранён; независимый RU gold и ARM runtime пока отсутствуют.

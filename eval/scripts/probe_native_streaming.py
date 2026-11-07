@@ -185,6 +185,7 @@ def main():
     p.add_argument('--manifest', default='eval/data/dialogs-smoke.jsonl')
     p.add_argument('--profile', choices=['buffered', 'low'], default='buffered')
     p.add_argument('--block-frames', type=int, default=4096)
+    p.add_argument('--skip-controls', action='store_true', help='Quality-only follow-up after this profile passed transport/lifecycle controls')
     args = p.parse_args()
     if not re.fullmatch(r'exp_[0-9]+', args.experiment) or not 1 <= args.block_frames <= 400000:
         p.error('Use exp_NNNN and block-frames in1..400000')
@@ -253,7 +254,7 @@ def main():
     finally:
         stream.close()
     first = json.loads((ROOT/args.manifest).read_text().splitlines()[0])
-    control_metrics = controls(sdk, ROOT/files[0]['path'], ROOT/first['audio'], 1 if args.profile == 'buffered' else 0)
+    control_metrics = dict(skipped='explicit quality-only follow-up') if args.skip_controls else controls(sdk, ROOT/files[0]['path'], ROOT/first['audio'], 1 if args.profile == 'buffered' else 0)
     metrics = dict(experiment_id=args.experiment, scope=config['scope'], load_seconds=load_seconds, cases=cases,
                    controls=control_metrics,
                    cpwer=sum(c['speaker_attributed']['errors'] for c in cases)/sum(c['speaker_attributed']['reference_words'] for c in cases),

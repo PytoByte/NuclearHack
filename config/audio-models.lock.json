@@ -252,6 +252,25 @@
         "models/nemotron3-diarization/MODEL_UPSTREAM.md"
       ],
       "scope": "research-only third-party Q8 export with external data; max8 slots, not SDK preset"
+    },
+    {
+      "id": "nemotron3-diarization-q4",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "revision": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "upstream": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "upstream_revision": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron3-diarization/model_q4.onnx",
+        "models/nemotron3-diarization/model_q4.onnx_data",
+        "models/nemotron3-diarization/config.json",
+        "models/nemotron3-diarization/processor_config.json",
+        "models/nemotron3-diarization/preprocessor_config.json",
+        "models/nemotron3-diarization/MODEL_EXPORT.md",
+        "models/nemotron3-diarization/MODEL_UPSTREAM.md"
+      ],
+      "scope": "experimental third-party Q4 MatMulNBits export; quality and runtime support must be measured; not SDK preset"
     }
   ],
   "files": [
@@ -784,6 +803,22 @@
       "sha256": "5fe88ca4020d2ee134f806a0a02c52c19855b73047bc2e6f25b9171e1abeebfd",
       "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
       "version": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/model_q4.onnx",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_q4.onnx",
+      "sha256": "3e5e93dfd8289770343c402079d36034faa4a2eac260f66115f85ba9a2de41b2",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/model_q4.onnx_data",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_q4.onnx_data",
+      "sha256": "4513ed877d7cb83944bcb27c747221a7180e03f790d1c703e50af01792b7b8f4",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
       "license": "OpenMDW-1.1"
     }
   ]

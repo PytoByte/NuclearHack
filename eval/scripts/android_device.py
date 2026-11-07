@@ -12,7 +12,7 @@ from bootstrap_models import sha256
 PACKAGE='com.hexteam.audiohost'
 
 class AndroidDevice:
-    def __init__(self):
+    def __init__(self,verify_app=True):
         self.env=environment()
         self.adb=[str(ROOT/'.tools/android-sdk/platform-tools/adb'),'-P','5039','-s','emulator-5558']
         if self.shell('getprop','ro.kernel.qemu').strip()!='1':raise RuntimeError('Expected isolated emulator')
@@ -22,6 +22,12 @@ class AndroidDevice:
         self.memory=self.shell('cat','/proc/meminfo')
         kib=int(next(l.split()[1] for l in self.memory.splitlines() if l.startswith('MemTotal:')))
         if not 3700*1024<=kib<=4096*1024:raise RuntimeError('AVD memory differs from 4GB profile')
+        self.device_abi=self.abi
+        self.verify_app=verify_app
+        if not verify_app:
+            self.execution='standalone x86_64 CLI on 4GB AVD'
+            self.apk=None;self.apk_sha256=None
+            return
         package_info=self.shell('dumpsys','package',PACKAGE)
         self.device_abi=self.abi
         self.abi=re.search(r'primaryCpuAbi=(\S+)',package_info).group(1)
@@ -40,6 +46,6 @@ class AndroidDevice:
         with (destination/'logcat.txt').open('w') as log:
             subprocess.run(self.adb+['logcat','-d','-t','3000'],env=self.env,stdout=log)
     def metadata(self):
-        return dict(app_abi=self.abi,device_abi=self.device_abi,execution=self.execution,native_bridge=self.shell('getprop','ro.dalvik.vm.native.bridge'),meminfo=self.memory,cpuinfo=self.shell('cat','/proc/cpuinfo'),
+        return dict(app_abi=self.abi if self.verify_app else None,device_abi=self.device_abi,execution=self.execution,native_bridge=self.shell('getprop','ro.dalvik.vm.native.bridge'),meminfo=self.memory,cpuinfo=self.shell('cat','/proc/cpuinfo'),
             build=self.shell('getprop','ro.build.fingerprint'),airplane_mode=True,
             connectivity=self.shell('dumpsys','connectivity'),git_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip())

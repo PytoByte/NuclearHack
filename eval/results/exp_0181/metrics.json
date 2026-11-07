@@ -1,0 +1,63 @@
+{
+  "experiment_id": "exp_0181",
+  "scope": "standalone x86 AVD speaker SDK repeatability; fixed host ASR; no ARM, coldboot or independent quality claim",
+  "cases": [
+    {
+      "experiment": "exp_0178",
+      "audio_id": "ru-youtube-movie_podcast",
+      "processing_seconds": 7.081954471,
+      "inference_rtf": 0.0404286334469,
+      "load_seconds": 0.098968369,
+      "sampled_peak_pss_kib": 291971,
+      "process_peak_rss_kib": 318016,
+      "memory_samples": 78,
+      "actual_median_sample_interval_ms": 90.00000000014552,
+      "host_max_posterior_delta": 2.7418136596679688e-06,
+      "cpwer": 0.3050397877984085,
+      "der": 0.166652081720575,
+      "jer": 0.19039495985373597
+    },
+    {
+      "experiment": "exp_0179",
+      "audio_id": "ru-youtube-movie_podcast",
+      "processing_seconds": 9.227994081,
+      "inference_rtf": 0.0526796933923,
+      "load_seconds": 0.094615997,
+      "sampled_peak_pss_kib": 291514,
+      "process_peak_rss_kib": 318120,
+      "memory_samples": 90,
+      "actual_median_sample_interval_ms": 109.9999999969441,
+      "host_max_posterior_delta": 2.7418136596679688e-06,
+      "cpwer": 0.3050397877984085,
+      "der": 0.166652081720575,
+      "jer": 0.19039495985373597
+    },
+    {
+      "experiment": "exp_0180",
+      "audio_id": "ru-youtube-movie_podcast",
+      "processing_seconds": 11.095710566,
+      "inference_rtf": 0.0633418948318,
+      "load_seconds": 0.102095529,
+      "sampled_peak_pss_kib": 290938,
+      "process_peak_rss_kib": 317524,
+      "memory_samples": 103,
+      "actual_median_sample_interval_ms": 110.00000000058208,
+      "host_max_posterior_delta": 2.7418136596679688e-06,
+      "cpwer": 0.3050397877984085,
+      "der": 0.166652081720575,
+      "jer": 0.19039495985373597
+    }
+  ],
+  "source_and_native_code_verified": true,
+  "target_posteriors_repeat_exact": true,
+  "host_target_threshold_decisions_exact": true,
+  "processing_seconds_range": [
+    7.081954471,
+    11.095710566
+  ],
+  "median_processing_seconds": 9.227994081,
+  "median_inference_rtf": 0.0526796933923,
+  "maximum_sampled_pss_kib": 291971,
+  "maximum_process_rss_kib": 318120,
+  "limitation": "three fresh processes, OS file cache retained; observed timing spread is descriptive, no causal speedup inference"
+}

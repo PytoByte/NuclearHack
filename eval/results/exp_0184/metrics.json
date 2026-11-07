@@ -1,0 +1,60 @@
+{
+  "experiment_id": "exp_0184",
+  "scope": "standalone Linux x86_64 speaker SDK; fixed host ASR attribution, fresh process, OS cache retained",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "scope": "standalone native speaker stream; no ASR",
+      "format": "float32le",
+      "ort_version": "1.28.2",
+      "profile": 1,
+      "threads": 4,
+      "source_samples": 2802748,
+      "posterior_frames": 17517,
+      "speaker_slots": 8,
+      "frame_step_samples": 160,
+      "audio_seconds": 175.17175,
+      "decoded_pcm_sha256": "3ed9bd9e3d82a7c85d2e054747f4d703c59c5d825768ef5529cf8555e99aa31e",
+      "posterior_callbacks": 7,
+      "unpaced_first_posterior_seconds": 0.930057341,
+      "unpaced_max_callback_interval_seconds": 0.930057341,
+      "unpaced_p95_callback_interval_seconds": 0.599717957,
+      "load_seconds": 0.091741621,
+      "processing_seconds": 4.06167142,
+      "total_seconds": 4.153469196,
+      "inference_seconds": 3.660178389,
+      "inference_rtf": 0.0231867947885,
+      "full_rtf": 0.0237108391964,
+      "process_peak_rss_kib": 245472,
+      "model_calls": 7,
+      "peak_buffered_samples": 486641,
+      "cache_frames": 264,
+      "fifo_frames": 0,
+      "max_feature_frames": 3040,
+      "speaker_attributed": {
+        "errors": 117,
+        "reference_words": 377,
+        "cpwer": 0.3103448275862069
+      },
+      "known_speakers_count": 4,
+      "unknown_utterances": 7,
+      "unknown_utterance_fraction": 0.22580645161290322,
+      "unknown_word_fraction": 0.019184652278177457,
+      "predicted_speakers_includes_unknown": true,
+      "sampled_peak_pss_kib": null,
+      "memory_samples": 0,
+      "der_details": {
+        "false alarm": 7.760000000000007,
+        "missed detection": 9.369999999999987,
+        "confusion": 9.035000000000007,
+        "total": 148.55499999999995,
+        "correct": 130.14999999999995,
+        "diarization error rate": 0.17613005284238167
+      },
+      "jer": 0.1867880241365852
+    }
+  ],
+  "cpwer": 0.3103448275862069,
+  "inference_rtf": 0.02318679478854324,
+  "process_peak_rss_kib": 245472
+}

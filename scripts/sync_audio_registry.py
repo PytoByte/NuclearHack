@@ -11,6 +11,21 @@ def read(path):
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def measured_rtf(metrics, previous=''):
+    """Reduce measured processing time only; missing case time is never zero."""
+    cases = metrics.get('cases', [])
+    durations = [case.get('audio_seconds', 0) for case in cases]
+    times = []
+    for case in cases:
+        if 'wall_ms' in case:
+            times.append(case['wall_ms']/1000)
+        else:
+            times.append(case.get('wall_seconds', case.get('processing_seconds')))
+    if cases and all(d > 0 for d in durations) and all(t is not None for t in times):
+        return sum(times)/sum(durations)
+    return metrics.get('inference_rtf', metrics.get('median_inference_rtf', previous))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--experiment'); p.add_argument('--status'); p.add_argument('--baseline'); p.add_argument('--changed')
@@ -52,9 +67,7 @@ def main():
         text=m.get('text_metrics',{})
         row['punctuation_wer']=text.get('punctuation_token_wer',{}).get('wer',row['punctuation_wer'])
         row['punctuation_f1']=text.get('punctuation',{}).get('end_to_end',{}).get('f1',row['punctuation_f1'])
-        seconds=sum(x.get('audio_seconds',0) for x in cases)
-        row['rtf'] = (sum(x.get('wall_ms',x.get('wall_seconds',0)*1000) for x in cases)/1000/seconds
-                      if seconds else m.get('inference_rtf',row['rtf']))
+        row['rtf'] = measured_rtf(m, row['rtf'])
         peaks=[m.get('process_peak_rss_kib',0)]
         for x in cases:
             peaks += [x.get('process_peak_rss_kib',0),x.get('process_lifetime_peak_rss_after_llm_kib',0),

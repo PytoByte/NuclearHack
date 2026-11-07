@@ -160,7 +160,7 @@ make android-app                        # debug APK + libs/assets checks
 
 Результат: `.build/android-app/neurostenographer-debug.apk`.
 
-### Дебаг-сборка
+## Дебаг-сборка
 
 Ручная сборка без `make android-app`:
 
@@ -177,7 +177,7 @@ cd src/mobile/android
 ./gradlew :app:lintDebug
 ```
 
-### Релиз-сборка
+## Релиз-сборка
 
 Одной командой:
 

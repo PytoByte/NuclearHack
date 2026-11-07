@@ -138,7 +138,9 @@ auto FileTranscriber::recognize(FILE* pcm, uint64_t frames, const std::string& p
     }
     {
         std::unique_ptr<AsrPort> asr;
-        rewind(pcm);
+        if (std::fseek(pcm, 0, SEEK_SET) != 0) {
+            return nh::fail(NH_IO_ERROR, "Cannot rewind PCM input");
+        }
         std::vector<float> samples(config->chunk_seconds * 16000);
         uint64_t offset = 0;
         while (offset < frames) {

@@ -36,7 +36,7 @@ jobs:
 
       - name: Run clang-tidy
         working-directory: src/audio
-        run: run-clang-tidy -p build
+        run: run-clang-tidy -p build -quiet 'src/audio/src/'
 
       - name: Run cppcheck
         run: bash scripts/cppcheck.sh

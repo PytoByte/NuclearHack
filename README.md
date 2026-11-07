@@ -146,7 +146,13 @@ cd src/mobile/android
 ./gradlew :app:lintDebug
 ```
 
-Release-сборка (unsigned APK, затем подпись):
+Одной командой:
+
+```sh
+make android-release
+```
+
+Ручная release-сборка (unsigned APK, затем подпись):
 
 ```sh
 cd src/mobile/android

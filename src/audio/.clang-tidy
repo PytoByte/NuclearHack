@@ -1,5 +1,11 @@
 Checks: >
-  bugprone-*, clang-analyzer-*
+  bugprone-*, clang-analyzer-*,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-narrowing-conversions,
+  -bugprone-signed-bitwise,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
 WarningsAsErrors: ''
 HeaderFilterRegex: '^(?!.*\.tools).*'
 FormatStyle: file

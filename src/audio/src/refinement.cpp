@@ -101,7 +101,7 @@ nh_status refine_speakers(const float* pcm, uint32_t frames, std::vector<Turn>& 
         norm = std::sqrt(norm);
         if (norm < 1e-8f)
             continue;
-        vectors[i].assign(value.get(), value.get() + dim);
+        vectors[i].assign(static_cast<const float*>(value.get()), static_cast<const float*>(value.get()) + dim);
         std::transform(vectors[i].begin(), vectors[i].end(), vectors[i].begin(), [norm](float v) { return v / norm; });
         ++stats.embedding_clusters;
     }

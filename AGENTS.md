@@ -27,7 +27,8 @@
 
 ## Качество кода
 
-- Установить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`; в корне репозитория дополнительно выполнить `pre-commit install -f`, чтобы убрать устаревший migration hook `pre-commit.legacy` с Gradle
+- Во время активной разработки не гоняйте полные quality gates (`make check`, `make native-test`, `make native-sanitize`, ktlint/detekt/Lint) на каждую итерацию; они замедляют цикл. Запускайте их в конце задачи, когда код уже работает, но стиль, типизация или регрессии остаются неясными.
+- Настроить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`; в корне репозитория дополнительно выполнить `pre-commit install -f`, чтобы убрать устаревший migration hook `pre-commit.legacy` с Gradle
 - Локальный прогон ktlint и detekt: `cd src/mobile/android && ./gradlew ktlintCheck detekt`
 - Локальный прогон Android Lint: `cd src/mobile/android && ./gradlew :app:lintDebug`
 - Перед коммитом хуки запускаются автоматически; не используй `--no-verify`.

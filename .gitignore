@@ -13,3 +13,4 @@ eval/data/references/
 **/build/
 **/local.properties
 *.iml
+*.log

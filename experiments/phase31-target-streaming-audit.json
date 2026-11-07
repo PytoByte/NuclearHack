@@ -1,0 +1,15 @@
+[
+  {
+    "experiment": "exp_0181",
+    "script": "eval/scripts/analyze_stream_profile.py",
+    "args": [
+      "--host",
+      "exp_0177",
+      "--targets",
+      "exp_0178",
+      "exp_0179",
+      "exp_0180"
+    ],
+    "hypothesis": "Audit same native sources, device binaries, models and full PCM; repeat target arrays/thresholds exactly; report actual PSS sampling cadence and descriptive timing spread"
+  }
+]

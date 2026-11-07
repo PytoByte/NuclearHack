@@ -1,0 +1,22 @@
+{
+  "stage": "research_dispatch",
+  "exit_code": 1,
+  "command": [
+    "/home/beyond/projs/NuclearHack/.venv/bin/python",
+    "/home/beyond/projs/NuclearHack/eval/scripts/probe_sortformer.py",
+    "--experiment",
+    "exp_0140",
+    "--baseline",
+    "exp_0125",
+    "--manifest",
+    "eval/data/dialogs-smoke.jsonl",
+    "--profile",
+    "buffered",
+    "--frontend",
+    "whole"
+  ],
+  "logs": [
+    "dispatch.stdout.log",
+    "dispatch.stderr.log"
+  ]
+}

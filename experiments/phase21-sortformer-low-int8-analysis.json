@@ -1,0 +1,14 @@
+[
+  {
+    "experiment": "exp_0161",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--candidates",
+      "exp_0147",
+      "exp_0151",
+      "--comparison-baseline",
+      "exp_0147"
+    ],
+    "hypothesis": "Quantized low-window vs exact same FP32 low-window profile; paired recording CI isolates quantization quality change"
+  }
+]

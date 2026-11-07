@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_0105",
+  "cases": [
+    {
+      "case": "budget_rejected",
+      "max_clusters": 1,
+      "status": 1,
+      "error": "Speaker refinement cluster budget exceeded; no silent fallback",
+      "final_export_absent": true,
+      "nested_status": [],
+      "asr_loads": 1,
+      "cached_asr_chunks": 0
+    },
+    {
+      "case": "cancel_between_embeddings",
+      "max_clusters": 128,
+      "status": 4,
+      "error": "Cancelled between speaker refinement clusters",
+      "final_export_absent": true,
+      "nested_status": [],
+      "asr_loads": 0,
+      "cached_asr_chunks": 2
+    },
+    {
+      "case": "reentrant_busy",
+      "max_clusters": 128,
+      "status": 4,
+      "error": "Cancelled before speaker refinement load",
+      "final_export_absent": true,
+      "nested_status": [
+        5
+      ],
+      "asr_loads": 0,
+      "cached_asr_chunks": 2
+    }
+  ],
+  "passed": true,
+  "scope": "host native real-model control behavior; no quality/ARM timing claim"
+}

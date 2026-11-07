@@ -1,0 +1,35 @@
+[
+  {
+    "experiment": "exp_0191",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [
+      "--stream",
+      "--diarize",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl"
+    ],
+    "hypothesis": "Frozen complete native NeMo pipeline selected on189 before additional controls: CPU4 ru-RU ASR stream160ms + official v3-offline diar; test all remaining known source-file regressions without threshold tuning or oracle count; not new blind test"
+  },
+  {
+    "experiment": "exp_0192",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [
+      "--stream",
+      "--diarize",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl"
+    ],
+    "hypothesis": "Frozen complete native NeMo pipeline selected on189 before additional controls: CPU4 ru-RU ASR stream160ms + official v3-offline diar; test all remaining known source-file regressions without threshold tuning or oracle count; not new blind test"
+  },
+  {
+    "experiment": "exp_0193",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [
+      "--stream",
+      "--diarize",
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl"
+    ],
+    "hypothesis": "Frozen complete native NeMo pipeline selected on189 before additional controls: CPU4 ru-RU ASR stream160ms + official v3-offline diar; test all remaining known source-file regressions without threshold tuning or oracle count; not new blind test"
+  }
+]

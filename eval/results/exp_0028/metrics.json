@@ -1,0 +1,31 @@
+{
+  "run_id": "exp_0028",
+  "load_ms": 3153,
+  "decode_inference_ms": 101757,
+  "sampled_peak_pss_kib": 340592,
+  "process_lifetime_peak_rss_kib": 437264,
+  "pss_sample_period_ms": 100,
+  "clips": 40,
+  "experiment_id": "exp_0028",
+  "model": "giga-v3-ctc",
+  "threads": 4,
+  "audio_seconds": 456.54,
+  "decode_inference_rtf": 0.22288737021947694,
+  "full_rtf": 0.22979366539624127,
+  "normalized": {
+    "substitutions": 39,
+    "deletions": 5,
+    "insertions": 10,
+    "reference_words": 757,
+    "wer": 0.071334214002642
+  },
+  "raw": {
+    "substitutions": 221,
+    "deletions": 4,
+    "insertions": 22,
+    "reference_words": 744,
+    "wer": 0.33198924731182794
+  },
+  "cer": 0.05040589012648669,
+  "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim"
+}

@@ -1,0 +1,1547 @@
+{
+  "experiment_id": "exp_0072",
+  "scope": "silver conversational pilot; CPU ORT1.23.2, not mobile punctuation inference",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "scores": {
+        "ctc": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 25,
+            "deletions": 1,
+            "insertions": 13,
+            "reference_words": 418
+          },
+          "raw": {
+            "substitutions": 159,
+            "deletions": 3,
+            "insertions": 14,
+            "reference_words": 419
+          },
+          "punctuation_token_wer": {
+            "substitutions": 32,
+            "deletions": 93,
+            "insertions": 5,
+            "reference_words": 518
+          },
+          "normalized_cer": {
+            "errors": 121,
+            "reference_characters": 2412
+          },
+          "raw_cer": {
+            "errors": 283,
+            "reference_characters": 2513
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 98
+            },
+            "conditional_equal_words": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 91
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 34
+              },
+              ",": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 55
+              },
+              "?": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 5
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "e2e": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 16,
+            "deletions": 2,
+            "insertions": 18,
+            "reference_words": 418
+          },
+          "raw": {
+            "substitutions": 66,
+            "deletions": 2,
+            "insertions": 21,
+            "reference_words": 419
+          },
+          "punctuation_token_wer": {
+            "substitutions": 34,
+            "deletions": 2,
+            "insertions": 45,
+            "reference_words": 518
+          },
+          "normalized_cer": {
+            "errors": 93,
+            "reference_characters": 2412
+          },
+          "raw_cer": {
+            "errors": 172,
+            "reference_characters": 2513
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 78,
+              "false_positive": 49,
+              "false_negative": 20
+            },
+            "conditional_equal_words": {
+              "true_positive": 78,
+              "false_positive": 35,
+              "false_negative": 14
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 23,
+                "false_positive": 16,
+                "false_negative": 11
+              },
+              ",": {
+                "true_positive": 48,
+                "false_positive": 6,
+                "false_negative": 7
+              },
+              "?": {
+                "true_positive": 4,
+                "false_positive": 2,
+                "false_negative": 1
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 3,
+                "false_negative": 1
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 0,
+                "false_positive": 14,
+                "false_negative": 0
+              },
+              "-": {
+                "true_positive": 1,
+                "false_positive": 8,
+                "false_negative": 0
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 1,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 1,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "ctc_rupunct": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 25,
+            "deletions": 1,
+            "insertions": 13,
+            "reference_words": 418
+          },
+          "raw": {
+            "substitutions": 120,
+            "deletions": 1,
+            "insertions": 18,
+            "reference_words": 419
+          },
+          "punctuation_token_wer": {
+            "substitutions": 51,
+            "deletions": 21,
+            "insertions": 34,
+            "reference_words": 518
+          },
+          "normalized_cer": {
+            "errors": 121,
+            "reference_characters": 2412
+          },
+          "raw_cer": {
+            "errors": 242,
+            "reference_characters": 2513
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 49,
+              "false_positive": 52,
+              "false_negative": 49
+            },
+            "conditional_equal_words": {
+              "true_positive": 49,
+              "false_positive": 36,
+              "false_negative": 42
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 13,
+                "false_positive": 22,
+                "false_negative": 21
+              },
+              ",": {
+                "true_positive": 32,
+                "false_positive": 21,
+                "false_negative": 23
+              },
+              "?": {
+                "true_positive": 4,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 3,
+                "false_negative": 1
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 0,
+                "false_positive": 6,
+                "false_negative": 0
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "scores": {
+        "ctc": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 31,
+            "deletions": 5,
+            "insertions": 5,
+            "reference_words": 391
+          },
+          "raw": {
+            "substitutions": 155,
+            "deletions": 5,
+            "insertions": 10,
+            "reference_words": 386
+          },
+          "punctuation_token_wer": {
+            "substitutions": 34,
+            "deletions": 114,
+            "insertions": 2,
+            "reference_words": 503
+          },
+          "normalized_cer": {
+            "errors": 90,
+            "reference_characters": 2214
+          },
+          "raw_cer": {
+            "errors": 266,
+            "reference_characters": 2321
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 112
+            },
+            "conditional_equal_words": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 89
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 36
+              },
+              ",": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 63
+              },
+              "?": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 9
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 1
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 3
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "e2e": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 36,
+            "deletions": 3,
+            "insertions": 8,
+            "reference_words": 391
+          },
+          "raw": {
+            "substitutions": 83,
+            "deletions": 1,
+            "insertions": 22,
+            "reference_words": 386
+          },
+          "punctuation_token_wer": {
+            "substitutions": 52,
+            "deletions": 2,
+            "insertions": 41,
+            "reference_words": 503
+          },
+          "normalized_cer": {
+            "errors": 132,
+            "reference_characters": 2214
+          },
+          "raw_cer": {
+            "errors": 228,
+            "reference_characters": 2321
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 86,
+              "false_positive": 60,
+              "false_negative": 26
+            },
+            "conditional_equal_words": {
+              "true_positive": 86,
+              "false_positive": 38,
+              "false_negative": 12
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 25,
+                "false_positive": 13,
+                "false_negative": 11
+              },
+              ",": {
+                "true_positive": 52,
+                "false_positive": 11,
+                "false_negative": 11
+              },
+              "?": {
+                "true_positive": 6,
+                "false_positive": 5,
+                "false_negative": 3
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 7,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 1,
+                "false_positive": 21,
+                "false_negative": 0
+              },
+              "-": {
+                "true_positive": 2,
+                "false_positive": 3,
+                "false_negative": 1
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "ctc_rupunct": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 31,
+            "deletions": 5,
+            "insertions": 5,
+            "reference_words": 391
+          },
+          "raw": {
+            "substitutions": 127,
+            "deletions": 4,
+            "insertions": 17,
+            "reference_words": 386
+          },
+          "punctuation_token_wer": {
+            "substitutions": 68,
+            "deletions": 37,
+            "insertions": 25,
+            "reference_words": 503
+          },
+          "normalized_cer": {
+            "errors": 90,
+            "reference_characters": 2214
+          },
+          "raw_cer": {
+            "errors": 256,
+            "reference_characters": 2321
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 40,
+              "false_positive": 60,
+              "false_negative": 72
+            },
+            "conditional_equal_words": {
+              "true_positive": 40,
+              "false_positive": 44,
+              "false_negative": 49
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 13,
+                "false_positive": 23,
+                "false_negative": 23
+              },
+              ",": {
+                "true_positive": 24,
+                "false_positive": 25,
+                "false_negative": 39
+              },
+              "?": {
+                "true_positive": 2,
+                "false_positive": 2,
+                "false_negative": 7
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 3,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 1,
+                "false_positive": 7,
+                "false_negative": 0
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 3
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "scores": {
+        "ctc": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 34,
+            "deletions": 7,
+            "insertions": 51,
+            "reference_words": 394
+          },
+          "raw": {
+            "substitutions": 177,
+            "deletions": 7,
+            "insertions": 54,
+            "reference_words": 391
+          },
+          "punctuation_token_wer": {
+            "substitutions": 67,
+            "deletions": 97,
+            "insertions": 24,
+            "reference_words": 511
+          },
+          "normalized_cer": {
+            "errors": 327,
+            "reference_characters": 2385
+          },
+          "raw_cer": {
+            "errors": 489,
+            "reference_characters": 2499
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 117
+            },
+            "conditional_equal_words": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 104
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 41
+              },
+              ",": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 54
+              },
+              "?": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 15
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 2
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 5
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "e2e": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 30,
+            "deletions": 6,
+            "insertions": 52,
+            "reference_words": 394
+          },
+          "raw": {
+            "substitutions": 73,
+            "deletions": 4,
+            "insertions": 62,
+            "reference_words": 391
+          },
+          "punctuation_token_wer": {
+            "substitutions": 50,
+            "deletions": 8,
+            "insertions": 98,
+            "reference_words": 511
+          },
+          "normalized_cer": {
+            "errors": 305,
+            "reference_characters": 2385
+          },
+          "raw_cer": {
+            "errors": 402,
+            "reference_characters": 2499
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 84,
+              "false_positive": 77,
+              "false_negative": 33
+            },
+            "conditional_equal_words": {
+              "true_positive": 84,
+              "false_positive": 29,
+              "false_negative": 20
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 29,
+                "false_positive": 27,
+                "false_negative": 12
+              },
+              ",": {
+                "true_positive": 39,
+                "false_positive": 27,
+                "false_negative": 15
+              },
+              "?": {
+                "true_positive": 10,
+                "false_positive": 5,
+                "false_negative": 5
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 1,
+                "false_positive": 14,
+                "false_negative": 1
+              },
+              "-": {
+                "true_positive": 5,
+                "false_positive": 4,
+                "false_negative": 0
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        },
+        "ctc_rupunct": {
+          "policy": "text-v2",
+          "normalized": {
+            "substitutions": 34,
+            "deletions": 7,
+            "insertions": 51,
+            "reference_words": 394
+          },
+          "raw": {
+            "substitutions": 144,
+            "deletions": 6,
+            "insertions": 56,
+            "reference_words": 391
+          },
+          "punctuation_token_wer": {
+            "substitutions": 80,
+            "deletions": 26,
+            "insertions": 74,
+            "reference_words": 511
+          },
+          "normalized_cer": {
+            "errors": 327,
+            "reference_characters": 2385
+          },
+          "raw_cer": {
+            "errors": 475,
+            "reference_characters": 2499
+          },
+          "punctuation": {
+            "end_to_end": {
+              "true_positive": 43,
+              "false_positive": 78,
+              "false_negative": 74
+            },
+            "conditional_equal_words": {
+              "true_positive": 43,
+              "false_positive": 47,
+              "false_negative": 61
+            },
+            "per_mark": {
+              ".": {
+                "true_positive": 12,
+                "false_positive": 23,
+                "false_negative": 29
+              },
+              ",": {
+                "true_positive": 27,
+                "false_positive": 46,
+                "false_negative": 27
+              },
+              "?": {
+                "true_positive": 3,
+                "false_positive": 5,
+                "false_negative": 12
+              },
+              "!": {
+                "true_positive": 0,
+                "false_positive": 1,
+                "false_negative": 0
+              },
+              ":": {
+                "true_positive": 0,
+                "false_positive": 1,
+                "false_negative": 0
+              },
+              ";": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u2014": {
+                "true_positive": 1,
+                "false_positive": 2,
+                "false_negative": 1
+              },
+              "-": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 5
+              },
+              "\u2026": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00ab": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\u00bb": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "\"": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              "(": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              },
+              ")": {
+                "true_positive": 0,
+                "false_positive": 0,
+                "false_negative": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "tagger_load_seconds": 0.10566457999811973,
+  "tagger_inference_seconds": 0.04968399200151907,
+  "variants": {
+    "ctc": {
+      "normalized": {
+        "substitutions": 90,
+        "deletions": 13,
+        "insertions": 69,
+        "reference_words": 1203,
+        "wer": 0.142975893599335
+      },
+      "raw": {
+        "substitutions": 491,
+        "deletions": 15,
+        "insertions": 78,
+        "reference_words": 1196,
+        "wer": 0.4882943143812709
+      },
+      "punctuation_token_wer": {
+        "substitutions": 133,
+        "deletions": 304,
+        "insertions": 31,
+        "reference_words": 1532,
+        "wer": 0.30548302872062666
+      },
+      "normalized_cer": {
+        "errors": 538,
+        "reference_characters": 7011,
+        "cer": 0.07673655683925261
+      },
+      "raw_cer": {
+        "errors": 1038,
+        "reference_characters": 7333,
+        "cer": 0.14155188872221464
+      },
+      "punctuation": {
+        "end_to_end": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 327,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "conditional_equal_words": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 284,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "per_mark": {
+          ".": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 111,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          ",": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 172,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "?": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 29,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "!": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          ":": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          ";": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u2014": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "-": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 9,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\u2026": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u00ab": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\u00bb": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\"": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "(": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          ")": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          }
+        }
+      }
+    },
+    "e2e": {
+      "normalized": {
+        "substitutions": 82,
+        "deletions": 11,
+        "insertions": 78,
+        "reference_words": 1203,
+        "wer": 0.14214463840399003
+      },
+      "raw": {
+        "substitutions": 222,
+        "deletions": 7,
+        "insertions": 105,
+        "reference_words": 1196,
+        "wer": 0.2792642140468227
+      },
+      "punctuation_token_wer": {
+        "substitutions": 136,
+        "deletions": 12,
+        "insertions": 184,
+        "reference_words": 1532,
+        "wer": 0.21671018276762402
+      },
+      "normalized_cer": {
+        "errors": 530,
+        "reference_characters": 7011,
+        "cer": 0.07559549279703323
+      },
+      "raw_cer": {
+        "errors": 802,
+        "reference_characters": 7333,
+        "cer": 0.10936860766398472
+      },
+      "punctuation": {
+        "end_to_end": {
+          "true_positive": 248,
+          "false_positive": 186,
+          "false_negative": 79,
+          "precision": 0.5714285714285714,
+          "recall": 0.7584097859327217,
+          "f1": 0.6517739816031537
+        },
+        "conditional_equal_words": {
+          "true_positive": 248,
+          "false_positive": 102,
+          "false_negative": 46,
+          "precision": 0.7085714285714285,
+          "recall": 0.8435374149659864,
+          "f1": 0.7701863354037267
+        },
+        "per_mark": {
+          ".": {
+            "true_positive": 77,
+            "false_positive": 56,
+            "false_negative": 34,
+            "precision": 0.5789473684210527,
+            "recall": 0.6936936936936937,
+            "f1": 0.6311475409836066
+          },
+          ",": {
+            "true_positive": 139,
+            "false_positive": 44,
+            "false_negative": 33,
+            "precision": 0.7595628415300546,
+            "recall": 0.8081395348837209,
+            "f1": 0.7830985915492957
+          },
+          "?": {
+            "true_positive": 20,
+            "false_positive": 12,
+            "false_negative": 9,
+            "precision": 0.625,
+            "recall": 0.6896551724137931,
+            "f1": 0.6557377049180327
+          },
+          "!": {
+            "true_positive": 0,
+            "false_positive": 10,
+            "false_negative": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          ":": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          ";": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u2014": {
+            "true_positive": 2,
+            "false_positive": 49,
+            "false_negative": 1,
+            "precision": 0.0392156862745098,
+            "recall": 0.6666666666666666,
+            "f1": 0.07407407407407407
+          },
+          "-": {
+            "true_positive": 8,
+            "false_positive": 15,
+            "false_negative": 1,
+            "precision": 0.34782608695652173,
+            "recall": 0.8888888888888888,
+            "f1": 0.5
+          },
+          "\u2026": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u00ab": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "\u00bb": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "\"": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "(": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          ")": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          }
+        }
+      }
+    },
+    "ctc_rupunct": {
+      "normalized": {
+        "substitutions": 90,
+        "deletions": 13,
+        "insertions": 69,
+        "reference_words": 1203,
+        "wer": 0.142975893599335
+      },
+      "raw": {
+        "substitutions": 391,
+        "deletions": 11,
+        "insertions": 91,
+        "reference_words": 1196,
+        "wer": 0.4122073578595318
+      },
+      "punctuation_token_wer": {
+        "substitutions": 199,
+        "deletions": 84,
+        "insertions": 133,
+        "reference_words": 1532,
+        "wer": 0.27154046997389036
+      },
+      "normalized_cer": {
+        "errors": 538,
+        "reference_characters": 7011,
+        "cer": 0.07673655683925261
+      },
+      "raw_cer": {
+        "errors": 973,
+        "reference_characters": 7333,
+        "cer": 0.13268784944770218
+      },
+      "punctuation": {
+        "end_to_end": {
+          "true_positive": 132,
+          "false_positive": 190,
+          "false_negative": 195,
+          "precision": 0.40993788819875776,
+          "recall": 0.4036697247706422,
+          "f1": 0.4067796610169492
+        },
+        "conditional_equal_words": {
+          "true_positive": 132,
+          "false_positive": 127,
+          "false_negative": 152,
+          "precision": 0.5096525096525096,
+          "recall": 0.4647887323943662,
+          "f1": 0.4861878453038674
+        },
+        "per_mark": {
+          ".": {
+            "true_positive": 38,
+            "false_positive": 68,
+            "false_negative": 73,
+            "precision": 0.3584905660377358,
+            "recall": 0.34234234234234234,
+            "f1": 0.35023041474654376
+          },
+          ",": {
+            "true_positive": 83,
+            "false_positive": 92,
+            "false_negative": 89,
+            "precision": 0.4742857142857143,
+            "recall": 0.48255813953488375,
+            "f1": 0.4783861671469741
+          },
+          "?": {
+            "true_positive": 9,
+            "false_positive": 7,
+            "false_negative": 20,
+            "precision": 0.5625,
+            "recall": 0.3103448275862069,
+            "f1": 0.4
+          },
+          "!": {
+            "true_positive": 0,
+            "false_positive": 7,
+            "false_negative": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          ":": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": 0.0
+          },
+          ";": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u2014": {
+            "true_positive": 2,
+            "false_positive": 15,
+            "false_negative": 1,
+            "precision": 0.11764705882352941,
+            "recall": 0.6666666666666666,
+            "f1": 0.2
+          },
+          "-": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 9,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\u2026": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "\u00ab": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\u00bb": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "\"": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "(": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          ")": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          }
+        }
+      }
+    }
+  },
+  "e2e_minus_ctc_wer_paired_recording_bootstrap": {
+    "seed": 42,
+    "samples": 2000,
+    "ci95": [
+      -0.010152284263959394,
+      0.015345268542199489
+    ],
+    "n_recordings": 3,
+    "limitation": "only three silver sessions; speaker independence unverified"
+  }
+}

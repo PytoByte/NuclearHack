@@ -1,0 +1,65 @@
+{
+  "experiment_id": "exp_0183",
+  "scope": "standalone x86_64 speaker SDK; fixed host ASR attribution, fresh process, OS cache retained",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "scope": "standalone native speaker stream; no ASR",
+      "format": "float32le",
+      "ort_version": "1.28.2",
+      "profile": 0,
+      "threads": 4,
+      "source_samples": 2802748,
+      "posterior_frames": 17517,
+      "speaker_slots": 8,
+      "frame_step_samples": 160,
+      "audio_seconds": 175.17175,
+      "decoded_pcm_sha256": "3ed9bd9e3d82a7c85d2e054747f4d703c59c5d825768ef5529cf8555e99aa31e",
+      "posterior_callbacks": 244,
+      "unpaced_first_posterior_seconds": 0.259637575,
+      "unpaced_max_callback_interval_seconds": 1.166856178,
+      "unpaced_p95_callback_interval_seconds": 1.088360028,
+      "load_seconds": 0.083506586,
+      "processing_seconds": 208.741155987,
+      "total_seconds": 208.824739749,
+      "inference_seconds": 208.177302098,
+      "inference_rtf": 1.19163709894,
+      "full_rtf": 1.19211425215,
+      "process_peak_rss_kib": 305316,
+      "model_calls": 244,
+      "peak_buffered_samples": 16881,
+      "cache_frames": 264,
+      "fifo_frames": 192,
+      "max_feature_frames": 104,
+      "speaker_attributed": {
+        "errors": 137,
+        "reference_words": 377,
+        "cpwer": 0.363395225464191
+      },
+      "known_speakers_count": 4,
+      "unknown_utterances": 8,
+      "unknown_utterance_fraction": 0.20512820512820512,
+      "unknown_word_fraction": 0.04316546762589928,
+      "predicted_speakers_includes_unknown": true,
+      "sampled_peak_pss_kib": 279456,
+      "memory_samples": 1922,
+      "der_details": {
+        "missed detection": 10.866999999999948,
+        "confusion": 15.677000000000007,
+        "correct": 122.011,
+        "false alarm": 7.811999999999974,
+        "total": 148.55499999999995,
+        "diarization error rate": 0.23126788058294864
+      },
+      "jer": 0.2242383922465052,
+      "host_comparison": {
+        "decoded_pcm_sha256_equal": true,
+        "max_posterior_delta": 7.12275505065918e-06,
+        "threshold_flips": 0
+      }
+    }
+  ],
+  "cpwer": 0.363395225464191,
+  "inference_rtf": 1.191637098944322,
+  "process_peak_rss_kib": 305316
+}

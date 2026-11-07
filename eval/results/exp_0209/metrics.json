@@ -1,0 +1,81 @@
+{
+  "experiment_id": "exp_0209",
+  "scope": "host real-model new file API controls; no quality or target timing claims",
+  "cases": [
+    {
+      "case": "seed_cancel_before_speaker",
+      "status": 4,
+      "asr_loads": 1,
+      "cached_chunks": 0,
+      "nested_status": [],
+      "export_preserved_on_failure": true,
+      "error": "Cancelled before speaker model load",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "reentry",
+      "status": 4,
+      "asr_loads": 0,
+      "cached_chunks": 2,
+      "nested_status": [
+        5
+      ],
+      "export_preserved_on_failure": true,
+      "error": "Cancelled before speaker model load",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "cancel_after_inference",
+      "status": 4,
+      "asr_loads": 0,
+      "cached_chunks": 2,
+      "nested_status": [],
+      "export_preserved_on_failure": true,
+      "error": "Streaming diarization cancelled",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "resume",
+      "status": 0,
+      "asr_loads": 0,
+      "cached_chunks": 2,
+      "nested_status": [],
+      "export_preserved_on_failure": false,
+      "error": "",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "legacy_cache_reuse",
+      "status": 0,
+      "asr_loads": 0,
+      "cached_chunks": 2,
+      "nested_status": [],
+      "export_preserved_on_failure": false,
+      "error": "",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "duration_budget",
+      "status": 1,
+      "asr_loads": 0,
+      "cached_chunks": 0,
+      "nested_status": [],
+      "export_preserved_on_failure": true,
+      "error": "Decode exceeded duration budget or scratch I/O failed",
+      "speaker_progress_monotonic": true
+    },
+    {
+      "case": "protect_external_weights",
+      "status": 1,
+      "asr_loads": 0,
+      "cached_chunks": 0,
+      "nested_status": [],
+      "export_preserved_on_failure": true,
+      "error": "Output would overwrite speaker model/weights",
+      "speaker_progress_monotonic": true
+    }
+  ],
+  "passed": true,
+  "shared_asr_checkpoint_exact": true,
+  "decoded_pcm_sha_exact": true
+}

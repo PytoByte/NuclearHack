@@ -1,0 +1,310 @@
+{
+  "experiment_id": "exp_0188",
+  "scope": "official NeMo-Speech.cpp 0.3.0 native CPU reference; host x86_64, not SDK/Android/ARM qualification",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 46.93687761500041,
+      "process_peak_rss_kib": 921660,
+      "sampled_peak_pss_kib": 920284,
+      "memory_samples": 691,
+      "audio_seconds": 175.1717659482104,
+      "full_rtf": 0.2679477332487321,
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 44,
+          "deletions": 15,
+          "insertions": 17,
+          "reference_words": 377
+        },
+        "raw": {
+          "substitutions": 90,
+          "deletions": 9,
+          "insertions": 18,
+          "reference_words": 359
+        },
+        "punctuation_token_wer": {
+          "substitutions": 60,
+          "deletions": 46,
+          "insertions": 20,
+          "reference_words": 496
+        },
+        "normalized_cer": {
+          "errors": 189,
+          "reference_characters": 2174
+        },
+        "raw_cer": {
+          "errors": 262,
+          "reference_characters": 2275
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 61,
+            "false_positive": 30,
+            "false_negative": 58
+          },
+          "conditional_equal_words": {
+            "true_positive": 61,
+            "false_positive": 8,
+            "false_negative": 29
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 17,
+              "false_positive": 9,
+              "false_negative": 20
+            },
+            ",": {
+              "true_positive": 35,
+              "false_positive": 19,
+              "false_negative": 24
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 3
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "-": {
+              "true_positive": 9,
+              "false_positive": 2,
+              "false_negative": 10
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "languages": [
+        "ru-RU"
+      ],
+      "word_count": 368,
+      "word_text_reconstruction_equal": true
+    }
+  ],
+  "text_metrics": {
+    "normalized": {
+      "substitutions": 44,
+      "deletions": 15,
+      "insertions": 17,
+      "reference_words": 377,
+      "wer": 0.20159151193633953
+    },
+    "raw": {
+      "substitutions": 90,
+      "deletions": 9,
+      "insertions": 18,
+      "reference_words": 359,
+      "wer": 0.32590529247910865
+    },
+    "punctuation_token_wer": {
+      "substitutions": 60,
+      "deletions": 46,
+      "insertions": 20,
+      "reference_words": 496,
+      "wer": 0.2540322580645161
+    },
+    "normalized_cer": {
+      "errors": 189,
+      "reference_characters": 2174,
+      "cer": 0.08693652253909843
+    },
+    "raw_cer": {
+      "errors": 262,
+      "reference_characters": 2275,
+      "cer": 0.11516483516483517
+    },
+    "punctuation": {
+      "end_to_end": {
+        "true_positive": 61,
+        "false_positive": 30,
+        "false_negative": 58,
+        "precision": 0.6703296703296703,
+        "recall": 0.5126050420168067,
+        "f1": 0.580952380952381
+      },
+      "conditional_equal_words": {
+        "true_positive": 61,
+        "false_positive": 8,
+        "false_negative": 29,
+        "precision": 0.8840579710144928,
+        "recall": 0.6777777777777778,
+        "f1": 0.7672955974842768
+      },
+      "per_mark": {
+        ".": {
+          "true_positive": 17,
+          "false_positive": 9,
+          "false_negative": 20,
+          "precision": 0.6538461538461539,
+          "recall": 0.4594594594594595,
+          "f1": 0.5396825396825397
+        },
+        ",": {
+          "true_positive": 35,
+          "false_positive": 19,
+          "false_negative": 24,
+          "precision": 0.6481481481481481,
+          "recall": 0.5932203389830508,
+          "f1": 0.6194690265486725
+        },
+        "?": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 3,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "!": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ":": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ";": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2014": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 1,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "-": {
+          "true_positive": 9,
+          "false_positive": 2,
+          "false_negative": 10,
+          "precision": 0.8181818181818182,
+          "recall": 0.47368421052631576,
+          "f1": 0.6
+        },
+        "\u2026": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00ab": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00bb": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\"": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "(": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ")": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      }
+    }
+  },
+  "inference_rtf": 0.2679477332487321,
+  "process_peak_rss_kib": 921660,
+  "normalized": {
+    "substitutions": 44,
+    "deletions": 15,
+    "insertions": 17,
+    "reference_words": 377,
+    "wer": 0.20159151193633953
+  },
+  "cer": 0.08693652253909843
+}

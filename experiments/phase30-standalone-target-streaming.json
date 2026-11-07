@@ -1,0 +1,38 @@
+[
+  {
+    "experiment": "exp_0177",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [],
+    "hypothesis": "Standalone host CLI movie: decode into bounded streaming SDK, full decoded PCM SHA and complete posterior export, no Python client in measured process"
+  },
+  {
+    "experiment": "exp_0178",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--android",
+      "--host-reference",
+      "exp_0177"
+    ],
+    "hypothesis": "Fresh standalone native process on isolated offline4GBx86AVD; device binaries/models/audio SHA verified, PCM hash must equalhost,50msPSSsampling and fixed host ASR attribution; OS cache retained"
+  },
+  {
+    "experiment": "exp_0179",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--android",
+      "--host-reference",
+      "exp_0177"
+    ],
+    "hypothesis": "Fresh standalone native process on isolated offline4GBx86AVD; device binaries/models/audio SHA verified, PCM hash must equalhost,50msPSSsampling and fixed host ASR attribution; OS cache retained"
+  },
+  {
+    "experiment": "exp_0180",
+    "script": "eval/scripts/probe_stream_cli.py",
+    "args": [
+      "--android",
+      "--host-reference",
+      "exp_0177"
+    ],
+    "hypothesis": "Fresh standalone native process on isolated offline4GBx86AVD; device binaries/models/audio SHA verified, PCM hash must equalhost,50msPSSsampling and fixed host ASR attribution; OS cache retained"
+  }
+]

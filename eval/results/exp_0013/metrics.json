@@ -1,0 +1,57 @@
+{
+  "experiment_id": "exp_0013",
+  "observations": [
+    {
+      "cycle": 1,
+      "before_load": 45212,
+      "after_load": 411756,
+      "load_seconds": 2.082240358002309,
+      "before_release": 417668,
+      "after_release": 315732,
+      "malloc_trim_return": 1,
+      "after_trim": 66604
+    },
+    {
+      "cycle": 2,
+      "before_load": 66604,
+      "after_load": 412400,
+      "load_seconds": 1.9137410580005962,
+      "before_release": 415016,
+      "after_release": 315704,
+      "malloc_trim_return": 1,
+      "after_trim": 66692
+    },
+    {
+      "cycle": 3,
+      "before_load": 66692,
+      "after_load": 419208,
+      "load_seconds": 2.083097454997187,
+      "before_release": 424604,
+      "after_release": 315612,
+      "malloc_trim_return": 1,
+      "after_trim": 66720
+    },
+    {
+      "cycle": 4,
+      "before_load": 66784,
+      "after_load": 397724,
+      "load_seconds": 1.887375484999211,
+      "before_release": 400288,
+      "after_release": 193524,
+      "malloc_trim_return": 1,
+      "after_trim": 66768
+    },
+    {
+      "cycle": 5,
+      "before_load": 66768,
+      "after_load": 403988,
+      "load_seconds": 1.8732541240024148,
+      "before_release": 406584,
+      "after_release": 193440,
+      "malloc_trim_return": 1,
+      "after_trim": 66708
+    }
+  ],
+  "process_peak_rss_kib": 423956,
+  "scope": "Linux glibc host-only lifetime diagnostic; not Android RSS/allocator behavior"
+}

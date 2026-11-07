@@ -1,0 +1,59 @@
+[
+  {
+    "experiment": "exp_0086",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "titanet-large.onnx",
+      "--threshold",
+      ".4"
+    ],
+    "hypothesis": "Calibrate TitaNet cosine distance independently: frozen .4/.6/.8 pilot-development screening, other factors baseline69"
+  },
+  {
+    "experiment": "exp_0087",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "titanet-large.onnx",
+      "--threshold",
+      ".6"
+    ],
+    "hypothesis": "Calibrate TitaNet cosine distance independently: frozen .4/.6/.8 pilot-development screening, other factors baseline69"
+  },
+  {
+    "experiment": "exp_0088",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "titanet-large.onnx",
+      "--threshold",
+      ".8"
+    ],
+    "hypothesis": "Calibrate TitaNet cosine distance independently: frozen .4/.6/.8 pilot-development screening, other factors baseline69"
+  },
+  {
+    "experiment": "exp_0089",
+    "script": "eval/scripts/score_conversation_diarization.py",
+    "args": [
+      "--runs",
+      "exp_0069",
+      "exp_0086",
+      "exp_0087",
+      "exp_0088"
+    ],
+    "hypothesis": "Compare new embedding by DER/JER/cpWER; do not tune independent test"
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_0170",
+  "scope": "experimental streaming Sortformer; preserved ASR words; no oracle; not SDK preset",
+  "load_seconds": 0.03713366200099699,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "audio_seconds": 175.17175,
+      "wall_seconds": 5.4793197229955695,
+      "inference_rtf": 0.031279699626198684,
+      "model_seconds": 5.335712433014123,
+      "process_peak_rss_kib": 385560,
+      "speaker_attributed": {
+        "errors": 115,
+        "reference_words": 377,
+        "cpwer": 0.3050397877984085
+      },
+      "known_speakers_count": 4,
+      "unknown_utterances": 8,
+      "unknown_utterance_fraction": 0.2222222222222222,
+      "unknown_word_fraction": 0.02877697841726619,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 1.0748573840028257,
+      "der_details": {
+        "false alarm": 6.611999999999987,
+        "missed detection": 9.339999999999986,
+        "total": 148.55499999999995,
+        "confusion": 8.805000000000039,
+        "correct": 130.4099999999999,
+        "diarization error rate": 0.166652081720575
+      },
+      "jer": 0.19039495985373597
+    }
+  ],
+  "cpwer": 0.3050397877984085,
+  "inference_rtf": 0.031279699626198684,
+  "process_peak_rss_kib": 454932
+}

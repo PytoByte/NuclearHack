@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp_0229",
+  "scope": "host600s synthetic repeated-source capacity soak; no ASR/diarization quality labels, no hour/ARM certification",
+  "exit_code": 0,
+  "wall_seconds": 61.67863387599937,
+  "process_peak_rss_kib": 565368,
+  "sampled_peak_pss_kib": 557558,
+  "sampled_peak_rss_kib": 566432,
+  "pss_sample_period_ms": 50,
+  "audio_seconds": 600,
+  "source_samples": 9600000,
+  "inference_rtf": 0.10279772312666562,
+  "native_stream": {
+    "assignment": "posterior_mean_start_anchor",
+    "emitted_frames": 60000,
+    "inference_seconds": 20.526470352999993,
+    "model_calls": 23,
+    "ort": "1.28.2",
+    "peak_buffered_samples": 486641,
+    "profile": 1,
+    "threads": 4,
+    "word_anchor_ms": 160
+  },
+  "words": 1323,
+  "json_valid": true,
+  "source_bounds_valid": true,
+  "ctc_chunk_fallbacks": 0,
+  "normalized_wer": null,
+  "cpwer": null,
+  "timestamp_mae_ms": null,
+  "limitation": "Repeated/quantized input validates600s resource/control execution only; no independent quality, natural long-conversation speaker stability or timestamp accuracy measurement."
+}

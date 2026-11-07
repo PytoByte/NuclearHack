@@ -1,0 +1,19 @@
+[
+  {
+    "experiment": "exp_0135",
+    "script": "eval/scripts/probe_reclustering.py",
+    "args": [
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--unit",
+      "turn",
+      "--min-turn-ms",
+      "300",
+      "--min-seconds",
+      ".3"
+    ],
+    "hypothesis": "Per-turn pure embeddings may recover a short voice mixed inside local-window masks; source occupancy not DER gold"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "experiment": "exp_0140",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Sortformer fixed .5 posterior, .3s speech/.5s gaps; buffered vs low latency, global vs arrived-window mel; same frozen ASR words, no oracle"
+  },
+  {
+    "experiment": "exp_0141",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--profile",
+      "low",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Sortformer fixed .5 posterior, .3s speech/.5s gaps; buffered vs low latency, global vs arrived-window mel; same frozen ASR words, no oracle"
+  },
+  {
+    "experiment": "exp_0142",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--profile",
+      "low",
+      "--frontend",
+      "window"
+    ],
+    "hypothesis": "Sortformer fixed .5 posterior, .3s speech/.5s gaps; buffered vs low latency, global vs arrived-window mel; same frozen ASR words, no oracle"
+  }
+]

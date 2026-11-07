@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_0030",
+  "model": {
+    "id": "giga-v3-rnnt",
+    "family": "transducer",
+    "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+    "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+    "files": [
+      "models/giga-v3-rnnt/encoder.int8.onnx",
+      "models/giga-v3-rnnt/decoder.onnx",
+      "models/giga-v3-rnnt/joiner.onnx",
+      "models/giga-v3-rnnt/tokens.txt",
+      "models/giga-v3-rnnt/LICENSE"
+    ]
+  },
+  "threads": 4,
+  "method": "greedy_search",
+  "language": "ru",
+  "model_files": [
+    {
+      "path": "models/giga-v3-rnnt/encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/encoder.int8.onnx",
+      "sha256": "0ec54e5f130a91c0f228d21795ede10b31c992a1f73e45dcd827e843a71a9b50",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/decoder.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/decoder.onnx",
+      "sha256": "5d1cfef155d8e07f213bd2f3229b5f6c5c29355c7fa5c1b9eb62cb1925725254",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/joiner.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/joiner.onnx",
+      "sha256": "fd1d02f45c2ad3d6b67cc149811ad794ab4b020ed49a0a9e2790a8619d1cddd8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    }
+  ],
+  "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+  "apk_sha256": "d1324e690291a25d05e6932a3c1060d234804fc137bbdfaf2067aada6b2b6f5f",
+  "abi": "x86_64",
+  "configured_ram_mib": 4096,
+  "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim"
+}

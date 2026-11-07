@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0214",
+    "script": "eval/scripts/analyze_streaming_file.py",
+    "args": [],
+    "hypothesis": "Verify old default exact203vs186; full native new API six-case ASR/prototype parity and paired known-silver cpWER vs oldERes; latest host/AVD code/source/weights identity and exact repeated target transcript/slots/turns, full-device time and PSS"
+  }
+]

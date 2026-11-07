@@ -1,0 +1,76 @@
+{
+  "experiment_id": "exp_0102",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "native": "exp_0099",
+      "prototype": "exp_0093",
+      "words_unchanged": true,
+      "initial_diarization_unchanged": true,
+      "full_transcript_equal_after_canonical_ids": true,
+      "refinement": {
+        "embedding_clusters": 5,
+        "final_clusters": 6,
+        "initial_clusters": 8,
+        "threshold": 0.4000000059604645
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "native": "exp_0099",
+      "prototype": "exp_0093",
+      "words_unchanged": true,
+      "initial_diarization_unchanged": true,
+      "full_transcript_equal_after_canonical_ids": true,
+      "refinement": {
+        "embedding_clusters": 7,
+        "final_clusters": 6,
+        "initial_clusters": 8,
+        "threshold": 0.4000000059604645
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "native": "exp_0099",
+      "prototype": "exp_0093",
+      "words_unchanged": true,
+      "initial_diarization_unchanged": true,
+      "full_transcript_equal_after_canonical_ids": true,
+      "refinement": {
+        "embedding_clusters": 4,
+        "final_clusters": 4,
+        "initial_clusters": 5,
+        "threshold": 0.4000000059604645
+      }
+    },
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "native": "exp_0104",
+      "prototype": "exp_0095",
+      "words_unchanged": true,
+      "initial_diarization_unchanged": true,
+      "full_transcript_equal_after_canonical_ids": true,
+      "refinement": {
+        "embedding_clusters": 2,
+        "final_clusters": 4,
+        "initial_clusters": 4,
+        "threshold": 0.4000000059604645
+      }
+    },
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "native": "exp_0101",
+      "prototype": "exp_0097",
+      "words_unchanged": true,
+      "initial_diarization_unchanged": true,
+      "full_transcript_equal_after_canonical_ids": true,
+      "refinement": {
+        "embedding_clusters": 7,
+        "final_clusters": 8,
+        "initial_clusters": 9,
+        "threshold": 0.4000000059604645
+      }
+    }
+  ],
+  "scope": "Native/prototype exact transcript equality after deterministic speaker renumbering; all words/timestamps preserved"
+}

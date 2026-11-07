@@ -1,0 +1,136 @@
+[
+  {
+    "experiment": "exp_0105",
+    "script": "eval/scripts/probe_refinement_controls.py",
+    "args": [],
+    "hypothesis": "Real-model cluster-cap rejection, cancellation between embeddings and nested NH_BUSY; no partial export"
+  },
+  {
+    "experiment": "exp_0117",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      "0"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0118",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0119",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      "0"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0120",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0121",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      "0"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0122",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Matched fresh-process Android4GB/x86 baseline and optional native refinement; identical verified source/model bytes"
+  },
+  {
+    "experiment": "exp_0123",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--refinement-threshold",
+      ".4",
+      "--cancel-stage",
+      "speaker_refine",
+      "--cancel-after-frames",
+      "1",
+      "--expect-cancel"
+    ],
+    "hypothesis": "Android cancellation after at least one cluster embedding; no final JSON"
+  },
+  {
+    "experiment": "exp_0126",
+    "script": "eval/scripts/compare_refinement_profiles.py",
+    "args": [
+      "--pair",
+      "exp_0117",
+      "exp_0118",
+      "--pair",
+      "exp_0119",
+      "exp_0120",
+      "--pair",
+      "exp_0121",
+      "exp_0122",
+      "--host-baseline",
+      "exp_0103",
+      "--host-refinement",
+      "exp_0101"
+    ],
+    "hypothesis": "Report host/device neural deltas, require exact paired device ASR/initial-diarization invariance, compare three fresh-process profiles"
+  },
+  {
+    "experiment": "exp_0125",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--refinement-threshold",
+      ".4",
+      "--threads",
+      "4"
+    ],
+    "hypothesis": "Regression on three original MP3 short/overlap structural fixtures; no real-data generalization claim"
+  },
+  {
+    "experiment": "exp_0127",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--checkpoint",
+      "--cancel-stage",
+      "asr",
+      "--cancel-after-frames",
+      "320000",
+      "--expect-cancel"
+    ],
+    "hypothesis": "Capture decoded PCM SHA in private checkpoint after first ASR chunk, no export; compare host and Android input signal"
+  }
+]

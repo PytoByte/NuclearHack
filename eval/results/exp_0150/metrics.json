@@ -1,0 +1,70 @@
+{
+  "experiment_id": "exp_0150",
+  "scope": "experimental streaming Sortformer; preserved ASR words; no oracle; not SDK preset",
+  "load_seconds": 1.2481098279968137,
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "audio_seconds": 31.3564375,
+      "wall_seconds": 0.8609637769986875,
+      "inference_rtf": 0.027457321227855925,
+      "model_seconds": 0.8425199099947349,
+      "process_peak_rss_kib": 681908,
+      "speaker_attributed": {
+        "errors": 4,
+        "reference_words": 62,
+        "cpwer": 0.06451612903225806
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 1,
+      "unknown_utterance_fraction": 0.2,
+      "unknown_word_fraction": 0.016129032258064516,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 2,
+      "max_call_seconds": 0.5480569209976238
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "audio_seconds": 23.5210625,
+      "wall_seconds": 0.31605025099997874,
+      "inference_rtf": 0.013436903668785317,
+      "model_seconds": 0.2841864740039455,
+      "process_peak_rss_kib": 692256,
+      "speaker_attributed": {
+        "errors": 6,
+        "reference_words": 30,
+        "cpwer": 0.2
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 1,
+      "unknown_utterance_fraction": 0.14285714285714285,
+      "unknown_word_fraction": 0.03333333333333333,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 1,
+      "max_call_seconds": 0.2841864740039455
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "audio_seconds": 39.7831875,
+      "wall_seconds": 0.834158279998519,
+      "inference_rtf": 0.020967607987633446,
+      "model_seconds": 0.819070167002792,
+      "process_peak_rss_kib": 1030220,
+      "speaker_attributed": {
+        "errors": 33,
+        "reference_words": 78,
+        "cpwer": 0.4230769230769231
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 2,
+      "max_call_seconds": 0.46653000800142763
+    }
+  ],
+  "cpwer": 0.2529411764705882,
+  "inference_rtf": 0.021246119810794585,
+  "process_peak_rss_kib": 1030220
+}

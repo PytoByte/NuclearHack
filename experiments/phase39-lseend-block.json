@@ -1,0 +1,19 @@
+[
+  {
+    "experiment": "exp_0195",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [],
+    "hypothesis": "New diarization architecture LS-EEND DIHARD3, recurrent state instead of embedding clusters; pinned publisher frontend/state; fixed GigaAM words, no oracle; three structural cases quality/RTF/state footprint"
+  },
+  {
+    "experiment": "exp_0196",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [
+      "--transport-samples",
+      "8000",
+      "--compare",
+      "exp_0195"
+    ],
+    "hypothesis": "Published LS-EEND frontend/state full vs one-second transport: source grid and posterior differences, previews included; metadata FFT1024 vs code256 frozen and documented, not a native memory claim"
+  }
+]

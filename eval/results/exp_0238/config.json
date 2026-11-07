@@ -1,0 +1,17 @@
+{
+  "experiment_id": "exp_0238",
+  "script": "eval/scripts/probe_streaming_file_pipeline.py",
+  "args": [
+    "--model",
+    "giga-v3-ctc-punct",
+    "--baseline",
+    "exp_0237",
+    "--host-reference",
+    "exp_0237",
+    "--entry-point",
+    "final",
+    "--require-word-parity",
+    "--asan"
+  ],
+  "hypothesis": "Final facade and class architecture under ASan/UBSan: real-model full smoke; exact release parity, not performance"
+}

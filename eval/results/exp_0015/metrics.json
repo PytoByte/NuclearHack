@@ -1,0 +1,24 @@
+{
+  "experiment_id": "exp_0015",
+  "quant": "fp32",
+  "threads": 2,
+  "threshold": 0.8,
+  "seconds": 180.0,
+  "load_seconds": 0.7900091850024182,
+  "inference_seconds": 82.51462311299838,
+  "inference_rtf": 0.458414572849991,
+  "process_peak_rss_kib": 373872,
+  "predicted_speakers": 9,
+  "reference_speakers": 4,
+  "segments": 21,
+  "der_details": {
+    "confusion": 7.254635314941439,
+    "correct": 100.9561431884766,
+    "missed detection": 1.9892214965820187,
+    "false alarm": 5.195070953369132,
+    "total": 110.20000000000006,
+    "diarization error rate": 0.13102475285746445
+  },
+  "dataset_split": "validation",
+  "scope": "Linux CPU / one English AMI IHM excerpt; not Russian/Android"
+}

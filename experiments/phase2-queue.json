@@ -1,0 +1,104 @@
+[
+  {
+    "experiment": "exp_0021",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "hypothesis": "E17: 2 CPU threads may balance overhead and parallelism",
+    "args": [
+      "--threads",
+      "2"
+    ]
+  },
+  {
+    "experiment": "exp_0022",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "hypothesis": "E17: repeat 4 CPU threads without intervening LLM for comparable lifecycle",
+    "args": [
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0017",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "Confirm frozen validation-selected threshold .8 on untouched AMI test",
+    "args": [
+      "--threshold",
+      "0.8",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0023",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E10: VoxCeleb embedding can reduce speaker fragmentation vs ERes2Net",
+    "args": [
+      "--embedding",
+      "wespeaker-resnet34-lm",
+      "--threshold",
+      "0.8",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0024",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E11: oracle speaker count diagnoses clustering contribution on validation only",
+    "args": [
+      "--oracle-speakers",
+      "4",
+      "--threshold",
+      "0.8",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0025",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E12: shorter minimum turns/pause merging may preserve brief speech",
+    "args": [
+      "--min-on",
+      "0.1",
+      "--min-off",
+      "0.2",
+      "--threshold",
+      "0.8",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0026",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E03: actual RNNT modified beam search vs greedy on same val40",
+    "args": [
+      "--model",
+      "giga-v3-rnnt",
+      "--threads",
+      "4",
+      "--method",
+      "modified_beam_search"
+    ]
+  },
+  {
+    "experiment": "exp_0027",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E04: actual Whisper autodetect vs fixed ru on same val40",
+    "args": [
+      "--model",
+      "whisper-base-int8",
+      "--threads",
+      "2",
+      "--language",
+      ""
+    ]
+  }
+]

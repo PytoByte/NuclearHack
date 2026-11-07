@@ -1,0 +1,54 @@
+[
+  {
+    "experiment": "exp_0197",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--baseline",
+      "exp_0099",
+      "--transport-samples",
+      "8000"
+    ],
+    "hypothesis": "Evaluate alternate causal recurrent diarization block on all six known RU natural regressions despite weak structural smoke; unchanged publisher frontend/state/preset and GigaAM words, no tuning; streaming includes speculative previews, not native target RTF"
+  },
+  {
+    "experiment": "exp_0198",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0101",
+      "--transport-samples",
+      "8000"
+    ],
+    "hypothesis": "Evaluate alternate causal recurrent diarization block on all six known RU natural regressions despite weak structural smoke; unchanged publisher frontend/state/preset and GigaAM words, no tuning; streaming includes speculative previews, not native target RTF"
+  },
+  {
+    "experiment": "exp_0199",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--baseline",
+      "exp_0104",
+      "--transport-samples",
+      "8000"
+    ],
+    "hypothesis": "Evaluate alternate causal recurrent diarization block on all six known RU natural regressions despite weak structural smoke; unchanged publisher frontend/state/preset and GigaAM words, no tuning; streaming includes speculative previews, not native target RTF"
+  },
+  {
+    "experiment": "exp_0200",
+    "script": "eval/scripts/probe_lseend.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--baseline",
+      "exp_0155",
+      "--transport-samples",
+      "8000"
+    ],
+    "hypothesis": "Evaluate alternate causal recurrent diarization block on all six known RU natural regressions despite weak structural smoke; unchanged publisher frontend/state/preset and GigaAM words, no tuning; streaming includes speculative previews, not native target RTF"
+  }
+]

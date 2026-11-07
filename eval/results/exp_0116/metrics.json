@@ -1,0 +1,21 @@
+{
+  "experiment_id": "exp_0116",
+  "cases": [
+    {
+      "case": "synthetic",
+      "source_sha256": "714b73bbad39f612e6f2060c1e573f19d0e56b1c4893ef9de90397ed36273431",
+      "wav_frames": 16000,
+      "same_bytes_mp3_frames": 16000,
+      "pcm_equal": true
+    },
+    {
+      "case": "movie",
+      "source_sha256": "f79a05fbe416cb821f1ba040a818ffd3f8ee73e76436f28d708cb4a78579db19",
+      "wav_frames": 2802748,
+      "same_bytes_mp3_frames": 2802748,
+      "pcm_equal": true
+    }
+  ],
+  "expected_mismatch": false,
+  "scope": "decoder filename-hint regression; no ASR inference"
+}

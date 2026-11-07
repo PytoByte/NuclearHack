@@ -1,0 +1,1002 @@
+{
+  "models": [
+    {
+      "id": "giga-v3-ctc",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "files": [
+        "models/giga-v3-ctc/model.int8.onnx",
+        "models/giga-v3-ctc/tokens.txt",
+        "models/giga-v3-ctc/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v2-ctc",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "revision": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "files": [
+        "models/giga-v2-ctc/model.int8.onnx",
+        "models/giga-v2-ctc/tokens.txt",
+        "models/giga-v2-ctc/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-rnnt",
+      "family": "transducer",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "files": [
+        "models/giga-v3-rnnt/encoder.int8.onnx",
+        "models/giga-v3-rnnt/decoder.onnx",
+        "models/giga-v3-rnnt/joiner.onnx",
+        "models/giga-v3-rnnt/tokens.txt",
+        "models/giga-v3-rnnt/LICENSE"
+      ]
+    },
+    {
+      "id": "whisper-base-int8",
+      "family": "whisper",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "revision": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "files": [
+        "models/whisper-base-int8/base-encoder.int8.onnx",
+        "models/whisper-base-int8/base-decoder.int8.onnx",
+        "models/whisper-base-int8/base-tokens.txt",
+        "models/whisper-base-int8/LICENSE"
+      ]
+    },
+    {
+      "id": "pyannote-eres2net-fp32",
+      "family": "diarization",
+      "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+      "revision": "pinned-per-file-sha256",
+      "files": [
+        "models/diarization/segmentation-model.onnx",
+        "models/diarization/embedding.onnx",
+        "models/diarization/embedding.LICENSE",
+        "models/diarization/segmentation.LICENSE"
+      ]
+    },
+    {
+      "id": "pyannote-eres2net-int8",
+      "family": "diarization",
+      "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+      "revision": "pinned-per-file-sha256",
+      "files": [
+        "models/diarization/segmentation-model.int8.onnx",
+        "models/diarization/embedding.onnx",
+        "models/diarization/embedding.LICENSE",
+        "models/diarization/segmentation.LICENSE"
+      ]
+    },
+    {
+      "id": "qwen3-0.6b-q8",
+      "family": "llama",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "files": [
+        "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "models/qwen3-0.6b-q8/LICENSE"
+      ]
+    },
+    {
+      "id": "wespeaker-resnet34-lm",
+      "family": "speaker_embedding",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "revision": "f0c48c298fd835726c27956a5d617bad7115627e",
+      "files": [
+        "models/diarization/wespeaker-resnet34-lm.onnx",
+        "models/diarization/wespeaker-resnet34-lm.MODELCARD",
+        "models/diarization/wespeaker-resnet34-lm.LICENSE"
+      ]
+    },
+    {
+      "id": "silero-vad",
+      "family": "vad",
+      "source": "https://github.com/snakers4/silero-vad",
+      "revision": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "files": [
+        "models/silero-vad/silero.onnx",
+        "models/silero-vad/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-ctc-punct",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "revision": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "files": [
+        "models/giga-v3-ctc-punct/model.int8.onnx",
+        "models/giga-v3-ctc-punct/tokens.txt",
+        "models/giga-v3-ctc-punct/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-ctc-fp32",
+      "family": "ctc",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "revision": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "files": [
+        "models/giga-v3-ctc-fp32/source.onnx",
+        "models/giga-v3-ctc-fp32/LICENSE",
+        "models/giga-v3-ctc-fp32/model.onnx",
+        "models/giga-v3-ctc-fp32/tokens.txt"
+      ],
+      "runtime_files": [
+        "models/giga-v3-ctc-fp32/LICENSE",
+        "models/giga-v3-ctc-fp32/model.onnx",
+        "models/giga-v3-ctc-fp32/tokens.txt"
+      ]
+    },
+    {
+      "id": "qwen3-0.6b-q4",
+      "family": "llm",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "files": [
+        "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "models/qwen3-0.6b-q8/LICENSE",
+        "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf"
+      ],
+      "runtime_files": [
+        "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf",
+        "models/qwen3-0.6b-q8/LICENSE"
+      ],
+      "note": "Locally requantized from official Q8, not an official Qwen Q4 artifact"
+    },
+    {
+      "id": "rupunct-small-int8",
+      "family": "punctuation",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "revision": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "files": [
+        "models/rupunct-small-int8/README.md",
+        "models/rupunct-small-int8/config.json",
+        "models/rupunct-small-int8/rupunct_small_int8.onnx",
+        "models/rupunct-small-int8/tokenizer.json"
+      ],
+      "scope": "research CPU tagger; not mobile integrated"
+    },
+    {
+      "id": "titanet-large",
+      "family": "speaker_embedding",
+      "source": "https://huggingface.co/csukuangfj/speaker-embedding-models",
+      "revision": "0743f301363dec56491a490f6d6cbc9d67f9a3bf",
+      "upstream_source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "upstream_revision": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8",
+      "files": [
+        "models/diarization/titanet-large.onnx",
+        "models/diarization/titanet-large.MODELCARD",
+        "models/diarization/titanet-large.LICENSE"
+      ]
+    },
+    {
+      "id": "horizon-punct-small",
+      "family": "punctuation",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "revision": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "files": [
+        "models/horizon-punct-small/config.json",
+        "models/horizon-punct-small/README.md",
+        "models/horizon-punct-small/LICENSE",
+        "models/horizon-punct-small/tokenizer_config.json",
+        "models/horizon-punct-small/special_tokens_map.json",
+        "models/horizon-punct-small/tokenizer.json",
+        "models/horizon-punct-small/model_quantized.onnx"
+      ],
+      "scope": "research-only multilingual INT8-embedding ONNX tagger; no mobile integration"
+    },
+    {
+      "id": "sortformer-streaming",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "revision": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "upstream": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "upstream_revision": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+      "files": [
+        "models/sortformer-streaming/model.onnx",
+        "models/sortformer-streaming/MODEL_EXPORT.md",
+        "models/sortformer-streaming/MODEL_UPSTREAM.md"
+      ],
+      "scope": "research candidate only; maximum4speaker slots, no native SDK integration",
+      "upstream_config": {
+        "member": "model_config.yaml",
+        "archive_url": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1/resolve/cd03eee90fbec18297ac31b8c21546e596b7f71c/diar_streaming_sortformer_4spk-v2.1.nemo",
+        "member_sha256": "2865d469c4d2aac54aa5b8a956b2423c053806dd20d5bf5d08675942a1acface",
+        "full_archive_downloaded": false,
+        "preprocessor": {
+          "sample_rate": 16000,
+          "normalize": "NA",
+          "window_size": 0.025,
+          "window_stride": 0.01,
+          "window": "hann",
+          "features": 128,
+          "n_fft": 512,
+          "dither": 1e-05
+        },
+        "max_num_of_spks": 4
+      }
+    },
+    {
+      "id": "sortformer-streaming-matmul-int8",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "revision": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "upstream": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "upstream_revision": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+      "files": [
+        "models/sortformer-streaming/model.matmul-int8.onnx",
+        "models/sortformer-streaming/model.onnx"
+      ],
+      "scope": "research-only MatMul constant-weight dynamic INT8; convolution stays FP32; max4 slots; not SDK preset"
+    },
+    {
+      "id": "nemotron3-diarization-q8",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "revision": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "upstream": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "upstream_revision": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron3-diarization/model_quantized.onnx",
+        "models/nemotron3-diarization/model_quantized.onnx_data",
+        "models/nemotron3-diarization/config.json",
+        "models/nemotron3-diarization/processor_config.json",
+        "models/nemotron3-diarization/preprocessor_config.json",
+        "models/nemotron3-diarization/MODEL_EXPORT.md",
+        "models/nemotron3-diarization/MODEL_UPSTREAM.md"
+      ],
+      "scope": "research-only third-party Q8 export with external data; max8 slots, not SDK preset"
+    },
+    {
+      "id": "nemotron3-diarization-q4",
+      "family": "streaming_diarization",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "revision": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "upstream": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "upstream_revision": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron3-diarization/model_q4.onnx",
+        "models/nemotron3-diarization/model_q4.onnx_data",
+        "models/nemotron3-diarization/config.json",
+        "models/nemotron3-diarization/processor_config.json",
+        "models/nemotron3-diarization/preprocessor_config.json",
+        "models/nemotron3-diarization/MODEL_EXPORT.md",
+        "models/nemotron3-diarization/MODEL_UPSTREAM.md"
+      ],
+      "scope": "experimental third-party Q4 MatMulNBits export; quality and runtime support must be measured; not SDK preset"
+    },
+    {
+      "id": "nemotron35-asr-q8",
+      "family": "experimental_gguf_rnnt",
+      "source": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "revision": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron35-asr/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf"
+      ],
+      "scope": "Research-only native NeMo-Speech.cpp comparison; ru-RU, CPU Q8; not SDK preset; native Android unqualified"
+    },
+    {
+      "id": "nemotron3-diarization-gguf-q8",
+      "family": "experimental_gguf_diarization",
+      "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "revision": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license_url": "https://openmdw.ai/license/1-1/",
+      "files": [
+        "models/nemotron3-diarization/Nemotron-3-Diarization.q8_0.gguf"
+      ],
+      "scope": "Research-only official GGUF NeMo-Speech.cpp pipeline; not ONNX Q8 parity; not SDK preset"
+    },
+    {
+      "id": "lseend-dih3-onnx",
+      "family": "experimental_lseend",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "revision": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "upstream": "https://github.com/Audio-WestlakeU/FS-EEND",
+      "license_url": "https://github.com/Audio-WestlakeU/FS-EEND/blob/main/LICENSE",
+      "files": [
+        "models/lseend-dih3/ls_eend_dih3_step.onnx",
+        "models/lseend-dih3/ls_eend_dih3_step.json",
+        "models/lseend-dih3/reference/ls_eend_onnx_runtime.py",
+        "models/lseend-dih3/reference/ls_eend_streaming_common.py",
+        "models/lseend-dih3/reference/ls_eend_common.py",
+        "models/lseend-dih3/reference/datasets/feature.py"
+      ],
+      "scope": "Research-only 8kHz recurrent LS-EEND DIHARD3, third-party ONNX export; ten real slots; use pinned publisher frontend, actual FFT256 despite metadata1024; not SDK preset"
+    },
+    {
+      "id": "dpdfnet-baseline-16k",
+      "family": "speech_enhancement",
+      "source": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "revision": "dd6818d00f50c836fed43a6243ebe49116de5964",
+      "license_url": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "files": [
+        "models/dpdfnet/baseline.onnx"
+      ],
+      "scope": "Research-only causal speech enhancement before ASR; native sherpa runtime, original audio for diarization; not SDK preset"
+    },
+    {
+      "id": "russian-aligner-wav2vec2-q8",
+      "family": "research_ctc_aligner",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "revision": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "upstream": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-russian",
+      "files": [
+        "models/russian-aligner/model_quantized.onnx",
+        "models/russian-aligner/config.json",
+        "models/russian-aligner/vocab.json",
+        "models/russian-aligner/preprocessor_config.json",
+        "models/russian-aligner/README.md"
+      ],
+      "scope": "Independent Russian character CTC aligner selected by WhisperX; Q8 third-party export, not GigaAM replacement or SDK preset; fixed ASR text only"
+    }
+  ],
+  "files": [
+    {
+      "path": "models/giga-v3-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/model.int8.onnx",
+      "sha256": "f86ebfa0429ced91be6054fc344827e9c6c2572f3c318416cd974b06f66437ec",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19/resolve/f5555086f28ef11d600e30d76b61d75fd9685196/model.int8.onnx",
+      "sha256": "d0ce4aef25f58d495781ee8f05320d9e51b821f47804e07aa6549b53a72f67e8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "version": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19/resolve/f5555086f28ef11d600e30d76b61d75fd9685196/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v2-russian-2025-04-19",
+      "version": "f5555086f28ef11d600e30d76b61d75fd9685196",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v2-ctc/LICENSE",
+      "url": "https://raw.githubusercontent.com/salute-developers/GigaAM/2dfdad6195286784b496e6ec8d08e4de3b07313b/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://raw.githubusercontent.com/salute-developers/GigaAM/2dfdad6195286784b496e6ec8d08e4de3b07313b/LICENSE",
+      "version": "2dfdad6195286784b496e6ec8d08e4de3b07313b",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/encoder.int8.onnx",
+      "sha256": "0ec54e5f130a91c0f228d21795ede10b31c992a1f73e45dcd827e843a71a9b50",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/decoder.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/decoder.onnx",
+      "sha256": "5d1cfef155d8e07f213bd2f3229b5f6c5c29355c7fa5c1b9eb62cb1925725254",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/joiner.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/joiner.onnx",
+      "sha256": "fd1d02f45c2ad3d6b67cc149811ad794ab4b020ed49a0a9e2790a8619d1cddd8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-encoder.int8.onnx",
+      "sha256": "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-decoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-decoder.int8.onnx",
+      "sha256": "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-tokens.txt",
+      "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/LICENSE",
+      "url": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "sha256": "b5d65a59060e68c4ff940e1eddfa6f94b2d68fdf58ed7f4dd57721c997e35e9d",
+      "source": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "version": "6e3be77e1a105e59086e3e21ff5f609fd6fa89a5",
+      "license": "MIT"
+    },
+    {
+      "path": "models/diarization/segmentation-model.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/segmentation-model.int8.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "d582f4b4c6b48205de7e0643c57df0df5615a3c176189be3fc461e9d18827b5d",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.int8.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/segmentation.LICENSE",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "14d7016ad68e7394d6e6b78d96cc2ae431c905287b89674cfdf021e79e62b8ba",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/LICENSE",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/embedding.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+      "sha256": "1a331345f04805badbb495c775a6ddffcdd1a732567d5ec8b3d5749e3c7a5e4b",
+      "source": "https://modelscope.cn/models/iic/speech_eres2net_base_sv_zh-cn_3dspeaker_16k",
+      "version": "sherpa-speaker-recongition-models",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/diarization/embedding.LICENSE",
+      "url": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "https://raw.githubusercontent.com/modelscope/3D-Speaker/065629c313eaf1a01c65c640c46d77e61e9607b4/LICENSE",
+      "version": "065629c313eaf1a01c65c640c46d77e61e9607b4",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+      "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/qwen3-0.6b-q8/LICENSE",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/LICENSE",
+      "sha256": "5de36594c10839788a8c589443a8ef9d8b8d17c65a1b5807206ae037fc36c6bd",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/wespeaker_en_voxceleb_resnet34_LM.onnx",
+      "sha256": "e9848563da86f263117134dfd7ad63c92355b37de492b55e325400c9d9c39012",
+      "size_bytes": 26530550,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.MODELCARD",
+      "url": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM/resolve/f0c48c298fd835726c27956a5d617bad7115627e/README.md",
+      "sha256": "af2f6592a73d1333b872f75c6047f24bd1bb53346c0597edc1544140aa9c7e73",
+      "size_bytes": 3152,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.LICENSE",
+      "url": "https://raw.githubusercontent.com/creativecommons/cc-legal-tools-data/a0dac18d1a773b4cdb7d8dd5d9bf4efab7901030/legacy/legalcode/by_4.0.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "size_bytes": 18657,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/silero-vad/silero.onnx",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/066409f3d9db45a30d21dfcbf9147826ffdd7052/src/silero_vad/data/silero_vad.onnx",
+      "source": "https://github.com/snakers4/silero-vad",
+      "version": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+      "size_bytes": 2327524,
+      "license": "MIT"
+    },
+    {
+      "path": "models/silero-vad/LICENSE",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/066409f3d9db45a30d21dfcbf9147826ffdd7052/LICENSE",
+      "source": "https://github.com/snakers4/silero-vad",
+      "version": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "sha256": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+      "size_bytes": 1075,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/model.int8.onnx",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "d5fea8df94263c285e54b21e5774b707c707192d3bdbeffd7b1eb07fb6743b35",
+      "size_bytes": 224893661,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/tokens.txt",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "142de7570b3de5b3035ce111a89c228e80e6085273731d944093ddf24fa539cd",
+      "size_bytes": 2007,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/LICENSE",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "size_bytes": 1070,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/source.onnx",
+      "url": "https://huggingface.co/istupakov/gigaam-v3-onnx/resolve/322c3b29492673eb7d0b434bfa9dfb8653e34d02/v3_ctc.onnx",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "sha256": "1fb978d4f41e1334003fae9d29f2d9844d4132315a90553a4b986839051ba9d3",
+      "size_bytes": 885264128,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/LICENSE",
+      "url": "https://huggingface.co/istupakov/gigaam-v3-onnx/resolve/322c3b29492673eb7d0b434bfa9dfb8653e34d02/LICENSE.txt",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "size_bytes": 1070,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/model.onnx",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "license": "MIT",
+      "derivation": {
+        "kind": "sherpa-gigaam-v3-ctc-metadata-v1",
+        "input": "models/giga-v3-ctc-fp32/source.onnx",
+        "input_sha256": "1fb978d4f41e1334003fae9d29f2d9844d4132315a90553a4b986839051ba9d3",
+        "tool": "onnx==1.17.0"
+      },
+      "sha256": "da590a6115bd20df4eb2537d02b627fe81fc318ba2d4253fa708391ba7231b56",
+      "size_bytes": 885264423,
+      "initializer_sha256": "db5148e77b11cfa4a78b400400ead7a69bb5d486299df11f24b6b880280972cf"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a+llama-cd959bae",
+      "license": "Apache-2.0",
+      "derivation": {
+        "kind": "llama-q8-to-q4-k-m-v1",
+        "input": "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "input_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+        "threads": 4,
+        "llama_commit": "cd959bae99ff4bed22bef2604f45241c09bbb8c8"
+      },
+      "sha256": "15e434d8ddf0af38fe3f7003af6ce6eac4edada6df34324aa45979f9cc79f02e",
+      "size_bytes": 396704416,
+      "quantizer_sha256": "da783b62a387a7b0711cc2f1b853207b5ad85690d010481feb20b46943e1daeb"
+    },
+    {
+      "path": "models/rupunct-small-int8/README.md",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/README.md",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "a793c033ec91bfc33f2d926fd1fc5cc7b2b95b4afcd302a41dfe9ac125c382bd",
+      "size_bytes": 1553
+    },
+    {
+      "path": "models/rupunct-small-int8/config.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/config.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "6924a8cf41ec2bd3a3aa73a387ae0ccd0aed253ec7cac4d2f53c7d27440891eb",
+      "size_bytes": 2527
+    },
+    {
+      "path": "models/rupunct-small-int8/rupunct_small_int8.onnx",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/rupunct_small_int8.onnx",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "b105da023474d98aa13ba18953ae67b04b17bd0595034bc06030c17536893933",
+      "size_bytes": 29259673
+    },
+    {
+      "path": "models/rupunct-small-int8/tokenizer.json",
+      "url": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx/resolve/c4a35be7e4a413cdfb08427db75b621b571569c9/tokenizer.json",
+      "source": "https://huggingface.co/ekhodzitsky/rupunct-small-onnx",
+      "version": "c4a35be7e4a413cdfb08427db75b621b571569c9",
+      "license": "MIT (publisher/upstream model card)",
+      "sha256": "7ca617388c2092a3a84272025c52bbf3c6db0aee225c0351186295c0b5d3ddc6",
+      "size_bytes": 2413439
+    },
+    {
+      "path": "models/diarization/titanet-large.onnx",
+      "url": "https://huggingface.co/csukuangfj/speaker-embedding-models/resolve/0743f301363dec56491a490f6d6cbc9d67f9a3bf/nemo_en_titanet_large.onnx",
+      "sha256": "d51abcf31717ef28162f26acb9d44dd4127c3d44c9b8624f699f3425daca8e77",
+      "source": "https://huggingface.co/csukuangfj/speaker-embedding-models",
+      "version": "0743f301363dec56491a490f6d6cbc9d67f9a3bf",
+      "license": "CC-BY-4.0 (upstream NVIDIA model; sherpa-compatible ONNX export)"
+    },
+    {
+      "path": "models/diarization/titanet-large.MODELCARD",
+      "url": "https://huggingface.co/nvidia/speakerverification_en_titanet_large/resolve/0dc382f40121a5fbd34db10a2bb04d826c2be6a8/README.md",
+      "sha256": "fc21d601b62a6645490308611caf681958d8141dcf21e7fc5c53f1d7bc97e2f7",
+      "source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "version": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "path": "models/diarization/titanet-large.LICENSE",
+      "url": "https://raw.githubusercontent.com/creativecommons/cc-legal-tools-data/a0dac18d1a773b4cdb7d8dd5d9bf4efab7901030/legacy/legalcode/by_4.0.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "size_bytes": 18657,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "version": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8"
+    },
+    {
+      "path": "models/horizon-punct-small/config.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/config.json",
+      "sha256": "f457c77954f0720ff2c0624b92714fb551bd19c42fba0625ee7af1740df49e05",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/README.md",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/README.md",
+      "sha256": "93edb6822321b2c9354048785cfbeeae4a3d81cdbdf44af05f91c9ec56107e9d",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/LICENSE",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/tokenizer_config.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/tokenizer_config.json",
+      "sha256": "ea349495764b24570b4560fe2e4a557e5c0a47e6bce782c2409b1d6445cf8633",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/special_tokens_map.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/special_tokens_map.json",
+      "sha256": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/tokenizer.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/tokenizer.json",
+      "sha256": "f34b44a6dc8a0eef651bfa10e8325057530152606a69d9c3b6ae02efb1558f0a",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/model_quantized.onnx",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/onnx/model_quantized.onnx",
+      "sha256": "5679870be92c7fa47c9be9b2872fac389ef28d43d2c33f35e1315b93a82f4ace",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/sortformer-streaming/model.onnx",
+      "url": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx/resolve/6418561696a11506e38eb0babd64d7d1081554d5/diar_streaming_sortformer_4spk-v2.1.onnx",
+      "sha256": "82b9c735e1cfc6b36b4ff8a994d9a0573e922d0e80a58a8553b2c58f7aff0c00",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/MODEL_EXPORT.md",
+      "url": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx/resolve/6418561696a11506e38eb0babd64d7d1081554d5/README.md",
+      "sha256": "49a690acf4ca7b3ec5baacdf4b9e39a9664ef352d8f3d968641e5704556d9d1e",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/MODEL_UPSTREAM.md",
+      "url": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1/resolve/cd03eee90fbec18297ac31b8c21546e596b7f71c/README.md",
+      "sha256": "0cfd901cb5e44b20b107f939532f772905a4f1da453182a4047963e6eb87d619",
+      "source": "https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1",
+      "version": "cd03eee90fbec18297ac31b8c21546e596b7f71c",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)"
+    },
+    {
+      "path": "models/sortformer-streaming/model.matmul-int8.onnx",
+      "source": "https://huggingface.co/cgus/diar_streaming_sortformer_4spk-v2.1-onnx",
+      "version": "6418561696a11506e38eb0babd64d7d1081554d5",
+      "license": "NVIDIA Open Model License (official upstream link; research candidate)",
+      "derivation": {
+        "kind": "ort-matmul-dynamic-int8-v1",
+        "input": "models/sortformer-streaming/model.onnx",
+        "input_sha256": "82b9c735e1cfc6b36b4ff8a994d9a0573e922d0e80a58a8553b2c58f7aff0c00",
+        "onnx_version": "1.17.0",
+        "ort_version": "1.23.2",
+        "op_types": [
+          "MatMul"
+        ],
+        "per_channel": true,
+        "weight_type": "QInt8",
+        "extra_options": {
+          "MatMulConstBOnly": true
+        }
+      },
+      "sha256": "718f5457068f8e97c28a347363100202ec0a94c10c75e56abe109cadf4107e53",
+      "size_bytes": 182478884
+    },
+    {
+      "path": "models/nemotron3-diarization/model_quantized.onnx",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_quantized.onnx",
+      "sha256": "fff7d18c7439c9fdc1c6c4dfec924cb42d3344264ca879780dfaf7ee886e6c1e",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/model_quantized.onnx_data",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_quantized.onnx_data",
+      "sha256": "002d7483e1c865c35c82220fdb378f185ff213c6d35922b38ae421c8ec72c338",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/config.json",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/config.json",
+      "sha256": "a758bf59867e27a7d92cf7a9149cae6dfc212b408b2ba74bfb87994708a803c5",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/processor_config.json",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/processor_config.json",
+      "sha256": "91726746788a024a2f0f2f699a6c3667f0d74e6a0e9288fc44fe3018e23af68e",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/preprocessor_config.json",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/preprocessor_config.json",
+      "sha256": "71889e72aa30d334b83a05ba342c326a5ac6300920ca68eef6cabd01d4cc2292",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/MODEL_EXPORT.md",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/README.md",
+      "sha256": "f58e02164274cccb3003c766620e6c14885d1dc8243b4b91791703f72c3a3f62",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/MODEL_UPSTREAM.md",
+      "url": "https://huggingface.co/nvidia/Nemotron-3-Diarization/resolve/f667ed73aee57d40cc39428eb768b4fd87a0a29e/README.md",
+      "sha256": "5fe88ca4020d2ee134f806a0a02c52c19855b73047bc2e6f25b9171e1abeebfd",
+      "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "version": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/model_q4.onnx",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_q4.onnx",
+      "sha256": "3e5e93dfd8289770343c402079d36034faa4a2eac260f66115f85ba9a2de41b2",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/model_q4.onnx_data",
+      "url": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX/resolve/353b6f8ad2cac3580e982d7fbdf0a010786b0406/onnx/model_q4.onnx_data",
+      "sha256": "4513ed877d7cb83944bcb27c747221a7180e03f790d1c703e50af01792b7b8f4",
+      "source": "https://huggingface.co/onnx-community/Nemotron-3-Diarization-ONNX",
+      "version": "353b6f8ad2cac3580e982d7fbdf0a010786b0406",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron35-asr/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf",
+      "url": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b/resolve/ea30d66debe3740a08b573244286791d423d6b3e/nemotron-3.5-asr-streaming-0.6b.q8_0.gguf",
+      "sha256": "3fc991d3badad7277c11030a7519832cddaf2057aafed6d4b25147e953a070b1",
+      "source": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "version": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/nemotron3-diarization/Nemotron-3-Diarization.q8_0.gguf",
+      "url": "https://huggingface.co/nvidia/Nemotron-3-Diarization/resolve/f667ed73aee57d40cc39428eb768b4fd87a0a29e/Nemotron-3-Diarization.q8_0.gguf",
+      "sha256": "08456d9e22cd9a323c0364d98375f3746d6e68507ebb705cd46438c534c7a3a1",
+      "source": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+      "version": "f667ed73aee57d40cc39428eb768b4fd87a0a29e",
+      "license": "OpenMDW-1.1"
+    },
+    {
+      "path": "models/lseend-dih3/ls_eend_dih3_step.onnx",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/DIHARD%20III/ls_eend_dih3_step.onnx",
+      "sha256": "587ad263b46aaa5d4fc7fb9e0524d1990455f7286c3a47b2371d08df8b5671c8",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/ls_eend_dih3_step.json",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/DIHARD%20III/ls_eend_dih3_step.json",
+      "sha256": "ecb42ca07888a297b3e0ae277b19e1a1412e1fa68309233f9e6196b06128f0a9",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_onnx_runtime.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_onnx_runtime.py",
+      "sha256": "316b363511c7af48eee0f21c259abd0b66d560cd2b3b26a48a68b1c9969600e4",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_streaming_common.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_streaming_common.py",
+      "sha256": "60fe4e58b8dd8beeaeb486dc7cab3d06e8b92627c5e64132a50e38c909389cdc",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/ls_eend_common.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/ls_eend_common.py",
+      "sha256": "f3d13f1b53fefe3557ec103f920baaf0072fd476328e8c3aa8f0a83022f82a8e",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/lseend-dih3/reference/datasets/feature.py",
+      "url": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX/resolve/cc40a1e1242c148fbbc15c132e43b8ac15056e53/example/datasets/feature.py",
+      "sha256": "be36d3f429d0b2e87ca23f1126697d443e6d229adff17dc0c69933fcb73647af",
+      "source": "https://huggingface.co/GradientDescent2718/LS-EEND-ONNX",
+      "version": "cc40a1e1242c148fbbc15c132e43b8ac15056e53",
+      "license": "MIT declared by exporter; upstream MIT"
+    },
+    {
+      "path": "models/dpdfnet/baseline.onnx",
+      "url": "https://huggingface.co/Ceva-IP/DPDFNet/resolve/dd6818d00f50c836fed43a6243ebe49116de5964/onnx/baseline.onnx",
+      "sha256": "371d26182aff0e1e0d31354e24c81f79cd57458f5a7dd003fc10a7ebf64255e0",
+      "source": "https://huggingface.co/Ceva-IP/DPDFNet",
+      "version": "dd6818d00f50c836fed43a6243ebe49116de5964",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/config.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/config.json",
+      "sha256": "6dac5a0bbfd7497b48d54573a5194cf0054e2adea6c6ea802c08bdae4d679891",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/vocab.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/vocab.json",
+      "sha256": "94af9bc439fe8a64657b1898505fe2bd1a78e2ef8ad24b7dbdc3c6f921cf0953",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/preprocessor_config.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/preprocessor_config.json",
+      "sha256": "2c594304e9d9832162bedd5345051df29e8daf458a845cbed58c6ede23ceeae3",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/README.md",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/README.md",
+      "sha256": "e6e9099ee83288aba005d936dabbf7098577605ea2be54edce5c1d56383db9b6",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/model_quantized.onnx",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/onnx/model_quantized.onnx",
+      "sha256": "027f226a26c4ad2bb8cd6e4f56038b9013afc3cf6ccf2cdf9aecb092c3726344",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_0004",
+  "model": "giga-v3-rnnt",
+  "threads": 2,
+  "clips": 40,
+  "audio_seconds": 456.54,
+  "load_seconds": 4.150212306998583,
+  "inference_seconds": 78.59819638402041,
+  "decode_seconds": 0.037809060002473416,
+  "inference_rtf": 0.1721605913699137,
+  "full_rtf": 0.18133398552376892,
+  "first_inference_seconds": 1.4548034710023785,
+  "median_inference_seconds": 1.8597408140012703,
+  "process_peak_rss_kib": 703548,
+  "normalized": {
+    "substitutions": 38,
+    "deletions": 7,
+    "insertions": 10,
+    "reference_words": 757,
+    "wer": 0.0726552179656539
+  },
+  "raw": {
+    "substitutions": 220,
+    "deletions": 5,
+    "insertions": 21,
+    "reference_words": 744,
+    "wer": 0.33064516129032256
+  },
+  "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+  "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d"
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0202",
+    "script": "eval/scripts/probe_denoise_asr.py",
+    "args": [],
+    "hypothesis": "Native DPDFNet source audit reveals STFT hop rounding and40ms shifted tail; explicit input right padding from pinned model metadata then crop padding to original samples; paired raw/enhanced native GigaAM, clean/short/noise, same20s chunks; no parameter sweep"
+  }
+]

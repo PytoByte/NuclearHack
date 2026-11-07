@@ -1,0 +1,8 @@
+{
+  "stage": "native speaker refinement timeline validation",
+  "reason": "Valid upstream segmentation ends 27ms after EOF; sample reads already clipped",
+  "status": 1,
+  "rerun": "exp_0104",
+  "crash": false,
+  "export_absent": true
+}

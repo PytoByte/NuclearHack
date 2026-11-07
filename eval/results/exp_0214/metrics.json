@@ -1,0 +1,133 @@
+{
+  "experiment_id": "exp_0214",
+  "scope": "complete native file API audit; six known RU silver quality cases and three fresh x86AVD processes, no ARM/coldboot/independent gold claim",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "reference_words": 418,
+      "previous_eres_errors": 95,
+      "native_posterior_errors": 58,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.08320548532870208
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "reference_words": 391,
+      "previous_eres_errors": 181,
+      "native_posterior_errors": 52,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.07679185797831287
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "reference_words": 394,
+      "previous_eres_errors": 261,
+      "native_posterior_errors": 243,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.07692104151550044
+    },
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "reference_words": 377,
+      "previous_eres_errors": 126,
+      "native_posterior_errors": 106,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.08595493233356596
+    },
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "reference_words": 465,
+      "previous_eres_errors": 96,
+      "native_posterior_errors": 73,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.08308163293423809
+    },
+    {
+      "audio_id": "ru-youtube-astrology",
+      "reference_words": 379,
+      "previous_eres_errors": 59,
+      "native_posterior_errors": 36,
+      "exact_asr_words_and_prototype_slots": true,
+      "full_rtf": 0.0836016815152246
+    }
+  ],
+  "previous_eres_cpwer": 0.33745874587458746,
+  "native_posterior_cpwer": 0.23432343234323433,
+  "delta_cpwer": -0.10313531353135313,
+  "record_bootstrap_ci95": [
+    -0.1955969517358171,
+    -0.05053995680345572
+  ],
+  "old_default_json_exact": true,
+  "controls_passed": true,
+  "targets": [
+    {
+      "experiment": "exp_0211",
+      "processing_seconds": 30.156343337,
+      "full_rtf": 0.17215300604692252,
+      "pss_kib": 340132,
+      "process_peak_rss_kib": 364652,
+      "median_sample_interval_ms": 110.00000000058208,
+      "normalized_wer": {
+        "substitutions": 15,
+        "deletions": 1,
+        "insertions": 41,
+        "reference_words": 377
+      },
+      "cpwer": 0.27851458885941643,
+      "host_comparison": {
+        "source_pcm_exact": true,
+        "words_exact": false,
+        "raw_turns_exact": true
+      }
+    },
+    {
+      "experiment": "exp_0212",
+      "processing_seconds": 28.496081771,
+      "full_rtf": 0.16267509898713692,
+      "pss_kib": 340123,
+      "process_peak_rss_kib": 364288,
+      "median_sample_interval_ms": 110.00000000058208,
+      "normalized_wer": {
+        "substitutions": 15,
+        "deletions": 1,
+        "insertions": 41,
+        "reference_words": 377
+      },
+      "cpwer": 0.27851458885941643,
+      "host_comparison": {
+        "source_pcm_exact": true,
+        "words_exact": false,
+        "raw_turns_exact": true
+      }
+    },
+    {
+      "experiment": "exp_0213",
+      "processing_seconds": 28.391676366,
+      "full_rtf": 0.16207908162132306,
+      "pss_kib": 339812,
+      "process_peak_rss_kib": 363852,
+      "median_sample_interval_ms": 110.00000000058208,
+      "normalized_wer": {
+        "substitutions": 15,
+        "deletions": 1,
+        "insertions": 41,
+        "reference_words": 377
+      },
+      "cpwer": 0.27851458885941643,
+      "host_comparison": {
+        "source_pcm_exact": true,
+        "words_exact": false,
+        "raw_turns_exact": true
+      }
+    }
+  ],
+  "target_transcript_words_slots_turns_repeat_exact": true,
+  "median_target_full_rtf": 0.16267509898713692,
+  "target_seconds_range": [
+    28.391676366,
+    30.156343337
+  ],
+  "maximum_target_pss_kib": 340132,
+  "limitation": "Small known silver source files, unverified speaker independence; all target ASR truly runs on device; no physical ARM or hourly stress claim."
+}

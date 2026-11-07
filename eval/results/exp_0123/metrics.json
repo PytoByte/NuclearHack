@@ -1,0 +1,32 @@
+{
+  "run_id": "exp_0123",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "status": 4,
+      "expected_cancel": true,
+      "wall_ms": 53394,
+      "sampled_peak_pss_kib": 376077,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 15,
+        "decode": 177,
+        "asr_load": 679,
+        "asr": 14126,
+        "diarization_load": 271,
+        "diarization": 37692,
+        "speaker_refine_load": 274,
+        "speaker_refine": 108
+      }
+    }
+  ],
+  "normalized": {
+    "substitutions": 0,
+    "deletions": 0,
+    "insertions": 0,
+    "reference_words": 0,
+    "wer": null
+  },
+  "scope": "Android4096MiB x86_64 AVD; translated timings are not physical ARM performance"
+}

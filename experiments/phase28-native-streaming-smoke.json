@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0175",
+    "script": "eval/scripts/probe_native_streaming.py",
+    "args": [],
+    "hypothesis": "First native C ABI real-model smoke: fixed ASR words, source/frame caps, 997-vs400000 transport exact invariance, callback cancel/reentry, duration and finite-input guards"
+  }
+]

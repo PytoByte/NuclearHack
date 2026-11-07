@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0162",
+    "script": "eval/scripts/probe_frontend_conformance.py",
+    "args": [],
+    "hypothesis": "Before next model, compare unchanged NumPy frontend to independent Torch/librosa equations: silence/impulse/sine/real PCM, predeclared max5e-5 and mean5e-6 tolerance"
+  }
+]

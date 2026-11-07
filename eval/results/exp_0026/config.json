@@ -1,0 +1,110 @@
+{
+  "experiment_id": "exp_0026",
+  "model": {
+    "id": "giga-v3-rnnt",
+    "family": "transducer",
+    "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+    "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+    "files": [
+      "models/giga-v3-rnnt/encoder.int8.onnx",
+      "models/giga-v3-rnnt/decoder.onnx",
+      "models/giga-v3-rnnt/joiner.onnx",
+      "models/giga-v3-rnnt/tokens.txt",
+      "models/giga-v3-rnnt/LICENSE"
+    ]
+  },
+  "threads": 4,
+  "decoding_method": "modified_beam_search",
+  "language": "ru",
+  "hotwords_sha256": null,
+  "manifest": "eval/data/fleurs-ru-validation.jsonl",
+  "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+  "selected_audio_ids": [
+    "fleurs-ru-validation-0001",
+    "fleurs-ru-validation-0026",
+    "fleurs-ru-validation-0031",
+    "fleurs-ru-validation-0043",
+    "fleurs-ru-validation-0050",
+    "fleurs-ru-validation-0052",
+    "fleurs-ru-validation-0068",
+    "fleurs-ru-validation-0088",
+    "fleurs-ru-validation-0089",
+    "fleurs-ru-validation-0093",
+    "fleurs-ru-validation-0094",
+    "fleurs-ru-validation-0102",
+    "fleurs-ru-validation-0105",
+    "fleurs-ru-validation-0121",
+    "fleurs-ru-validation-0122",
+    "fleurs-ru-validation-0149",
+    "fleurs-ru-validation-0174",
+    "fleurs-ru-validation-0177",
+    "fleurs-ru-validation-0179",
+    "fleurs-ru-validation-0187",
+    "fleurs-ru-validation-0192",
+    "fleurs-ru-validation-0204",
+    "fleurs-ru-validation-0210",
+    "fleurs-ru-validation-0212",
+    "fleurs-ru-validation-0228",
+    "fleurs-ru-validation-0236",
+    "fleurs-ru-validation-0240",
+    "fleurs-ru-validation-0242",
+    "fleurs-ru-validation-0245",
+    "fleurs-ru-validation-0252",
+    "fleurs-ru-validation-0256",
+    "fleurs-ru-validation-0258",
+    "fleurs-ru-validation-0260",
+    "fleurs-ru-validation-0261",
+    "fleurs-ru-validation-0280",
+    "fleurs-ru-validation-0281",
+    "fleurs-ru-validation-0287",
+    "fleurs-ru-validation-0322",
+    "fleurs-ru-validation-0333",
+    "fleurs-ru-validation-0335"
+  ],
+  "normalization": "v1: NFC, lowercase, yo->ye, punctuation/symbols->space; keep numbers/fillers",
+  "decoder": "native miniaudio; 16kHz mono; original WAV",
+  "model_lock_sha256": "d3cd6e1e7c2606db73320d894d292b70b77c278e6782b16e9f50702392e41851",
+  "sdk_sha256": "c8260e2f79cd83f6079784f53b7dff86900501f794dde6893ebb09a58b841acc",
+  "model_files": [
+    {
+      "path": "models/giga-v3-rnnt/encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/encoder.int8.onnx",
+      "sha256": "0ec54e5f130a91c0f228d21795ede10b31c992a1f73e45dcd827e843a71a9b50",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/decoder.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/decoder.onnx",
+      "sha256": "5d1cfef155d8e07f213bd2f3229b5f6c5c29355c7fa5c1b9eb62cb1925725254",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/joiner.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/joiner.onnx",
+      "sha256": "fd1d02f45c2ad3d6b67cc149811ad794ab4b020ed49a0a9e2790a8619d1cddd8",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-rnnt/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16/resolve/0424d62637b37d8b7b1eb0f75a04d78dec55fdcc/LICENSE",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+      "version": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+      "license": "MIT"
+    }
+  ]
+}

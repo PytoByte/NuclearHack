@@ -1,0 +1,54 @@
+[
+  {
+    "experiment": "exp_0219",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--baseline",
+      "exp_0205",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "Final candidate: full native GigaAM e2e punctuation + unchanged bounded Nemotron Q8/posterior word merge; measure lexical/punctuation/speaker tradeoff on all six known silver files, no frozen-word parity claim between ASR models"
+  },
+  {
+    "experiment": "exp_0220",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--baseline",
+      "exp_0207",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "Final candidate: full native GigaAM e2e punctuation + unchanged bounded Nemotron Q8/posterior word merge; measure lexical/punctuation/speaker tradeoff on all six known silver files, no frozen-word parity claim between ASR models"
+  },
+  {
+    "experiment": "exp_0221",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0206",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "Final candidate: full native GigaAM e2e punctuation + unchanged bounded Nemotron Q8/posterior word merge; measure lexical/punctuation/speaker tradeoff on all six known silver files, no frozen-word parity claim between ASR models"
+  },
+  {
+    "experiment": "exp_0222",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--baseline",
+      "exp_0208",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "Final candidate: full native GigaAM e2e punctuation + unchanged bounded Nemotron Q8/posterior word merge; measure lexical/punctuation/speaker tradeoff on all six known silver files, no frozen-word parity claim between ASR models"
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "experiment": "exp_0061",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "Matched fresh INT8 control for FP32 exp51 after observed timing drift",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0062",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "Confirm faster segmentation windows on Russian short/overlap smoke",
+    "args": [
+      "--window-shift-ratio",
+      "0.25"
+    ]
+  },
+  {
+    "experiment": "exp_0063",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "Confirm faster segmentation windows on Russian short/overlap smoke",
+    "args": [
+      "--window-shift-ratio",
+      "0.5"
+    ]
+  },
+  {
+    "experiment": "exp_0064",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "Factorial e2e CTC + window.25: interaction of text/timestamp and speaker changes",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--window-shift-ratio",
+      "0.25"
+    ]
+  },
+  {
+    "experiment": "exp_0065",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "Factorial e2e CTC + window.5: verify speaker quality before considering speed",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--window-shift-ratio",
+      "0.5"
+    ]
+  }
+]

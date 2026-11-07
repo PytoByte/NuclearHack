@@ -1,0 +1,103 @@
+[
+  {
+    "experiment": "exp_0153",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole",
+      "--model",
+      "sortformer-streaming-matmul-int8"
+    ],
+    "hypothesis": "Before transfer scoring choose MatMul INT8 buffered for file-mode speed/quality, frozen .5/.3/.5 postprocessing; known source-file regressions, no tuning"
+  },
+  {
+    "experiment": "exp_0154",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0101",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole",
+      "--model",
+      "sortformer-streaming-matmul-int8"
+    ],
+    "hypothesis": "Before transfer scoring choose MatMul INT8 buffered for file-mode speed/quality, frozen .5/.3/.5 postprocessing; known source-file regressions, no tuning"
+  },
+  {
+    "experiment": "exp_0155",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Freeze native CTC + ERes global.4 baseline on previously unscored source file; reference only scoring, auto count"
+  },
+  {
+    "experiment": "exp_0156",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0155",
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole",
+      "--model",
+      "sortformer-streaming-matmul-int8"
+    ],
+    "hypothesis": "Preselected quantized buffered Sortformer on a new source-file silver session, same ASR words/times, no tuning or reference count"
+  },
+  {
+    "experiment": "exp_0157",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--candidates",
+      "exp_0153",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl"
+    ],
+    "hypothesis": "Verify lexical/timestamp invariance and aggregate DER/JER/cpWER on single source-file transfer; n=1 bootstrap is degenerate, not confidence of generalization"
+  },
+  {
+    "experiment": "exp_0158",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0101",
+      "--candidates",
+      "exp_0154",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Verify lexical/timestamp invariance and aggregate DER/JER/cpWER on single source-file transfer; n=1 bootstrap is degenerate, not confidence of generalization"
+  },
+  {
+    "experiment": "exp_0159",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0155",
+      "--candidates",
+      "exp_0156",
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl"
+    ],
+    "hypothesis": "Verify lexical/timestamp invariance and aggregate DER/JER/cpWER on single source-file transfer; n=1 bootstrap is degenerate, not confidence of generalization"
+  }
+]

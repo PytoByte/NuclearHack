@@ -1,0 +1,14 @@
+{
+  "stage": "research_dispatch",
+  "exit_code": 1,
+  "command": [
+    "/home/beyond/projs/NuclearHack/.venv/bin/python",
+    "/home/beyond/projs/NuclearHack/eval/scripts/probe_frontend_conformance.py",
+    "--experiment",
+    "exp_0163"
+  ],
+  "logs": [
+    "dispatch.stdout.log",
+    "dispatch.stderr.log"
+  ]
+}

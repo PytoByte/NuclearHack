@@ -1,0 +1,92 @@
+[
+  {
+    "experiment": "exp_0169",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0104",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Preselect buffered Nemotron3Q8 for file-mode efficiency; known regression files only, no test-independence claim and no thresholds tuned to them"
+  },
+  {
+    "experiment": "exp_0170",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0101",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Preselect buffered Nemotron3Q8 for file-mode efficiency; known regression files only, no test-independence claim and no thresholds tuned to them"
+  },
+  {
+    "experiment": "exp_0171",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0155",
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "Preselect buffered Nemotron3Q8 for file-mode efficiency; known regression files only, no test-independence claim and no thresholds tuned to them"
+  },
+  {
+    "experiment": "exp_0172",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--candidates",
+      "exp_0169",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl"
+    ],
+    "hypothesis": "Verify exact word/timestamp attribution reproduction and compare DER/JER/cpWER on known source-file regressions; n1 intervals not generalization evidence"
+  },
+  {
+    "experiment": "exp_0173",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0101",
+      "--candidates",
+      "exp_0170",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Verify exact word/timestamp attribution reproduction and compare DER/JER/cpWER on known source-file regressions; n1 intervals not generalization evidence"
+  },
+  {
+    "experiment": "exp_0174",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--baseline",
+      "exp_0155",
+      "--candidates",
+      "exp_0171",
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl"
+    ],
+    "hypothesis": "Verify exact word/timestamp attribution reproduction and compare DER/JER/cpWER on known source-file regressions; n1 intervals not generalization evidence"
+  }
+]

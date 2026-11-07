@@ -1,0 +1,130 @@
+{
+  "platform": "linux-x86_64",
+  "sherpa_version": "2.0.1",
+  "artifacts": [
+    {
+      "name": "sherpa-host",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v2.0.1/sherpa-onnx-v2.0.1-linux-x64-shared-no-tts.tar.bz2",
+      "sha256": "b3b095f619059d54914027ff38f8a0a132ea3bbc5df32a212a9743a8bd1467b2",
+      "archive": "tar",
+      "strip": 1
+    },
+    {
+      "name": "sherpa-android",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v2.0.1/sherpa-onnx-v2.0.1-android.tar.bz2",
+      "sha256": "39003753ec293425ed56723ea9b972b98841a490af3311670c3060548d654330",
+      "archive": "tar",
+      "strip": 1
+    },
+    {
+      "name": "miniaudio/miniaudio.h",
+      "url": "https://raw.githubusercontent.com/mackron/miniaudio/f40cf03f80cdb7e741d43e53b7e706e8c1394bcf/miniaudio.h",
+      "sha256": "7e4f3f13c8fe66df2080ac3dd12a89193e3c2463cb7f067c798abd7331cd8ee6"
+    },
+    {
+      "name": "miniaudio/LICENSE",
+      "url": "https://raw.githubusercontent.com/mackron/miniaudio/f40cf03f80cdb7e741d43e53b7e706e8c1394bcf/LICENSE",
+      "sha256": "457f1b500e0adf6bc059edddfa78a2f62012e7c3bb43476c20e0bd23b25ba0eb"
+    },
+    {
+      "name": "ndk",
+      "url": "https://dl.google.com/android/repository/android-ndk-r27d-linux.zip",
+      "sha1": "22105e410cf29afcf163760cc95522b9fb981121",
+      "archive": "zip",
+      "strip": 1,
+      "optional": true,
+      "sha256": "601246087a682d1944e1e16dd85bc6e49560fe8b6d61255be2829178c8ed15d9"
+    },
+    {
+      "name": "json/json.hpp",
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp",
+      "sha256": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6"
+    },
+    {
+      "name": "json/LICENSE",
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/LICENSE.MIT",
+      "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+    },
+    {
+      "name": "sdk-notices/sherpa.LICENSE",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/af2d8d81dbfa61c4cea4c568da78f3982edca005/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "name": "sdk-notices/llama.LICENSE",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/cd959bae99ff4bed22bef2604f45241c09bbb8c8/LICENSE",
+      "sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d"
+    },
+    {
+      "name": "sdk-notices/onnxruntime.LICENSE",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/LICENSE",
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    {
+      "name": "sdk-notices/onnxruntime.ThirdPartyNotices.txt",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/ThirdPartyNotices.txt",
+      "sha256": "0e07b95f3a8d6230037707c5c4a2b554d12c4cb67369669ac255635528ffcee2"
+    },
+    {
+      "name": "picosha2/picosha2.h",
+      "url": "https://raw.githubusercontent.com/okdshin/PicoSHA2/161cb3fc4170fa7a3eca9e582cebd27cc4d1fe29/picosha2.h",
+      "sha256": "b13c180161ffac8d0adc81e033e493c409457c4d1258ab9781ac80579ba3bdd8"
+    },
+    {
+      "name": "picosha2/LICENSE",
+      "url": "https://raw.githubusercontent.com/okdshin/PicoSHA2/161cb3fc4170fa7a3eca9e582cebd27cc4d1fe29/LICENSE",
+      "sha256": "6c30eb1f37554ec4199cb82a8c86d9e7a852da78a757832bebb03ac9ddc44ff1"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_cxx_api.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_cxx_api.h",
+      "sha256": "c6bf005e4063b7db911d0a6b030452bcb9d4fc5e87530a39d94c4a5fcd311b61"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_c_api.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_c_api.h",
+      "sha256": "b69a133143c0da61782b2b02cc8a620d21ac139231fd211719776d10385135c1"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_float16.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_float16.h",
+      "sha256": "88b242845d25981633a0bbd1c148e273cf8bfb016ea3f57c4af41a06530f72b0"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_cxx_inline.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_cxx_inline.h",
+      "sha256": "97f960b1bc4a372918893ef4c77102dee725ccfce0d76607f4570b03e7e28325"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_error_code.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_error_code.h",
+      "sha256": "5ce3b054e798eced8d14f5b86e98692fd33470463f96194ce0700a2d53dd8721"
+    },
+    {
+      "name": "onnxruntime-headers/onnxruntime_ep_c_api.h",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_ep_c_api.h",
+      "sha256": "db86df0f846b8d3bdbf429a5c76c5805293196575ca3c475878612591cd18e51"
+    }
+  ],
+  "research_artifacts": [
+    {
+      "name": "nemo-reference/0.3.0",
+      "url": "https://github.com/NVIDIA/NeMo-Speech.cpp/releases/download/v0.3.0/nemo-speech-0.3.0-linux-x86_64-cpu.tar.gz",
+      "sha256": "255f12b722ab15b2a38a51cf125d56e3fa97058b528f7e895b39d6a473deb06e",
+      "archive": "tar",
+      "strip": 1,
+      "source": "https://github.com/NVIDIA/NeMo-Speech.cpp",
+      "revision": "20999cc921d2b14aa58708f61756a8b2e787ba20",
+      "license": "Apache-2.0",
+      "scope": "developer-only Linux x86_64 CPU comparison; Android NDK not qualified"
+    },
+    {
+      "name": "research/nmesc/offline_clustering.py",
+      "url": "https://raw.githubusercontent.com/NVIDIA/NeMo/1f73a910bc0f5ab774d100706329730b81457591/nemo/collections/asr/parts/utils/offline_clustering.py",
+      "sha256": "c2fcc816454612ae12f22230385d8d34de58c9ee8f650629d4936d54e0d3d515",
+      "revision": "1f73a910bc0f5ab774d100706329730b81457591",
+      "license": "Apache-2.0; embedded scikit-learn BSD notice",
+      "scope": "Research-only official NME-SC implementation; Torch in isolated frontend env; never SDK"
+    }
+  ]
+}

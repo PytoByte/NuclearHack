@@ -1,0 +1,46 @@
+[
+  {
+    "experiment": "exp_0239",
+    "script": "eval/scripts/probe_streaming_file_controls.py",
+    "args": [],
+    "hypothesis": "Post-refactor controls on actual C ABI adapters: cancel, resume, legacy shared cache, busy, budgets and model/output alias guards remain intact"
+  },
+  {
+    "experiment": "exp_0240",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Compatibility regression: class/port/factory refactor retains actual old default ERes native JSON identical203, no advanced/refinement selection"
+  },
+  {
+    "experiment": "exp_0241",
+    "script": "eval/scripts/probe_refactor_performance.py",
+    "args": [],
+    "hypothesis": "Three alternating pairs of archived pre-refactor and final facade binaries, exact same source/models; detect resource/performance regressions without comparing non-contemporaneous times; outputs must remain exact"
+  },
+  {
+    "experiment": "exp_0242",
+    "script": "eval/scripts/probe_final_stress.py",
+    "args": [],
+    "hypothesis": "Final primary API/clean architecture600s capacity soak, repeated/quantized synthetic input declared; bounds/JSON/PSS measured, no quality labels"
+  },
+  {
+    "experiment": "exp_0243",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--baseline",
+      "exp_0237",
+      "--host-reference",
+      "exp_0237",
+      "--entry-point",
+      "final",
+      "--require-word-parity",
+      "--asan"
+    ],
+    "hypothesis": "Post-refactor final facade real-model ASan/UBSan smoke with freshly stamped sanitizer build;238 stopped before inference due stale provenance and is preserved"
+  }
+]

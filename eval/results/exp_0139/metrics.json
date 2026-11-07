@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_0139",
+  "scope": "research selective short-turn split; no reference inputs; no SDK integration",
+  "load_seconds": 0.25654573399515357,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "refinement_seconds": 1.2715362939998158,
+      "anchored_speakers": 6,
+      "candidate_turns": 3,
+      "new_speakers": 0,
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 126,
+            "reference_words": 377,
+            "cpwer": 0.33421750663129973
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.1,
+          "unknown_word_fraction": 0.004796163069544364,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "missed detection": 2.0789999999999766,
+            "correct": 133.48399999999998,
+            "false alarm": 16.499999999999996,
+            "total": 148.55499999999992,
+            "confusion": 12.991999999999994,
+            "diarization error rate": 0.21252061526034116
+          },
+          "jer": 0.1658760543430888
+        },
+        "selective": {
+          "speaker_attributed": {
+            "errors": 126,
+            "reference_words": 377,
+            "cpwer": 0.33421750663129973
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.1,
+          "unknown_word_fraction": 0.004796163069544364,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "missed detection": 2.0789999999999766,
+            "correct": 133.48399999999998,
+            "false alarm": 16.499999999999996,
+            "total": 148.55499999999992,
+            "confusion": 12.991999999999994,
+            "diarization error rate": 0.21252061526034116
+          },
+          "jer": 0.1658760543430888
+        }
+      }
+    }
+  ],
+  "variants": {
+    "baseline": {
+      "cpwer": 0.33421750663129973
+    },
+    "selective": {
+      "cpwer": 0.33421750663129973
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "experiment_id": "exp_0136",
+  "scope": "research selective short-turn split; no reference inputs; no SDK integration",
+  "load_seconds": 0.2752727330007474,
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "refinement_seconds": 0.8243845329998294,
+      "anchored_speakers": 2,
+      "candidate_turns": 2,
+      "new_speakers": 1,
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 62,
+            "cpwer": 0.03225806451612903
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        },
+        "selective": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 62,
+            "cpwer": 0.22580645161290322
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "refinement_seconds": 0.1546509849940776,
+      "anchored_speakers": 1,
+      "candidate_turns": 2,
+      "new_speakers": 1,
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 30,
+            "cpwer": 0.4666666666666667
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        },
+        "selective": {
+          "speaker_attributed": {
+            "errors": 2,
+            "reference_words": 30,
+            "cpwer": 0.06666666666666667
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "refinement_seconds": 0.5517290069983574,
+      "anchored_speakers": 3,
+      "candidate_turns": 0,
+      "new_speakers": 0,
+      "variants": {
+        "baseline": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 78,
+            "cpwer": 0.1794871794871795
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        },
+        "selective": {
+          "speaker_attributed": {
+            "errors": 14,
+            "reference_words": 78,
+            "cpwer": 0.1794871794871795
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    }
+  ],
+  "variants": {
+    "baseline": {
+      "cpwer": 0.17647058823529413
+    },
+    "selective": {
+      "cpwer": 0.17647058823529413
+    }
+  }
+}

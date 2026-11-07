@@ -1,0 +1,17 @@
+[
+  {
+    "experiment": "exp_0160",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "FP32 control on failed known regression source to isolate quantization from acoustic speaker collapse; identical frontend/state/profile, no threshold tuning"
+  }
+]

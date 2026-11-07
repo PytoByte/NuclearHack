@@ -1,0 +1,21 @@
+{
+  "source": "https://huggingface.co/datasets/leshinsky/ru-youtube-diarization",
+  "revision": "e3aaa8a28211afe56c913fcacb26db029b1fb10e",
+  "files": [
+    {
+      "path": "astrology.json",
+      "sha256": "bf0b5e1fb49ad7382f6c6001c85da6209132e959753281e3d61758f8fd8094e9"
+    },
+    {
+      "path": "clips/astrology.wav",
+      "sha256": "7584633d9297c2387126ae0e9359bd46f29bbfe19c9f20ba6127937decc2bfce",
+      "source_file_complete": false,
+      "source_byte_range": [
+        0,
+        31752077
+      ],
+      "full_source_bytes": 1030418366
+    }
+  ],
+  "scope": "silver session holdout; speaker independence unverified"
+}

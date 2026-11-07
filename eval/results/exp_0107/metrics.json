@@ -1,0 +1,166 @@
+{
+  "run_id": "exp_0107",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "wall_ms": 1319,
+      "sampled_peak_pss_kib": 298641,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 374360,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 69,
+        "decode": 5,
+        "asr_load": 774,
+        "asr": 125,
+        "diarization_load": 265,
+        "diarization": 44,
+        "merge": 3
+      },
+      "audio_seconds": 0.0174375,
+      "full_rtf": 75.6415770609319,
+      "normalized": {
+        "substitutions": 0,
+        "deletions": 377,
+        "insertions": 0,
+        "reference_words": 377
+      },
+      "speaker_attributed": {
+        "errors": 377,
+        "reference_words": 377,
+        "cpwer": 1.0
+      },
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 0,
+          "deletions": 377,
+          "insertions": 0,
+          "reference_words": 377
+        },
+        "raw": {
+          "substitutions": 0,
+          "deletions": 359,
+          "insertions": 0,
+          "reference_words": 359
+        },
+        "punctuation_token_wer": {
+          "substitutions": 0,
+          "deletions": 496,
+          "insertions": 0,
+          "reference_words": 496
+        },
+        "normalized_cer": {
+          "errors": 2174,
+          "reference_characters": 2174
+        },
+        "raw_cer": {
+          "errors": 2275,
+          "reference_characters": 2275
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 119
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 37
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 59
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 3
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 19
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      },
+      "known_speakers_count": 0,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0,
+      "unknown_word_fraction": 0,
+      "predicted_speakers_includes_unknown": true,
+      "json_valid": true,
+      "transcript_sha256": "0f8c8b473ff015b6b92728c17a469bc69578bd29db0607fca0a2056cdd49381b",
+      "predicted_speakers": 0,
+      "expected_speakers": 3
+    }
+  ],
+  "scope": "Android4096MiB x86_64 AVD; translated timings are not physical ARM performance",
+  "normalized": {
+    "substitutions": 0,
+    "deletions": 377,
+    "insertions": 0,
+    "reference_words": 377,
+    "wer": 1.0
+  }
+}

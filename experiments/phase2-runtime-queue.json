@@ -1,0 +1,158 @@
+[
+  {
+    "experiment": "exp_0047",
+    "script": "eval/scripts/probe_checkpoint.py",
+    "hypothesis": "Confirm version2 tail-safe checkpoint and atomic heavy-job guard with real ASR",
+    "args": []
+  },
+  {
+    "experiment": "exp_0048",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E12/E20 window shift: matched control vs less redundant computation",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      "0.8",
+      "--window-shift-ratio",
+      "0.1",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0049",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E12/E20 window shift: matched control vs less redundant computation",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      "0.8",
+      "--window-shift-ratio",
+      "0.25",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0050",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E12/E20 window shift: matched control vs less redundant computation",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      "0.8",
+      "--window-shift-ratio",
+      "0.5",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0051",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E07 genuine FP32 export alternative; compare WER/memory, avoid attributing all differences only to quantization",
+    "args": [
+      "--model",
+      "giga-v3-ctc-fp32",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0052",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "E02 e2e CTC with proper BPE word boundaries: text plus speaker/timestamps",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct"
+    ]
+  },
+  {
+    "experiment": "exp_0053",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E09 pre-registered meeting-domain character hotwords on supported RNNT beam",
+    "args": [
+      "--model",
+      "giga-v3-rnnt",
+      "--threads",
+      "4",
+      "--method",
+      "modified_beam_search",
+      "--hotwords",
+      "config/audio-hotwords-meetings.txt"
+    ]
+  },
+  {
+    "experiment": "exp_0054",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "E05 full25s chunks vs baseline20s: Russian short/noisy MP3 quality",
+    "args": [
+      "--chunk-seconds",
+      "25"
+    ]
+  },
+  {
+    "experiment": "exp_0055",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E07 paired INT8 segmentation at the validation-selected .8 threshold",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      "0.8",
+      "--quant",
+      "int8",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0057",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "hypothesis": "E21 cancel after first completed ASR chunk; no final export",
+    "args": [
+      "--checkpoint",
+      "--cases",
+      "dialogs-clean_2",
+      "--cancel-stage",
+      "asr",
+      "--cancel-after-frames",
+      "320000",
+      "--expect-cancel"
+    ]
+  },
+  {
+    "experiment": "exp_0058",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "hypothesis": "E21 resume real ASR checkpoint on Android; compare to fresh exp56",
+    "args": [
+      "--checkpoint",
+      "--cases",
+      "dialogs-clean_2"
+    ]
+  },
+  {
+    "experiment": "exp_0059",
+    "script": "eval/scripts/run_android_pipeline.py",
+    "hypothesis": "E19 fully cached Android replay must skip ASR model load",
+    "args": [
+      "--checkpoint",
+      "--cases",
+      "dialogs-clean_2"
+    ]
+  },
+  {
+    "experiment": "exp_0060",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E07 actual FP32 ASR deployment under 4GB memory",
+    "args": [
+      "--model",
+      "giga-v3-ctc-fp32",
+      "--threads",
+      "4"
+    ]
+  }
+]

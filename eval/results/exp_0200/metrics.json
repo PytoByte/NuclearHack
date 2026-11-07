@@ -1,0 +1,54 @@
+{
+  "experiment_id": "exp_0200",
+  "scope": "publisher LS-EEND ONNX frontend/state reference, Python x86 host; frozen GigaAM words; not SDK/Android performance",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-astrology",
+      "source_duration": 178.85,
+      "original_samples": 2861600,
+      "original_rate": 16000,
+      "model_rate": 8000,
+      "posterior_frames": 1788,
+      "frame_hz": 10.0,
+      "model_slots": 10,
+      "state_bytes": 1916352,
+      "load_seconds": 0.13453682500403374,
+      "processing_seconds": 14.801106538994645,
+      "model_calls": 3408,
+      "inference_seconds": 14.471659152150096,
+      "actual_fft": 256,
+      "metadata_fft": 1024,
+      "transport_samples": 8000,
+      "previews_included": true,
+      "process_peak_rss_kib": 325940,
+      "ort_version": "1.23.2",
+      "librosa_version": "0.11.0",
+      "numpy_version": "2.2.6",
+      "audio_seconds": 178.85,
+      "wall_seconds": 18.378157213999657,
+      "processing_rtf": 0.08275709554931308,
+      "speaker_attributed": {
+        "errors": 363,
+        "reference_words": 379,
+        "cpwer": 0.9577836411609498
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 7,
+      "unknown_utterance_fraction": 0.2692307692307692,
+      "unknown_word_fraction": 0.020671834625323,
+      "predicted_speakers_includes_unknown": true,
+      "der_details": {
+        "correct": 74.91599999999995,
+        "confusion": 66.184,
+        "total": 152.853,
+        "false alarm": 3.933999999999957,
+        "missed detection": 11.753000000000073,
+        "diarization error rate": 0.5356191896789727
+      },
+      "jer": 0.7949299174654193
+    }
+  ],
+  "cpwer": 0.9577836411609498,
+  "inference_rtf": 0.08275709554931308,
+  "process_peak_rss_kib": 325940
+}

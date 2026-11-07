@@ -1,0 +1,97 @@
+{
+  "experiment_id": "exp_0149",
+  "scope": "experimental streaming Sortformer; preserved ASR words; no oracle; not SDK preset",
+  "load_seconds": 1.1487187829989125,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "audio_seconds": 177.012,
+      "wall_seconds": 4.109143510002468,
+      "inference_rtf": 0.023213926231003934,
+      "model_seconds": 4.054020049996325,
+      "process_peak_rss_kib": 1021184,
+      "speaker_attributed": {
+        "errors": 78,
+        "reference_words": 418,
+        "cpwer": 0.18660287081339713
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 1,
+      "unknown_utterance_fraction": 0.0625,
+      "unknown_word_fraction": 0.002325581395348837,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 0.7275905360002071,
+      "der_details": {
+        "false alarm": 2.637000000000043,
+        "missed detection": 1.561000000000007,
+        "correct": 144.091,
+        "total": 155.52800000000002,
+        "confusion": 9.875999999999989,
+        "diarization error rate": 0.09049174425183913
+      },
+      "jer": 0.1423872691182907
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "audio_seconds": 179.198,
+      "wall_seconds": 4.288540304994967,
+      "inference_rtf": 0.023931853619989996,
+      "model_seconds": 4.232215976000589,
+      "process_peak_rss_kib": 1171748,
+      "speaker_attributed": {
+        "errors": 55,
+        "reference_words": 391,
+        "cpwer": 0.14066496163682865
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 1,
+      "unknown_utterance_fraction": 0.03333333333333333,
+      "unknown_word_fraction": 0.0025575447570332483,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 0.7601735249991179,
+      "der_details": {
+        "false alarm": 3.001000000000026,
+        "missed detection": 0.609999999999971,
+        "correct": 148.1040000000001,
+        "total": 149.90700000000007,
+        "confusion": 1.1929999999999978,
+        "diarization error rate": 0.032046535518688204
+      },
+      "jer": 0.04602453195607459
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "audio_seconds": 175.862,
+      "wall_seconds": 4.744245579000562,
+      "inference_rtf": 0.026977093283373114,
+      "model_seconds": 4.659187608012871,
+      "process_peak_rss_kib": 1171748,
+      "speaker_attributed": {
+        "errors": 220,
+        "reference_words": 394,
+        "cpwer": 0.5583756345177665
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 11,
+      "unknown_utterance_fraction": 0.25,
+      "unknown_word_fraction": 0.0502283105022831,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 0.8949523070041323,
+      "der_details": {
+        "false alarm": 8.853999999999992,
+        "missed detection": 10.116,
+        "correct": 109.59700000000002,
+        "total": 141.71600000000007,
+        "confusion": 22.003000000000057,
+        "diarization error rate": 0.28912049451014726
+      },
+      "jer": 0.5009698023320512
+    }
+  ],
+  "cpwer": 0.29343308395677475,
+  "inference_rtf": 0.024699532006942665,
+  "process_peak_rss_kib": 1171748
+}

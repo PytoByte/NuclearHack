@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0194",
+    "script": "eval/scripts/analyze_nemo_reference.py",
+    "args": [],
+    "hypothesis": "Same-case comparison of complete official native pipeline versus GigaAM/ONNXQ8 and fixed posterior-anchor merge: same source/ref words, same official runtime/config over all six files, 10k paired record bootstrap seed42; no independent quality or speedup inference"
+  }
+]

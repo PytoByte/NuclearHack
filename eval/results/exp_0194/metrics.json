@@ -1,0 +1,104 @@
+{
+  "experiment_id": "exp_0194",
+  "scope": "six known silver source files, complete native pipeline vs frozen GigaAM/ONNX-Q8; not blind gold or ARM",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "reference_words": 377,
+      "giga_wer_errors": 58,
+      "nemo_wer_errors": 76,
+      "nemo_cpwer_errors": 78,
+      "giga_q8_cpwer_errors": 115,
+      "giga_q8_anchor_errors": 106,
+      "nemo_full_rtf": 0.2992281898585135,
+      "nemo_sampled_pss_kib": 1057518
+    },
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "reference_words": 418,
+      "giga_wer_errors": 39,
+      "nemo_wer_errors": 66,
+      "nemo_cpwer_errors": 84,
+      "giga_q8_cpwer_errors": 61,
+      "giga_q8_anchor_errors": 58,
+      "nemo_full_rtf": 0.2946522972397279,
+      "nemo_sampled_pss_kib": 1057621
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "reference_words": 391,
+      "giga_wer_errors": 41,
+      "nemo_wer_errors": 76,
+      "nemo_cpwer_errors": 97,
+      "giga_q8_cpwer_errors": 54,
+      "giga_q8_anchor_errors": 52,
+      "nemo_full_rtf": 0.2958664602283665,
+      "nemo_sampled_pss_kib": 1060052
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "reference_words": 394,
+      "giga_wer_errors": 92,
+      "nemo_wer_errors": 129,
+      "nemo_cpwer_errors": 260,
+      "giga_q8_cpwer_errors": 265,
+      "giga_q8_anchor_errors": 243,
+      "nemo_full_rtf": 0.281086233194241,
+      "nemo_sampled_pss_kib": 1057865
+    },
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "reference_words": 465,
+      "giga_wer_errors": 63,
+      "nemo_wer_errors": 78,
+      "nemo_cpwer_errors": 97,
+      "giga_q8_cpwer_errors": 88,
+      "giga_q8_anchor_errors": 73,
+      "nemo_full_rtf": 0.30213243632377673,
+      "nemo_sampled_pss_kib": 1057712
+    },
+    {
+      "audio_id": "ru-youtube-astrology",
+      "reference_words": 379,
+      "giga_wer_errors": 33,
+      "nemo_wer_errors": 48,
+      "nemo_cpwer_errors": 77,
+      "giga_q8_cpwer_errors": 40,
+      "giga_q8_anchor_errors": 36,
+      "nemo_full_rtf": 0.2934786942801382,
+      "nemo_sampled_pss_kib": 1057951
+    }
+  ],
+  "counts": {
+    "reference_words": 2424,
+    "giga_wer_errors": 326,
+    "nemo_wer_errors": 473,
+    "nemo_cpwer_errors": 693,
+    "giga_q8_cpwer_errors": 623,
+    "giga_q8_anchor_errors": 568
+  },
+  "giga_normalized_wer": 0.13448844884488448,
+  "nemo_normalized_wer": 0.19513201320132012,
+  "nemo_cpwer": 0.28589108910891087,
+  "giga_q8_cpwer": 0.257013201320132,
+  "giga_q8_anchor_cpwer": 0.23432343234323433,
+  "paired": {
+    "giga_q8_cpwer_errors": {
+      "delta_cpwer": 0.028877887788778877,
+      "record_bootstrap_ci95": [
+        -0.028237192416296894,
+        0.07924061081304168
+      ],
+      "lower_is_better": true
+    },
+    "giga_q8_anchor_errors": {
+      "delta_cpwer": 0.05156765676567657,
+      "record_bootstrap_ci95": [
+        -0.0008442380751371887,
+        0.09162195625257945
+      ],
+      "lower_is_better": true
+    }
+  },
+  "limitation": "Known small silver corpus; record bootstrap cannot establish people-disjoint generalization. Timings unpaired; do not infer causal speedup."
+}

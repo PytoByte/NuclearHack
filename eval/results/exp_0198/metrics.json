@@ -1,0 +1,54 @@
+{
+  "experiment_id": "exp_0198",
+  "scope": "publisher LS-EEND ONNX frontend/state reference, Python x86 host; frozen GigaAM words; not SDK/Android performance",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "source_duration": 175.17175,
+      "original_samples": 2802748,
+      "original_rate": 16000,
+      "model_rate": 8000,
+      "posterior_frames": 1751,
+      "frame_hz": 10.0,
+      "model_slots": 10,
+      "state_bytes": 1916352,
+      "load_seconds": 0.13841671199770644,
+      "processing_seconds": 14.034658454998862,
+      "model_calls": 3344,
+      "inference_seconds": 13.707857514171337,
+      "actual_fft": 256,
+      "metadata_fft": 1024,
+      "transport_samples": 8000,
+      "previews_included": true,
+      "process_peak_rss_kib": 325008,
+      "ort_version": "1.23.2",
+      "librosa_version": "0.11.0",
+      "numpy_version": "2.2.6",
+      "audio_seconds": 175.17175,
+      "wall_seconds": 17.824708811000164,
+      "processing_rtf": 0.08011941682947657,
+      "speaker_attributed": {
+        "errors": 320,
+        "reference_words": 377,
+        "cpwer": 0.8488063660477454
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 14,
+      "unknown_utterance_fraction": 0.3111111111111111,
+      "unknown_word_fraction": 0.047961630695443645,
+      "predicted_speakers_includes_unknown": true,
+      "der_details": {
+        "total": 148.55499999999992,
+        "false alarm": 8.43799999999998,
+        "correct": 81.36199999999997,
+        "missed detection": 13.757000000000069,
+        "confusion": 53.435999999999915,
+        "diarization error rate": 0.5091111036316517
+      },
+      "jer": 0.6355215736514883
+    }
+  ],
+  "cpwer": 0.8488063660477454,
+  "inference_rtf": 0.08011941682947657,
+  "process_peak_rss_kib": 325008
+}

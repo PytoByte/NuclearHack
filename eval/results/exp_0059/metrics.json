@@ -1,0 +1,48 @@
+{
+  "run_id": "exp_0059",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "wall_ms": 7263,
+      "sampled_peak_pss_kib": 233274,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 311756,
+      "cached_asr_chunks": 2,
+      "asr_loads": 0,
+      "stage_wall_ms": {
+        "queued": 80,
+        "decode": 185,
+        "checkpoint_identity": 1491,
+        "asr_cached": 1,
+        "diarization_load": 261,
+        "diarization": 5202,
+        "merge": 2
+      },
+      "audio_seconds": 31.3564375,
+      "full_rtf": 0.23162707817174705,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 62
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "json_valid": true,
+      "transcript_sha256": "449ea7264c201bc79fb0022cd2da854b4e0918a8459ed383213c940776ab8806",
+      "predicted_speakers": 2,
+      "expected_speakers": 2
+    }
+  ],
+  "scope": "Android4096MiB/x86_64 native file pipeline; timings and sampled PSS on actual AVD",
+  "normalized": {
+    "substitutions": 2,
+    "deletions": 0,
+    "insertions": 0,
+    "reference_words": 62,
+    "wer": 0.03225806451612903
+  }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0216",
+    "script": "eval/scripts/probe_ctc_alignment.py",
+    "args": [],
+    "hypothesis": "Borrow WhisperX Russian independent character aligner, fixed GigaAM text and Nemotron speaker probabilities; bounded original chunks, no GT words/counts supplied; assess six known cpWER regressions and incremental host time/memory, not timestamp MAE"
+  }
+]

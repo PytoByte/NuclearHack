@@ -1,0 +1,46 @@
+[
+  {
+    "experiment": "exp_0136",
+    "script": "eval/scripts/probe_short_refinement.py",
+    "args": [
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl"
+    ],
+    "hypothesis": "Fixed selective novelty: isolated .3\u20131.5s turns, distance>.4 to all long-turn anchors, repeat>=2 with >=1s evidence and >=2s separation; no reference inputs"
+  },
+  {
+    "experiment": "exp_0137",
+    "script": "eval/scripts/probe_short_refinement.py",
+    "args": [
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl"
+    ],
+    "hypothesis": "Fixed selective novelty: isolated .3\u20131.5s turns, distance>.4 to all long-turn anchors, repeat>=2 with >=1s evidence and >=2s separation; no reference inputs"
+  },
+  {
+    "experiment": "exp_0138",
+    "script": "eval/scripts/probe_short_refinement.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl"
+    ],
+    "hypothesis": "Fixed selective novelty: isolated .3\u20131.5s turns, distance>.4 to all long-turn anchors, repeat>=2 with >=1s evidence and >=2s separation; no reference inputs"
+  },
+  {
+    "experiment": "exp_0139",
+    "script": "eval/scripts/probe_short_refinement.py",
+    "args": [
+      "--baseline",
+      "exp_0101",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Fixed selective novelty: isolated .3\u20131.5s turns, distance>.4 to all long-turn anchors, repeat>=2 with >=1s evidence and >=2s separation; no reference inputs"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "experiment": "exp_0099",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Native opt-in global ERes2Net refinement; preserve initial ASR/diarization and match frozen prototype"
+  },
+  {
+    "experiment": "exp_0104",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--threads",
+      "4",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Correct EOF segmentation-frame validation after failed100; preserve original words/turn diagnostics"
+  },
+  {
+    "experiment": "exp_0101",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--threads",
+      "4",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Native opt-in global ERes2Net refinement; preserve initial ASR/diarization and match frozen prototype"
+  },
+  {
+    "experiment": "exp_0102",
+    "script": "eval/scripts/verify_refinement.py",
+    "args": [
+      "--case-set",
+      "exp_0099",
+      "exp_0069",
+      "exp_0093",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--case-set",
+      "exp_0104",
+      "exp_0090",
+      "exp_0095",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--case-set",
+      "exp_0101",
+      "exp_0096",
+      "exp_0097",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ],
+    "hypothesis": "Exact native/prototype parity across all five recordings, words/timestamps immutable"
+  },
+  {
+    "experiment": "exp_0103",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--threads",
+      "4"
+    ],
+    "hypothesis": "Matched current-build default-off control, no regression after additive API changes"
+  }
+]

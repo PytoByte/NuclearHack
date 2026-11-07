@@ -1,0 +1,25 @@
+[
+  {
+    "experiment": "exp_0187",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [],
+    "hypothesis": "Intact official NeMo-Speech.cpp v0.3.0 CPU/4threads/ru-RU; compare file vs160ms streaming and actual ASR+speaker pipeline on frozen movie with text-v2/cpWER/PSS; not Android qualification"
+  },
+  {
+    "experiment": "exp_0188",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [
+      "--stream"
+    ],
+    "hypothesis": "Intact official NeMo-Speech.cpp v0.3.0 CPU/4threads/ru-RU; compare file vs160ms streaming and actual ASR+speaker pipeline on frozen movie with text-v2/cpWER/PSS; not Android qualification"
+  },
+  {
+    "experiment": "exp_0189",
+    "script": "eval/scripts/probe_nemo_reference.py",
+    "args": [
+      "--stream",
+      "--diarize"
+    ],
+    "hypothesis": "Intact official NeMo-Speech.cpp v0.3.0 CPU/4threads/ru-RU; compare file vs160ms streaming and actual ASR+speaker pipeline on frozen movie with text-v2/cpWER/PSS; not Android qualification"
+  }
+]

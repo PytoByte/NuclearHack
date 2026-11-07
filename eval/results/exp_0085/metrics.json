@@ -1,0 +1,272 @@
+{
+  "experiment_id": "exp_0085",
+  "scope": "reference speaker-turn oracle; silver timing sensitivity, not word timestamp accuracy or deployable quality",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "native_merge_reproduced": true,
+      "variants": {
+        "baseline_reproduced": {
+          "speaker_attributed": {
+            "errors": 162,
+            "reference_words": 418,
+            "cpwer": 0.3875598086124402
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.09523809523809523,
+          "unknown_word_fraction": 0.004651162790697674,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-200": {
+          "speaker_attributed": {
+            "errors": 62,
+            "reference_words": 418,
+            "cpwer": 0.14832535885167464
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 4,
+          "unknown_utterance_fraction": 0.14814814814814814,
+          "unknown_word_fraction": 0.011627906976744186,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-100": {
+          "speaker_attributed": {
+            "errors": 58,
+            "reference_words": 418,
+            "cpwer": 0.13875598086124402
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 3,
+          "unknown_utterance_fraction": 0.11538461538461539,
+          "unknown_word_fraction": 0.0069767441860465115,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_0": {
+          "speaker_attributed": {
+            "errors": 46,
+            "reference_words": 418,
+            "cpwer": 0.11004784688995216
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 1,
+          "unknown_utterance_fraction": 0.043478260869565216,
+          "unknown_word_fraction": 0.002325581395348837,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_100": {
+          "speaker_attributed": {
+            "errors": 45,
+            "reference_words": 418,
+            "cpwer": 0.1076555023923445
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_200": {
+          "speaker_attributed": {
+            "errors": 42,
+            "reference_words": 418,
+            "cpwer": 0.10047846889952153
+          },
+          "known_speakers_count": 2,
+          "unknown_utterances": 1,
+          "unknown_utterance_fraction": 0.043478260869565216,
+          "unknown_word_fraction": 0.002325581395348837,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "native_merge_reproduced": true,
+      "variants": {
+        "baseline_reproduced": {
+          "speaker_attributed": {
+            "errors": 228,
+            "reference_words": 391,
+            "cpwer": 0.5831202046035806
+          },
+          "known_speakers_count": 8,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-200": {
+          "speaker_attributed": {
+            "errors": 73,
+            "reference_words": 391,
+            "cpwer": 0.1867007672634271
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 6,
+          "unknown_utterance_fraction": 0.18181818181818182,
+          "unknown_word_fraction": 0.015345268542199489,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-100": {
+          "speaker_attributed": {
+            "errors": 62,
+            "reference_words": 391,
+            "cpwer": 0.1585677749360614
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 5,
+          "unknown_utterance_fraction": 0.15151515151515152,
+          "unknown_word_fraction": 0.01278772378516624,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_0": {
+          "speaker_attributed": {
+            "errors": 49,
+            "reference_words": 391,
+            "cpwer": 0.12531969309462915
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.06896551724137931,
+          "unknown_word_fraction": 0.005115089514066497,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_100": {
+          "speaker_attributed": {
+            "errors": 45,
+            "reference_words": 391,
+            "cpwer": 0.11508951406649616
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.06896551724137931,
+          "unknown_word_fraction": 0.005115089514066497,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_200": {
+          "speaker_attributed": {
+            "errors": 47,
+            "reference_words": 391,
+            "cpwer": 0.12020460358056266
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.06896551724137931,
+          "unknown_word_fraction": 0.005115089514066497,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "native_merge_reproduced": true,
+      "variants": {
+        "baseline_reproduced": {
+          "speaker_attributed": {
+            "errors": 262,
+            "reference_words": 394,
+            "cpwer": 0.6649746192893401
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 7,
+          "unknown_utterance_fraction": 0.21875,
+          "unknown_word_fraction": 0.02511415525114155,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-200": {
+          "speaker_attributed": {
+            "errors": 122,
+            "reference_words": 394,
+            "cpwer": 0.3096446700507614
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 5,
+          "unknown_utterance_fraction": 0.18518518518518517,
+          "unknown_word_fraction": 0.0182648401826484,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_-100": {
+          "speaker_attributed": {
+            "errors": 114,
+            "reference_words": 394,
+            "cpwer": 0.2893401015228426
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 3,
+          "unknown_utterance_fraction": 0.12,
+          "unknown_word_fraction": 0.0091324200913242,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_0": {
+          "speaker_attributed": {
+            "errors": 115,
+            "reference_words": 394,
+            "cpwer": 0.2918781725888325
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 4,
+          "unknown_utterance_fraction": 0.15384615384615385,
+          "unknown_word_fraction": 0.0136986301369863,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_100": {
+          "speaker_attributed": {
+            "errors": 109,
+            "reference_words": 394,
+            "cpwer": 0.2766497461928934
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 4,
+          "unknown_utterance_fraction": 0.14285714285714285,
+          "unknown_word_fraction": 0.0136986301369863,
+          "predicted_speakers_includes_unknown": true
+        },
+        "oracle_shift_200": {
+          "speaker_attributed": {
+            "errors": 106,
+            "reference_words": 394,
+            "cpwer": 0.26903553299492383
+          },
+          "known_speakers_count": 3,
+          "unknown_utterances": 1,
+          "unknown_utterance_fraction": 0.045454545454545456,
+          "unknown_word_fraction": 0.00684931506849315,
+          "predicted_speakers_includes_unknown": true
+        }
+      }
+    }
+  ],
+  "variants": {
+    "baseline_reproduced": {
+      "errors": 652,
+      "reference_words": 1203,
+      "cpwer": 0.541978387364921
+    },
+    "oracle_shift_-200": {
+      "errors": 257,
+      "reference_words": 1203,
+      "cpwer": 0.21363258520365752
+    },
+    "oracle_shift_-100": {
+      "errors": 234,
+      "reference_words": 1203,
+      "cpwer": 0.19451371571072318
+    },
+    "oracle_shift_0": {
+      "errors": 210,
+      "reference_words": 1203,
+      "cpwer": 0.1745635910224439
+    },
+    "oracle_shift_100": {
+      "errors": 199,
+      "reference_words": 1203,
+      "cpwer": 0.16541978387364922
+    },
+    "oracle_shift_200": {
+      "errors": 195,
+      "reference_words": 1203,
+      "cpwer": 0.16209476309226933
+    }
+  }
+}

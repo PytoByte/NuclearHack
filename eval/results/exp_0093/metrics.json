@@ -1,0 +1,388 @@
+{
+  "experiment_id": "exp_0093",
+  "scope": "research global reclustering; no oracle, whole-PCM research harness, not production integration",
+  "load_seconds": 0.5238752360019134,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "embedding_seconds": 1.3292789830011316,
+      "embedding_clusters": 5,
+      "reference_speakers": 2,
+      "cannot_links": [
+        [
+          "speaker_3",
+          "speaker_1"
+        ],
+        [
+          "speaker_4",
+          "speaker_2"
+        ],
+        [
+          "speaker_6",
+          "speaker_1"
+        ],
+        [
+          "speaker_7",
+          "speaker_3"
+        ],
+        [
+          "speaker_8",
+          "speaker_3"
+        ]
+      ],
+      "variants": {
+        "0.2": {
+          "mapping": {
+            "speaker_1": "recluster_4",
+            "speaker_2": "recluster_5",
+            "speaker_3": "recluster_1",
+            "speaker_4": "recluster_3",
+            "speaker_5": "recluster_6",
+            "speaker_6": "recluster_2",
+            "speaker_7": "recluster_7",
+            "speaker_8": "recluster_8"
+          },
+          "speaker_attributed": {
+            "errors": 162,
+            "reference_words": 418,
+            "cpwer": 0.3875598086124402
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.09523809523809523,
+          "unknown_word_fraction": 0.004651162790697674,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 155.52800000000002,
+            "missed detection": 2.1310000000000144,
+            "confusion": 22.919000000000008,
+            "correct": 130.478,
+            "false alarm": 2.953000000000017,
+            "diarization error rate": 0.18005118049483074
+          },
+          "jer": 0.1935997244300406
+        },
+        "0.3": {
+          "mapping": {
+            "speaker_1": "recluster_4",
+            "speaker_2": "recluster_4",
+            "speaker_3": "recluster_1",
+            "speaker_4": "recluster_3",
+            "speaker_5": "recluster_5",
+            "speaker_6": "recluster_2",
+            "speaker_7": "recluster_6",
+            "speaker_8": "recluster_7"
+          },
+          "speaker_attributed": {
+            "errors": 139,
+            "reference_words": 418,
+            "cpwer": 0.33253588516746413
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.1,
+          "unknown_word_fraction": 0.004651162790697674,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 155.52800000000002,
+            "missed detection": 2.1310000000000144,
+            "confusion": 17.192000000000007,
+            "correct": 136.20499999999998,
+            "false alarm": 2.953000000000017,
+            "diarization error rate": 0.14322822900056606
+          },
+          "jer": 0.15719066126250936
+        },
+        "0.4": {
+          "mapping": {
+            "speaker_1": "recluster_3",
+            "speaker_2": "recluster_3",
+            "speaker_3": "recluster_1",
+            "speaker_4": "recluster_2",
+            "speaker_5": "recluster_4",
+            "speaker_6": "recluster_1",
+            "speaker_7": "recluster_5",
+            "speaker_8": "recluster_6"
+          },
+          "speaker_attributed": {
+            "errors": 95,
+            "reference_words": 418,
+            "cpwer": 0.22727272727272727
+          },
+          "known_speakers_count": 4,
+          "unknown_utterances": 2,
+          "unknown_utterance_fraction": 0.1,
+          "unknown_word_fraction": 0.004651162790697674,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 155.52800000000002,
+            "missed detection": 2.1310000000000144,
+            "confusion": 11.629999999999995,
+            "correct": 141.767,
+            "false alarm": 2.953000000000017,
+            "diarization error rate": 0.10746617972326543
+          },
+          "jer": 0.12450572980310483
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "embedding_seconds": 2.0189114769964362,
+      "embedding_clusters": 7,
+      "reference_speakers": 3,
+      "cannot_links": [
+        [
+          "speaker_4",
+          "speaker_2"
+        ],
+        [
+          "speaker_4",
+          "speaker_3"
+        ],
+        [
+          "speaker_5",
+          "speaker_1"
+        ],
+        [
+          "speaker_5",
+          "speaker_3"
+        ],
+        [
+          "speaker_6",
+          "speaker_1"
+        ],
+        [
+          "speaker_6",
+          "speaker_5"
+        ],
+        [
+          "speaker_7",
+          "speaker_1"
+        ]
+      ],
+      "variants": {
+        "0.2": {
+          "mapping": {
+            "speaker_1": "recluster_7",
+            "speaker_2": "recluster_6",
+            "speaker_3": "recluster_4",
+            "speaker_4": "recluster_1",
+            "speaker_5": "recluster_3",
+            "speaker_6": "recluster_5",
+            "speaker_7": "recluster_2",
+            "speaker_8": "recluster_8"
+          },
+          "speaker_attributed": {
+            "errors": 228,
+            "reference_words": 391,
+            "cpwer": 0.5831202046035806
+          },
+          "known_speakers_count": 8,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 149.90700000000007,
+            "missed detection": 0.8630000000000049,
+            "confusion": 35.51399999999997,
+            "correct": 113.53000000000009,
+            "false alarm": 4.1950000000000145,
+            "diarization error rate": 0.27064780163701474
+          },
+          "jer": 0.32807667699855597
+        },
+        "0.3": {
+          "mapping": {
+            "speaker_1": "recluster_5",
+            "speaker_2": "recluster_4",
+            "speaker_3": "recluster_3",
+            "speaker_4": "recluster_1",
+            "speaker_5": "recluster_2",
+            "speaker_6": "recluster_3",
+            "speaker_7": "recluster_1",
+            "speaker_8": "recluster_6"
+          },
+          "speaker_attributed": {
+            "errors": 181,
+            "reference_words": 391,
+            "cpwer": 0.4629156010230179
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 149.90700000000007,
+            "missed detection": 0.8630000000000049,
+            "confusion": 25.462999999999994,
+            "correct": 123.58100000000006,
+            "false alarm": 4.1950000000000145,
+            "diarization error rate": 0.20359956506367283
+          },
+          "jer": 0.2789931103285874
+        },
+        "0.4": {
+          "mapping": {
+            "speaker_1": "recluster_5",
+            "speaker_2": "recluster_4",
+            "speaker_3": "recluster_3",
+            "speaker_4": "recluster_1",
+            "speaker_5": "recluster_2",
+            "speaker_6": "recluster_3",
+            "speaker_7": "recluster_1",
+            "speaker_8": "recluster_6"
+          },
+          "speaker_attributed": {
+            "errors": 181,
+            "reference_words": 391,
+            "cpwer": 0.4629156010230179
+          },
+          "known_speakers_count": 6,
+          "unknown_utterances": 0,
+          "unknown_utterance_fraction": 0.0,
+          "unknown_word_fraction": 0.0,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 149.90700000000007,
+            "missed detection": 0.8630000000000049,
+            "confusion": 25.462999999999994,
+            "correct": 123.58100000000006,
+            "false alarm": 4.1950000000000145,
+            "diarization error rate": 0.20359956506367283
+          },
+          "jer": 0.2789931103285874
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "embedding_seconds": 1.2686458009993657,
+      "embedding_clusters": 4,
+      "reference_speakers": 3,
+      "cannot_links": [
+        [
+          "speaker_2",
+          "speaker_1"
+        ],
+        [
+          "speaker_3",
+          "speaker_2"
+        ],
+        [
+          "speaker_4",
+          "speaker_2"
+        ],
+        [
+          "speaker_5",
+          "speaker_2"
+        ]
+      ],
+      "variants": {
+        "0.2": {
+          "mapping": {
+            "speaker_1": "recluster_1",
+            "speaker_2": "recluster_4",
+            "speaker_3": "recluster_3",
+            "speaker_4": "recluster_5",
+            "speaker_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 262,
+            "reference_words": 394,
+            "cpwer": 0.6649746192893401
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 7,
+          "unknown_utterance_fraction": 0.21875,
+          "unknown_word_fraction": 0.02511415525114155,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 141.71600000000007,
+            "missed detection": 6.022999999999993,
+            "confusion": 32.27000000000005,
+            "correct": 103.42300000000003,
+            "false alarm": 9.703,
+            "diarization error rate": 0.33867735470941907
+          },
+          "jer": 0.47108356267408724
+        },
+        "0.3": {
+          "mapping": {
+            "speaker_1": "recluster_1",
+            "speaker_2": "recluster_4",
+            "speaker_3": "recluster_3",
+            "speaker_4": "recluster_5",
+            "speaker_5": "recluster_2"
+          },
+          "speaker_attributed": {
+            "errors": 262,
+            "reference_words": 394,
+            "cpwer": 0.6649746192893401
+          },
+          "known_speakers_count": 5,
+          "unknown_utterances": 7,
+          "unknown_utterance_fraction": 0.21875,
+          "unknown_word_fraction": 0.02511415525114155,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 141.71600000000007,
+            "missed detection": 6.022999999999993,
+            "confusion": 32.27000000000005,
+            "correct": 103.42300000000003,
+            "false alarm": 9.703,
+            "diarization error rate": 0.33867735470941907
+          },
+          "jer": 0.47108356267408724
+        },
+        "0.4": {
+          "mapping": {
+            "speaker_1": "recluster_1",
+            "speaker_2": "recluster_3",
+            "speaker_3": "recluster_2",
+            "speaker_4": "recluster_4",
+            "speaker_5": "recluster_1"
+          },
+          "speaker_attributed": {
+            "errors": 261,
+            "reference_words": 394,
+            "cpwer": 0.6624365482233503
+          },
+          "known_speakers_count": 4,
+          "unknown_utterances": 7,
+          "unknown_utterance_fraction": 0.22580645161290322,
+          "unknown_word_fraction": 0.02511415525114155,
+          "predicted_speakers_includes_unknown": true,
+          "der_details": {
+            "total": 141.71600000000007,
+            "missed detection": 6.022999999999993,
+            "confusion": 31.663000000000057,
+            "correct": 104.03000000000003,
+            "false alarm": 9.703,
+            "diarization error rate": 0.3343941403934632
+          },
+          "jer": 0.5173147048639725
+        }
+      }
+    }
+  ],
+  "variants": {
+    "0.2": {
+      "cpwer": 0.541978387364921,
+      "der": 0.2606971694125699,
+      "jer": 0.34808502098475136
+    },
+    "0.3": {
+      "cpwer": 0.4837905236907731,
+      "der": 0.2254115500133066,
+      "jer": 0.32057641769163037
+    },
+    "0.4": {
+      "cpwer": 0.4463840399002494,
+      "der": 0.21161531563163238,
+      "jer": 0.3297418631479862
+    }
+  }
+}

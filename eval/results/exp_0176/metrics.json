@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_0176",
+  "scope": "native streaming C ABI, caller retains <=180s research PCM; host, not Android/ARM qualification",
+  "load_seconds": 0.05084547099977499,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "audio_seconds": 177.012,
+      "wall_seconds": 4.093427955005609,
+      "inference_rtf": 0.023125143803841598,
+      "speaker_attributed": {
+        "errors": 61,
+        "reference_words": 418,
+        "cpwer": 0.145933014354067
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 3,
+      "unknown_utterance_fraction": 0.10344827586206896,
+      "unknown_word_fraction": 0.0069767441860465115,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 2832192,
+        "emitted_frames": 17701,
+        "model_calls": 7,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 486641,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 3040,
+        "inference_seconds": 3.7526538720000002
+      },
+      "process_peak_rss_kib": 385080,
+      "der_details": {
+        "false alarm": 3.1309999999999825,
+        "correct": 146.38599999999997,
+        "confusion": 3.5630000000000166,
+        "total": 155.52800000000002,
+        "missed detection": 5.579000000000035,
+        "diarization error rate": 0.07891183581091529
+      },
+      "jer": 0.09744220682622258,
+      "prototype_comparison": {
+        "max_posterior_delta": 7.62939453125e-06,
+        "threshold_flips": 0
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "audio_seconds": 179.198,
+      "wall_seconds": 3.366910482000094,
+      "inference_rtf": 0.018788772653713176,
+      "speaker_attributed": {
+        "errors": 54,
+        "reference_words": 391,
+        "cpwer": 0.13810741687979539
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 0,
+      "unknown_utterance_fraction": 0.0,
+      "unknown_word_fraction": 0.0,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 2867168,
+        "emitted_frames": 17919,
+        "model_calls": 7,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 486641,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 3040,
+        "inference_seconds": 3.035832341
+      },
+      "process_peak_rss_kib": 486912,
+      "der_details": {
+        "false alarm": 3.35400000000001,
+        "correct": 146.85100000000008,
+        "confusion": 1.6229999999999905,
+        "total": 149.90700000000007,
+        "missed detection": 1.4329999999999914,
+        "diarization error rate": 0.042759844436884124
+      },
+      "jer": 0.05568239194332115,
+      "prototype_comparison": {
+        "max_posterior_delta": 2.7418136596679688e-06,
+        "threshold_flips": 0
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "audio_seconds": 175.862,
+      "wall_seconds": 3.4270115670005907,
+      "inference_rtf": 0.0194869361601744,
+      "speaker_attributed": {
+        "errors": 265,
+        "reference_words": 394,
+        "cpwer": 0.6725888324873096
+      },
+      "known_speakers_count": 3,
+      "unknown_utterances": 10,
+      "unknown_utterance_fraction": 0.23809523809523808,
+      "unknown_word_fraction": 0.03424657534246575,
+      "predicted_speakers_includes_unknown": true,
+      "native_stats": {
+        "struct_size": 72,
+        "speaker_slots": 8,
+        "received_samples": 2813792,
+        "emitted_frames": 17586,
+        "model_calls": 7,
+        "buffered_samples": 0,
+        "peak_buffered_samples": 486641,
+        "cache_frames": 264,
+        "fifo_frames": 0,
+        "max_feature_frames": 3040,
+        "inference_seconds": 3.092143524
+      },
+      "process_peak_rss_kib": 488104,
+      "der_details": {
+        "false alarm": 8.114000000000026,
+        "correct": 97.94400000000003,
+        "confusion": 33.036000000000016,
+        "total": 141.71600000000007,
+        "missed detection": 10.736000000000018,
+        "diarization error rate": 0.36612661943605546
+      },
+      "jer": 0.5582137671905115,
+      "prototype_comparison": {
+        "max_posterior_delta": 2.6226043701171875e-06,
+        "threshold_flips": 0
+      }
+    }
+  ],
+  "controls": {
+    "skipped": "explicit quality-only follow-up"
+  },
+  "cpwer": 0.31587697423108896,
+  "inference_rtf": 0.020462174299730664,
+  "process_peak_rss_kib": 488104
+}

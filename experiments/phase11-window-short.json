@@ -1,0 +1,28 @@
+[
+  {
+    "experiment": "exp_0132",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--threads",
+      "4",
+      "--window-shift-ratio",
+      ".25",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Local-window placement affects short speaker visibility; test shift with fixed global.4, preserve ASR and source words; structural diagnostic only"
+  },
+  {
+    "experiment": "exp_0133",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--threads",
+      "4",
+      "--window-shift-ratio",
+      ".5",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Local-window placement affects short speaker visibility; test shift with fixed global.4, preserve ASR and source words; structural diagnostic only"
+  }
+]

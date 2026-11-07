@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp_0131",
+  "cases": [
+    {
+      "mode": "auto",
+      "returned_speakers": 2,
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 30,
+        "cpwer": 0.4666666666666667
+      }
+    },
+    {
+      "mode": "oracle3",
+      "returned_speakers": 2,
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 30,
+        "cpwer": 0.4666666666666667
+      }
+    },
+    {
+      "mode": "source_occupancy_oracle",
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 30,
+        "cpwer": 0.06666666666666667
+      }
+    }
+  ],
+  "scope": "acted short-turn diagnostic, oracle count/source occupancy only; not deployable or natural DER/word timing proof"
+}

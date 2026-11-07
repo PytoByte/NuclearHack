@@ -1,0 +1,207 @@
+[
+  {
+    "experiment": "exp_0028",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E01/E02: verify native model accuracy/time/RAM on actual 4GB AVD",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0029",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E01/E02: verify native model accuracy/time/RAM on actual 4GB AVD",
+    "args": [
+      "--model",
+      "giga-v2-ctc",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0030",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E01/E02: verify native model accuracy/time/RAM on actual 4GB AVD",
+    "args": [
+      "--model",
+      "giga-v3-rnnt",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0031",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E01/E02: verify native model accuracy/time/RAM on actual 4GB AVD",
+    "args": [
+      "--model",
+      "whisper-base-int8",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0032",
+    "script": "eval/scripts/run_android_asr.py",
+    "hypothesis": "E01/E02: verify native model accuracy/time/RAM on actual 4GB AVD",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0033",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "Fresh CTC baseline with configurable native constructor, same frozen validation40",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0034",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E03 matched 4t RNNT greedy control for beam exp26",
+    "args": [
+      "--model",
+      "giga-v3-rnnt",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0035",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E02 punctuated/e2e CTC: quantify normalized WER and raw text changes",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--threads",
+      "4"
+    ]
+  },
+  {
+    "experiment": "exp_0036",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E06 real streaming Silero VAD .5 with250ms padding, same ASR",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--vad"
+    ]
+  },
+  {
+    "experiment": "exp_0037",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E06 lower threshold +400ms padding may preserve boundary/brief words",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--vad",
+      "--vad-threshold",
+      "0.35",
+      "--padding-ms",
+      "400"
+    ]
+  },
+  {
+    "experiment": "exp_0038",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E05 shorter10s chunks may lose context and split words",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--chunk-seconds",
+      "10"
+    ]
+  },
+  {
+    "experiment": "exp_0039",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E05 20s vs25s context and boundary tradeoff",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--chunk-seconds",
+      "20"
+    ]
+  },
+  {
+    "experiment": "exp_0040",
+    "script": "eval/scripts/run_asr.py",
+    "hypothesis": "E08 quieter -18dB waveform robustness; no reference normalization changes",
+    "args": [
+      "--model",
+      "giga-v3-ctc",
+      "--threads",
+      "4",
+      "--gain-db",
+      "-18"
+    ]
+  },
+  {
+    "experiment": "exp_0041",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E10 calibrate new embedding on validation only",
+    "args": [
+      "--embedding",
+      "wespeaker-resnet34-lm",
+      "--threshold",
+      "0.4",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0042",
+    "script": "eval/scripts/run_diarization.py",
+    "hypothesis": "E10 calibrate new embedding on validation only",
+    "args": [
+      "--embedding",
+      "wespeaker-resnet34-lm",
+      "--threshold",
+      "0.55",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/ami-diarization-validation.json"
+    ]
+  },
+  {
+    "experiment": "exp_0043",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "E12/E14 shorter minDuration settings: Russian brief utterance cpWER",
+    "args": [
+      "--min-on",
+      "0.1",
+      "--min-off",
+      "0.2"
+    ]
+  },
+  {
+    "experiment": "exp_0044",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "hypothesis": "E13 midpoint vs maximum overlap word attribution on same3MP3",
+    "args": [
+      "--attribution",
+      "midpoint"
+    ]
+  }
+]

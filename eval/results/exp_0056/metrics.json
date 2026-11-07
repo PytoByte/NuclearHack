@@ -1,0 +1,142 @@
+{
+  "run_id": "exp_0056",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "wall_ms": 8695,
+      "sampled_peak_pss_kib": 318667,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 397172,
+      "llm_wall_ms": 4523,
+      "main_transcript_unchanged": true,
+      "llm_sampled_peak_pss_kib": 1188030,
+      "process_lifetime_peak_rss_after_llm_kib": 1269544,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 4,
+        "decode": 83,
+        "asr_load": 1058,
+        "asr": 2220,
+        "diarization_load": 315,
+        "diarization": 4951,
+        "merge": 6,
+        "done": 60,
+        "llm_load": 489,
+        "llm_prefill": 2318,
+        "llm_generate": 1593
+      },
+      "audio_seconds": 31.3564375,
+      "full_rtf": 0.27729553141998353,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 62
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "json_valid": true,
+      "transcript_sha256": "449ea7264c201bc79fb0022cd2da854b4e0918a8459ed383213c940776ab8806",
+      "predicted_speakers": 2,
+      "expected_speakers": 2
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "wall_ms": 5649,
+      "sampled_peak_pss_kib": 342641,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 1269544,
+      "llm_wall_ms": 4275,
+      "main_transcript_unchanged": true,
+      "llm_sampled_peak_pss_kib": 1193869,
+      "process_lifetime_peak_rss_after_llm_kib": 1275840,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 4,
+        "decode": 130,
+        "asr_load": 707,
+        "asr": 2083,
+        "diarization_load": 336,
+        "diarization": 2295,
+        "merge": 3,
+        "done": 91,
+        "llm_load": 402,
+        "llm_prefill": 1877,
+        "llm_generate": 1827
+      },
+      "audio_seconds": 23.5210625,
+      "full_rtf": 0.2401677220151088,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 30
+      },
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 30,
+        "cpwer": 0.4666666666666667
+      },
+      "json_valid": true,
+      "transcript_sha256": "d8489509e507e042b3968e46697923db4fd8d0f21ad1f60ee1ebeb055f3f4375",
+      "predicted_speakers": 2,
+      "expected_speakers": 3
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "wall_ms": 12128,
+      "sampled_peak_pss_kib": 345529,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 1275840,
+      "llm_wall_ms": 4554,
+      "main_transcript_unchanged": true,
+      "llm_sampled_peak_pss_kib": 1196145,
+      "process_lifetime_peak_rss_after_llm_kib": 1278368,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 5,
+        "decode": 49,
+        "asr_load": 696,
+        "asr": 3303,
+        "diarization_load": 303,
+        "diarization": 7719,
+        "merge": 5,
+        "done": 49,
+        "llm_load": 388,
+        "llm_prefill": 2739,
+        "llm_generate": 1326
+      },
+      "audio_seconds": 39.7831875,
+      "full_rtf": 0.30485239524862107,
+      "normalized": {
+        "substitutions": 1,
+        "deletions": 1,
+        "insertions": 0,
+        "reference_words": 78
+      },
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 78,
+        "cpwer": 0.1794871794871795
+      },
+      "json_valid": true,
+      "transcript_sha256": "7eb23334ee72cf8887efbb1d361c7f8e7c9187fe8399114338f29a19353897f6",
+      "predicted_speakers": 3,
+      "expected_speakers": 3
+    }
+  ],
+  "scope": "Android4096MiB/x86_64 native file pipeline; timings and sampled PSS on actual AVD",
+  "normalized": {
+    "substitutions": 5,
+    "deletions": 1,
+    "insertions": 0,
+    "reference_words": 170,
+    "wer": 0.03529411764705882
+  }
+}

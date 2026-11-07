@@ -1,0 +1,200 @@
+{
+  "experiment_id": "exp_0174",
+  "scope": "paired source-file silver comparison; speaker independence unverified, not gold/ARM validation",
+  "recordings": 1,
+  "runs": {
+    "exp_0155": {
+      "cpwer": 0.15567282321899736,
+      "der": 0.10233361464936903,
+      "jer": 0.2609007918549144,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-astrology",
+          "speaker_attributed": {
+            "errors": 59,
+            "reference_words": 379,
+            "cpwer": 0.15567282321899736
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "confusion": 6.634999999999991,
+            "total": 152.853,
+            "false alarm": 1.779999999999981,
+            "correct": 138.99099999999999,
+            "missed detection": 7.227000000000032,
+            "diarization error rate": 0.10233361464936903
+          },
+          "jer": 0.2609007918549144
+        }
+      ]
+    },
+    "exp_0171": {
+      "cpwer": 0.10554089709762533,
+      "der": 0.0655335518439284,
+      "jer": 0.04551870001678529,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-astrology",
+          "speaker_attributed": {
+            "errors": 40,
+            "reference_words": 379,
+            "cpwer": 0.10554089709762533
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "confusion": 0.028000000000005798,
+            "total": 152.853,
+            "false alarm": 1.4689999999999857,
+            "correct": 144.30500000000004,
+            "missed detection": 8.519999999999996,
+            "diarization error rate": 0.0655335518439284
+          },
+          "jer": 0.04551870001678529
+        }
+      ],
+      "paired_recording_bootstrap_delta_ci95": {
+        "cpwer": [
+          -0.05013192612137203,
+          -0.05013192612137203
+        ],
+        "der": [
+          -0.03680006280544064,
+          -0.03680006280544064
+        ],
+        "jer": [
+          -0.2153820918381291,
+          -0.2153820918381291
+        ]
+      }
+    }
+  },
+  "comparison_baseline": "exp_0155",
+  "normalized": {
+    "substitutions": 15,
+    "deletions": 5,
+    "insertions": 13,
+    "reference_words": 379,
+    "wer": 0.0870712401055409
+  },
+  "lexical_invariance_verified": true,
+  "lexical_cases": [
+    {
+      "audio_id": "ru-youtube-astrology",
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 15,
+          "deletions": 5,
+          "insertions": 13,
+          "reference_words": 379
+        },
+        "raw": {
+          "substitutions": 154,
+          "deletions": 6,
+          "insertions": 14,
+          "reference_words": 379
+        },
+        "punctuation_token_wer": {
+          "substitutions": 29,
+          "deletions": 113,
+          "insertions": 1,
+          "reference_words": 499
+        },
+        "normalized_cer": {
+          "errors": 114,
+          "reference_characters": 2304
+        },
+        "raw_cer": {
+          "errors": 285,
+          "reference_characters": 2424
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 120
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 110
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 48
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 64
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 3
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 4
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "frontend_control": [],
+  "limitation": "small reused dev/source-file corpus; exploratory intervals do not establish people-disjoint generalization"
+}

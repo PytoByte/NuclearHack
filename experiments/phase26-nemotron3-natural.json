@@ -1,0 +1,46 @@
+[
+  {
+    "experiment": "exp_0166",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "New8-slot Q8 architecture on frozen natural dev; published profiles and fixed .5/.3/.5 postprocess, no oracle/count or transfer tuning"
+  },
+  {
+    "experiment": "exp_0167",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0099",
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--profile",
+      "low",
+      "--frontend",
+      "window"
+    ],
+    "hypothesis": "New8-slot Q8 architecture on frozen natural dev; published profiles and fixed .5/.3/.5 postprocess, no oracle/count or transfer tuning"
+  },
+  {
+    "experiment": "exp_0168",
+    "script": "eval/scripts/compare_speaker_candidates.py",
+    "args": [
+      "--candidates",
+      "exp_0166",
+      "exp_0167"
+    ],
+    "hypothesis": "Same frozen ASR words/times, paired source-file DER/JER/cpWER confidence intervals vs accepted native refinement; no people-disjoint claim"
+  }
+]

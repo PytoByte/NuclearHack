@@ -1,0 +1,539 @@
+{
+  "experiment_id": "exp_0216",
+  "scope": "six known RU silver records; independent ONNX char CTC alignment; fixed ASR text/posteriors, no timestamp ground truth",
+  "variants": {
+    "original_timing": {
+      "errors": 568,
+      "reference_words": 2424,
+      "cpwer": 0.23432343234323433
+    },
+    "independent_ctc_timing": {
+      "errors": 556,
+      "reference_words": 2424,
+      "cpwer": 0.22937293729372937
+    }
+  },
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "variants": {
+        "original_timing": {
+          "errors": 58,
+          "reference_words": 418,
+          "cpwer": 0.13875598086124402
+        },
+        "independent_ctc_timing": {
+          "errors": 55,
+          "reference_words": 418,
+          "cpwer": 0.13157894736842105
+        }
+      },
+      "processing_seconds": 17.643728626004304,
+      "rtf": 0.09967532498364125,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -249.84598894780936,
+          "inference_seconds": 2.394644384003186,
+          "aligned_words": 43
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -186.77413093165185,
+          "inference_seconds": 1.955358785999124,
+          "aligned_words": 35
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -408.4742238950729,
+          "inference_seconds": 1.8879272459962522,
+          "aligned_words": 51
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -189.12590698483842,
+          "inference_seconds": 1.8951181469965377,
+          "aligned_words": 59
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -315.61903256366395,
+          "inference_seconds": 1.906553991997498,
+          "aligned_words": 54
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -203.86067936688818,
+          "inference_seconds": 1.905151566999848,
+          "aligned_words": 48
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -320.2720777214198,
+          "inference_seconds": 1.9366536719971919,
+          "aligned_words": 57
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -300.7367558020403,
+          "inference_seconds": 1.963187271001516,
+          "aligned_words": 49
+        },
+        {
+          "offset": 2560000,
+          "frames": 272192,
+          "alignment_score": -165.67606482035305,
+          "inference_seconds": 1.6043097720030346,
+          "aligned_words": 34
+        }
+      ],
+      "words": 430,
+      "lexical_text_identical": true,
+      "aligned_words": 430,
+      "median_start_shift_ms": 60.0
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "variants": {
+        "original_timing": {
+          "errors": 52,
+          "reference_words": 391,
+          "cpwer": 0.1329923273657289
+        },
+        "independent_ctc_timing": {
+          "errors": 49,
+          "reference_words": 391,
+          "cpwer": 0.12531969309462915
+        }
+      },
+      "processing_seconds": 21.31881418699777,
+      "rtf": 0.11896792479267497,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -347.03994944567654,
+          "inference_seconds": 1.9710455620006542,
+          "aligned_words": 61
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -182.14906746847515,
+          "inference_seconds": 2.2711198659962974,
+          "aligned_words": 31
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -186.32118868299082,
+          "inference_seconds": 2.3777303399983793,
+          "aligned_words": 40
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -147.60811323125986,
+          "inference_seconds": 2.463091762998374,
+          "aligned_words": 42
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -265.6094594821519,
+          "inference_seconds": 2.459457818993542,
+          "aligned_words": 44
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -85.67818428378405,
+          "inference_seconds": 2.408266320999246,
+          "aligned_words": 54
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -191.08469474989369,
+          "inference_seconds": 2.407342446000257,
+          "aligned_words": 29
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -345.02493597282137,
+          "inference_seconds": 2.429749142997025,
+          "aligned_words": 42
+        },
+        {
+          "offset": 2560000,
+          "frames": 307168,
+          "alignment_score": -252.10957651917406,
+          "inference_seconds": 2.283381419001671,
+          "aligned_words": 48
+        }
+      ],
+      "words": 391,
+      "lexical_text_identical": true,
+      "aligned_words": 391,
+      "median_start_shift_ms": 60.0
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "variants": {
+        "original_timing": {
+          "errors": 243,
+          "reference_words": 394,
+          "cpwer": 0.616751269035533
+        },
+        "independent_ctc_timing": {
+          "errors": 243,
+          "reference_words": 394,
+          "cpwer": 0.616751269035533
+        }
+      },
+      "processing_seconds": 21.718117774995335,
+      "rtf": 0.12349522793437659,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -207.9510733141402,
+          "inference_seconds": 2.5539832439972088,
+          "aligned_words": 13
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -565.9993058655143,
+          "inference_seconds": 2.4261317220007186,
+          "aligned_words": 55
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -509.67159670832007,
+          "inference_seconds": 2.4569167439985904,
+          "aligned_words": 48
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -842.6065008238936,
+          "inference_seconds": 2.43034459699993,
+          "aligned_words": 65
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -317.9521671882917,
+          "inference_seconds": 2.4261380589960027,
+          "aligned_words": 50
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -604.2013287254294,
+          "inference_seconds": 2.4452895400027046,
+          "aligned_words": 64
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -511.2122595194076,
+          "inference_seconds": 2.44400619299995,
+          "aligned_words": 46
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -289.9349071882498,
+          "inference_seconds": 2.419337409999571,
+          "aligned_words": 55
+        },
+        {
+          "offset": 2560000,
+          "frames": 253792,
+          "alignment_score": -244.08598821450425,
+          "inference_seconds": 1.8342422929999884,
+          "aligned_words": 42
+        }
+      ],
+      "words": 438,
+      "lexical_text_identical": true,
+      "aligned_words": 438,
+      "median_start_shift_ms": 160.0
+    },
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "variants": {
+        "original_timing": {
+          "errors": 73,
+          "reference_words": 465,
+          "cpwer": 0.15698924731182795
+        },
+        "independent_ctc_timing": {
+          "errors": 75,
+          "reference_words": 465,
+          "cpwer": 0.16129032258064516
+        }
+      },
+      "processing_seconds": 21.906028826000693,
+      "rtf": 0.12313675562676049,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -558.4610157618773,
+          "inference_seconds": 2.507682213996304,
+          "aligned_words": 57
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -289.22396560518047,
+          "inference_seconds": 2.448652518003655,
+          "aligned_words": 51
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -243.1134907721292,
+          "inference_seconds": 2.406859465998423,
+          "aligned_words": 61
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -282.048098107241,
+          "inference_seconds": 2.414559613003803,
+          "aligned_words": 54
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -365.0956345247285,
+          "inference_seconds": 2.4290690229972824,
+          "aligned_words": 69
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -393.3514378554314,
+          "inference_seconds": 2.3960000820006826,
+          "aligned_words": 71
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -83.5364283043335,
+          "inference_seconds": 2.430223939001735,
+          "aligned_words": 37
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -241.3892130934754,
+          "inference_seconds": 2.413926563000132,
+          "aligned_words": 47
+        },
+        {
+          "offset": 2560000,
+          "frames": 286400,
+          "alignment_score": -234.79320892769613,
+          "inference_seconds": 2.159098833995813,
+          "aligned_words": 50
+        }
+      ],
+      "words": 497,
+      "lexical_text_identical": true,
+      "aligned_words": 497,
+      "median_start_shift_ms": 140.0
+    },
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "variants": {
+        "original_timing": {
+          "errors": 106,
+          "reference_words": 377,
+          "cpwer": 0.28116710875331563
+        },
+        "independent_ctc_timing": {
+          "errors": 100,
+          "reference_words": 377,
+          "cpwer": 0.26525198938992045
+        }
+      },
+      "processing_seconds": 22.43240240599698,
+      "rtf": 0.1280594753777192,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -384.7538246792954,
+          "inference_seconds": 2.524660451003001,
+          "aligned_words": 40
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -185.94240953635006,
+          "inference_seconds": 2.415263173999847,
+          "aligned_words": 52
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -283.32629279224835,
+          "inference_seconds": 2.4261846889930894,
+          "aligned_words": 42
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -324.2023755049454,
+          "inference_seconds": 2.3999390910030343,
+          "aligned_words": 39
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -269.14039966941414,
+          "inference_seconds": 2.423061624998809,
+          "aligned_words": 54
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -359.46920922208176,
+          "inference_seconds": 2.4182891870004823,
+          "aligned_words": 59
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -443.5024841901312,
+          "inference_seconds": 2.38483561600151,
+          "aligned_words": 54
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -301.4097284069523,
+          "inference_seconds": 3.192488203996618,
+          "aligned_words": 51
+        },
+        {
+          "offset": 2560000,
+          "frames": 242748,
+          "alignment_score": -148.4983404544729,
+          "inference_seconds": 1.984865352998895,
+          "aligned_words": 26
+        }
+      ],
+      "words": 417,
+      "lexical_text_identical": true,
+      "aligned_words": 417,
+      "median_start_shift_ms": 100.0
+    },
+    {
+      "audio_id": "ru-youtube-astrology",
+      "variants": {
+        "original_timing": {
+          "errors": 36,
+          "reference_words": 379,
+          "cpwer": 0.09498680738786279
+        },
+        "independent_ctc_timing": {
+          "errors": 34,
+          "reference_words": 379,
+          "cpwer": 0.08970976253298153
+        }
+      },
+      "processing_seconds": 22.35551742000098,
+      "rtf": 0.1249959039418562,
+      "chunks": [
+        {
+          "offset": 0,
+          "frames": 320000,
+          "alignment_score": -217.62874182809728,
+          "inference_seconds": 2.5243402229971252,
+          "aligned_words": 51
+        },
+        {
+          "offset": 320000,
+          "frames": 320000,
+          "alignment_score": -176.44134689623723,
+          "inference_seconds": 2.4261845110013383,
+          "aligned_words": 40
+        },
+        {
+          "offset": 640000,
+          "frames": 320000,
+          "alignment_score": -128.1341909159718,
+          "inference_seconds": 2.483264668000629,
+          "aligned_words": 33
+        },
+        {
+          "offset": 960000,
+          "frames": 320000,
+          "alignment_score": -190.3749888376153,
+          "inference_seconds": 2.500016758000129,
+          "aligned_words": 45
+        },
+        {
+          "offset": 1280000,
+          "frames": 320000,
+          "alignment_score": -277.1775146489159,
+          "inference_seconds": 2.424028694003937,
+          "aligned_words": 38
+        },
+        {
+          "offset": 1600000,
+          "frames": 320000,
+          "alignment_score": -236.6264550144926,
+          "inference_seconds": 2.432901195003069,
+          "aligned_words": 41
+        },
+        {
+          "offset": 1920000,
+          "frames": 320000,
+          "alignment_score": -487.7461549025803,
+          "inference_seconds": 2.5162812520065927,
+          "aligned_words": 47
+        },
+        {
+          "offset": 2240000,
+          "frames": 320000,
+          "alignment_score": -152.18527699202485,
+          "inference_seconds": 2.4389963970024837,
+          "aligned_words": 51
+        },
+        {
+          "offset": 2560000,
+          "frames": 301600,
+          "alignment_score": -161.79058837375476,
+          "inference_seconds": 2.3367409010024858,
+          "aligned_words": 41
+        }
+      ],
+      "words": 387,
+      "lexical_text_identical": true,
+      "aligned_words": 387,
+      "median_start_shift_ms": 60.0
+    }
+  ],
+  "load_seconds": 1.175176320997707,
+  "process_peak_rss_kib": 1142472,
+  "python_ort_version": "1.23.2",
+  "diarization_field_unchanged": true,
+  "limitation": "No manual word timestamps; shifts are diagnostic, not MAE. Fixed GigaAM errors may force implausible alignments. Host memory includes SDK decode and Python, not target RAM."
+}

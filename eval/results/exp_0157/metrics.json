@@ -1,0 +1,200 @@
+{
+  "experiment_id": "exp_0157",
+  "scope": "paired source-file silver comparison; speaker independence unverified, not gold/ARM validation",
+  "recordings": 1,
+  "runs": {
+    "exp_0104": {
+      "cpwer": 0.2064516129032258,
+      "der": 0.12978357408646982,
+      "jer": 0.11127129845362761,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-sFt2qKDPrj4",
+          "speaker_attributed": {
+            "errors": 96,
+            "reference_words": 465,
+            "cpwer": 0.2064516129032258
+          },
+          "reference_speakers": 2,
+          "der_details": {
+            "false alarm": 13.322000000000028,
+            "missed detection": 3.2240000000000038,
+            "total": 138.939,
+            "correct": 134.22899999999998,
+            "confusion": 1.485999999999997,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761
+        }
+      ]
+    },
+    "exp_0153": {
+      "cpwer": 1.0021505376344086,
+      "der": 0.5213151095084897,
+      "jer": 0.7208466278458138,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-sFt2qKDPrj4",
+          "speaker_attributed": {
+            "errors": 466,
+            "reference_words": 465,
+            "cpwer": 1.0021505376344086
+          },
+          "reference_speakers": 2,
+          "der_details": {
+            "false alarm": 11.74200000000002,
+            "missed detection": 3.519999999999996,
+            "total": 138.939,
+            "correct": 78.24999999999997,
+            "confusion": 57.169000000000025,
+            "diarization error rate": 0.5213151095084897
+          },
+          "jer": 0.7208466278458138
+        }
+      ],
+      "paired_recording_bootstrap_delta_ci95": {
+        "cpwer": [
+          0.7956989247311829,
+          0.7956989247311829
+        ],
+        "der": [
+          0.3915315354220199,
+          0.3915315354220199
+        ],
+        "jer": [
+          0.6095753293921862,
+          0.6095753293921862
+        ]
+      }
+    }
+  },
+  "comparison_baseline": "exp_0104",
+  "normalized": {
+    "substitutions": 23,
+    "deletions": 4,
+    "insertions": 36,
+    "reference_words": 465,
+    "wer": 0.13548387096774195
+  },
+  "lexical_invariance_verified": true,
+  "lexical_cases": [
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 23,
+          "deletions": 4,
+          "insertions": 36,
+          "reference_words": 465
+        },
+        "raw": {
+          "substitutions": 179,
+          "deletions": 3,
+          "insertions": 44,
+          "reference_words": 456
+        },
+        "punctuation_token_wer": {
+          "substitutions": 53,
+          "deletions": 105,
+          "insertions": 11,
+          "reference_words": 591
+        },
+        "normalized_cer": {
+          "errors": 218,
+          "reference_characters": 2747
+        },
+        "raw_cer": {
+          "errors": 378,
+          "reference_characters": 2864
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 126
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 119
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 35
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 69
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 13
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 9
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "frontend_control": [],
+  "limitation": "small reused dev/source-file corpus; exploratory intervals do not establish people-disjoint generalization"
+}

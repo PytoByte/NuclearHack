@@ -1,0 +1,11 @@
+{
+  "experiment_id": "exp_0018",
+  "threads": 4,
+  "threshold": 0.8,
+  "chunk_seconds": 20,
+  "summary": true,
+  "manifest_sha256": "a00a3bdf1e2d70ff42f31d53581b2dd9451054891ba91f465b5994f2139ac067",
+  "sdk_sha256": "9c85b04a919d594e6d955acbada5ed8a59c165f81930aeacaa0097255a56a95e",
+  "model_lock_sha256": "9052f861fff1080145294741e43cabae741e826ccbd509d1bbecf4afa4d8db71",
+  "scope": "Linux native file pipeline; acted/reassembled Russian structural MP3 smoke; not Android/natural meetings"
+}

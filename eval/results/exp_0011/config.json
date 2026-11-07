@@ -1,0 +1,42 @@
+{
+  "experiment_id": "exp_0011",
+  "model": {
+    "id": "pyannote-eres2net-int8",
+    "family": "diarization",
+    "source": "https://k2-fsa.github.io/sherpa/onnx/speaker-diarization/index.html",
+    "revision": "pinned-per-file-sha256",
+    "files": [
+      "models/diarization/segmentation-model.int8.onnx",
+      "models/diarization/embedding.onnx",
+      "models/diarization/embedding.LICENSE",
+      "models/diarization/segmentation.LICENSE"
+    ]
+  },
+  "threads": 2,
+  "threshold": 0.5,
+  "collar_seconds": 0.25,
+  "skip_overlap": false,
+  "uem": [
+    0,
+    180
+  ],
+  "manifest": {
+    "audio_id": "ami-ihm-test-row0-first180",
+    "audio": "eval/data/audio/ami-ihm-test-row0-first180.wav",
+    "reference": "eval/data/references/ami-ihm-test-row0-first180.json",
+    "audio_sha256": "56135fb88de414f8c84efe7e7c2eec43fc145c47e18214950d08941a32bdc991",
+    "reference_sha256": "9fed8ae828d6d5d1d8886c8fbbd0f4bbf560f8d7ea9792fab0a12efe55744c32",
+    "source": "diarizers-community/ami",
+    "source_revision": "8cdaae2eaf968f3b000b6eb1204ab9b8db006ed0",
+    "source_split": "test",
+    "source_row": 0,
+    "source_audio_sha256": "50e2c8e4737850c4bf3cc24e7087c755e1c733cd91822106afd0df485ba64893",
+    "excerpt_start_seconds": 0,
+    "excerpt_end_seconds": 180,
+    "license": "CC-BY-4.0",
+    "language": "English",
+    "domain": "meeting IHM; diarization smoke only"
+  },
+  "manifest_sha256": "b9130f30161e89d1b9d8cf2b570b60eb98502cc6f70cd15e0d456e696d09cf82",
+  "sdk_sha256": "8eb0c284a1f7a9ead1b73415be5963ac46d0be64a70a60539243dd349458c0ce"
+}

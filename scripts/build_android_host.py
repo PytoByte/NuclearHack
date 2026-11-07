@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import zipfile
 from bootstrap_android_audio import environment, ROOT
+from package_offline_models import runtime_notices
 
 
 def main():
@@ -26,7 +27,11 @@ def main():
     command([tools / 'aapt2', 'link', '-o', unsigned, '-I', android, '--manifest', source / 'AndroidManifest.xml'])
     with zipfile.ZipFile(unsigned, 'a', compression=zipfile.ZIP_STORED) as package:
         package.write(dex / 'classes.dex', 'classes.dex')
+        for source,name in runtime_notices():package.write(source,'assets/'+name)
         for abi in ('x86_64', 'arm64-v8a'):
+            provenance=ROOT/'.build'/('android-'+abi)/'build-provenance.json'
+            if not provenance.exists():raise RuntimeError('Build native SDK with provenance first')
+            package.write(provenance,'assets/buildinfo/'+abi+'.json')
             libraries = [ROOT / '.build' / ('android-' + abi) / name for name in ('libnuclear_audio.so', 'libnuclear_audio_jni.so')]
             libraries += [ROOT / '.tools/sherpa-android' / abi / name for name in ('libsherpa-onnx-c-api.so', 'libonnxruntime.so')]
             libraries += list((ROOT / '.build' / ('llama-android-' + abi) / 'bin').glob('*.so'))

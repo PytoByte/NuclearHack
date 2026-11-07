@@ -1,0 +1,15 @@
+{
+  "experiment_id": "exp_0043",
+  "threads": 4,
+  "threshold": 0.8,
+  "embedding": "embedding.onnx",
+  "min_duration_on": 0.1,
+  "min_duration_off": 0.2,
+  "attribution": "overlap",
+  "chunk_seconds": 20,
+  "summary": false,
+  "manifest_sha256": "a00a3bdf1e2d70ff42f31d53581b2dd9451054891ba91f465b5994f2139ac067",
+  "sdk_sha256": "b45b9938b9f3a3d80f4c58c8bfc9348d5b26800e33633bd5a1141b9f7765c53b",
+  "model_lock_sha256": "831ea7714679acbd4d0e76328edb2e327cabb81492f01849e3de6f9a845ccfc7",
+  "scope": "Linux native file pipeline; acted/reassembled Russian structural MP3 smoke; not Android/natural meetings"
+}

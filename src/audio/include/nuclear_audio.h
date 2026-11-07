@@ -38,7 +38,8 @@ NH_API nh_status nh_decode_file(const char *path, uint32_t sample_rate,
 typedef struct nh_asr nh_asr;
 /* Explicit research/integration configuration. family: ctc/transducer/whisper.
  * CTC and Whisper support greedy_search only. Empty Whisper language = auto.
- * Hotwords require transducer + modified_beam_search; no implicit rewriting. */
+ * Hotwords require transducer + modified_beam_search, character vocabulary,
+ * one known lowercase word per line. Invalid hints fail, never silently skip. */
 typedef struct nh_asr_config {
   uint32_t struct_size;
   const char *family;
@@ -64,7 +65,8 @@ NH_API nh_status nh_asr_create_whisper(const char *encoder, const char *decoder,
                                       const char *tokens, uint32_t threads, nh_asr **out);
 typedef int32_t (*nh_asr_callback)(const char *text, const char *backend_json, void *user);
 /* Mono 16-kHz PCM, nominally [-1,1] (finite decoder headroom is accepted),
- * 1..400000 frames (25s). Backend JSON is a
+ * 1..400000 frames (25s). Inputs shorter than 1s are zero-padded for the model;
+ * caller clips diagnostic timestamps to the unpadded duration. Backend JSON is a
  * diagnostic ASR result, NOT the competition transcript export.
  * Cancellation granularity is one synchronous inference call. */
 NH_API nh_status nh_asr_decode(nh_asr *handle, const float *samples, uint32_t frames,
@@ -72,7 +74,7 @@ NH_API nh_status nh_asr_decode(nh_asr *handle, const float *samples, uint32_t fr
 NH_API void nh_asr_destroy(nh_asr *handle);
 
 /* Whole-window diarization: IDs are scoped to this call. Cross-window matching
- * belongs to the future file orchestrator. 16-kHz mono, <=600s per call.
+ * belongs to the file orchestrator. 16-kHz mono, <=3600s (+1ms codec rounding) per call.
  * Runtime owns segmentation + embedding + clustering; speaker count is auto.
  * cluster_threshold is cosine dissimilarity in (0,2], not a probability. */
 typedef struct nh_diarizer nh_diarizer;
@@ -87,6 +89,8 @@ typedef struct nh_diarizer_config {
   int32_t oracle_speakers; /* -1 = automatic; positive = diagnostic only */
 } nh_diarizer_config;
 NH_API nh_status nh_diarizer_create_config(const nh_diarizer_config *config, nh_diarizer **out);
+NH_API nh_status nh_diarizer_create_with_window(const nh_diarizer_config *config,
+    float window_shift_ratio, nh_diarizer **out);
 typedef int32_t (*nh_turn_callback)(int32_t speaker, double start_seconds,
                                    double end_seconds, void *user);
 NH_API nh_status nh_diarizer_create(const char *segmentation, const char *embedding,
@@ -96,6 +100,25 @@ NH_API nh_status nh_diarizer_process(nh_diarizer *handle, const float *samples,
                                      uint32_t frames, nh_turn_callback callback,
                                      void *user);
 NH_API void nh_diarizer_destroy(nh_diarizer *handle);
+
+/* Incremental Silero VAD. Emits unpadded source-frame ranges at 16 kHz;
+ * caller applies padding and joins overlaps without changing source offsets. */
+typedef struct nh_vad nh_vad;
+typedef struct nh_vad_config {
+  uint32_t struct_size;
+  const char *model;
+  uint32_t threads;
+  float threshold;
+  float min_silence_seconds;
+  float min_speech_seconds;
+  float max_speech_seconds;
+} nh_vad_config;
+typedef int32_t (*nh_speech_callback)(uint64_t start_frame, uint64_t end_frame, void *user);
+NH_API nh_status nh_vad_create(const nh_vad_config *config, nh_vad **out);
+NH_API nh_status nh_vad_accept(nh_vad *handle, const float *samples, uint32_t frames,
+                               nh_speech_callback callback, void *user);
+NH_API nh_status nh_vad_flush(nh_vad *handle, nh_speech_callback callback, void *user);
+NH_API void nh_vad_destroy(nh_vad *handle);
 
 /* File pipeline. The SDK writes only output_json and optional trace_json.
  * Scratch PCM is spooled to disk, then unlinked; models run sequentially.
@@ -118,6 +141,16 @@ typedef int32_t (*nh_progress_callback)(const char *stage, uint64_t completed_fr
                                         uint64_t total_frames, void *user);
 NH_API nh_status nh_transcribe_file(const char *input_path, const nh_pipeline_config *config,
                                     nh_progress_callback progress, void *user);
+typedef struct nh_pipeline_options {
+  uint32_t struct_size;
+  float min_duration_on;
+  float min_duration_off;
+  uint32_t attribution_mode; /* 0 maximum overlap, 1 midpoint */
+  const char *checkpoint_directory; /* Optional private directory, atomic ASR cache; no text in shared logs */
+  float window_shift_ratio; /* 0 uses baseline .1; explicit range [.05,1] */
+} nh_pipeline_options;
+NH_API nh_status nh_transcribe_file_with_options(const char *input_path, const nh_pipeline_config *config,
+    const nh_pipeline_options *options, nh_progress_callback progress, void *user);
 typedef struct nh_llm_config {
   uint32_t struct_size;
   const char *model;

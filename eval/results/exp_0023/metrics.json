@@ -1,0 +1,29 @@
+{
+  "experiment_id": "exp_0023",
+  "quant": "fp32",
+  "threads": 4,
+  "jer": 0.8299475885685365,
+  "embedding": "wespeaker-resnet34-lm",
+  "min_duration_on": 0.3,
+  "min_duration_off": 0.5,
+  "oracle_speakers": -1,
+  "threshold": 0.8,
+  "seconds": 180.0,
+  "load_seconds": 0.32466947400098434,
+  "inference_seconds": 56.706987124998705,
+  "inference_rtf": 0.3150388173611039,
+  "process_peak_rss_kib": 220696,
+  "predicted_speakers": 1,
+  "reference_speakers": 4,
+  "segments": 8,
+  "der_details": {
+    "total": 110.20000000000006,
+    "correct": 74.99000000000001,
+    "confusion": 31.551946868896543,
+    "false alarm": 3.703475952148459,
+    "missed detection": 3.6580531311035074,
+    "diarization error rate": 0.3531168416710389
+  },
+  "dataset_split": "validation",
+  "scope": "Linux CPU / one English AMI IHM excerpt; not Russian/Android"
+}

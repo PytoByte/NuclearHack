@@ -11,7 +11,7 @@ import threading
 import time
 
 from scipy.optimize import linear_sum_assignment
-from native_sdk import ROOT
+from native_sdk import ROOT,record_build
 from scoring import aggregate, counts, normalize
 import jiwer
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -54,6 +54,7 @@ def cpwer(reference, hypothesis):
         hyps.setdefault(row['speaker_id'], []).append(row['text'])
     a, b = [' '.join(v) for v in refs.values()], [' '.join(v) for v in hyps.values()]
     n = max(len(a), len(b))
+    if not n:return dict(errors=0,reference_words=0,cpwer=None)
     a += [''] * (n - len(a)); b += [''] * (n - len(b))
     costs = []
     for left in a:
@@ -75,18 +76,39 @@ def main():
     parser.add_argument('--threshold', type=float, default=0.8)
     parser.add_argument('--chunk-seconds', type=int, default=20)
     parser.add_argument('--summary', action='store_true')
+    parser.add_argument('--embedding',default='embedding.onnx')
+    parser.add_argument('--min-on',type=float,default=0.3)
+    parser.add_argument('--min-off',type=float,default=0.5)
+    parser.add_argument('--attribution',choices=['overlap','midpoint'],default='overlap')
+    parser.add_argument('--window-shift-ratio',type=float,default=0.1)
+    parser.add_argument('--model',default='giga-v3-ctc')
+    parser.add_argument('--quant',choices=['fp32','int8'],default='fp32')
     args = parser.parse_args()
     if not args.experiment.startswith('exp_') or not args.experiment[4:].isdigit():
         parser.error('Use exp_NNNN')
     manifest = ROOT / 'eval/data/dialogs-smoke.jsonl'
     rows = [json.loads(line) for line in manifest.read_text().splitlines()]
+    catalog=json.loads((ROOT/'config/audio-models.lock.json').read_text())
+    model=next(m for m in catalog['models'] if m['id']==args.model)
+    if model['family']!='ctc':parser.error('File pipeline currently supports CTC; other models use ASR API')
+    asr_path=next(p for p in model.get('runtime_files',model['files']) if Path(p).name in ('model.int8.onnx','model.onnx'))
+    tokens_path=next(p for p in model['files'] if Path(p).name=='tokens.txt')
+    seg_path='models/diarization/'+('segmentation-model.onnx' if args.quant=='fp32' else 'segmentation-model.int8.onnx')
+    selected={asr_path,tokens_path,seg_path,'models/diarization/'+args.embedding}
+    model_files=[f for f in catalog['files'] if f['path'] in selected]
+    if len(model_files)!=len(selected):raise ValueError('Unpinned pipeline model')
+    for item in model_files:
+        if sha256(ROOT/item['path'])!=item['sha256']:raise ValueError('Changed pipeline model')
     out = ROOT / '.audio-runs' / args.experiment
     out.mkdir(parents=True, exist_ok=False)
     config = dict(experiment_id=args.experiment, threads=args.threads, threshold=args.threshold,
+        embedding=args.embedding,min_duration_on=args.min_on,min_duration_off=args.min_off,attribution=args.attribution,
+        model=args.model,quant=args.quant,model_files=model_files,window_shift_ratio=args.window_shift_ratio,
         chunk_seconds=args.chunk_seconds, summary=args.summary, manifest_sha256=sha256(manifest),
         sdk_sha256=sha256(ROOT / '.build/audio/libnuclear_audio.so'),
         model_lock_sha256=sha256(ROOT / 'config/audio-models.lock.json'),
         scope='Linux native file pipeline; acted/reassembled Russian structural MP3 smoke; not Android/natural meetings')
+    record_build(out,config)
     (out / 'config.json').write_text(json.dumps(config, indent=2))
     metrics = []
     for row in rows:
@@ -96,9 +118,9 @@ def main():
             raise ValueError('Fixture checksum mismatch')
         output = case / 'transcript.json'
         command = [str(ROOT / '.build/audio/nh-audio'), 'transcribe', str(audio), str(output),
-            'models/giga-v3-ctc/model.int8.onnx', 'models/giga-v3-ctc/tokens.txt',
-            'models/diarization/segmentation-model.onnx', 'models/diarization/embedding.onnx',
-            str(case), str(args.threads), str(args.threshold), str(args.chunk_seconds)]
+            asr_path, tokens_path,seg_path, 'models/diarization/'+args.embedding,
+            str(case), str(args.threads), str(args.threshold), str(args.chunk_seconds),str(args.min_on),str(args.min_off),
+            '1' if args.attribution=='midpoint' else '0','600','-',str(args.window_shift_ratio)]
         timing = profile(command, case)
         if timing['exit_code']:
             (case / 'failure.json').write_text(json.dumps(timing, indent=2))
@@ -114,7 +136,7 @@ def main():
             expected_speakers=row['speakers'], predicted_speakers=len({t['speaker_id'] for t in actual['transcript']}),
             unknown_utterances=sum(t['speaker_id'] == 'speaker_unknown' for t in actual['transcript']),
             json_valid=True, transcript_sha256=sha256(output),
-            alignment_fallback_chunks=sum(s['alignment'] != 'ctc_chars' for s in trace['asr']))
+            alignment_fallback_chunks=sum(s['alignment'] not in ('ctc_chars','ctc_tokens') for s in trace['asr']))
         if args.summary:
             before = sha256(output)
             summary_dir = case / 'llm'; summary_dir.mkdir()

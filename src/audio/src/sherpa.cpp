@@ -5,19 +5,49 @@
 #include <fstream>
 #include <memory>
 #include <mutex>
+#include <set>
+#include <string>
+#include <algorithm>
+#include <vector>
 
 struct nh_asr {
   const SherpaOnnxOfflineRecognizer *native = nullptr;
-  std::mutex mutex;
+  std::atomic_flag busy = ATOMIC_FLAG_INIT;
   ~nh_asr() { if (native) SherpaOnnxDestroyOfflineRecognizer(native); }
 };
 struct nh_diarizer {
   const SherpaOnnxOfflineSpeakerDiarization *native = nullptr;
-  std::mutex mutex;
+  std::atomic_flag busy = ATOMIC_FLAG_INIT;
   ~nh_diarizer() { if (native) SherpaOnnxDestroyOfflineSpeakerDiarization(native); }
 };
 namespace {
 bool readable(const char *path) { return path && *path && std::ifstream(path).good(); }
+bool valid_character_hotwords(const char *tokens, const char *path) {
+  std::set<std::string> alphabet;
+  std::ifstream vocabulary(tokens); std::string line;
+  while (std::getline(vocabulary,line)) {
+    const auto separator=line.rfind(' ');
+    if (separator==std::string::npos) return false;
+    const auto token=line.substr(0,separator);
+    if (token=="<blk>" || token=="<blank>" || token=="<eps>") continue;
+    size_t chars=0;
+    for (unsigned char c:token) if ((c&0xc0)!=0x80) ++chars;
+    if (chars!=1) return false;
+    alphabet.insert(token);
+  }
+  std::ifstream words(path); bool found=false;
+  while (std::getline(words,line)) {
+    if (line.empty()) continue;
+    found=true;
+    for (size_t i=0;i<line.size();) {
+      const unsigned char c=line[i];
+      const size_t n=c<0x80 ? 1 : (c&0xe0)==0xc0 ? 2 : (c&0xf0)==0xe0 ? 3 : (c&0xf8)==0xf0 ? 4 : 0;
+      if (!n || i+n>line.size() || line[i]==' ' || !alphabet.count(line.substr(i,n))) return false;
+      i+=n;
+    }
+  }
+  return found;
+}
 bool valid_pcm(const float *samples, uint32_t n, uint32_t max) {
   if (!samples || !n || n > max) return false;
   for (uint32_t i = 0; i < n; ++i)
@@ -60,12 +90,15 @@ nh_status nh_asr_create(const nh_asr_config *options, nh_asr **out) {
         (family == "transducer" && !readable(options->joiner)) ||
         (options->hotwords_file && *options->hotwords_file && !readable(options->hotwords_file)))
       return nh::fail(NH_IO_ERROR, "ASR model/tokenizer/hotwords not readable");
+    if (options->hotwords_file && *options->hotwords_file && !valid_character_hotwords(options->tokens,options->hotwords_file))
+      return nh::fail(NH_INVALID_ARGUMENT, "Hotwords require character tokens and one known lowercase word per line");
     SherpaOnnxOfflineRecognizerConfig config{};
     config.model_config.tokens = options->tokens;
     config.decoding_method = method.c_str();
     config.max_active_paths = static_cast<int32_t>(options->max_active_paths);
     config.hotwords_file = options->hotwords_file;
     config.hotwords_score = options->hotwords_score;
+    if (options->hotwords_file && *options->hotwords_file) config.model_config.modeling_unit="cjkchar";
     if (family == "ctc") config.model_config.nemo_ctc.model = options->model;
     else if (family == "transducer") {
       config.model_config.transducer.encoder = options->model;
@@ -107,12 +140,15 @@ nh_status nh_asr_decode(nh_asr *handle, const float *samples, uint32_t frames,
   return nh::guard([&]() -> nh_status {
     if (!handle || !callback || !valid_pcm(samples, frames, 400000))
       return nh::fail(NH_INVALID_ARGUMENT, "Expected handle, callback, finite 16kHz PCM <=25s");
-    std::unique_lock<std::mutex> lock(handle->mutex, std::try_to_lock);
+    nh::BusyGuard lock(handle->busy);
     if (!lock.owns_lock()) return nh::fail(NH_BUSY, "ASR handle busy");
     auto stream = std::unique_ptr<const SherpaOnnxOfflineStream, decltype(&SherpaOnnxDestroyOfflineStream)>(
         SherpaOnnxCreateOfflineStream(handle->native), SherpaOnnxDestroyOfflineStream);
     if (!stream) return nh::fail(NH_RUNTIME_ERROR, "Could not create ASR stream");
-    SherpaOnnxAcceptWaveformOffline(stream.get(), 16000, samples, static_cast<int32_t>(frames));
+    std::vector<float> padded;
+    const float *input=samples;uint32_t accepted=frames;
+    if(frames<16000) {padded.assign(16000,0.0f);std::copy(samples,samples+frames,padded.begin());input=padded.data();accepted=16000;}
+    SherpaOnnxAcceptWaveformOffline(stream.get(), 16000, input, static_cast<int32_t>(accepted));
     SherpaOnnxDecodeOfflineStream(handle->native, stream.get());
     auto result = std::unique_ptr<const SherpaOnnxOfflineRecognizerResult, decltype(&SherpaOnnxDestroyOfflineRecognizerResult)>(
         SherpaOnnxGetOfflineStreamResult(stream.get()), SherpaOnnxDestroyOfflineRecognizerResult);
@@ -162,10 +198,14 @@ nh_status nh_diarizer_create(const char *segmentation, const char *embedding,
   return nh_diarizer_create_config(&options, out);
 }
 nh_status nh_diarizer_create_config(const nh_diarizer_config *options, nh_diarizer **out) {
+  return nh_diarizer_create_with_window(options,0.1f,out);
+}
+nh_status nh_diarizer_create_with_window(const nh_diarizer_config *options, float ratio, nh_diarizer **out) {
   return nh::guard([&]() -> nh_status {
     if (!out) return nh::fail(NH_INVALID_ARGUMENT, "Missing output handle");
     *out = nullptr;
     if (!options || options->struct_size != sizeof(*options) || !options->threads || options->threads > 16 ||
+        !std::isfinite(ratio) || ratio < 0.05f || ratio > 1 ||
         !std::isfinite(options->cluster_threshold) || options->cluster_threshold <= 0 || options->cluster_threshold > 2 ||
         !std::isfinite(options->min_duration_on) || options->min_duration_on < 0 || options->min_duration_on > 10 ||
         !std::isfinite(options->min_duration_off) || options->min_duration_off < 0 || options->min_duration_off > 10 ||
@@ -175,6 +215,7 @@ nh_status nh_diarizer_create_config(const nh_diarizer_config *options, nh_diariz
       return nh::fail(NH_IO_ERROR, "Diarization models not readable");
     SherpaOnnxOfflineSpeakerDiarizationConfig config{};
     config.segmentation.pyannote.model = options->segmentation;
+    config.segmentation.pyannote.window_shift_ratio = ratio;
     config.segmentation.num_threads = static_cast<int32_t>(options->threads);
     config.segmentation.provider = "cpu";
     config.embedding.model = options->embedding;
@@ -194,9 +235,9 @@ nh_status nh_diarizer_create_config(const nh_diarizer_config *options, nh_diariz
 nh_status nh_diarizer_process(nh_diarizer *handle, const float *samples, uint32_t frames,
                              nh_turn_callback callback, void *user) {
   return nh::guard([&]() -> nh_status {
-    if (!handle || !callback || !valid_pcm(samples, frames, 16000 * 600))
-      return nh::fail(NH_INVALID_ARGUMENT, "Expected handle, callback, finite 16kHz PCM <=600s");
-    std::unique_lock<std::mutex> lock(handle->mutex, std::try_to_lock);
+    if (!handle || !callback || !valid_pcm(samples, frames, 16000 * 3600 + 16))
+      return nh::fail(NH_INVALID_ARGUMENT, "Expected handle, callback, finite 16kHz PCM <=3600s");
+    nh::BusyGuard lock(handle->busy);
     if (!lock.owns_lock()) return nh::fail(NH_BUSY, "Diarizer handle busy");
     auto result = std::unique_ptr<const SherpaOnnxOfflineSpeakerDiarizationResult, decltype(&SherpaOnnxOfflineSpeakerDiarizationDestroyResult)>(
         SherpaOnnxOfflineSpeakerDiarizationProcess(handle->native, samples, static_cast<int32_t>(frames)),

@@ -1,8 +1,44 @@
 #include "pipeline.hpp"
 #include <algorithm>
 #include <map>
+#include <cmath>
 
 namespace nh {
+bool append_ctc_words(const std::string &text,const std::vector<std::string> &tokens,
+    const std::vector<double> &times,int64_t offset,int64_t chunk_end,std::vector<Word> &words) {
+  if (text.empty()) return true;
+  const auto original=words.size();
+  auto fallback=[&]() { words.resize(original); words.push_back({offset,chunk_end,text}); return false; };
+  if (tokens.empty() || tokens.size()!=times.size() || chunk_end<=offset) return fallback();
+  std::string word;int64_t start=offset,end=offset;
+  auto flush=[&]() {
+    if (!word.empty()) { words.push_back({start,std::min(chunk_end,std::max(start+1,end)),word});word.clear(); }
+  };
+  for (size_t i=0;i<tokens.size();++i) {
+    if (!std::isfinite(times[i]) || (i && times[i]<times[i-1])) return fallback();
+    const auto stamp=std::min<int64_t>(chunk_end-1,offset+std::llround(std::clamp(times[i],0.0,(chunk_end-offset)/1000.0)*1000));
+    // sherpa converts SentencePiece boundary markers to spaces. A BPE token can
+    // contain both a leading space and letters, so split inside each token.
+    for (char c:tokens[i]) {
+      if (c==' ' || c=='\t' || c=='\n' || c=='\r') {flush();continue;}
+      if (word.empty()) start=stamp;
+      word+=c;end=stamp+40;
+    }
+  }
+  flush();
+  auto normalize=[](const std::string &value) {
+    std::string out;bool space=false;
+    for (char c:value) {
+      if(c==' ' || c=='\n' || c=='\t' || c=='\r') {space=!out.empty();continue;}
+      if(space)out+=' ';
+      out+=c;space=false;
+    }
+    return out;
+  };
+  std::string reconstructed;
+  for(size_t i=original;i<words.size();++i) {if(!reconstructed.empty())reconstructed+=' ';reconstructed+=words[i].text;}
+  return normalize(reconstructed)==normalize(text) ? true : fallback();
+}
 std::vector<Utterance> attribute_words(const std::vector<Word> &words,
                                      const std::vector<Turn> &turns, bool midpoint) {
   std::map<int32_t, std::string> ids;

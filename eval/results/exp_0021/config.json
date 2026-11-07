@@ -1,0 +1,12 @@
+{
+  "experiment_id": "exp_0021",
+  "threads": 2,
+  "threshold": 0.8,
+  "chunk_seconds": 20,
+  "summary": false,
+  "abi": "x86_64",
+  "avd_configured_ram_mib": 4096,
+  "manifest_sha256": "a00a3bdf1e2d70ff42f31d53581b2dd9451054891ba91f465b5994f2139ac067",
+  "apk_sha256": "326c653e1565e783e9a6998d1d4792ce1772f40c3a3b2500fad773cc6ff48e27",
+  "model_lock_sha256": "b9d3221ad10394bda8aad0f5900e5a496bfb7f18b0f89809acab5422b3ef3dda"
+}

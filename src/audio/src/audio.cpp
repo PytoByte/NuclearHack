@@ -9,7 +9,10 @@
 #include <memory>
 #include <vector>
 
-namespace nh { thread_local std::string error; }
+namespace nh {
+thread_local std::string error;
+std::atomic_flag heavy_job_busy = ATOMIC_FLAG_INIT;
+}
 extern "C" {
 uint32_t nh_abi_version(void) { return 1; }
 const char *nh_last_error(void) { return nh::error.c_str(); }

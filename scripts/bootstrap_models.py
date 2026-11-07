@@ -48,7 +48,12 @@ def main():
     paths = {p for m in catalog['models'] if m['id'] in selected for p in m['files']}
     for item in catalog['files']:
         if item['path'] in paths:
-            if item.get('archive_member'):
+            if item.get('derivation'):
+                path=ROOT/item['path']
+                if not path.exists() or sha256(path)!=item['sha256']:
+                    from derive_audio_models import derive
+                    derive(item)
+            elif item.get('archive_member'):
                 archive = ROOT / '.tools/downloads' / Path(item['url']).name
                 fetch(item['url'], archive, item['archive_sha256'])
                 path = (ROOT / item['path']).resolve()

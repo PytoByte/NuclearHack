@@ -41,8 +41,12 @@ int main(int argc, char **argv) {
       config.threads = argc > 9 ? std::stoul(argv[9]) : 2;
       config.cluster_threshold = argc > 10 ? std::stof(argv[10]) : 0.8f;
       config.chunk_seconds = argc > 11 ? std::stoul(argv[11]) : 20;
-      config.max_audio_seconds = 600;
-      const auto code = nh_transcribe_file(argv[2], &config, progress, nullptr);
+      config.max_audio_seconds = argc > 15 ? std::stoul(argv[15]) : 600;
+      nh_pipeline_options options{sizeof(nh_pipeline_options), argc > 12 ? std::stof(argv[12]) : 0.3f,
+          argc > 13 ? std::stof(argv[13]) : 0.5f, argc > 14 ? static_cast<uint32_t>(std::stoul(argv[14])) : 0,
+          argc > 16 && std::string(argv[16]) != "-" ? argv[16] : nullptr,
+          argc > 17 ? std::stof(argv[17]) : 0.1f};
+      const auto code = nh_transcribe_file_with_options(argv[2], &config, &options, progress, nullptr);
       if (code != NH_OK) std::cerr << nh_last_error() << '\n';
       return code;
     } catch (const std::exception &e) { std::cerr << e.what() << '\n'; return 2; }

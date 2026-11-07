@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап 2, контролируемый раунд E17/E10–E12/E03/E04.**
+**Сейчас: этап 2, exp_0045 — реальный cancel/resume; далее window shift и FP32.**
 Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной SAF import/export
 ещё проверяется отдельно и не считается пройденным только по instrumentation. Отдельный ASR screening не считается прохождением gate 1.5.
 После baseline работа продолжается по E01–E23; останавливаться на baseline нельзя.
@@ -39,27 +39,27 @@ Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной
 
 | ID | Проверяемая группа | Статус |
 | --- | --- | --- |
-| E01 | GigaAM v3/v2/Whisper | host screening есть; повтор на Android |
-| E02 | CTC/RNNT/e2e | CTC/RNNT screening есть; e2e/verbatim ещё проверить |
-| E03 | greedy/beam | проверить поддержку и A/B; не имитировать отсутствующий decoder |
-| E04 | ru/autodetect | сравнить на поддерживаемом Whisper |
-| E05 | chunks/overlap/silence/dedup | после файлового baseline |
-| E06 | VAD off/on и padding | после baseline; отдельно короткие реплики |
+| E01 | GigaAM v3/v2/Whisper | Android val40 exp_0028–31 завершён; CTC v3 сохраняет лучший компромисс |
+| E02 | CTC/RNNT/e2e | e2e CTC Android WER6.47%, CI включает0; BPE timestamps исправлены, сквозной тест впереди |
+| E03 | greedy/beam | RNNT modified beam реально поддержан; exp_0026 идёт; CTC/Whisper greedy-only без FST graph |
+| E04 | ru/autodetect | explicit language/auto API реализован; exp_0027 в текущей очереди |
+| E05 | chunks/overlap/silence/dedup | 10s ухудшает WER8.19%,20/25s7.13%; overlap/dedup ещё не включён |
+| E06 | VAD off/on и padding | Silero .5/pad250ms WER7.00%, .35/400ms7.13%; ускорения нет, off сохранён; short strata впереди |
 | E07 | INT8/FP32/FP16 | diar smoke начат; ASR и Android A/B впереди |
-| E08 | resample/gain/denoise | decoder alias test есть; ASR/DER A/B впереди |
+| E08 | resample/gain/denoise | gain−18dB ухудшил WER7.79%; resample/codec/denoise A/B впереди |
 | E09 | hints/hotwords | проверить capability выбранного decoder; без LLM-подстановок |
-| E10 | segmentation/embeddings/clustering | baseline .5 отклонён; нужны альтернативные embeddings |
-| E11 | auto/oracle dev | auto уже используется; oracle только диагностическая абляция |
-| E12 | thresholds/minDuration/smoothing | dev threshold grid идёт; перенос на test без подбора |
-| E13 | midpoint/overlap/frame attribution | после merge baseline, отдельные тесты |
-| E14 | short/overlap/similar voices/gain | собрать и измерить strata |
+| E10 | segmentation/embeddings/clustering | WeSpeaker LM .4/.55/.8: DER26.05/24.04/35.31% dev; хуже ERes2Net13.10%, не принят |
+| E11 | auto/oracle dev | exp_0024: oracle4 даёт DER16.19% хуже auto .8 (13.10%); production остаётся auto |
+| E12 | thresholds/minDuration/smoothing | .8 frozen testDER31.75%; min.1/.2 не помог русскому short и ухудшил noisy cpWER; следующий window shift |
+| E13 | midpoint/overlap/frame attribution | midpoint идентичен max-overlap на3smoke; frame posteriors C API не отдаёт, не имитировать |
+| E14 | short/overlap/similar voices/gain | Short cpWER46.67% остаётся; minDuration не исправил. Нужны альтернативная segmentation/embedding и отдельные strata |
 | E15 | overlap и source separation | исследовать реально поддерживаемую speech separation; не выдавать music separation за неё |
 | E16 | raw diarization при ASR denoise | только после E08, сравнить WER и DER раздельно |
-| E17 | Android CPU threads 1/2/4 | host screening есть, Android впереди |
+| E17 | Android CPU threads 1/2/4 | exp_0020–22: RTF1.632/1.013/.826, WER одинаковый; 4t provisional, повтор впереди |
 | E18 | quantization/load/inference/memory | host ASR/diar начат; LLM + Android впереди |
 | E19 | lazy load/release ASR→diar→LLM | ASR lifecycle probe есть; полный pipeline + Android впереди |
 | E20 | streaming PCM/ограниченные chunks | файловый disk spool + ограниченные ASR chunks реализованы; long-file profile впереди |
-| E21 | 5/15/30/60 min, cancel/resume | после baseline; без ложного extrapolation коротких файлов |
+| E21 | 5/15/30/60 min, cancel/resume | ASR checkpoint реализован; exp_0045 идёт. Long stress ещё не измерен |
 | E22 | NNAPI/NPU/CPU fallback | проверить возможности реального AVD/runtime; hardware-only варианты отдельно |
 | E23 | explicit memory budget/config | после Android RAM profile; без silent fallback |
 
@@ -85,7 +85,10 @@ Android baseline exp_0019 прошёл instrumentation на 4 ГБ; ручной
 | exp_0014–16 | AMI validation, thresholds .5/.8/1.1 | DER 25.84/13.10/16.19%; auto 15/9/3 при 4 reference; .8 provisional |
 | exp_0018 | Host full pipeline + отдельная LLM, 3 MP3 | WER 3.53% (6/170); cpWER 3.23/46.67/17.95%; short: 2 вместо 3 голосов. JSON3/3, LLM3/3, исходный SHA не изменён |
 | exp_0019 | Android4096MiB offline, те же 3 MP3 + LLM | WER3.53%, cpWER17.65%, fullRTF .773; peakPSS314MiB, LLMPSS1166MiB; JSON/LLM3/3 |
-| exp_0020 | Android CPU1t, те же 3 MP3, без LLM | WER3.53%, короткий speaker defect сохраняется; медленнее4t, сравнение2/4t идёт |
+| exp_0020–22 | Android CPU1/2/4t, без LLM | FullRTF1.632/1.013/.826; WER3.53%, PSS~310MiB; 4t provisional |
+| exp_0017 | Frozen .8, AMI test180 | DER31.75%, JER43.80%, 13/4speakers; лучше .5, но сильная fragmentation остаётся |
+| exp_0023 | WeSpeaker LM / AMI dev / .8 | DER35.31%, JER82.99%, 1/4speaker; порог ERes2Net не переносится автоматически |
+| exp_0024 | ERes2Net oracle4 / AMI dev | DER16.19%, JER43.16%, 3 output speakers; не лучше auto, oracle не принимать |
 
 Агрегаты: `eval/results/<id>/`; конфигурации, hypotheses, stdout/stderr —
 `.audio-runs/<id>/`. Старые эксперименты не перезаписывать. Machine registry:
@@ -233,3 +236,82 @@ Host exp_0018 выполнялся при параллельной подгот�
 5. H4 (средний): Android1/2/4t меняет RTF/RAM; host4t не доказывает optimum AVD.
 6. H5 (средний): Q8→Q4 и доступный CPU ISA снизят память/время LLM;
    измерить отдельно качество резюме, не смешивать с основным transcript.
+
+**ADR-014 — E17 Android preset (предварительно).** В одном serial раунде
+1/2/4t: fullRTF1.632/1.013/.826, WER3.53% неизменен, PSS310/308/310MiB.
+Baseline4t с LLM между файлами дал .773: заметен разброс/cache/lifecycle.
+Сохраняем4t; повторить пары2/4t перед заявлением устойчивого ускорения.
+
+**ADR-015 — первая альтернатива embedding (не принята).**
+[WeSpeaker ResNet34-LM](https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM),
+CC-BY4, SHA и исходная card в model lock. При .8 сливает dev4→1, DER35.31%.
+Это отклоняет перенос порога, а не весь класс embeddings: следующий grid .4/.55
+на validation, затем независимое подтверждение. Oracle4 на ERes2Net не исправил
+ошибки; вероятны segmentation/embedding проблемы, а не только cluster count.
+
+## Раунд 2: accuracy и перенос на Android
+
+Android4GB/x86_64, FLEURS validation40, 4 CPU threads, без одновременных
+нагрузочных задач. RTF ниже включает decode+ASR, отдельно от загрузки.
+
+| Run | Модель | WER | RTF | Peak PSS MiB |
+| --- | --- | --- | --- | --- |
+| exp_0028 | GigaAM-v3 CTC INT8 | 7.13% | .223 | 333 |
+| exp_0029 | GigaAM-v2 CTC INT8 | 7.53% | .338 | 659 |
+| exp_0030 | GigaAM-v3 RNNT INT8 | 7.13% | .221 | 506 |
+| exp_0031 | Whisper base INT8 ru | 27.08% | .325 | 620 |
+| exp_0032 | GigaAM-v3 e2e CTC INT8 | 6.47% | .194 | 334 |
+
+Paired bootstrap по37 source sentences/10k, e2e−CTC95%CI=[−3.28;+2.09]п.п.:
+доказанного выигрыша нет. У RNNT Android исправилась одна substitution
+«исносу→износу» относительно host; мобильные результаты считать основными.
+Сравнение/10 худших клипов: `eval/results/android-asr-comparison.json`.
+
+Host exp_0033–40: fresh CTC7.13%; RNNT greedy7.27%, beam exp_0026 дал
+**идентичные40 текстов**, но медленнее matched4t greedy (.224 vs .145 RTF).
+Whisper ru/auto exp_0005/27 также идентичны40/40. e2e CTC6.47%, CER2.13%.
+SileroVAD .5/pad250ms7.00%, .35/pad400ms7.13%; small effect без ускорения,
+поэтому off. Чанки10s8.19%,20s7.13%,25s7.13%; −18dB7.79% — не улучшение.
+
+Host exp_0041/42 WeSpeaker dev DER26.05/24.04% при thresholds.4/.55:
+точные4speakers при .55 **не означают** хорошую DER. exp_0043 minOn/Off.1/.2:
+short cpWER46.67% сохраняется, noisy cpWER20.51% хуже baseline17.95%; reject.
+exp_0044 midpoint byte-identical baseline3/3; max-overlap сохранён.
+
+**ADR-016 — воспроизводимость.** Старые runs сохраняют git SHA/dirty flag,
+model/config/SDK hashes; точного source snapshot у них нет. Старый SDK/CLI/APK
+сохранён локально в `.audio-runs/pre-checkpoint-build` перед новой сборкой.
+Новые `make native-build`/`mobile-build` сохраняют source tar, бинарники,
+runtime hashes и CMake cache в `.audio-runs/builds`, а harness копируется
+в каждый run. Не выдавать ранние dirty-tree runs за bit-reproducible builds.
+
+**ADR-017 — FP32 без подмены опыта.** У sherpa HF export есть только INT8.
+Взят исходный FP32 `istupakov/gigaam-v3-onnx` revision322c3b29492673eb7d0b434bfa9dfb8653e34d02;
+добавлены только sherpa metadata по upstream exporter. Тензоры не меняются,
+initializer SHA и итоговый SHA зафиксированы. Не считать dequantized INT8
+настоящим FP32 A/B. Dev bootstrap воспроизводит адаптацию onnx1.17.0.
+
+**Следующие три гипотезы:** (1) window shift.25/.5 уменьшит повторные
+segmentation/embedding вычисления при допустимой DER; (2) FP32 покажет,
+не теряет ли INT8 слова; (3) source/codec/denoise A/B проверит границы и
+устойчивость, прежде чем переносить предобработку в основной SDK.
+Checkpoint exp_0045 и long stress проверяют устойчивость отдельно от качества.
+
+**Этап exp_0045 закрыт:** реальный cancel после первого ASR-чанка, resume,
+полный replay без ASR load, побайтное совпадение с fresh control. Native
+PCM/model SHA совпали с Python. Изменённый input/chunk не использует cache;
+повреждённый cache отклонён, исходный исправный cache не затронут.
+После этого добавлены tail-safe policy/cachev2 и общий heavy-job guard;
+повторная проверка — exp_0047.
+
+**exp_0056 — подтверждение нового APK:** offline3MP3 + separate LLM3/3,
+WER3.53%, strict JSON3/3; основная расшифровка не меняется. Повторный
+Android smoke после существенных изменений обязателен и выполнен.
+Новый Java/JNI JobOptions передаёт явные ASR/diar/window/checkpoint параметры.
+
+**Следующий запущенный раунд:** `experiments/phase2-runtime-queue.json` —
+checkpointv2, matched window.1/.25/.5, FP32, e2e full-file, RNNT hotwords,
+chunks25, INT8 segmentation, Android cancel/resume/cache и FP32 deployment.
+Qwen Q4 подготовлен локально из pinned Q8 (604→373MiB tensor data);
+это ещё не измеренный peak RAM/качество. Source GGUF, quantizer SHA и
+результирующий SHA в model lock; официальный Q4 артефакт не утверждается.

@@ -11,7 +11,7 @@ import subprocess
 import sys
 import time
 
-from native_sdk import NativeSdk, ROOT, TURN, DiarConfig
+from native_sdk import NativeSdk, ROOT, TURN, DiarConfig, record_build
 sys.path.insert(0, str(ROOT / 'scripts'))
 from bootstrap_models import sha256
 
@@ -26,6 +26,7 @@ def main():
     parser.add_argument('--min-on', type=float, default=0.3)
     parser.add_argument('--min-off', type=float, default=0.5)
     parser.add_argument('--oracle-speakers', type=int, default=-1)
+    parser.add_argument('--window-shift-ratio',type=float,default=0.1)
     parser.add_argument('--manifest', type=Path, default=ROOT / 'eval/data/ami-diarization-smoke.json')
     args = parser.parse_args()
     if not args.experiment.startswith('exp_') or not args.experiment[4:].isdigit():
@@ -48,9 +49,12 @@ def main():
     diagnostics = (out / 'stderr.log').open('a')
     os.dup2(diagnostics.fileno(), 2)
     config = dict(experiment_id=args.experiment, model=model, threads=args.threads, threshold=args.threshold,
+        model_files=[f for f in catalog['files'] if f['path'] in model['files']],
         embedding=args.embedding, min_duration_on=args.min_on, min_duration_off=args.min_off, oracle_speakers=args.oracle_speakers,
+        window_shift_ratio=args.window_shift_ratio,
         collar_seconds=0.25, skip_overlap=False, uem=[0, 180],
         manifest=manifest, manifest_sha256=sha256(manifest_path), sdk_sha256=sha256(ROOT / '.build/audio/libnuclear_audio.so'))
+    record_build(out,config)
     (out / 'config.json').write_text(json.dumps(config, indent=2))
     sdk = NativeSdk()
     lib = sdk.lib
@@ -64,7 +68,12 @@ def main():
     options=DiarConfig(C.sizeof(DiarConfig),os.fsencode(segmentation),os.fsencode(ROOT / 'models/diarization' /
         ('embedding.onnx' if args.embedding=='eres2net' else args.embedding+'.onnx')),
         args.threads,args.threshold,args.min_on,args.min_off,args.oracle_speakers)
-    sdk.check(lib.nh_diarizer_create_config(C.byref(options),C.byref(handle)))
+    if hasattr(lib,'nh_diarizer_create_with_window'):
+        lib.nh_diarizer_create_with_window.argtypes=[C.POINTER(DiarConfig),C.c_float,C.POINTER(C.c_void_p)]
+        sdk.check(lib.nh_diarizer_create_with_window(C.byref(options),args.window_shift_ratio,C.byref(handle)))
+    else:
+        if args.window_shift_ratio!=0.1:raise RuntimeError('Rebuild SDK with configurable diarization window')
+        sdk.check(lib.nh_diarizer_create_config(C.byref(options),C.byref(handle)))
     load = time.perf_counter() - before
     turns = []
     @TURN
@@ -97,6 +106,7 @@ def main():
     jer=JaccardErrorRate(collar=0.25,skip_overlap=False)(reference,hypothesis,uem=Timeline([Segment(0,180)]))
     result = dict(experiment_id=args.experiment, quant=args.quant, threads=args.threads,
         jer=float(jer), embedding=args.embedding, min_duration_on=args.min_on, min_duration_off=args.min_off, oracle_speakers=args.oracle_speakers,
+        window_shift_ratio=args.window_shift_ratio,
         threshold=args.threshold, seconds=len(samples) / 16000, load_seconds=load,
         inference_seconds=elapsed, inference_rtf=elapsed / (len(samples) / 16000),
         process_peak_rss_kib=peak, predicted_speakers=len({t['speaker'] for t in turns}),

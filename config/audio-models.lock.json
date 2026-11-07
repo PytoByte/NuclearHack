@@ -91,6 +91,60 @@
         "models/diarization/wespeaker-resnet34-lm.MODELCARD",
         "models/diarization/wespeaker-resnet34-lm.LICENSE"
       ]
+    },
+    {
+      "id": "silero-vad",
+      "family": "vad",
+      "source": "https://github.com/snakers4/silero-vad",
+      "revision": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "files": [
+        "models/silero-vad/silero.onnx",
+        "models/silero-vad/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-ctc-punct",
+      "family": "ctc",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "revision": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "files": [
+        "models/giga-v3-ctc-punct/model.int8.onnx",
+        "models/giga-v3-ctc-punct/tokens.txt",
+        "models/giga-v3-ctc-punct/LICENSE"
+      ]
+    },
+    {
+      "id": "giga-v3-ctc-fp32",
+      "family": "ctc",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "revision": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "files": [
+        "models/giga-v3-ctc-fp32/source.onnx",
+        "models/giga-v3-ctc-fp32/LICENSE",
+        "models/giga-v3-ctc-fp32/model.onnx",
+        "models/giga-v3-ctc-fp32/tokens.txt"
+      ],
+      "runtime_files": [
+        "models/giga-v3-ctc-fp32/LICENSE",
+        "models/giga-v3-ctc-fp32/model.onnx",
+        "models/giga-v3-ctc-fp32/tokens.txt"
+      ]
+    },
+    {
+      "id": "qwen3-0.6b-q4",
+      "family": "llm",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "files": [
+        "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "models/qwen3-0.6b-q8/LICENSE",
+        "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf"
+      ],
+      "runtime_files": [
+        "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf",
+        "models/qwen3-0.6b-q8/LICENSE"
+      ],
+      "note": "Locally requantized from official Q8, not an official Qwen Q4 artifact"
     }
   ],
   "files": [
@@ -302,6 +356,108 @@
       "license": "CC-BY-4.0",
       "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
       "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    },
+    {
+      "path": "models/silero-vad/silero.onnx",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/066409f3d9db45a30d21dfcbf9147826ffdd7052/src/silero_vad/data/silero_vad.onnx",
+      "source": "https://github.com/snakers4/silero-vad",
+      "version": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+      "size_bytes": 2327524,
+      "license": "MIT"
+    },
+    {
+      "path": "models/silero-vad/LICENSE",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/066409f3d9db45a30d21dfcbf9147826ffdd7052/LICENSE",
+      "source": "https://github.com/snakers4/silero-vad",
+      "version": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+      "sha256": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+      "size_bytes": 1075,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/model.int8.onnx",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "d5fea8df94263c285e54b21e5774b707c707192d3bdbeffd7b1eb07fb6743b35",
+      "size_bytes": 224893661,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/tokens.txt",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "142de7570b3de5b3035ce111a89c228e80e6085273731d944093ddf24fa539cd",
+      "size_bytes": 2007,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-punct/LICENSE",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16/resolve/4fb5407ff028a69fec516cdf4c10fac9ddea7c16/LICENSE",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-punct-giga-am-v3-russian-2025-12-16",
+      "version": "4fb5407ff028a69fec516cdf4c10fac9ddea7c16",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "size_bytes": 1070,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/source.onnx",
+      "url": "https://huggingface.co/istupakov/gigaam-v3-onnx/resolve/322c3b29492673eb7d0b434bfa9dfb8653e34d02/v3_ctc.onnx",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "sha256": "1fb978d4f41e1334003fae9d29f2d9844d4132315a90553a4b986839051ba9d3",
+      "size_bytes": 885264128,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/LICENSE",
+      "url": "https://huggingface.co/istupakov/gigaam-v3-onnx/resolve/322c3b29492673eb7d0b434bfa9dfb8653e34d02/LICENSE.txt",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "sha256": "f00de6715714c7a63d08639cdbfaa40224eefc407302614bd19f1a8b98c875aa",
+      "size_bytes": 1070,
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/model.onnx",
+      "source": "https://huggingface.co/istupakov/gigaam-v3-onnx",
+      "version": "322c3b29492673eb7d0b434bfa9dfb8653e34d02",
+      "license": "MIT",
+      "derivation": {
+        "kind": "sherpa-gigaam-v3-ctc-metadata-v1",
+        "input": "models/giga-v3-ctc-fp32/source.onnx",
+        "input_sha256": "1fb978d4f41e1334003fae9d29f2d9844d4132315a90553a4b986839051ba9d3",
+        "tool": "onnx==1.17.0"
+      },
+      "sha256": "da590a6115bd20df4eb2537d02b627fe81fc318ba2d4253fa708391ba7231b56",
+      "size_bytes": 885264423,
+      "initializer_sha256": "db5148e77b11cfa4a78b400400ead7a69bb5d486299df11f24b6b880280972cf"
+    },
+    {
+      "path": "models/giga-v3-ctc-fp32/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/qwen3-0.6b-q4/Qwen3-0.6B-Q4_K_M-from-Q8.gguf",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "version": "23749fefcc72300e3a2ad315e1317431b06b590a+llama-cd959bae",
+      "license": "Apache-2.0",
+      "derivation": {
+        "kind": "llama-q8-to-q4-k-m-v1",
+        "input": "models/qwen3-0.6b-q8/Qwen3-0.6B-Q8_0.gguf",
+        "input_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+        "threads": 4,
+        "llama_commit": "cd959bae99ff4bed22bef2604f45241c09bbb8c8"
+      },
+      "sha256": "15e434d8ddf0af38fe3f7003af6ce6eac4edada6df34324aa45979f9cc79f02e",
+      "size_bytes": 396704416,
+      "quantizer_sha256": "da783b62a387a7b0711cc2f1b853207b5ad85690d010481feb20b46943e1daeb"
     }
   ]
 }

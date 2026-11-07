@@ -1,0 +1,82 @@
+{
+  "run_id": "exp_0022",
+  "cases": [
+    {
+      "audio_id": "dialogs-clean_2",
+      "wall_ms": 24402,
+      "sampled_peak_pss_kib": 316637,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 412764,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 62
+      },
+      "speaker_attributed": {
+        "errors": 2,
+        "reference_words": 62,
+        "cpwer": 0.03225806451612903
+      },
+      "audio_seconds": 31.3564375,
+      "full_rtf": 0.7782134051420861,
+      "predicted_speakers": 2,
+      "expected_speakers": 2,
+      "json_valid": true
+    },
+    {
+      "audio_id": "dialogs-pauses_short_3",
+      "wall_ms": 16262,
+      "sampled_peak_pss_kib": 315338,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 412764,
+      "normalized": {
+        "substitutions": 2,
+        "deletions": 0,
+        "insertions": 0,
+        "reference_words": 30
+      },
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 30,
+        "cpwer": 0.4666666666666667
+      },
+      "audio_seconds": 23.5210625,
+      "full_rtf": 0.6913803319896795,
+      "predicted_speakers": 2,
+      "expected_speakers": 3,
+      "json_valid": true
+    },
+    {
+      "audio_id": "dialogs-noise_overlap_3",
+      "wall_ms": 37544,
+      "sampled_peak_pss_kib": 317146,
+      "pss_sample_period_ms": 100,
+      "process_lifetime_peak_rss_kib": 414008,
+      "normalized": {
+        "substitutions": 1,
+        "deletions": 1,
+        "insertions": 0,
+        "reference_words": 78
+      },
+      "speaker_attributed": {
+        "errors": 14,
+        "reference_words": 78,
+        "cpwer": 0.1794871794871795
+      },
+      "audio_seconds": 39.7831875,
+      "full_rtf": 0.9437152314655531,
+      "predicted_speakers": 3,
+      "expected_speakers": 3,
+      "json_valid": true
+    }
+  ],
+  "scope": "Android 4GB headless native SDK host",
+  "normalized": {
+    "substitutions": 5,
+    "deletions": 1,
+    "insertions": 0,
+    "reference_words": 170,
+    "wer": 0.03529411764705882
+  }
+}

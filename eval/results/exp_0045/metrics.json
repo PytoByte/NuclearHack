@@ -1,0 +1,94 @@
+{
+  "experiment_id": "exp_0045",
+  "cases": [
+    {
+      "case": "cancel_after_first_chunk",
+      "status": 4,
+      "expected_status": 4,
+      "wall_seconds": 2.926930187997641,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 20,
+      "cached_chunks": 0,
+      "asr_loads": 1,
+      "output_exists": false,
+      "error": "Cancelled between ASR chunks"
+    },
+    {
+      "case": "resume",
+      "status": 0,
+      "expected_status": 0,
+      "wall_seconds": 7.080257035995601,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 20,
+      "cached_chunks": 1,
+      "asr_loads": 1,
+      "output_exists": true,
+      "error": ""
+    },
+    {
+      "case": "fully_cached",
+      "status": 0,
+      "expected_status": 0,
+      "wall_seconds": 5.520820327998081,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 20,
+      "cached_chunks": 2,
+      "asr_loads": 0,
+      "output_exists": true,
+      "error": ""
+    },
+    {
+      "case": "fresh_control",
+      "status": 0,
+      "expected_status": 0,
+      "wall_seconds": 7.3068067240019445,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 20,
+      "cached_chunks": 0,
+      "asr_loads": 1,
+      "output_exists": true,
+      "error": ""
+    },
+    {
+      "case": "chunk_config_changed",
+      "status": 4,
+      "expected_status": 4,
+      "wall_seconds": 1.3123434959998121,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 10,
+      "cached_chunks": 0,
+      "asr_loads": 1,
+      "output_exists": false,
+      "error": "Cancelled before ASR load"
+    },
+    {
+      "case": "input_changed",
+      "status": 4,
+      "expected_status": 4,
+      "wall_seconds": 1.2221655579996877,
+      "input_sha256": "ad914a514e045041e80752a81b3962ed0c926d914ccb8f6a1c19fc85be7b7271",
+      "chunk_seconds": 20,
+      "cached_chunks": 0,
+      "asr_loads": 1,
+      "output_exists": false,
+      "error": "Cancelled before ASR load"
+    },
+    {
+      "case": "corrupt_cache_rejected",
+      "status": 3,
+      "expected_status": 3,
+      "wall_seconds": 1.2740448839977034,
+      "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+      "chunk_seconds": 20,
+      "cached_chunks": 0,
+      "asr_loads": 0,
+      "output_exists": false,
+      "error": "Checkpoint identity/format invalid; preserved for inspection"
+    }
+  ],
+  "passed": true,
+  "main_transcript_byte_identical": true,
+  "fully_cached_asr_loads": 0,
+  "native_sha256_matches_python": true,
+  "scope": "Linux native C ABI functional checkpoint test; not Android timing"
+}

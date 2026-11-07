@@ -1,17 +1,21 @@
 #include "internal.hpp"
 #include "pipeline.hpp"
 #include "json.hpp"
+#include "picosha2.h"
 #include <algorithm>
 #include <cerrno>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <fcntl.h>
+#include <fstream>
+#include <iterator>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <sys/file.h>
 #include <unistd.h>
 #include <vector>
 
@@ -46,11 +50,16 @@ struct DecodeContext {
   nh_progress_callback progress;
   void *user;
   nh_status failure = NH_OK;
+  std::unique_ptr<picosha2::hash256_one_by_one> pcm_hash;
 };
 int32_t spool_pcm(const float *samples, uint32_t frames, uint64_t, void *opaque) {
   auto &ctx = *static_cast<DecodeContext *>(opaque);
   if (ctx.frames + frames > ctx.limit) { ctx.failure = NH_INVALID_ARGUMENT; return 1; }
   if (fwrite(samples, sizeof(float), frames, ctx.file) != frames) { ctx.failure = NH_IO_ERROR; return 1; }
+  if (ctx.pcm_hash) {
+    const auto *bytes = reinterpret_cast<const unsigned char *>(samples);
+    ctx.pcm_hash->process(bytes, bytes + static_cast<size_t>(frames) * sizeof(float));
+  }
   ctx.frames += frames;
   return ctx.progress && ctx.progress("decode", ctx.frames, 0, ctx.user);
 }
@@ -67,51 +76,9 @@ int32_t receive_turn(int32_t speaker, double start, double end, void *opaque) {
   catch (...) { result.failed = true; return 1; }
 }
 bool append_words(const Json &result, int64_t offset_ms, int64_t chunk_end_ms, std::vector<nh::Word> &words) {
-  const std::string text = result.value("text", "");
-  if (text.empty()) return true;
-  const size_t original_size = words.size();
-  const auto &tokens = result.at("tokens");
-  const auto &times = result.at("timestamps");
-  if (!tokens.is_array() || tokens.size() != times.size() || tokens.empty()) {
-    words.push_back({offset_ms, chunk_end_ms, text});
-    return false;
-  }
-  std::string word;
-  int64_t start = 0, end = 0;
-  auto flush = [&]() {
-    if (word.empty()) return;
-    words.push_back({start, std::min(chunk_end_ms, std::max(start + 1, end)), word});
-    word.clear();
-  };
-  for (size_t i = 0; i < tokens.size(); ++i) {
-    const auto token = tokens.at(i).get<std::string>();
-    const int64_t stamp = std::clamp<int64_t>(offset_ms + std::llround(times.at(i).get<double>() * 1000), offset_ms, chunk_end_ms - 1);
-    if (token == " " || token == "\t" || token == "\n") { flush(); continue; }
-    if (word.empty()) start = stamp;
-    word += token;
-    end = stamp + 40; // GigaAM CTC frame hop; not a forced-alignment guarantee.
-  }
-  flush();
-  auto normalized = [](const std::string &value) {
-    std::string out; bool space = false;
-    for (char c : value) {
-      if (c == ' ' || c == '\n' || c == '\t' || c == '\r') { space = !out.empty(); continue; }
-      if (space) out += ' ';
-      out += c; space = false;
-    }
-    return out;
-  };
-  std::string reconstructed;
-  for (size_t i = original_size; i < words.size(); ++i) {
-    if (!reconstructed.empty()) reconstructed += ' ';
-    reconstructed += words[i].text;
-  }
-  if (normalized(reconstructed) != normalized(text)) {
-    words.resize(original_size);
-    words.push_back({offset_ms, chunk_end_ms, text});
-    return false;
-  }
-  return true;
+  return nh::append_ctc_words(result.value("text", ""),
+      result.value("tokens", std::vector<std::string>{}), result.value("timestamps", std::vector<double>{}),
+      offset_ms, chunk_end_ms, words);
 }
 bool same_file(const char *a, const char *b) {
   if (!a || !b || !*a || !*b) return false;
@@ -134,16 +101,89 @@ void write_json(const char *path, const Json &value) {
     unlink(temporary.data()); throw std::runtime_error("Could not write complete JSON output");
   }
 }
+std::string file_hash(const char *path) {
+  std::ifstream input(path, std::ios::binary);
+  if (!input) throw std::runtime_error("Cannot read checkpoint identity input");
+  const auto result = picosha2::hash256_hex_string(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+  if (input.bad()) throw std::runtime_error("Checkpoint identity input read failed");
+  return result;
+}
+struct Checkpoint {
+  int lock_fd = -1;
+  std::string path;
+  Json data;
+  nh_status status = NH_OK;
+  ~Checkpoint() { if (lock_fd >= 0) close(lock_fd); }
+  void open(const char *directory, const std::string &pcm_hash, const nh_pipeline_config *config) {
+    if (!directory || !*directory) return;
+    Json identity{{"cache_format", 2}, {"decoded_pcm_sha256", pcm_hash},
+        {"asr_sha256", file_hash(config->asr_model)}, {"tokens_sha256", file_hash(config->tokens)},
+        {"chunk_seconds", config->chunk_seconds}, {"threads", config->threads},
+        {"sherpa", nh_sherpa_version()}, {"decoder", "miniaudio-0.11.23/lpf8/mono16k/greedy/tail-min1s/pad-short1s"},
+#if defined(__aarch64__)
+        {"architecture", "arm64"},
+#elif defined(__x86_64__)
+        {"architecture", "x86_64"},
+#else
+        {"architecture", "other"},
+#endif
+#ifdef __ANDROID__
+        {"platform", "android"}
+#else
+        {"platform", "host"}
+#endif
+    };
+    path = std::string(directory) + "/asr-" + picosha2::hash256_hex_string(identity.dump()) + ".json";
+    const auto lock_path = path + ".lock";
+    lock_fd = ::open(lock_path.c_str(), O_CREAT | O_RDWR | O_CLOEXEC, 0600);
+    if (lock_fd < 0) throw std::runtime_error("Cannot open checkpoint lock");
+    if (flock(lock_fd, LOCK_EX | LOCK_NB)) { status = NH_BUSY; return; }
+    struct stat existing{};
+    if (stat(path.c_str(), &existing) == 0 && existing.st_size > 64 * 1024 * 1024)
+      throw std::runtime_error("Checkpoint exceeds 64-MiB metadata budget");
+    std::ifstream previous(path);
+    if (previous) {
+      previous >> data;
+      if (data.value("identity", Json()) != identity || !data.contains("asr") || !data["asr"].is_array())
+        throw std::runtime_error("Checkpoint identity/format invalid; preserved for inspection");
+    } else data = {{"identity", identity}, {"asr", Json::array()}};
+  }
+  bool enabled() const { return !path.empty(); }
+  size_t size() const { return enabled() ? data["asr"].size() : 0; }
+  Json cached(size_t index, uint64_t offset, size_t frames) const {
+    const auto &chunk = data["asr"].at(index);
+    if (chunk.at("offset_frames") != offset || chunk.at("frames") != frames || !chunk.at("backend").is_object())
+      throw std::runtime_error("Checkpoint chunk timeline invalid; preserved for inspection");
+    return chunk.at("backend");
+  }
+  void append(const Json &chunk) {
+    if (!enabled()) return;
+    data["asr"].push_back(chunk); write_json(path.c_str(), data);
+  }
+};
 }
 
 extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_config *config,
                                        nh_progress_callback progress, void *user) {
+  return nh_transcribe_file_with_options(input, config, nullptr, progress, user);
+}
+extern "C" nh_status nh_transcribe_file_with_options(const char *input, const nh_pipeline_config *config,
+    const nh_pipeline_options *options, nh_progress_callback progress, void *user) {
   return nh::guard([&]() -> nh_status {
+    if (options && (options->struct_size != sizeof(*options) || options->attribution_mode > 1 ||
+        !std::isfinite(options->min_duration_on) || options->min_duration_on < 0 || options->min_duration_on > 10 ||
+        !std::isfinite(options->min_duration_off) || options->min_duration_off < 0 || options->min_duration_off > 10 ||
+        !std::isfinite(options->window_shift_ratio) || (options->window_shift_ratio != 0 &&
+            (options->window_shift_ratio < 0.05f || options->window_shift_ratio > 1))))
+      return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline options");
     if (!input || !config || config->struct_size != sizeof(nh_pipeline_config) ||
         !config->asr_model || !config->tokens || !config->segmentation || !config->embedding ||
         !config->scratch_directory || !config->output_json || config->threads < 1 || config->threads > 16 ||
-        !config->chunk_seconds || config->chunk_seconds > 25 || !config->max_audio_seconds || config->max_audio_seconds > 600)
-      return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline configuration (max duration <=600s in baseline)");
+        !config->chunk_seconds || config->chunk_seconds > 25 || !config->max_audio_seconds || config->max_audio_seconds > 3600 ||
+        !std::isfinite(config->cluster_threshold) || config->cluster_threshold <= 0 || config->cluster_threshold > 2)
+      return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline configuration (duration budget <=3600s)");
+    nh::BusyGuard job(nh::heavy_job_busy);
+    if (!job.owns_lock()) return nh::fail(NH_BUSY, "Another file/summary job is using the model memory budget");
     for (const char *source : {input, config->asr_model, config->tokens, config->segmentation, config->embedding})
       if (same_file(source, config->output_json) || same_file(source, config->trace_json))
         return nh::fail(NH_INVALID_ARGUMENT, "Output would overwrite an input/model file");
@@ -154,7 +194,10 @@ extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_con
     };
     if (emit("queued", 0, 0)) return nh::fail(NH_CANCELLED, "Cancelled before processing");
     Spool spool(config->scratch_directory);
-    DecodeContext decoded{spool.file, 0, static_cast<uint64_t>(config->max_audio_seconds) * 16000, progress, user};
+    // Resampling/container delay rounding can add a fraction of a millisecond.
+    DecodeContext decoded{spool.file, 0, static_cast<uint64_t>(config->max_audio_seconds) * 16000 + 16, progress, user, NH_OK, {}};
+    if (options && options->checkpoint_directory && *options->checkpoint_directory)
+      decoded.pcm_hash = std::make_unique<picosha2::hash256_one_by_one>();
     auto code = nh_decode_file(input, 16000, 16000, spool_pcm, &decoded);
     if (decoded.failure != NH_OK) return nh::fail(decoded.failure, "Decode exceeded duration budget or scratch I/O failed");
     if (code != NH_OK) return code;
@@ -162,25 +205,46 @@ extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_con
     std::vector<nh::Word> words;
     Json raw_asr = Json::array();
     if (decoded.frames) {
-      if (emit("asr_load", 0, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before ASR");
+      Checkpoint checkpoint;
+      if (options && options->checkpoint_directory && emit("checkpoint_identity", 0, decoded.frames))
+        return nh::fail(NH_CANCELLED, "Cancelled before checkpoint identity");
+      std::string pcm_hash;
+      if (decoded.pcm_hash) { decoded.pcm_hash->finish(); pcm_hash = picosha2::get_hash_hex_string(*decoded.pcm_hash); }
+      checkpoint.open(options ? options->checkpoint_directory : nullptr, pcm_hash, config);
+      if (checkpoint.status != NH_OK) return nh::fail(checkpoint.status, "Checkpoint is in use by another job");
       nh_asr *ptr = nullptr;
-      code = nh_asr_create_ctc(config->asr_model, config->tokens, config->threads, &ptr);
-      if (code != NH_OK) return code;
       {
         std::unique_ptr<nh_asr, decltype(&nh_asr_destroy)> asr(ptr, nh_asr_destroy);
         rewind(spool.file);
         std::vector<float> samples(config->chunk_seconds * 16000);
         uint64_t offset = 0;
         while (offset < decoded.frames) {
-          if (emit("asr", offset, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled between ASR chunks");
-          const size_t count = fread(samples.data(), sizeof(float), samples.size(), spool.file);
+          const uint64_t remaining=decoded.frames-offset;
+          size_t requested=samples.size();
+          if(remaining>requested && remaining-requested<16000 && requested>16000)
+            requested=static_cast<size_t>(remaining-16000);
+          const size_t count = fread(samples.data(), sizeof(float), requested, spool.file);
           if (!count || ferror(spool.file)) return nh::fail(NH_IO_ERROR, "Cannot read scratch PCM");
           AsrResult result;
-          code = nh_asr_decode(asr.get(), samples.data(), static_cast<uint32_t>(count), receive_asr, &result);
+          const bool cached = raw_asr.size() < checkpoint.size();
+          if (cached) {
+            result.value = checkpoint.cached(raw_asr.size(), offset, count);
+            if (emit("asr_cached", offset, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled during checkpoint replay");
+          } else {
+            if (!asr) {
+              if (emit("asr_load", offset, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before ASR load");
+              code = nh_asr_create_ctc(config->asr_model, config->tokens, config->threads, &ptr);
+              if (code != NH_OK) return code;
+              asr.reset(ptr);
+            }
+            if (emit("asr", offset, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled between ASR chunks");
+            code = nh_asr_decode(asr.get(), samples.data(), static_cast<uint32_t>(count), receive_asr, &result);
+          }
           if (result.failed) return nh::fail(NH_RUNTIME_ERROR, "Invalid ASR backend JSON");
           if (code != NH_OK) return code;
           const bool aligned = append_words(result.value, offset * 1000 / 16000, ((offset + count) * 1000 + 15999) / 16000, words);
-          raw_asr.push_back({{"offset_frames", offset}, {"frames", count}, {"alignment", aligned ? "ctc_chars" : "chunk_fallback"}, {"backend", std::move(result.value)}});
+          raw_asr.push_back({{"offset_frames", offset}, {"frames", count}, {"alignment", aligned ? "ctc_tokens" : "chunk_fallback"}, {"backend", std::move(result.value)}});
+          if (!cached) checkpoint.append(raw_asr.back());
           offset += count;
         }
       } // ASR must be released before diarization model load.
@@ -189,7 +253,11 @@ extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_con
     if (decoded.frames) {
       if (emit("diarization_load", 0, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before diarization");
       nh_diarizer *ptr = nullptr;
-      code = nh_diarizer_create(config->segmentation, config->embedding, config->threads, config->cluster_threshold, &ptr);
+      nh_diarizer_config diar_config{sizeof(nh_diarizer_config), config->segmentation, config->embedding,
+          config->threads, config->cluster_threshold, options ? options->min_duration_on : 0.3f,
+          options ? options->min_duration_off : 0.5f, -1};
+      code = nh_diarizer_create_with_window(&diar_config,
+          options && options->window_shift_ratio ? options->window_shift_ratio : 0.1f, &ptr);
       if (code != NH_OK) return code;
       {
         std::unique_ptr<nh_diarizer, decltype(&nh_diarizer_destroy)> handle(ptr, nh_diarizer_destroy);
@@ -201,7 +269,7 @@ extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_con
       }
     }
     if (emit("merge", decoded.frames, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before export");
-    auto utterances = nh::attribute_words(words, diar.turns);
+    auto utterances = nh::attribute_words(words, diar.turns, options && options->attribution_mode == 1);
     Json output{{"transcript", Json::array()}};
     for (const auto &u : utterances)
       output["transcript"].push_back({{"speaker_id", u.speaker_id}, {"start_ms", u.start_ms}, {"end_ms", u.end_ms}, {"text", u.text}});

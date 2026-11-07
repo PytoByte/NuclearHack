@@ -25,6 +25,8 @@ extern "C" nh_status nh_summarize_file(const char *input, const nh_llm_config *c
         !config->max_output_tokens || config->max_output_tokens > 1024 ||
         config->max_output_tokens >= config->context_tokens)
       return nh::fail(NH_INVALID_ARGUMENT, "Invalid summary configuration");
+    nh::BusyGuard job(nh::heavy_job_busy);
+    if (!job.owns_lock()) return nh::fail(NH_BUSY, "Another file/summary job is using the model memory budget");
     struct stat output{}, source{}, model_file{};
     if (stat(config->output_text, &output) == 0 &&
         ((stat(input, &source) == 0 && source.st_ino == output.st_ino && source.st_dev == output.st_dev) ||
@@ -46,6 +48,7 @@ extern "C" nh_status nh_summarize_file(const char *input, const nh_llm_config *c
     std::string payload;
     for (const auto &turn : transcript["transcript"])
       payload += turn.at("speaker_id").get<std::string>() + ": " + turn.at("text").get<std::string>() + "\n";
+    if (payload.empty()) return nh::fail(NH_INVALID_ARGUMENT, "No transcript turns to summarize");
     if (emit("llm_load", 0, 0)) return nh::fail(NH_CANCELLED, "Summary cancelled before load");
     static std::once_flag initialized;
     std::call_once(initialized, []() { llama_backend_init(); });

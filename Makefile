@@ -46,6 +46,7 @@ mobile-bootstrap: audio-bootstrap
 native-build:
 	.venv/bin/cmake -S src/audio -B .build/audio -G Ninja -DCMAKE_BUILD_TYPE=Release
 	.venv/bin/cmake --build .build/audio -j 4
+	.venv/bin/python scripts/stamp_audio_build.py --build .build/audio
 native-test: native-build
 	.venv/bin/ctest --test-dir .build/audio --output-on-failure
 	. scripts/audio-env.sh && python3 -m unittest discover -s scripts/tests -v

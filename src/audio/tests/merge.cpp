@@ -1,8 +1,17 @@
 #include "pipeline.hpp"
 #include <iostream>
+#include <limits>
 using namespace nh;
 #define CHECK(x) do { if (!(x)) { std::cerr << #x << '\n'; return 1; } } while (0)
 int main() {
+  std::vector<Word> bpe;
+  CHECK(append_ctc_words("Ну ээ да да",{" Ну"," ээ"," да"," да"},{0.1,0.4,0.6,0.9},1000,2500,bpe));
+  CHECK(bpe.size()==4 && bpe[0].text=="Ну" && bpe[0].start_ms==1100);
+  CHECK(bpe[2].text=="да" && bpe[3].text=="да" && bpe[3].start_ms==1900);
+  CHECK(!append_ctc_words("Не менять текст",{"другой"},{0.0},0,1000,bpe));
+  CHECK(bpe.back().text=="Не менять текст");
+  CHECK(!append_ctc_words("угу",{"угу"},{std::numeric_limits<double>::quiet_NaN()},0,1000,bpe));
+  CHECK(!append_ctc_words("да да",{" да"," да"},{0.8,0.2},0,1000,bpe));
   std::vector<Word> words{{100, 200, "ээ"}, {210, 300, "да"}, {310, 400, "да"}, {500, 600, "ещё"}};
   std::vector<Turn> turns{{9, 90, 320}, {4, 300, 650}};
   auto result = attribute_words(words, turns);

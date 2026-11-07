@@ -1,0 +1,57 @@
+{
+  "experiment_id": "exp_0031",
+  "model": {
+    "id": "whisper-base-int8",
+    "family": "whisper",
+    "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+    "revision": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+    "files": [
+      "models/whisper-base-int8/base-encoder.int8.onnx",
+      "models/whisper-base-int8/base-decoder.int8.onnx",
+      "models/whisper-base-int8/base-tokens.txt",
+      "models/whisper-base-int8/LICENSE"
+    ]
+  },
+  "threads": 4,
+  "method": "greedy_search",
+  "language": "ru",
+  "model_files": [
+    {
+      "path": "models/whisper-base-int8/base-encoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-encoder.int8.onnx",
+      "sha256": "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-decoder.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-decoder.int8.onnx",
+      "sha256": "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/base-tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base/resolve/bb53ee204431c90d314c1cc08d28d23e5b7927cc/base-tokens.txt",
+      "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-whisper-base",
+      "version": "bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+      "license": "MIT"
+    },
+    {
+      "path": "models/whisper-base-int8/LICENSE",
+      "url": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "sha256": "b5d65a59060e68c4ff940e1eddfa6f94b2d68fdf58ed7f4dd57721c997e35e9d",
+      "source": "https://raw.githubusercontent.com/openai/whisper/6e3be77e1a105e59086e3e21ff5f609fd6fa89a5/LICENSE",
+      "version": "6e3be77e1a105e59086e3e21ff5f609fd6fa89a5",
+      "license": "MIT"
+    }
+  ],
+  "manifest_sha256": "ce63e83088d93eae3150d679f2dc8f64ca14d21bf191a0aee0747f8563b25f4d",
+  "apk_sha256": "d1324e690291a25d05e6932a3c1060d234804fc137bbdfaf2067aada6b2b6f5f",
+  "abi": "x86_64",
+  "configured_ram_mib": 4096,
+  "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim"
+}

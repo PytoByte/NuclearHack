@@ -2,6 +2,7 @@
 """Cross-compile the native library for Android, without Gradle or an app."""
 from pathlib import Path
 import subprocess
+from stamp_audio_build import stamp
 
 ROOT = Path(__file__).resolve().parents[1]
 tools = ROOT / '.tools'
@@ -36,4 +37,5 @@ for abi in ('arm64-v8a', 'x86_64'):
         for line in headers.splitlines():
             if line.strip().startswith('LOAD') and int(line.split()[-1], 16) < 16384:
                 raise SystemExit(f'LOAD alignment below 16 KiB: {library}')
+    stamp(build)
     print(f'Built {abi}; execution on Android not measured', flush=True)

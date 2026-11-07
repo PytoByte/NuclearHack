@@ -20,6 +20,13 @@ static int32_t cancel_stage(const char *stage, uint64_t done, uint64_t total, vo
   (void)done; (void)total; (void)user;
   return strcmp(stage, "queued") == 0;
 }
+struct reentry { const nh_pipeline_config *config; nh_status status; };
+static int32_t nested_file(const char *stage, uint64_t done, uint64_t total, void *user) {
+  (void)stage; (void)done; (void)total;
+  struct reentry *state = (struct reentry *)user;
+  state->status = nh_transcribe_file("c-abi-fixture.wav", state->config, NULL, NULL);
+  return 1;
+}
 int main(void) {
   CHECK(nh_abi_version() == 1);
   CHECK(strlen(nh_sherpa_version()) > 0);
@@ -45,6 +52,7 @@ int main(void) {
   CHECK(nh_diarizer_create_config(&diar_options, &diarizer) == NH_INVALID_ARGUMENT);
   diar_options.oracle_speakers = -1;
   CHECK(nh_diarizer_create_config(&diar_options, &diarizer) == NH_IO_ERROR);
+  CHECK(nh_diarizer_create_with_window(&diar_options, 0.01f, &diarizer) == NH_INVALID_ARGUMENT);
   CHECK(nh_diarizer_create("missing", "missing", 2, 0.5f, &diarizer) == NH_IO_ERROR);
   CHECK(nh_diarizer_create("missing", "missing", 2, 1.2f, &diarizer) == NH_IO_ERROR);
   CHECK(nh_diarizer_create("missing", "missing", 2, 2.1f, &diarizer) == NH_INVALID_ARGUMENT);
@@ -71,11 +79,24 @@ int main(void) {
   pipeline.threads = 1; pipeline.chunk_seconds = 20; pipeline.max_audio_seconds = 600;
   pipeline.cluster_threshold = 0.8f;
   CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, cancel_stage, NULL) == NH_CANCELLED);
+  struct reentry reentry = {&pipeline, NH_OK};
+  CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, nested_file, &reentry) == NH_CANCELLED);
+  CHECK(reentry.status == NH_BUSY);
   CHECK(fopen("c-abi-result.json", "rb") == NULL);
   pipeline.output_json = "c-abi-fixture.wav";
   CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, NULL, NULL) == NH_INVALID_ARGUMENT);
   nh_llm_config llm = {0};
   CHECK(nh_summarize_file("c-abi-fixture.wav", &llm, NULL, NULL) == NH_INVALID_ARGUMENT);
+  nh_pipeline_options tuning = {sizeof(nh_pipeline_options), 0.1f, 0.2f, 2};
+  CHECK(nh_transcribe_file_with_options("c-abi-fixture.wav", &pipeline, &tuning, NULL, NULL) == NH_INVALID_ARGUMENT);
+  nh_vad *vad = NULL;
+  nh_vad_config vad_config = {sizeof(nh_vad_config), "missing", 1, 0.5f, 0.3f, 0.1f, 20};
+  CHECK(nh_vad_create(&vad_config, &vad) == NH_IO_ERROR && vad == NULL);
+  vad_config.threshold = 1.0f;
+  CHECK(nh_vad_create(&vad_config, &vad) == NH_INVALID_ARGUMENT && vad == NULL);
+  CHECK(nh_vad_accept(NULL, NULL, 0, NULL, NULL) == NH_INVALID_ARGUMENT);
+  CHECK(nh_vad_flush(NULL, NULL, NULL) == NH_INVALID_ARGUMENT);
+  nh_vad_destroy(NULL);
   llm.struct_size = sizeof(llm); llm.model = "missing"; llm.output_text = "c-abi-fixture.wav";
   llm.threads = 1; llm.context_tokens = 4096; llm.max_output_tokens = 256;
   CHECK(nh_summarize_file("c-abi-fixture.wav", &llm, NULL, NULL) == NH_INVALID_ARGUMENT);

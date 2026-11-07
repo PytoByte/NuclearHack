@@ -2,10 +2,12 @@
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35" />
     <application android:label="Nuclear Audio SDK Host" android:debuggable="true"
         android:allowBackup="false" android:extractNativeLibs="true" android:theme="@android:style/Theme.Material.Light.NoActionBar">
-        <activity android:name="com.hexteam.audiohost.MainActivity" android:exported="true">
+        <activity android:name="com.hexteam.audiohost.MainActivity" android:exported="true" android:configChanges="orientation|screenSize">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity>
     </application>
     <instrumentation android:name="com.hexteam.audiohost.AudioInstrumentation"
         android:targetPackage="com.hexteam.audiohost" android:label="Native offline audio tests" />
+    <instrumentation android:name="com.hexteam.audiohost.AsrInstrumentation"
+        android:targetPackage="com.hexteam.audiohost" android:label="Native ASR benchmark" />
 </manifest>

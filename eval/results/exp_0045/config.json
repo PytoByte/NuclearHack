@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_0045",
+  "scope": "Linux native C ABI functional checkpoint test; not Android timing",
+  "input_sha256": "8d7365dbd683c05b6a8a89253eab8619c2c8d541630616f6138e04064e9cbde4",
+  "sdk_sha256": "fc4594eff218a6020de35a21c7466f0bdc9ee141a48f33f18ce0f99d2e1bc3a7",
+  "threads": 4,
+  "chunk_seconds": 20,
+  "harness_files": {
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "native_sdk.py": "b01be58f6f351a8f3c65914a520f06da42237c3dbd7374a63ad0892ed5b39d43",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "run_android_asr.py": "6fb29f73fe731006c5d8b18a4f459c8ce06108a2889380264debde118dcb02a8",
+    "run_android_pipeline.py": "3f7bd6c0544987c698c679c48aec7717fdcd5c64e2b49c14bd627303727c2305",
+    "run_asr.py": "2a38e3eda2c039024a65a2fed8a2e375d929081b99135b8339239fa0e5684e94",
+    "run_diarization.py": "fad3f4dcc4d8d9aab6e4bf04e15623cacb5c2e6ef99bd64fe407874cdb76217c",
+    "run_file_pipeline.py": "86aef521f70732d5b15b901a05f22e076af89096b585272f12efd5572d2ea516",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "scoring.py": "fe3c99dff6ffd13be23a3b59983b3a4665aa5e84a48711e83a96b480c24dcf3a"
+  },
+  "build_provenance_sha256": "6e4457c9d8e1d9cf6d007c57040a6f3e27b68f3158a0c8e9aec05945737e2c76",
+  "source_snapshot": ".audio-runs/builds/ecd1bd51bdd7d0171aff48f89371d0a879fa5bc697c99a393eb349085a3192da/source.tar"
+}

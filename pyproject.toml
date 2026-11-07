@@ -15,6 +15,7 @@ package = false
 research = [
     "jiwer==4.0.0",
     "numpy==2.2.6",
+    "onnx==1.17.0",
     "pyannote-metrics==4.0.0",
     "pyarrow==19.0.1",
     "typing-extensions==4.15.0",

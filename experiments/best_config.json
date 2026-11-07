@@ -10,5 +10,31 @@
   "normalization": "v1",
   "selected_by": "FLEURS validation40 screening",
   "validation_experiment": "exp_0007",
-  "scope": "developer-host i5-12450H only; Android policy not calibrated"
+  "scope": "ASR frozen host preset; Android file pipeline CPU4t provisional from exp_0019/0022",
+  "pipeline": {
+    "asr_model": "giga-v3-ctc",
+    "asr_chunk_seconds": 20,
+    "vad": false,
+    "diarization": "pyannote-eres2net-fp32",
+    "cluster_threshold": 0.8,
+    "min_duration_on": 0.3,
+    "min_duration_off": 0.5,
+    "speaker_count": "auto",
+    "attribution": "maximum_overlap",
+    "max_audio_seconds": 600,
+    "model_lifecycle": "decode/spool -> ASR/release -> diarization/release -> optional LLM/release",
+    "android_baseline_experiment": "exp_0019",
+    "threads_experiment": "exp_0022",
+    "diar_validation_experiment": "exp_0015",
+    "diar_test_confirmation": "exp_0017"
+  },
+  "summary": {
+    "model": "qwen3-0.6b-q8",
+    "runtime": "llama.cpp CPU",
+    "context_tokens": 4096,
+    "max_output_tokens": 256,
+    "decoding": "greedy/no-thinking",
+    "separate_output": true,
+    "quality": "functional baseline; factuality/grammar not yet validated"
+  }
 }

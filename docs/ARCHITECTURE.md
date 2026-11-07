@@ -34,13 +34,23 @@ PCM создаётся через mkstemp в scratch клиента, сразу 
 После ASR PCM mmap используется whole-file diarizer. Это ограничивает heap
 декодера, но не доказывает постоянную память всего inference.
 
-Текущий файловый baseline ограничен **600 s** явным параметром. VAD,
-silence-aware chunks, overlap/dedup, checkpoint/resume ещё не реализованы.
+Текущий принятый preset ограничен **600 s**. API принимает явный бюджет
+до3600s (+1ms для codec rounding); часовая обработка ещё не сертифицирована
+длинным stress-run. Последний хвост перераспределяется, чтобы не оставлять
+один отсчёт отдельным ASR-чанком; input<1s дополняется нулями только для модели. В файловом orchestrator VAD,
+silence-aware chunks и overlap/dedup ещё не реализованы.
+Отдельный incremental `nh_vad_*` API реализует Silero: 512-sample windows,
+30-s circular buffer, немедленная доставка unpadded source-frame intervals,
+flush/release. Research harness проверяет padding и исходные offsets;
+VAD не включён в принятый preset без A/B.
 Стереоканалы сводятся в mono; channel-aware диаризации пока нет.
 
 ASR файлового API: GigaAM-v3 CTC INT8, 4 CPU threads — host preset;
 другие CTC, RNNT и Whisper доступны через низкоуровневые constructors.
-ASR текст не редактируется. CTC char timestamps собираются в word spans,
+`nh_asr_create` задаёт decoder/language явно: RNNT greedy/modified beam,
+Whisper ru/auto. CTC/Whisper beam без FST graph отклоняется. Hotwords —
+только поддерживаемый RNNT beam, не корректор текста.
+ASR текст не редактируется. CTC char/BPE timestamps собираются в word spans с учётом пробелов внутри token,
 последний символ +40 ms; это не forced alignment. При несовпадении
 реконструированных слов с исходным текстом сохраняется whole-chunk span,
 с явным `chunk_fallback` в trace, без подмены текста.
@@ -51,7 +61,10 @@ agglomerative clustering. Число участников не задаётся.
 пока .3/.5 s. ID канонизируются по первому появлению и стабильны внутри файла.
 Межфайловая идентификация отсутствует. Короткие реплики остаются слабым местом.
 
-Word→speaker — максимальное пересечение интервалов; без пересечения
+`nh_transcribe_file_with_options` позволяет A/B minDurationOn/Off и
+maximum-overlap/midpoint attribution, не ломая исходный C ABI. Oracle доступен
+только низкоуровневому diagnostic config; файловый production API всегда auto.
+Word→speaker preset — максимальное пересечение интервалов; без пересечения
 `speaker_unknown`. Соседние слова одного speaker объединяются при gap≤1200 ms.
 Экспорт содержит только `transcript` и обязательные поля
 `speaker_id/start_ms/end_ms/text`; временные метки целые ms исходной timeline.
@@ -71,10 +84,25 @@ ASR и diarizer уже освобождены до вызова LLM; RAII осв
 Handles освобождаются явно; один handle обслуживает одну операцию, повторный
 вход — NH_BUSY. Разные handles независимы; общий бюджет контролирует клиент.
 Буферы callbacks заимствованы до возврата, исключения через C ABI запрещены.
+ASR/diar/VAD handles используют atomic busy guard, безопасный при reentry.
+Высокоуровневые file/summary вызовы совместно допускают один тяжёлый job
+на процесс; конкурентный вызов возвращает NH_BUSY. Для low-level handles
+суммарный бюджет остаётся обязанностью клиента.
 Progress: queued/decode/asr_load/asr/diarization_load/diarization/merge/done;
 LLM имеет отдельные load/prefill/generate/done stages. Отмена кооперативная
 между PCM-блоками, ASR-чанками, LLM batches/tokens и стадиями. Whole-file
-вызов diarization пока непрерываемый; частичного экспорта/resume нет.
+вызов diarization пока непрерываемый: upstream progress callback игнорирует
+возвращаемый код. Отмена проверяется до/после него; это реальное ограничение
+latency отмены, не обещание мгновенного прерывания.
+
+Опциональный private checkpoint сохраняет завершённые ASR-чанки атомарно.
+Идентичность: SHA256 фактического decoded PCM, модели/tokens, ABI/платформы,
+runtime, chunk/thread/padding policy. Version2 cache с flock не допускает
+конкурентной записи. Повреждённый cache отклоняется; cache metadata≤64MiB.
+Resume повторно декодирует MP3, переиспользует только валидные ASR-чанки;
+при полном cache ASR модель вообще не загружается. Diarization пока
+пересчитывается целиком. Основной JSON публикуется только после завершения;
+частичный ASR checkpoint не выдаётся за готовый transcript.
 
 ## Android host и offline-доставка
 
@@ -101,5 +129,9 @@ LOAD alignment. Cross-build ARM64 не является доказательст
 `scripts/build_android_host.py`, `scripts/package_offline_models.sh`,
 `scripts/install_android_audio.py`, `eval/scripts/run_android_pipeline.py`.
 Host harness вызывает тот же C ABI; Python занимается данными и scoring.
+Post-build provenance сохраняет source tar, SDK/CLI/runtime binaries и hashes;
+каждый новый run копирует actual Python harness. APK содержит buildinfo
+обоих ABI и runtime notices. Android runner сверяет SHA установленного APK
+с локальным и проверяет реальную RAM/ABI/airplane mode.
 Версии/хеши: `config/*lock.json`, `uv.lock`. Веса, аудио и raw logs исключены
 из Git. [src/audio/README.md](../src/audio/README.md) содержит команды API.

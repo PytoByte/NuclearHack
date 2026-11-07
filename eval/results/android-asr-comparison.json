@@ -1,0 +1,696 @@
+{
+  "scope": "Paired FLEURS comparison; hardware scope recorded per experiment; not dialogue quality",
+  "experiments": [
+    {
+      "run_id": "exp_0028",
+      "load_ms": 3153,
+      "decode_inference_ms": 101757,
+      "sampled_peak_pss_kib": 340592,
+      "process_lifetime_peak_rss_kib": 437264,
+      "pss_sample_period_ms": 100,
+      "clips": 40,
+      "experiment_id": "exp_0028",
+      "model": "giga-v3-ctc",
+      "threads": 4,
+      "audio_seconds": 456.54,
+      "decode_inference_rtf": 0.22288737021947694,
+      "full_rtf": 0.22979366539624127,
+      "normalized": {
+        "substitutions": 39,
+        "deletions": 5,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.071334214002642
+      },
+      "raw": {
+        "substitutions": 221,
+        "deletions": 4,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "cer": 0.05040589012648669,
+      "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim",
+      "normalized_cer": 0.05040589012648669,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 26,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20202020202020202
+      },
+      "reference_without_digits": {
+        "substitutions": 13,
+        "deletions": 0,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.025044722719141325
+      },
+      "worst_cases": [
+        {
+          "audio_id": "fleurs-ru-validation-0043",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 6,
+          "reference_words": 27,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "substitutions": 10,
+          "deletions": 4,
+          "insertions": 1,
+          "reference_words": 46,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0252",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 20,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0001",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0261",
+          "substitutions": 3,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 22,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0240",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0177",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 35,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0335",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 13,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0179",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0105",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 15,
+          "reference_contains_digits": false
+        }
+      ]
+    },
+    {
+      "run_id": "exp_0029",
+      "load_ms": 2405,
+      "decode_inference_ms": 154306,
+      "sampled_peak_pss_kib": 674698,
+      "process_lifetime_peak_rss_kib": 771188,
+      "pss_sample_period_ms": 100,
+      "clips": 40,
+      "experiment_id": "exp_0029",
+      "model": "giga-v2-ctc",
+      "threads": 4,
+      "audio_seconds": 456.54,
+      "decode_inference_rtf": 0.33799009944364133,
+      "full_rtf": 0.34325798396635565,
+      "normalized": {
+        "substitutions": 41,
+        "deletions": 5,
+        "insertions": 11,
+        "reference_words": 757,
+        "wer": 0.07529722589167767
+      },
+      "raw": {
+        "substitutions": 222,
+        "deletions": 3,
+        "insertions": 22,
+        "reference_words": 744,
+        "wer": 0.33198924731182794
+      },
+      "cer": 0.05059467623182934,
+      "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim",
+      "normalized_cer": 0.05059467623182934,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 26,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.20202020202020202
+      },
+      "reference_without_digits": {
+        "substitutions": 15,
+        "deletions": 0,
+        "insertions": 2,
+        "reference_words": 559,
+        "wer": 0.03041144901610018
+      },
+      "worst_cases": [
+        {
+          "audio_id": "fleurs-ru-validation-0043",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 5,
+          "reference_words": 27,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "substitutions": 10,
+          "deletions": 4,
+          "insertions": 1,
+          "reference_words": 46,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0252",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 20,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0001",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0228",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 19,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0287",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 19,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0240",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0261",
+          "substitutions": 2,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 22,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0280",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 24,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0177",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 35,
+          "reference_contains_digits": true
+        }
+      ]
+    },
+    {
+      "run_id": "exp_0030",
+      "load_ms": 4441,
+      "decode_inference_ms": 100775,
+      "sampled_peak_pss_kib": 517660,
+      "process_lifetime_peak_rss_kib": 618224,
+      "pss_sample_period_ms": 100,
+      "clips": 40,
+      "experiment_id": "exp_0030",
+      "model": "giga-v3-rnnt",
+      "threads": 4,
+      "audio_seconds": 456.54,
+      "decode_inference_rtf": 0.22073640863889255,
+      "full_rtf": 0.23046392430017082,
+      "normalized": {
+        "substitutions": 37,
+        "deletions": 7,
+        "insertions": 10,
+        "reference_words": 757,
+        "wer": 0.071334214002642
+      },
+      "raw": {
+        "substitutions": 219,
+        "deletions": 5,
+        "insertions": 21,
+        "reference_words": 744,
+        "wer": 0.3293010752688172
+      },
+      "cer": 0.050783462337171986,
+      "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim",
+      "normalized_cer": 0.050783462337171986,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 25,
+        "deletions": 5,
+        "insertions": 9,
+        "reference_words": 198,
+        "wer": 0.19696969696969696
+      },
+      "reference_without_digits": {
+        "substitutions": 12,
+        "deletions": 2,
+        "insertions": 1,
+        "reference_words": 559,
+        "wer": 0.026833631484794274
+      },
+      "worst_cases": [
+        {
+          "audio_id": "fleurs-ru-validation-0043",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 6,
+          "reference_words": 27,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "substitutions": 10,
+          "deletions": 4,
+          "insertions": 1,
+          "reference_words": 46,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0252",
+          "substitutions": 4,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 20,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0001",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0260",
+          "substitutions": 2,
+          "deletions": 2,
+          "insertions": 0,
+          "reference_words": 23,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0122",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0261",
+          "substitutions": 2,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 22,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0177",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 35,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0179",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0240",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        }
+      ]
+    },
+    {
+      "run_id": "exp_0031",
+      "load_ms": 1830,
+      "decode_inference_ms": 148300,
+      "sampled_peak_pss_kib": 634626,
+      "process_lifetime_peak_rss_kib": 713844,
+      "pss_sample_period_ms": 100,
+      "clips": 40,
+      "experiment_id": "exp_0031",
+      "model": "whisper-base-int8",
+      "threads": 4,
+      "audio_seconds": 456.54,
+      "decode_inference_rtf": 0.3248346256625926,
+      "full_rtf": 0.32884303675472026,
+      "normalized": {
+        "substitutions": 151,
+        "deletions": 25,
+        "insertions": 29,
+        "reference_words": 757,
+        "wer": 0.27080581241743723
+      },
+      "raw": {
+        "substitutions": 206,
+        "deletions": 24,
+        "insertions": 30,
+        "reference_words": 744,
+        "wer": 0.34946236559139787
+      },
+      "cer": 0.08117802529733811,
+      "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim",
+      "normalized_cer": 0.08117802529733811,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 47,
+        "deletions": 12,
+        "insertions": 8,
+        "reference_words": 198,
+        "wer": 0.3383838383838384
+      },
+      "reference_without_digits": {
+        "substitutions": 104,
+        "deletions": 13,
+        "insertions": 21,
+        "reference_words": 559,
+        "wer": 0.24686940966010734
+      },
+      "worst_cases": [
+        {
+          "audio_id": "fleurs-ru-validation-0105",
+          "substitutions": 6,
+          "deletions": 0,
+          "insertions": 5,
+          "reference_words": 15,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0252",
+          "substitutions": 9,
+          "deletions": 2,
+          "insertions": 0,
+          "reference_words": 20,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0210",
+          "substitutions": 6,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 14,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0089",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 10,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "substitutions": 16,
+          "deletions": 5,
+          "insertions": 0,
+          "reference_words": 46,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0322",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0333",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0177",
+          "substitutions": 11,
+          "deletions": 1,
+          "insertions": 3,
+          "reference_words": 35,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0236",
+          "substitutions": 5,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 12,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0287",
+          "substitutions": 5,
+          "deletions": 0,
+          "insertions": 2,
+          "reference_words": 19,
+          "reference_contains_digits": false
+        }
+      ]
+    },
+    {
+      "run_id": "exp_0032",
+      "load_ms": 2320,
+      "decode_inference_ms": 88699,
+      "sampled_peak_pss_kib": 342007,
+      "process_lifetime_peak_rss_kib": 421464,
+      "pss_sample_period_ms": 100,
+      "clips": 40,
+      "experiment_id": "exp_0032",
+      "model": "giga-v3-ctc-punct",
+      "threads": 4,
+      "audio_seconds": 456.54,
+      "decode_inference_rtf": 0.1942852762079993,
+      "full_rtf": 0.1993669777018443,
+      "normalized": {
+        "substitutions": 31,
+        "deletions": 12,
+        "insertions": 6,
+        "reference_words": 757,
+        "wer": 0.06472919418758256
+      },
+      "raw": {
+        "substitutions": 88,
+        "deletions": 6,
+        "insertions": 8,
+        "reference_words": 744,
+        "wer": 0.13709677419354838
+      },
+      "cer": 0.021332829903719087,
+      "scope": "Android4GB native ASR, FLEURS validation40, no dialogue/DER claim",
+      "normalized_cer": 0.021332829903719087,
+      "reference_contains_digits": {
+        "clips": 7,
+        "substitutions": 14,
+        "deletions": 8,
+        "insertions": 4,
+        "reference_words": 198,
+        "wer": 0.13131313131313133
+      },
+      "reference_without_digits": {
+        "substitutions": 17,
+        "deletions": 4,
+        "insertions": 2,
+        "reference_words": 559,
+        "wer": 0.04114490161001789
+      },
+      "worst_cases": [
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "substitutions": 5,
+          "deletions": 6,
+          "insertions": 0,
+          "reference_words": 46,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0001",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 9,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0105",
+          "substitutions": 3,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_words": 15,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0043",
+          "substitutions": 2,
+          "deletions": 1,
+          "insertions": 2,
+          "reference_words": 27,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0261",
+          "substitutions": 3,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 22,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0204",
+          "substitutions": 1,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 11,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0256",
+          "substitutions": 1,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 11,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0088",
+          "substitutions": 1,
+          "deletions": 1,
+          "insertions": 0,
+          "reference_words": 15,
+          "reference_contains_digits": false
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0280",
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 24,
+          "reference_contains_digits": true
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0149",
+          "substitutions": 1,
+          "deletions": 0,
+          "insertions": 1,
+          "reference_words": 16,
+          "reference_contains_digits": false
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "a": "exp_0028",
+      "b": "exp_0029",
+      "delta_wer_b_minus_a_95ci": [
+        -0.005926145730300032,
+        0.015105843929484412
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0028",
+      "b": "exp_0030",
+      "delta_wer_b_minus_a_95ci": [
+        -0.009845288326300985,
+        0.01216224436114947
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0028",
+      "b": "exp_0031",
+      "delta_wer_b_minus_a_95ci": [
+        0.1522022116445115,
+        0.2509192989845473
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    },
+    {
+      "a": "exp_0028",
+      "b": "exp_0032",
+      "delta_wer_b_minus_a_95ci": [
+        -0.03278742308850738,
+        0.02094332369201478
+      ],
+      "source_sentence_groups": 37,
+      "resamples": 10000,
+      "seed": 42
+    }
+  ]
+}

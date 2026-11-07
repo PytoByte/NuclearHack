@@ -1,0 +1,60 @@
+[
+  {
+    "experiment": "exp_0090",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--threads",
+      "4"
+    ],
+    "hypothesis": "Frozen baseline69 versus TitaNet.8 selected by dev88; single unseen silver session, no speaker independence claim"
+  },
+  {
+    "experiment": "exp_0091",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "titanet-large.onnx"
+    ],
+    "hypothesis": "Frozen baseline69 versus TitaNet.8 selected by dev88; single unseen silver session, no speaker independence claim"
+  },
+  {
+    "experiment": "exp_0092",
+    "script": "eval/scripts/score_conversation_diarization.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--runs",
+      "exp_0090",
+      "exp_0091"
+    ],
+    "hypothesis": "Single-session transfer of frozen TitaNet candidate, not threshold selection"
+  },
+  {
+    "experiment": "exp_0093",
+    "script": "eval/scripts/probe_reclustering.py",
+    "args": [
+      "--baseline",
+      "exp_0069",
+      "--embedding",
+      "embedding.onnx"
+    ],
+    "hypothesis": "Global complete-link embeddings .2/.3/.4, native same-model reclustering without oracle; preserve predicted simultaneous-speaker constraints"
+  },
+  {
+    "experiment": "exp_0094",
+    "script": "eval/scripts/probe_reclustering.py",
+    "args": [
+      "--baseline",
+      "exp_0088",
+      "--embedding",
+      "titanet-large.onnx"
+    ],
+    "hypothesis": "Global complete-link embeddings .2/.3/.4, native same-model reclustering without oracle; preserve predicted simultaneous-speaker constraints"
+  }
+]

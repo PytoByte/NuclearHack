@@ -152,3 +152,32 @@ Window.5 остаётся кандидатом: synthetic cpWER лучше,от�
 
 Ограничение текущей валидации: пользователь подтвердил работу только в доступном host/x86 AVD окружении.
 ARM64 quality/performance остаются отдельной непроверенной целью; ARM-трансляция не используется для выводов о скорости.
+
+TitaNet-large проверен как альтернативный embedding: улучшил dev,но резко ухудшил отложенную сессию;
+в принятый pipeline не включён. Global reclustering по длинным predicted samples реализован как opt-in в native SDK,
+через тот же pinned native runtime,без oracle speaker count; валидация и ограничения — в RESEARCH.md. Принятый ERes2Net preset пока сохраняется.
+
+
+### Опциональное уточнение кластеров спикеров
+
+Новый C ABI `nh_transcribe_file_with_refinement` принимает отдельный `nh_speaker_refinement_config`;
+существующие структуры/вызовы и ABI version1 сохранены. Default off.
+После освобождения diarizer повторно загружается только исходный embedding,а не ASR/segmentation.
+На initial cluster берутся≤3 predicted spans,центр каждого≤8s,всего2..20s mono16k;
+рабочий sample buffer≤320000floats (1.28MB),PCM источник остаётся mmap scratch.
+Cluster cap0→128,максимум256; превышение возвращает ошибку без fallback.
+Нормализованные embeddings сравниваются cosine complete linkage; одновременно активные predicted IDs
+получают cannot-link distance2. При недостатке речи cluster остаётся отдельным.
+Embedding освобождается перед матричной кластеризацией/merge. Исходные слова/таймкоды не меняются.
+Trace сохраняет initial и refined turns,числа initial/final/embedded clusters.
+Отмена проверяется до загрузки и между cluster embeddings; nested тяжёлый job возвращает NH_BUSY.
+Это experimental opt-in: измерения основаны на publisher-reviewed silver,ARM runtime пока недоступен.
+
+Decoder проверяет RIFF/RF64 WAVE header до miniaudio filename hints: PCM с MPEG-sync bytes не должен
+ошибочно декодироваться какMP3 из-за имени файла. Android eval проверяет не толькоSHA входа,
+но и число decoded frames против frozen длительности;legacy suffix test host не задаёт фактическийcodec.
+
+Квалификация opt-in: native/prototype exact5/5,control cap/cancel/reentry passed,3 paired AVD reloads:
+cpWER42.97→33.16%,median wall+3.2%,sampledPSS~369MiB. Source signal host/AVD SHA-identical;
+ASR outputs имеют5замен междуplatform builds,а внутриdevice A/B words/timestamps exact.
+Default остаётсяoff;независимый gold/ARM runtime не заявляются. Короткий третий голос пока не восстановлен.

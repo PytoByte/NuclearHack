@@ -27,7 +27,17 @@
     "threads_experiment": "exp_0022",
     "diar_validation_experiment": "exp_0015",
     "diar_test_confirmation": "exp_0017",
-    "window_shift_ratio": 0.1
+    "window_shift_ratio": 0.1,
+    "speaker_refinement": {
+      "enabled_by_default": false,
+      "api": "nh_transcribe_file_with_refinement",
+      "candidate_threshold": 0.4,
+      "max_clusters": 128,
+      "validated_native": "exp_0102",
+      "android_profile": "exp_0126",
+      "controls": "exp_0105",
+      "scope": "experimental opt-in; publisher silver, x86 AVD4GB; ARM runtime and independent gold unverified"
+    }
   },
   "summary": {
     "model": "qwen3-0.6b-q8",

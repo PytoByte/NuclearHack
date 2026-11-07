@@ -1,0 +1,7 @@
+{
+  "valid_measurement": false,
+  "reason": "WAV PCM was misidentified as MP3 due to legacy filename hint; only279of2802748frames decoded",
+  "evidence": "exp_0115",
+  "fixed_decoder": "exp_0116",
+  "replacement": "exp_0118"
+}

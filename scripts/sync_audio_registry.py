@@ -39,7 +39,7 @@ def main():
         row['cer'] = m.get('cer',row['cer'])
         row['der'] = m.get('der_details',{}).get('diarization error rate',row['der'])
         cases=m.get('cases',[])
-        attributed=[x['speaker_attributed'] for x in cases if 'speaker_attributed' in x]
+        attributed=[x['speaker_attributed'] for x in cases if 'speaker_attributed' in x and 'audio_id' in x]
         total_words=sum(x.get('reference_words',0) for x in attributed)
         if total_words:row['cpwer']=sum(x['errors'] for x in attributed)/total_words
         covered=[x for x in cases if 'unknown_word_fraction' in x and 'normalized' in x]
@@ -59,6 +59,8 @@ def main():
             peaks += [x.get('process_peak_rss_kib',0),x.get('process_lifetime_peak_rss_after_llm_kib',0),
                       x.get('process_lifetime_peak_rss_kib',0),x.get('summary',{}).get('process_peak_rss_kib',0)]
         if max(peaks):row['peak_ram_kib']=max(peaks)
+        if (report/'invalidity.json').exists():
+            row['status']='reject';row['scope']='INVALID decoded source length; see invalidity.json and replacement run'
         if (report/'failure.json').exists():row['status']=row['status'] or 'inconclusive'
         else:row['status']=row['status'] or 'unreviewed'
         if eid == args.experiment:

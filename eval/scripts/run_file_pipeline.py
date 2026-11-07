@@ -13,6 +13,7 @@ import time
 from scipy.optimize import linear_sum_assignment
 from native_sdk import ROOT,record_build
 from scoring import aggregate, counts, normalize, speaker_coverage, text_metrics
+from compare_punctuation import summarize
 import jiwer
 sys.path.insert(0, str(ROOT / 'scripts'))
 from bootstrap_models import sha256
@@ -82,6 +83,8 @@ def main():
     parser.add_argument('--min-off',type=float,default=0.5)
     parser.add_argument('--attribution',choices=['overlap','midpoint'],default='overlap')
     parser.add_argument('--window-shift-ratio',type=float,default=0.1)
+    parser.add_argument('--refinement-threshold',type=float,default=0)
+    parser.add_argument('--refinement-max-clusters',type=int,default=128)
     parser.add_argument('--model',default='giga-v3-ctc')
     parser.add_argument('--quant',choices=['fp32','int8'],default='fp32')
     args = parser.parse_args()
@@ -104,7 +107,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     config = dict(experiment_id=args.experiment, threads=args.threads, threshold=args.threshold,
         embedding=args.embedding,min_duration_on=args.min_on,min_duration_off=args.min_off,attribution=args.attribution,
-        model=args.model,quant=args.quant,model_files=model_files,window_shift_ratio=args.window_shift_ratio,
+        model=args.model,quant=args.quant,model_files=model_files,refinement_threshold=args.refinement_threshold,refinement_max_clusters=args.refinement_max_clusters,window_shift_ratio=args.window_shift_ratio,
         chunk_seconds=args.chunk_seconds, summary=args.summary, manifest_sha256=sha256(manifest),
         sdk_sha256=sha256(ROOT / '.build/audio/libnuclear_audio.so'),
         model_lock_sha256=sha256(ROOT / 'config/audio-models.lock.json'),
@@ -121,7 +124,7 @@ def main():
         command = [str(ROOT / '.build/audio/nh-audio'), 'transcribe', str(audio), str(output),
             asr_path, tokens_path,seg_path, 'models/diarization/'+args.embedding,
             str(case), str(args.threads), str(args.threshold), str(args.chunk_seconds),str(args.min_on),str(args.min_off),
-            '1' if args.attribution=='midpoint' else '0','600','-',str(args.window_shift_ratio)]
+            '1' if args.attribution=='midpoint' else '0','600','-',str(args.window_shift_ratio),str(args.refinement_threshold),str(args.refinement_max_clusters)]
         timing = profile(command, case)
         if timing['exit_code']:
             (case / 'failure.json').write_text(json.dumps(timing, indent=2))
@@ -130,9 +133,14 @@ def main():
         truth = json.loads(reference.read_text())['transcript']
         asr = counts(' '.join(t['text'] for t in truth), ' '.join(t['text'] for t in actual['transcript']))
         trace = json.loads(output.with_name(output.name + '.trace.json').read_text())
-        duration = max((s['offset_frames'] + s['frames']) / 16000 for s in trace['asr'])
+        duration = max(((s['offset_frames'] + s['frames']) / 16000 for s in trace['asr']),default=0)
+        expected_frames=row.get('num_samples')
+        if expected_frames is None and row.get('audio_seconds') is not None:expected_frames=round(row['audio_seconds']*16000)
+        if expected_frames is not None and abs(round(duration*16000)-expected_frames)>32:
+            (out/'failure.json').write_text(json.dumps(dict(stage='decoded_frame_count',audio_id=row['audio_id'],actual_frames=round(duration*16000),expected_frames=expected_frames,measurement_valid=False)))
+            raise ValueError('Native decoded source length differs from frozen input')
         result = dict(audio_id=row['audio_id'], **timing, audio_seconds=duration,
-            full_rtf=timing['wall_seconds'] / duration, normalized=asr,
+            full_rtf=timing['wall_seconds'] / duration if duration else None, normalized=asr,
             speaker_attributed=cpwer(truth, actual['transcript']),
             expected_speakers=row['speakers'], predicted_speakers=len({t['speaker_id'] for t in actual['transcript']}),
             **speaker_coverage(actual['transcript']),
@@ -150,7 +158,8 @@ def main():
             target.write(json.dumps(result) + '\n')
         print(json.dumps(result), flush=True)
     total = dict(experiment_id=args.experiment, cases=metrics, normalized=aggregate([r['normalized'] for r in metrics]),
-                 scope=config['scope'])
+                 text_metrics=summarize([r['text_metrics'] for r in metrics]),scope=config['scope'])
+    total['cer']=total['text_metrics']['normalized_cer']['cer']
     (out / 'metrics.json').write_text(json.dumps(total, indent=2))
     (out / 'environment.json').write_text(json.dumps(dict(
         git_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),

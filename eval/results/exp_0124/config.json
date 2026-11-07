@@ -1,0 +1,18 @@
+{
+  "experiment_id": "exp_0124",
+  "scope": "Strict host/device full-JSON equality certificate; actual neural outputs differ",
+  "pairs": [
+    [
+      "exp_0117",
+      "exp_0118"
+    ],
+    [
+      "exp_0119",
+      "exp_0120"
+    ],
+    [
+      "exp_0121",
+      "exp_0122"
+    ]
+  ]
+}

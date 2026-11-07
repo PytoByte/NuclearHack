@@ -1,0 +1,28 @@
+[
+  {
+    "experiment": "exp_0129",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      ".5",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Short-speaker under-merging may require finer initial clusters then robust global merge; single initial-threshold factor versus refined baseline125, structural smoke only"
+  },
+  {
+    "experiment": "exp_0130",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--threads",
+      "4",
+      "--threshold",
+      ".65",
+      "--refinement-threshold",
+      ".4"
+    ],
+    "hypothesis": "Short-speaker under-merging may require finer initial clusters then robust global merge; single initial-threshold factor versus refined baseline125, structural smoke only"
+  }
+]

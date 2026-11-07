@@ -4,11 +4,18 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап 2, приоритет A–D из AUDIO_RESEARCH_AGENT_SHORT.md: натуральные русские диалоги → ASR/пунктуация → diarization → границы → ARM.**
-Рекомендации короткого агента приняты как ориентиры, не жёсткие правила. Дальнейшая работа — audio/native/eval;
-UI/SAF/APK-поставка, LLM и длительный stress не расширяются. Существующий test host используется только для inference.
-Baseline и подготовка завершены, исследование продолжается. Gate A/C ещё **не пройдены**: нет независимо проверенного
-русского verbatim/word GT и разделения по людям; синтетический Dialogs и английский AMI этого не заменяют.
+**Сейчас: этап2, native speaker refinement проверен; далее короткие голоса/сегментация.**
+В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
+Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
+На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
+WAV filename-hint bug найден/исправлен; decoder PCM host/Android совпал поSHA всех2802748frames.
+**ARM runtime/Word timestamp MAE не измерены**: пользователь подтвердил только доступное окружение;
+ручных word GT нет. UI/SAF/LLM/длинный stress не расширяются. Исследование продолжается,а не останавливается на gates.
+
+Данные:3 natural RU silver dev +2 отложенных source-file snippets,OpenSTT manual phone40,FLEURS40/40,
+AMI English,Dialogs3 structural. Source corpus small/publisher-reviewed,люди не верифицированы как disjoint;
+strict gold gate A/C не заявлен. Шесть full-source аннотаций дополнительно проверены на shared6grams:
+ни одна пара не превысила2%;это исключает крупные текстовые дубликаты,не доказывает независимость людей.
 
 Новые условия пользователя: сравнить ASR с собственной пунктуацией и отдельный русский пунктуатор;
 одновременно normalized WER, raw/punctuation-aware WER, CER и отдельные precision/recall/F1 пунктуации;
@@ -28,7 +35,7 @@ publisher декларирует Apache-2.0. Данные не публикуе�
 [YouTube источник](https://huggingface.co/datasets/leshinsky/ru-youtube-diarization),
 [DataHive источник](https://huggingface.co/datasets/datahiveai/russian-conversations-sample).
 
-Baseline на pilot и сравнение CTC/e2e/CTC+RUPunct завершены (69–79). Далее — embeddings; сегменты без разметки слов не использовать
+Baseline,embeddings,punctuation и native refinement завершены (69–128). Далее — короткие голоса; сегменты без разметки слов не использовать
 для заявления timestamp MAE. Нужны проверка silver эталонов, независимые люди/сессии и полноценный русский test.
 
 | Исходный пункт | Статус | Что осталось / свидетельство |
@@ -37,13 +44,13 @@ Baseline на pilot и сравнение CTC/e2e/CTC+RUPunct завершены
 | 3 — архитектура | частично | Native SDK принят пользователем; минимальный Android test host, без разработки визуального продукта |
 | K.1 — окружение | готово | JDK17, API35/NDK27d, AVD4096MiB/x86_64/4cores; версии и хеши pinned |
 | K.2/K.2a — runtime, веса, референсы | готово для baseline | sherpa/llama/ASR/diar/Qwen pinned; offline tar + лицензии; SHA проверены на AVD |
-| K.3 — данные | частично | FLEURS val40/test40, AMI dev/test, 3 русских Dialogs MP3; natural Russian RTTM/CTM ещё нет |
+| K.3 — данные | частично | FLEURS40/40,OpenSTT40,AMI,Dialogs3,5naturalRU silver RTTM; manual word CTM нет |
 | K.4 — gate подготовки | пройден | APK/JNI/веса работают offline на AVD4096MiB, exp_0019 |
 | 1.1 — desktop ASR screening | основное выполнено | CTC v3/v2, RNNT v3, Whisper base; дальнейшие ASR A/B по этапу 2 |
 | 1.2 — ASR Android / файл | выполнено | Тот же C API через APK/JNI, Android текст совпал с host |
 | 1.3 — diarization/merge | baseline выполнен | Auto diar + word overlap merge реализованы; dev threshold .8 выбран, короткие реплики проблемны |
 | 1.4 — LLM/JSON | baseline выполнен | JSON3/3 и genuine Qwen3 summary3/3 на Android; SAF export проверить отдельно |
-| 1.5 — gate baseline | pipeline пройден; SAF pending | Offline Android3/3 + LLM, WER3.53%, fullRTF .773, pipelinePSS314MiB, LLMPSS1166MiB |
+| 1.5 — gate baseline | native pipeline пройден; UI вне scope | Offline Android3/3 + LLM, WER3.53%, fullRTF .773, pipelinePSS314MiB, LLMPSS1166MiB |
 | 6 — метрики и журнал | частично | WER/CER/DER/time/RSS, hashes, CI и raw logs; cpWER есть; Android PSS/JER измерены; word timestamp GT/ошибки ещё отсутствуют |
 | 8 — автономный цикл | действует | A/B, worst cases, ≥3 гипотезы, accept/reject, сохранение лучшей конфигурации, следующий run |
 | 9 — Anti-Vocale | исследован | Ports/chunks/lifecycle/eval полезны; сетевые части/remote/Firebase не копируются |
@@ -496,3 +503,152 @@ deletions20 против14,inference RTF.059 против.036 и process RSS~648
 Очередь81–84 завершена последовательно,ошибочные гипотезы не приняты. Далее:
 новый embedding с собственной калибровкой и refinement границ коротких turn;
 ARM остаётся deferred по подтверждённому ограничению окружения. Без UI/LLM и повторных запросов устройства.
+
+
+## Текущий этап — TitaNet и диагностика alignment (85–89)
+
+TitaNet-large ONNX pinned:csukuangfj revision0743f301…,SHA d51abcf3…,101405493bytes.
+[Upstream NVIDIA card](https://huggingface.co/nvidia/speakerverification_en_titanet_large),CC-BY4,
+upstream revision0dc382f4…; card и canonical license сохранены с hashes. Модель другого training domain,
+не ожидаем автоматически русского выигрыша. Предварительно зафиксированы cosine-distance thresholds.4/.6/.8,
+window.1,minDuration.3/.5,тот же ASR и pilot-development. Ни один test для подбора не используется.
+
+**exp85:** Python diagnostic reproduces native merge byte-for-byte по3файлам; при замене только diarization
+на publisher speaker turns cpWER54.20%→17.46% (WER14.30% неизменен). Основной резерв здесь — diarization,
+не переписывание ASR-текста. Чувствительность reference-turn oracle к shift слов:-200ms21.36%,-100ms19.45%,
+0ms17.46%,+100ms16.54%,+200ms16.21%. **Oracle only**,не production и не timestamp MAE:
+publisher boundaries не word GT; не подбирать общий offset по этим числам.
+
+
+До просмотра результатов TitaNet выбран четвёртый publisher recording `clips/sFt2qKDPrj4.opus`
+(project35 JSON той же frozen revision) для **silver session holdout**,первые<=180s,полные turn.
+Ни thresholds,ни clip selection не подбираются по его распознаванию. Люди/источник лицензии всё ещё не независимо
+проверены; source silver не превращается в gold. Сначала baseline,затем один выбранный на dev кандидат.
+Повторное использование этой сессии для выбора следующих настроек не будет называться независимым test.
+
+
+Следующая preregistered hypothesis — **global reclustering**,research-only:
+до3 самых длинных predicted spans≥.8s,центр каждого≤8s,в сумме2..20s на initial cluster;
+pinned native sherpa embedding,complete-link cosine thresholds.2/.3/.4.
+Predicted одновременно активные голоса — cannot-link; oracle speaker count/labels не используются.
+Baseline69 words сохраняются,DER/JER/cpWER оцениваются после выбора mappings.
+Прототип хранит PCM только исследовательских3min fixtures в памяти; это не production RAM-профиль.
+
+
+### exp_0086–0089 — TitaNet dev screening
+
+| Порог | DER | JER | cpWER | Known speakers |
+| --- | --- | --- | --- | --- |
+| .4 | 43.59% | 49.20% | 87.61% | 12/19/15 |
+| .6 | 28.75% | 40.23% | 58.52% | 6/11/8 |
+| .8 | **21.09%** | **34.17%** | **45.22%** | 4/6/6 |
+
+Baseline ERes2Net.8:26.07/34.81/54.20%. Только TitaNet.8 улучшил все3метрики;
+он выбран **до** запуска single-session holdout90–92. Reference speaker independence неизвестна,
+это проверка переноса между записями,не gate gold. Рабочий preset пока прежний.
+93/94 проверяют global reclustering на dev отдельно для ERes2Net baseline69 и TitaNet88.
+
+
+### exp_0090–0094 — перенос и global reclustering
+
+Single-session holdout (`sFt2qKDPrj4`,177.9s,2 reference voices):
+ERes2Net baseline90 DER12.98%,JER11.13%,cpWER20.65%; frozen TitaNet.8 candidate91
+DER54.03%,JER72.96%,cpWER103.23%. WER13.55% совпадает. **Reject TitaNet promotion**:
+предварительный dev выигрыш не переносится,сильный speaker confusion при сходном числе кластеров.
+После просмотра этот holdout считается известной regression-сессией,не новым независимым test.
+
+| Global reclustering / threshold | dev DER | dev JER | dev cpWER |
+| --- | --- | --- | --- |
+| ERes2Net/.2 | 26.07% | 34.81% | 54.20% |
+| ERes2Net/.3 | 22.54% | 32.06% | 48.38% |
+| ERes2Net/.4 | 21.16% | 32.97% | 44.64% |
+| TitaNet/.2 | 18.80% | 31.37% | 39.32% |
+| TitaNet/.3–.4 | 17.87% | 30.71% | 37.16% |
+
+Выбран для дальнейшей проверки **ERes2Net global.4**: уменьшает DER/cpWER без замены embedding,
+хотя на dev меньше JER у.3. Выбор сделан по dev93,не по результату нового global holdout.
+Повторное вычисление cluster embedding использует runtime C API,эталоны — только scoring,
+reference count не передаётся. Production ещё не менялся. TitaNet global не считается решением регрессии91
+без отдельной проверки; не прикрывать плохую переносимость хорошими dev числами.
+
+
+### exp_0095–0098 — проверка global refinement и второго пунктуатора
+
+На известной regression-сессии global ERes2Net.4 не меняет baseline (DER12.98%,cpWER20.65%).
+Новая movie-сессия заранее frozen:175.17s,3голоса,377слов; zero shared6grams с тремя dev snippets.
+Publisher исправил90 текстовых сегментов в полной записи; provenance всё равно silver.
+WAV-префикс получен Range0..34560349 (точный диапазон/хеш — в lock),полный1.145GB source **не** скачан/не SHA-verified.
+Диапазон и source revision закреплены; производный mono16k WAV имеет собственный SHA; аудио не перекодировано перед native eval.
+Выбран только threshold.4,без подбора на этой сессии:
+DER25.02→21.25%,JER19.44→16.59%,cpWER43.24→33.42%,WER15.38% неизменен.
+Это основание переносить **опциональный** refinement в SDK и проверять parity/4GB,но не объявлять gold gate пройденным.
+
+Пунктуация98: Horizon-small268MB,Apache2,revision12b02a85…,last-subtoken labels,CPU ORT,
+100words/window,max512tokens,сохраняет слова/case. MicroF146.55% противRUPunct40.68% и e2e65.18%;
+punctuation-token WER24.93% против27.15% и21.67%. Lexical sequence сохранена3/3.
+Большая модель улучшает RUPunct,но не оправдывает production integration против текущего e2e tradeoff;
+ни один отдельный пунктуатор пока не принят в SDK.
+
+**Сейчас:** перенос global ERes2Net.4 в native как opt-in `nh_transcribe_file_with_refinement`.
+Существующие структуры и default API не меняются. После diarizer/release — embedding/release → clustering → merge.
+Рабочая PCM-выборка≤20s/cluster,до3spans,cluster cap128default/256max; cannot-links сохраняются complete linkage.
+Далее native/prototype parity,ASan/UBSan,ABI cross-build,Android4GB и callback cancel/budget checks.
+
+
+Native99 на3dev файлах завершён. Native100 обнаружил ограничение валидатора: upstream последний
+segmentation frame заканчивается177927ms при audio177900ms. Сбой до export,не crash; сохранён.
+Коррекция: исходные diar timestamps допускают backend EOF quantization,а чтение PCM всегда clamp к frames;
+слова/исходные turn timestamps не переписываются. Повтор104 получает новыйID,далее parity102.
+
+
+### Decoder regression115 и невалидные Android106–112
+
+Host controls105 прошли:cap1→NH_INVALID_ARGUMENT до refinement load;mid-stage cancel→NH_CANCELLED;
+callback reentry→NH_BUSY;во всех случаях нетfinalexport. Native parity102 exact5/5.
+
+AVD106–111 **не являются валидными performance/quality измерениями**: header-identical movie WAV,
+сохранённый под legacy test-host `.mp3` именем,декодировался всего в279frames вместо2802748.
+Это extension-priority miniaudio,false-positive MPEG sync внутриPCM; повторено на host115.
+Детерминированный synthetic WAV с MPEG-sync bytes:16000frames при`.wav`,28840при`.mp3`.
+Предварительная проверка другого WAV по1s не выявляла data-dependent false positive; вывод об общем sniffing был слишком широким.
+Cancel112 поэтому не достиг embedding-stage и сохранён как failure. Сырые результаты106–112 не переписываются.
+
+Исправление SDK:RIFF/RF64 WAVE header явно выбирает WAV backend до filename hint.
+Добавлен regression test,который падает на старом SDK;после исправления сравнивает весь PCM/offsets.
+Android eval теперь сверяет decoded frames с frozen duration/host probe (tolerance2ms) до публикации метрик;
+ошибка останавливает очередь. Повторы117–125 получают новыеIDs;source bytes/модели не меняются.
+
+
+### exp_0116–0128 — исправление декодера и квалификация native opt-in
+
+После WAV-header priority fix regression116 даёт полную PCM-идентичность при разных suffix:
+synthetic16000/16000frames,movie2802748/2802748. Тест сначала воспроизвёл ошибку на старом SDK,
+затем прошёл;повторены native-tests,ASan/UBSan,mobile-build и APK/офлайн проверки.
+
+Три свежих процесса baseline117/119/121 vs refinement118/120/122,одинаковые SHA входа/моделей/APK:
+median52.916→54.592s,RTF.3021→.3116,median paired ratio1.03167;
+max sampledPSS377947→378014KiB (~369MiB),process-lifetimeRSS458540→458308KiB.
+ASR words/timestamps и initial diarization внутри каждой A/B пары exact equal.
+Android cpWER42.97→33.16%,model-load/feature stage cancellation123 безfinalJSON.
+MP3 regression125:WER3.53%,cpWER3.23/46.67/17.95% — прежние результаты,без ухудшения.
+
+Strict host/Android full-JSON equality analysis124 не прошёл и сохранён отдельно.
+В Android есть5 lexical substitutions относительноhost;сумма ошибок противэталона меньше на1.
+Анализ126 не скрывает дельту и проверяет инвариантность **внутри target A/B**.
+Input PCM128 побайтно совпадает сhost SHA`3ed9bd9e…`;различия появляются послеdecode,
+но конкретные feature/inference операции не локализованы. Нельзя приравнивать fresh-process reload к coldboot:
+OS file cache не сбрасывался. Эти timings — x86 AVD,не физический ARM.
+
+**Решение:** принять реализацию/контроль ресурсов experimental opt-in ERes2Net global.4;
+сохранитьdefaultoff и исходный main preset до более независимого корпуса.
+Dispatch теперь сохраняет stdout/stderr/config/failure и требуетmetrics приexit0;
+failed/invalid IDs не повторяются. Три model-free lifecycle tests проверяют эти правила.
+
+### exp_0129–0131 — короткий третий голос
+
+Initial threshold.5 +global.4:short cpWER46.67% прежний,noisy17.95→33.33% — reject.
+Threshold.65:все3структурных результата прежние — выигрыша нет.
+Oracle3 diagnostic131 всё ещё возвращает2голоса иcpWER46.67%;oracle source occupancy
+даёт6.67% при тех же ASR words. Точное число голосов не входит вproduction.
+Это свидетельствует о проблеме segmentation/local speaker visibility,не только финальногоthreshold;
+следующая гипотеза — локальные voice masks/другая segmentation и embeddings отдельных speech turns.

@@ -89,6 +89,11 @@ int main(void) {
   CHECK(nh_summarize_file("c-abi-fixture.wav", &llm, NULL, NULL) == NH_INVALID_ARGUMENT);
   nh_pipeline_options tuning = {sizeof(nh_pipeline_options), 0.1f, 0.2f, 2};
   CHECK(nh_transcribe_file_with_options("c-abi-fixture.wav", &pipeline, &tuning, NULL, NULL) == NH_INVALID_ARGUMENT);
+  pipeline.output_json = "c-abi-result.json";
+  nh_speaker_refinement_config refinement = {sizeof(nh_speaker_refinement_config),2.0f,128};
+  CHECK(nh_transcribe_file_with_refinement("c-abi-fixture.wav",&pipeline,NULL,&refinement,NULL,NULL)==NH_INVALID_ARGUMENT);
+  refinement.cluster_threshold=.4f;refinement.max_clusters=257;
+  CHECK(nh_transcribe_file_with_refinement("c-abi-fixture.wav",&pipeline,NULL,&refinement,NULL,NULL)==NH_INVALID_ARGUMENT);
   nh_vad *vad = NULL;
   nh_vad_config vad_config = {sizeof(nh_vad_config), "missing", 1, 0.5f, 0.3f, 0.1f, 20};
   CHECK(nh_vad_create(&vad_config, &vad) == NH_IO_ERROR && vad == NULL);

@@ -3,7 +3,7 @@ package com.hexteam.audiohost;
 public final class Native {
     public static final class JobOptions {
         public int threads=4, chunkSeconds=20, maxAudioSeconds=600, attributionMode=0;
-        public float threshold=0.8f, minOn=0.3f, minOff=0.5f, windowShiftRatio=0.1f;
+        public float threshold=0.8f, minOn=0.3f, minOff=0.5f, windowShiftRatio=0.1f, refinementThreshold=0;
         public String asrModel="giga-v3-ctc/model.int8.onnx", tokens="giga-v3-ctc/tokens.txt";
         public String segmentation="diarization/segmentation-model.onnx", embedding="diarization/embedding.onnx";
         public String checkpointDirectory=null;

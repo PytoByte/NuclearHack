@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import io
 import json
+import re
 from pathlib import Path
 import shlex
 import subprocess
@@ -19,9 +20,12 @@ def main():
     parser.add_argument('--bundle', type=Path, default=ROOT / '.build/offline-models.tar')
     parser.add_argument('--clean', action='store_true')
     parser.add_argument('--skip-bundle', action='store_true', help='Only upload additional pinned evaluation assets')
+    parser.add_argument('--skip-apk',action='store_true',help='Preload into the existing test host; runner still verifies installed APK SHA')
+    parser.add_argument('--audio-manifest',action='append',type=Path,default=[],help='Upload frozen audio bytes only; legacy host filename suffix does not select codec')
     parser.add_argument('--model', action='append', default=[])
     parser.add_argument('--fleurs', action='store_true', help='Upload validation audio only, without references')
     args = parser.parse_args()
+    if args.clean and args.skip_apk:parser.error('--clean requires APK installation')
     env = environment()
     adb = [str(ROOT / '.tools/android-sdk/platform-tools/adb'), '-P', '5039', '-s', 'emulator-5558']
     def run(command, **kwargs): return subprocess.run(adb + command, env=env, check=True, **kwargs)
@@ -29,7 +33,7 @@ def main():
         raise SystemExit('Refuse deployment outside the isolated emulator')
     if args.clean:
         subprocess.run(adb + ['uninstall', PACKAGE], env=env, capture_output=True)
-    run(['install', '-r', str(ROOT / '.build/android-host/audio-sdk-host.apk')])
+    if not args.skip_apk:run(['install', '--no-incremental', '-r', str(ROOT / '.build/android-host/audio-sdk-host.apk')])
     def remote(command, **kwargs): return run(['shell', 'run-as ' + PACKAGE + ' sh -c ' + shlex.quote(command)], **kwargs)
     def upload(stream, relative, expected):
         destination = 'files/' + relative
@@ -82,6 +86,14 @@ def main():
         if sha256(source) != item['audio_sha256']: raise ValueError('Invalid audio fixture')
         with source.open('rb') as stream:
             upload(stream, 'audio/' + item['audio_id'] + '.mp3', item['audio_sha256'])
+    for manifest_path in args.audio_manifest:
+        for item in map(json.loads,manifest_path.read_text().splitlines()):
+            if not re.fullmatch(r'[a-zA-Z0-9_-]+',item['audio_id']):raise ValueError('Invalid test audio ID')
+            source=ROOT/item['audio']
+            if sha256(source)!=item['audio_sha256']:raise ValueError('Changed audio manifest fixture')
+            # AudioInstrumentation has legacy .mp3 storage names. The native
+            # decoder sniffs the actual WAV/MP3 header; do not transcode here.
+            with source.open('rb') as stream:upload(stream,'audio/'+item['audio_id']+'.mp3',item['audio_sha256'])
     run(['shell', 'cmd', 'connectivity', 'airplane-mode', 'enable'])
     print('APK/model/audio installation complete; emulator airplane mode enabled')
 

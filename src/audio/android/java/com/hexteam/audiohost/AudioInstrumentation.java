@@ -41,6 +41,7 @@ public final class AudioInstrumentation extends Instrumentation {
             job.maxAudioSeconds=Integer.parseInt(arguments.getString("max_seconds","600"));
             job.minOn=Float.parseFloat(arguments.getString("min_on","0.3"));
             job.minOff=Float.parseFloat(arguments.getString("min_off","0.5"));
+            job.refinementThreshold=Float.parseFloat(arguments.getString("refinement_threshold","0"));
             job.windowShiftRatio=Float.parseFloat(arguments.getString("window_shift_ratio","0.1"));
             job.attributionMode=Integer.parseInt(arguments.getString("attribution_mode","0"));
             String model=arguments.getString("asr_model","giga-v3-ctc"), modelFile=arguments.getString("model_file","model.int8.onnx");
@@ -90,7 +91,8 @@ public final class AudioInstrumentation extends Instrumentation {
                             .put("memory_mb", currentPss.get() / 1024.0).put("memory_kind", "latest_sampled_pss")
                             .put("status", stage.endsWith("done") ? "done" : "processing")
                             .put("model", stage.startsWith("llm") ? "qwen3-0.6b-q8" :
-                                stage.startsWith("diarization") ? segmentation+"/"+embedding : model)
+                                stage.startsWith("diarization") ? segmentation+"/"+embedding :
+                                stage.startsWith("speaker_") ? embedding : model)
                             .put("config_hash", arguments.getString("config_hash", "not-provided"))
                             .put("completed_frames", done).put("total_frames", total);
                         try (FileWriter log = new FileWriter(events, true)) { log.write(event.toString() + "\n"); }

@@ -13,6 +13,7 @@ from native_sdk import ROOT,record_harness
 from android_device import AndroidDevice,PACKAGE
 from scoring import aggregate,counts,speaker_coverage,text_metrics
 from run_file_pipeline import cpwer
+from compare_punctuation import summarize
 sys.path.insert(0,str(ROOT/'scripts'))
 from bootstrap_models import sha256
 from audio_tools import transcript as validate
@@ -27,6 +28,7 @@ def main():
     p.add_argument('--quant',choices=['fp32','int8'],default='fp32')
     p.add_argument('--min-on',type=float,default=.3);p.add_argument('--min-off',type=float,default=.5)
     p.add_argument('--window-shift-ratio',type=float,default=.1)
+    p.add_argument('--refinement-threshold',type=float,default=0)
     p.add_argument('--attribution',choices=['overlap','midpoint'],default='overlap')
     p.add_argument('--manifest',type=Path,default=ROOT/'eval/data/dialogs-smoke.jsonl')
     p.add_argument('--cases',help='Comma-separated IDs; empty selects full manifest')
@@ -42,8 +44,26 @@ def main():
     manifest=args.manifest.resolve();fixtures={r['audio_id']:r for r in (json.loads(l) for l in manifest.read_text().splitlines())}
     selected=args.cases.split(',') if args.cases else list(fixtures)
     if any(i not in fixtures for i in selected):p.error('Unknown audio ID')
+    selected_paths=set(model.get('runtime_files',model['files']))
+    selected_paths.update(['models/diarization/'+args.embedding,'models/diarization/'+('segmentation-model.onnx' if args.quant=='fp32' else 'segmentation-model.int8.onnx')])
+    selected_files=[f for f in catalog['files'] if f['path'] in selected_paths]
+    if {f['path'] for f in selected_files}!=selected_paths:raise ValueError('Unpinned model selection')
+    expected_frames={}
+    for item in selected_files:
+        actual=device.shell('run-as',PACKAGE,'toybox','sha256sum','files/'+item['path']).split()[0]
+        if actual!=item['sha256']:raise ValueError('Device model SHA differs: '+item['path'])
+    for ident in selected:
+        fixture=fixtures[ident];source=ROOT/fixture['audio']
+        if sha256(source)!=fixture['audio_sha256']:raise ValueError('Changed source audio: '+ident)
+        if fixture.get('num_samples') is not None:expected_frames[ident]=int(fixture['num_samples'])
+        elif fixture.get('audio_seconds') is not None:expected_frames[ident]=round(fixture['audio_seconds']*16000)
+        else:
+            probe=json.loads(subprocess.check_output([str(ROOT/'.build/audio/nh-audio'),'probe',str(source)],text=True))
+            expected_frames[ident]=round(probe['audio_seconds']*16000)
+        actual=device.shell('run-as',PACKAGE,'toybox','sha256sum','files/audio/'+ident+'.mp3').split()[0]
+        if actual!=fixture['audio_sha256']:raise ValueError('Device audio SHA differs: '+ident)
     config=dict(vars(args));config.update(manifest=str(manifest.relative_to(ROOT)),manifest_sha256=sha256(manifest),
-        abi=device.abi,avd_configured_ram_mib=4096,apk_sha256=device.apk_sha256,
+        abi=device.abi,device_model_files=selected_files,device_input_sha_verified=True,expected_decoded_frames=expected_frames,refinement_max_clusters=128,input_storage_suffix='.mp3 (legacy test-host name; native codec follows source header)',avd_configured_ram_mib=4096,apk_sha256=device.apk_sha256,
         model_lock_sha256=sha256(ROOT/'config/audio-models.lock.json'),selected_audio_ids=selected)
     record_harness(out,config)
     with zipfile.ZipFile(device.apk) as apk:
@@ -54,7 +74,7 @@ def main():
     values=dict(run_id=args.experiment,threads=args.threads,threshold=args.threshold,chunk_seconds=args.chunk_seconds,
         max_seconds=args.max_seconds,summary=int(args.summary),checkpoint=int(args.checkpoint),asr_model=args.model,
         model_file=model_file,embedding=args.embedding,segmentation='segmentation-model.onnx' if args.quant=='fp32' else 'segmentation-model.int8.onnx',
-        min_on=args.min_on,min_off=args.min_off,window_shift_ratio=args.window_shift_ratio,
+        min_on=args.min_on,min_off=args.min_off,window_shift_ratio=args.window_shift_ratio,refinement_threshold=args.refinement_threshold,
         attribution_mode=int(args.attribution=='midpoint'),cases=','.join(selected),expect_cancel=int(args.expect_cancel),
         cancel_after_frames=args.cancel_after_frames,config_hash=sha256(out/'config.json'))
     if args.cancel_stage:values['cancel_stage']=args.cancel_stage
@@ -88,6 +108,11 @@ def main():
         trace=json.loads(pull(name+'.json.trace.json').read_text())
         if args.summary:pull(name+'.summary.txt')
         case['audio_seconds']=max(((s['offset_frames']+s['frames'])/16000 for s in trace['asr']),default=0)
+        case['decoded_frames']=round(case['audio_seconds']*16000)
+        if abs(case['decoded_frames']-expected_frames[name])>32:
+            (out/'failure.json').write_text(json.dumps(dict(stage='decoded_frame_count',audio_id=name,actual_frames=case['decoded_frames'],expected_frames=expected_frames[name],measurement_valid=False)))
+            raise ValueError('Decoded source length differs from frozen input: '+name)
+        case['decoded_frames_verified']=True
         case['full_rtf']=case['wall_ms']/1000/case['audio_seconds'] if case['audio_seconds'] else None
         if any(t['end_ms']>math.ceil(case['audio_seconds']*1000)+1 for t in output['transcript']):raise ValueError('Export exceeds source timeline')
         fixture=fixtures[name]
@@ -102,6 +127,9 @@ def main():
         case.update(json_valid=True,transcript_sha256=sha256(output_path),
             predicted_speakers=len({r['speaker_id'] for r in output['transcript']}),expected_speakers=fixture.get('speakers'))
     metrics['normalized']=aggregate([c['normalized'] for c in metrics['cases'] if 'normalized' in c])
+    text_rows=[c['text_metrics'] for c in metrics['cases'] if 'text_metrics' in c]
+    if text_rows:
+        metrics['text_metrics']=summarize(text_rows);metrics['cer']=metrics['text_metrics']['normalized_cer']['cer']
     metrics['scope']='Android4096MiB '+device.execution+'; translated timings are not physical ARM performance'
     (out/'scored-metrics.json').write_text(json.dumps(metrics,indent=2))
     report=ROOT/'eval/results'/args.experiment;report.mkdir(parents=True,exist_ok=False)

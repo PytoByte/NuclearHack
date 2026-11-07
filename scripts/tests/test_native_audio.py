@@ -47,6 +47,19 @@ class NativeAudio(unittest.TestCase):
         status = self.lib.nh_decode_file(os.fsencode(path or self.path), 16000, block, consume, None)
         return status, samples, offsets, sizes
 
+    def test_wav_payload_with_mp3_sync_ignores_misleading_suffix(self):
+        # Valid PCM may contain a valid-looking MPEG frame header by chance.
+        payload=((bytes.fromhex('fffb9064')+bytes(413))*70)[:32000].ljust(32000,b'\0')
+        with wave.open(str(self.path),'wb') as f:
+            f.setparams((1,2,16000,0,'NONE','not compressed'));f.writeframes(payload)
+        renamed=self.path.with_suffix('.mp3');renamed.write_bytes(self.path.read_bytes())
+        expected=self.decode();actual=self.decode(renamed)
+        self.assertEqual(expected[0],0)
+        self.assertEqual(len(expected[1]),16000)
+        self.assertEqual(actual[0],0)
+        self.assertEqual(len(actual[1]),16000)
+        self.assertEqual(actual,expected)
+
     def test_resampling_offsets_and_signal(self):
         self.signal()
         status, samples, offsets, sizes = self.decode()

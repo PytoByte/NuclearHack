@@ -1,0 +1,9 @@
+{
+  "stage": "host_device_exactness",
+  "word_substitutions": 5,
+  "word_deletions": 0,
+  "word_insertions": 0,
+  "crash": false,
+  "rerun_analysis": "exp_0126",
+  "note": "Target A/B quality is valid; cross-platform equality is not assumed"
+}

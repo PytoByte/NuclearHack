@@ -169,7 +169,16 @@ extern "C" nh_status nh_transcribe_file(const char *input, const nh_pipeline_con
 }
 extern "C" nh_status nh_transcribe_file_with_options(const char *input, const nh_pipeline_config *config,
     const nh_pipeline_options *options, nh_progress_callback progress, void *user) {
+  return nh_transcribe_file_with_refinement(input,config,options,nullptr,progress,user);
+}
+extern "C" nh_status nh_transcribe_file_with_refinement(const char *input,const nh_pipeline_config *config,
+    const nh_pipeline_options *options,const nh_speaker_refinement_config *refinement,
+    nh_progress_callback progress,void *user) {
   return nh::guard([&]() -> nh_status {
+    if(refinement && (refinement->struct_size!=sizeof(*refinement) ||
+        !std::isfinite(refinement->cluster_threshold) || refinement->cluster_threshold<=0 ||
+        refinement->cluster_threshold>=2 || refinement->max_clusters>256))
+      return nh::fail(NH_INVALID_ARGUMENT,"Invalid bounded speaker refinement configuration");
     if (options && (options->struct_size != sizeof(*options) || options->attribution_mode > 1 ||
         !std::isfinite(options->min_duration_on) || options->min_duration_on < 0 || options->min_duration_on > 10 ||
         !std::isfinite(options->min_duration_off) || options->min_duration_off < 0 || options->min_duration_off > 10 ||
@@ -268,6 +277,15 @@ extern "C" nh_status nh_transcribe_file_with_options(const char *input, const nh
         if (code != NH_OK) return code;
       }
     }
+    std::vector<nh::Turn> initial_turns;
+    nh::RefinementStats refinement_stats;
+    if(refinement && decoded.frames) {
+      initial_turns=diar.turns;
+      Mapping pcm(spool.file,decoded.frames);
+      code=nh::refine_speakers(static_cast<const float *>(pcm.data),static_cast<uint32_t>(decoded.frames),
+          diar.turns,config->embedding,config->threads,*refinement,progress,user,refinement_stats);
+      if(code!=NH_OK)return code;
+    }
     if (emit("merge", decoded.frames, decoded.frames)) return nh::fail(NH_CANCELLED, "Cancelled before export");
     auto utterances = nh::attribute_words(words, diar.turns, options && options->attribution_mode == 1);
     Json output{{"transcript", Json::array()}};
@@ -277,6 +295,13 @@ extern "C" nh_status nh_transcribe_file_with_options(const char *input, const nh
       Json trace{{"asr", std::move(raw_asr)}, {"words", Json::array()}, {"speaker_turns", Json::array()}};
       for (const auto &w : words) trace["words"].push_back({{"start_ms", w.start_ms}, {"end_ms", w.end_ms}, {"text", w.text}});
       for (const auto &t : diar.turns) trace["speaker_turns"].push_back({{"speaker", t.speaker}, {"start_ms", t.start_ms}, {"end_ms", t.end_ms}});
+      if(refinement) {
+        trace["initial_speaker_turns"]=Json::array();
+        for(const auto &t:initial_turns)trace["initial_speaker_turns"].push_back({{"speaker",t.speaker},{"start_ms",t.start_ms},{"end_ms",t.end_ms}});
+        trace["speaker_refinement"]={{"threshold",refinement->cluster_threshold},
+            {"initial_clusters",refinement_stats.initial_clusters},{"final_clusters",refinement_stats.final_clusters},
+            {"embedding_clusters",refinement_stats.embedding_clusters}};
+      }
       write_json(config->trace_json, trace);
     }
     write_json(config->output_json, output);

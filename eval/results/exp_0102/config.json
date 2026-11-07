@@ -1,0 +1,76 @@
+{
+  "experiment": "exp_0102",
+  "case_set": [
+    [
+      "exp_0099",
+      "exp_0069",
+      "exp_0093",
+      "eval/data/russian-conversation-pilot.jsonl"
+    ],
+    [
+      "exp_0104",
+      "exp_0090",
+      "exp_0095",
+      "eval/data/russian-conversation-heldout-session.jsonl"
+    ],
+    [
+      "exp_0101",
+      "exp_0096",
+      "exp_0097",
+      "eval/data/russian-conversation-movie-session.jsonl"
+    ]
+  ],
+  "threshold": 0.4,
+  "input_sha256": {
+    "eval/data/russian-conversation-pilot.jsonl": "2662029235605d267c2b616b090c8550233f1b518589c1764b2fc1aca61dcd15",
+    "eval/results/exp_0093/metrics.json": "62e5b371dc50449af833d6e680afc160f96fed1a00c3b0fe19839cf90265254d",
+    ".audio-runs/exp_0069/ru-youtube-yCX4MRy14zw/transcript.json.trace.json": "84dad1c6117593461dd773292e4726476c1cd1075a3ce7393d39ff0dcad4e031",
+    ".audio-runs/exp_0099/ru-youtube-yCX4MRy14zw/transcript.json.trace.json": "52f438bdfe0a49c0290811e9f3bbcb8e9c3ce25fcb76346a5bedf5258ed2ca71",
+    ".audio-runs/exp_0099/ru-youtube-yCX4MRy14zw/transcript.json": "96f5354deb82c7436e325f000bf3d660f7934b2a2acb7b4f80373b02b1b37ccc",
+    ".audio-runs/exp_0069/ru-youtube-p0_iIC13bs8/transcript.json.trace.json": "05d4e5d729be69190cbdf8c90caba9cd1cd0ea0dba4362f09464da1216ffcb1d",
+    ".audio-runs/exp_0099/ru-youtube-p0_iIC13bs8/transcript.json.trace.json": "d87644a9b32d96c41d351bc5cdf1c0d9bea92878080c8b089578952bd5878728",
+    ".audio-runs/exp_0099/ru-youtube-p0_iIC13bs8/transcript.json": "4b822be2f7ba91168b069f1665d1792ae962e3ec9ca5175bfb2766fb71f4f0ae",
+    ".audio-runs/exp_0069/ru-youtube-nr3hmL9bcPU/transcript.json.trace.json": "01580ea6ab4f7b846a39b732683ef9a811247bdcf5d145988e7299496d67bcec",
+    ".audio-runs/exp_0099/ru-youtube-nr3hmL9bcPU/transcript.json.trace.json": "9614dbee4b6951ba7d54258e7ca2696788b2f887aa06c55d4b91ff1c6dcf7d6b",
+    ".audio-runs/exp_0099/ru-youtube-nr3hmL9bcPU/transcript.json": "0895b5bc2973558e4a638b9be9d06a169a3feae17a7b2c47e5fc01cbe824b9aa",
+    "eval/data/russian-conversation-heldout-session.jsonl": "d4214b8bf5c13548f4fdbde0a50b313d19589d1ed08b7c0edced972abad73f99",
+    "eval/results/exp_0095/metrics.json": "83a1315f964ed8047e652a92fd1dc1c11eb5aa723e1d1263c591381ba7ee52b7",
+    ".audio-runs/exp_0090/ru-youtube-sFt2qKDPrj4/transcript.json.trace.json": "465cabcd4ba08fd948e0efff7fffc6e4c101274bd6ad2b66c64ee24edf7502d4",
+    ".audio-runs/exp_0104/ru-youtube-sFt2qKDPrj4/transcript.json.trace.json": "32390e789f0e3732dbdf319df4f4e7abeee738ac4001562e6773e3b6ddcd1a20",
+    ".audio-runs/exp_0104/ru-youtube-sFt2qKDPrj4/transcript.json": "69e2d35c7826fde27a4ea5d8d813c0bd9bd9884c24a156a2872abe8aea3fd294",
+    "eval/data/russian-conversation-movie-session.jsonl": "ac5c09d071eea5a0857aea86321990f11f678063cfc06bf057f00aad4a7f94b0",
+    "eval/results/exp_0097/metrics.json": "009d811c6f2170ecdab99e02f27c49102dd74fca48c4bb29b660dbe29a8f36e1",
+    ".audio-runs/exp_0096/ru-youtube-movie_podcast/transcript.json.trace.json": "38440e52c3b71f057de31f48ed6accc01b762089daaff41d23d65aeba2de3716",
+    ".audio-runs/exp_0101/ru-youtube-movie_podcast/transcript.json.trace.json": "d914c0962b79abb397c4e5716cbf885a4a104b1989035f17daebe4ba1ee3d1a2",
+    ".audio-runs/exp_0101/ru-youtube-movie_podcast/transcript.json": "7d40ced532855f65c781483838036341def4e32d5011850c708c632df3dba50c"
+  },
+  "harness_files": {
+    "android_device.py": "919d5710c1579b1f677fdad0a6be7193c864cad806abcf94e5d84a4d3e4580f9",
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "compare_punctuation.py": "34eb1ca6bc3579df9a1cdc659f05625eee7a4736be8a11b5b7cd692a4ca73977",
+    "native_sdk.py": "02f0568d880670d961c6035ddf84d3fc86a5b809e8cf970adfebb79bea470ed5",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_audio_variants.py": "8637cf8057259a0c217e0a84a3c1e87804e3d2df71842b2658901effbab07202",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "prepare_openstt_calls.py": "f8801cea046deffaa8b9862c85a827a64a9d1ee89649c466c93c467257bd1a0a",
+    "prepare_russian_pilot.py": "d534440d889980095ec23dddd79d3e3eb02e2963bbb8a0836e7bee027e3d42f2",
+    "probe_attribution.py": "22285dfb17c2c7097a0d03731eda04fdf60813bd3fd01546cadf15416a46ba50",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_codec.py": "f52134e5494c0661f7359efcc58f3f1826d6dfb9226a040feaf1dd3944f2de0b",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "probe_reclustering.py": "edc23b5c5a71045bd35db980660bf4a30de33ab258ea1f7f8f217bc6af23e422",
+    "probe_refinement_controls.py": "820745fd78313abe0d3590a71931db199338461e01dd5c82e1074193ffe1d336",
+    "punctuation.py": "75677579b6a0e1cfc7302520acbf3b8a6899375b22d8a792c08f26226bfbb211",
+    "run_android_asr.py": "493937d5deaecded8447ff4bba80d85e6cd8968d2bef82343f5935178765e866",
+    "run_android_pipeline.py": "ac9e2eacfc468d7a7990bb7fc20801141e6aa1ad71e3ab75032b7fe87075ea92",
+    "run_asr.py": "1b11dde0844f3a42ead587a349b1f30990ba1138215873b03a0e9325d110e11f",
+    "run_diarization.py": "c207c6c0f745b61c96efc2c336afcf4faa87fa18aa1a7be0b08efcb4e58b8dc9",
+    "run_file_pipeline.py": "1042963e6c071b9c9dfab76efde2cfe773bb3859e4cae5ec1b61c09aee0f3bd8",
+    "run_fragment_asr.py": "b85255aff77453667bcb0eba1ac21b2da5690d07d02e0ff9fa9b918a4a69b90e",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "score_conversation_diarization.py": "d7f917940386a8b067a53b8696972322c759546d2105fcf1d80e375707c3ee17",
+    "scoring.py": "0c51bd3899af8b51845afdd020de61f9b1d1cf4dd5ccf2efdf03a952e5bfbc9e",
+    "verify_refinement.py": "5b1f0b75c84b117edbed9fb118264f380574ef3ac55a2c00d5098d8f76ca848b"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "experiment_id": "exp_0092",
+  "scope": "Russian conversational silver pilot: publisher turns, not independently audited gold; diagnostic DER/JER",
+  "runs": {
+    "exp_0090": {
+      "der": 0.12978357408646982,
+      "jer": 0.11127129845362761,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-sFt2qKDPrj4",
+          "der_details": {
+            "correct": 134.22899999999998,
+            "missed detection": 3.2240000000000038,
+            "total": 138.939,
+            "confusion": 1.485999999999997,
+            "false alarm": 13.322000000000028,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761,
+          "reference_speakers": 2,
+          "predicted_speakers": 4
+        }
+      ]
+    },
+    "exp_0091": {
+      "der": 0.5403306487019487,
+      "jer": 0.729559281614592,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-sFt2qKDPrj4",
+          "der_details": {
+            "correct": 76.95099999999996,
+            "missed detection": 3.2240000000000038,
+            "total": 138.939,
+            "confusion": 58.764000000000024,
+            "false alarm": 13.085000000000019,
+            "diarization error rate": 0.5403306487019487
+          },
+          "jer": 0.729559281614592,
+          "reference_speakers": 2,
+          "predicted_speakers": 5
+        }
+      ]
+    }
+  }
+}

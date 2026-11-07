@@ -46,7 +46,9 @@ int main(int argc, char **argv) {
           argc > 13 ? std::stof(argv[13]) : 0.5f, argc > 14 ? static_cast<uint32_t>(std::stoul(argv[14])) : 0,
           argc > 16 && std::string(argv[16]) != "-" ? argv[16] : nullptr,
           argc > 17 ? std::stof(argv[17]) : 0.1f};
-      const auto code = nh_transcribe_file_with_options(argv[2], &config, &options, progress, nullptr);
+      nh_speaker_refinement_config refinement{sizeof(nh_speaker_refinement_config),argc>18?std::stof(argv[18]):0.0f,argc>19?static_cast<uint32_t>(std::stoul(argv[19])):128};
+      const auto code = refinement.cluster_threshold!=0 ? nh_transcribe_file_with_refinement(argv[2],&config,&options,&refinement,progress,nullptr)
+          : nh_transcribe_file_with_options(argv[2], &config, &options, progress, nullptr);
       if (code != NH_OK) std::cerr << nh_last_error() << '\n';
       return code;
     } catch (const std::exception &e) { std::cerr << e.what() << '\n'; return 2; }

@@ -29,7 +29,7 @@ def main():
     from punctuation import RUPunct
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--experiment',required=True)
     p.add_argument('--baseline',required=True);p.add_argument('--e2e',required=True)
-    p.add_argument('--manifest',default='eval/data/russian-conversation-pilot.jsonl');args=p.parse_args()
+    p.add_argument('--manifest',default='eval/data/russian-conversation-pilot.jsonl');p.add_argument('--extra-model',choices=['horizon-punct-small']);args=p.parse_args()
     out=ROOT/'.audio-runs'/args.experiment;out.mkdir(parents=True,exist_ok=False)
     lock=json.loads((ROOT/'config/audio-models.lock.json').read_text())
     model=next(m for m in lock['models'] if m['id']=='rupunct-small-int8')
@@ -38,8 +38,18 @@ def main():
         if sha256(ROOT/f['path'])!=f['sha256']:raise ValueError('Changed punctuation model')
     config=dict(vars(args),model=model,model_files=files,policy='text-v2',context_words=100,
                 manifest_sha256=sha256(ROOT/args.manifest),scope='silver conversational pilot; CPU ORT1.23.2, not mobile punctuation inference')
+    if args.extra_model:
+        extra=next(m for m in lock['models'] if m['id']==args.extra_model)
+        extra_files=[f for f in lock['files'] if f['path'] in extra['files']]
+        for f in extra_files:
+            if sha256(ROOT/f['path'])!=f['sha256']:raise ValueError('Changed extra punctuation model')
+        config['extra_model']=extra;config['model_files']+=extra_files
     record_harness(out,config);(out/'config.json').write_text(json.dumps(config,indent=2))
     start=time.perf_counter();punct=RUPunct();load=time.perf_counter()-start
+    additional=None;extra_load=extra_latency=0
+    if args.extra_model:
+        from punctuation import HorizonPunct
+        start=time.perf_counter();additional=HorizonPunct();extra_load=time.perf_counter()-start
     rows=[];latency=0
     for fixture in map(json.loads,(ROOT/args.manifest).read_text().splitlines()):
         ident=fixture['audio_id'];reference=ROOT/fixture['reference']
@@ -51,10 +61,12 @@ def main():
             chunks[key]=[r['backend']['text'] for r in json.loads(path.read_text())['asr']]
             texts[key]=' '.join(chunks[key]);config.setdefault('input_sha256',{})[str(path.relative_to(ROOT))]=sha256(path)
         start=time.perf_counter();texts['ctc_rupunct']=' '.join(punct(s) for s in chunks['ctc']);latency+=time.perf_counter()-start
+        if additional:
+            start=time.perf_counter();texts['ctc_horizon']=' '.join(additional(s) for s in chunks['ctc']);extra_latency+=time.perf_counter()-start
         rows.append(dict(audio_id=ident,scores={k:text_metrics(truth,t) for k,t in texts.items()}))
         (out/(ident+'.json')).write_text(json.dumps(dict(reference=truth,hypotheses=texts),ensure_ascii=False,indent=2))
     metrics=dict(experiment_id=args.experiment,scope=config['scope'],cases=rows,tagger_load_seconds=load,tagger_inference_seconds=latency,
-                 variants={k:summarize([r['scores'][k] for r in rows]) for k in texts})
+                 extra_tagger_load_seconds=extra_load,extra_tagger_inference_seconds=extra_latency,variants={k:summarize([r['scores'][k] for r in rows]) for k in texts})
     rng=np.random.default_rng(42);diff=[]
     for _ in range(2000):
         sampled=[rows[i] for i in rng.integers(0,len(rows),len(rows))]

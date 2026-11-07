@@ -111,9 +111,11 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_transcribeJo
   config.cluster_threshold=real("threshold");
   nh_pipeline_options tuning{sizeof(nh_pipeline_options),real("minOn"),real("minOff"),
       static_cast<uint32_t>(integer("attributionMode")),checkpoint.empty()?nullptr:checkpoint.c_str(),real("windowShiftRatio")};
+  nh_speaker_refinement_config refinement{sizeof(nh_speaker_refinement_config),real("refinementThreshold"),128};
   env->DeleteLocalRef(type);
   auto callback=make_callback(env,cls);
-  return nh_transcribe_file_with_options(in.c_str(),&config,&tuning,progress,&callback);
+  return refinement.cluster_threshold!=0 ? nh_transcribe_file_with_refinement(in.c_str(),&config,&tuning,&refinement,progress,&callback)
+      : nh_transcribe_file_with_options(in.c_str(),&config,&tuning,progress,&callback);
 }
 extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_summarize(
     JNIEnv *env, jclass cls, jstring input, jstring model, jstring output, jint threads) {

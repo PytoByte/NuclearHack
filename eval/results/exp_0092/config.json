@@ -1,0 +1,42 @@
+{
+  "experiment": "exp_0092",
+  "runs": [
+    "exp_0090",
+    "exp_0091"
+  ],
+  "manifest": "eval/data/russian-conversation-heldout-session.jsonl",
+  "collar_seconds": 0.25,
+  "skip_overlap": false,
+  "manifest_sha256": "d4214b8bf5c13548f4fdbde0a50b313d19589d1ed08b7c0edced972abad73f99",
+  "input_sha256": {
+    ".audio-runs/exp_0090/ru-youtube-sFt2qKDPrj4/transcript.json.trace.json": "465cabcd4ba08fd948e0efff7fffc6e4c101274bd6ad2b66c64ee24edf7502d4",
+    ".audio-runs/exp_0091/ru-youtube-sFt2qKDPrj4/transcript.json.trace.json": "ba6c6233c4ea3aa4cd71d5f53dae6da63bc686c0e70424eb9850ad411732c90a"
+  },
+  "harness_files": {
+    "android_device.py": "919d5710c1579b1f677fdad0a6be7193c864cad806abcf94e5d84a4d3e4580f9",
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "compare_punctuation.py": "5c3a5dc137730453fc1a22fbe27a4f70bed504a0b82ac6fb73a4c238464df97e",
+    "native_sdk.py": "02f0568d880670d961c6035ddf84d3fc86a5b809e8cf970adfebb79bea470ed5",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_audio_variants.py": "8637cf8057259a0c217e0a84a3c1e87804e3d2df71842b2658901effbab07202",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "prepare_openstt_calls.py": "f8801cea046deffaa8b9862c85a827a64a9d1ee89649c466c93c467257bd1a0a",
+    "prepare_russian_pilot.py": "a8800317496e32fbf042b3b7e357633a5155094cd5a67ea5cacc96f394538065",
+    "probe_attribution.py": "22285dfb17c2c7097a0d03731eda04fdf60813bd3fd01546cadf15416a46ba50",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_codec.py": "f52134e5494c0661f7359efcc58f3f1826d6dfb9226a040feaf1dd3944f2de0b",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "probe_reclustering.py": "ad565c49f013601fd96c3b191e02cb416cf50f9123aa75bb2a277fd2bc3c78f7",
+    "punctuation.py": "d61382da5ee098105a961f3c653cd17682e9213d93179fbb14978554b5b4fe85",
+    "run_android_asr.py": "493937d5deaecded8447ff4bba80d85e6cd8968d2bef82343f5935178765e866",
+    "run_android_pipeline.py": "9447cfd0369c734e18e54152c5032ecf44b689a460410d2fa0120fdca24b0d4b",
+    "run_asr.py": "1b11dde0844f3a42ead587a349b1f30990ba1138215873b03a0e9325d110e11f",
+    "run_diarization.py": "c207c6c0f745b61c96efc2c336afcf4faa87fa18aa1a7be0b08efcb4e58b8dc9",
+    "run_file_pipeline.py": "9b3a249183ad3aa1e1d4ed5d9f6c474f2586b3f2ea4131489dc534c7d97bdad6",
+    "run_fragment_asr.py": "b85255aff77453667bcb0eba1ac21b2da5690d07d02e0ff9fa9b918a4a69b90e",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "score_conversation_diarization.py": "d7f917940386a8b067a53b8696972322c759546d2105fcf1d80e375707c3ee17",
+    "scoring.py": "0c51bd3899af8b51845afdd020de61f9b1d1cf4dd5ccf2efdf03a952e5bfbc9e"
+  }
+}

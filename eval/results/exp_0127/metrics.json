@@ -1,0 +1,29 @@
+{
+  "run_id": "exp_0127",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "status": 4,
+      "expected_cancel": true,
+      "wall_ms": 3557,
+      "sampled_peak_pss_kib": 331410,
+      "cached_asr_chunks": 0,
+      "asr_loads": 1,
+      "stage_wall_ms": {
+        "queued": 21,
+        "decode": 215,
+        "checkpoint_identity": 1352,
+        "asr_load": 614,
+        "asr": 1249
+      }
+    }
+  ],
+  "normalized": {
+    "substitutions": 0,
+    "deletions": 0,
+    "insertions": 0,
+    "reference_words": 0,
+    "wer": null
+  },
+  "scope": "Android4096MiB x86_64 AVD; translated timings are not physical ARM performance"
+}

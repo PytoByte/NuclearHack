@@ -99,3 +99,12 @@ APK: `.build/android-host/audio-sdk-host.apk`; offline bundle:
 Для ручного сценария: запустить Audio SDK host → импорт MP3 через SAF →
 обработка → просмотр реплик → экспорт JSON; «Резюме» — отдельное действие.
 Test installer адресует только изолированный emulator-5558/adb5039.
+
+
+Optional global speaker refinement (experimental, default off):
+`nh_transcribe_file_with_refinement(input,&pipeline,&options,&refinement,progress,user)`.
+Initialize `nh_speaker_refinement_config` with `{sizeof(nh_speaker_refinement_config),0.4f,128}`.
+Existing structs and ABI1 remain unchanged. The same configured embedding is loaded after diarization release;
+no oracle count, no lexical rewriting. More than the configured cluster cap fails explicitly.
+CLI trailing fields after `WINDOW_RATIO`: `REFINEMENT_THRESHOLD` (0 disables), `MAX_CLUSTERS` (default128).
+Quality evidence and scope: `docs/RESEARCH.md`; ARM cross-build is separate from ARM execution.

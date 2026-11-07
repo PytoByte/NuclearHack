@@ -1,0 +1,8 @@
+{
+  "experiment_id": "exp_0128",
+  "decoded_frames": 2802748,
+  "decoded_pcm_sha256": "3ed9bd9e3d82a7c85d2e054747f4d703c59c5d825768ef5529cf8555e99aa31e",
+  "host_android_pcm_identical": true,
+  "cached_chunks": 1,
+  "scope": "host/Android x86_64 exact input signal identity; downstream ASR differences remain runtime/model numeric differences, not a PCM mismatch"
+}

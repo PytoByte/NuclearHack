@@ -158,6 +158,35 @@
         "models/rupunct-small-int8/tokenizer.json"
       ],
       "scope": "research CPU tagger; not mobile integrated"
+    },
+    {
+      "id": "titanet-large",
+      "family": "speaker_embedding",
+      "source": "https://huggingface.co/csukuangfj/speaker-embedding-models",
+      "revision": "0743f301363dec56491a490f6d6cbc9d67f9a3bf",
+      "upstream_source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "upstream_revision": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8",
+      "files": [
+        "models/diarization/titanet-large.onnx",
+        "models/diarization/titanet-large.MODELCARD",
+        "models/diarization/titanet-large.LICENSE"
+      ]
+    },
+    {
+      "id": "horizon-punct-small",
+      "family": "punctuation",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "revision": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "files": [
+        "models/horizon-punct-small/config.json",
+        "models/horizon-punct-small/README.md",
+        "models/horizon-punct-small/LICENSE",
+        "models/horizon-punct-small/tokenizer_config.json",
+        "models/horizon-punct-small/special_tokens_map.json",
+        "models/horizon-punct-small/tokenizer.json",
+        "models/horizon-punct-small/model_quantized.onnx"
+      ],
+      "scope": "research-only multilingual INT8-embedding ONNX tagger; no mobile integration"
     }
   ],
   "files": [
@@ -507,6 +536,87 @@
       "license": "MIT (publisher/upstream model card)",
       "sha256": "7ca617388c2092a3a84272025c52bbf3c6db0aee225c0351186295c0b5d3ddc6",
       "size_bytes": 2413439
+    },
+    {
+      "path": "models/diarization/titanet-large.onnx",
+      "url": "https://huggingface.co/csukuangfj/speaker-embedding-models/resolve/0743f301363dec56491a490f6d6cbc9d67f9a3bf/nemo_en_titanet_large.onnx",
+      "sha256": "d51abcf31717ef28162f26acb9d44dd4127c3d44c9b8624f699f3425daca8e77",
+      "source": "https://huggingface.co/csukuangfj/speaker-embedding-models",
+      "version": "0743f301363dec56491a490f6d6cbc9d67f9a3bf",
+      "license": "CC-BY-4.0 (upstream NVIDIA model; sherpa-compatible ONNX export)"
+    },
+    {
+      "path": "models/diarization/titanet-large.MODELCARD",
+      "url": "https://huggingface.co/nvidia/speakerverification_en_titanet_large/resolve/0dc382f40121a5fbd34db10a2bb04d826c2be6a8/README.md",
+      "sha256": "fc21d601b62a6645490308611caf681958d8141dcf21e7fc5c53f1d7bc97e2f7",
+      "source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "version": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "path": "models/diarization/titanet-large.LICENSE",
+      "url": "https://raw.githubusercontent.com/creativecommons/cc-legal-tools-data/a0dac18d1a773b4cdb7d8dd5d9bf4efab7901030/legacy/legalcode/by_4.0.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "size_bytes": 18657,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/nvidia/speakerverification_en_titanet_large",
+      "version": "0dc382f40121a5fbd34db10a2bb04d826c2be6a8"
+    },
+    {
+      "path": "models/horizon-punct-small/config.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/config.json",
+      "sha256": "f457c77954f0720ff2c0624b92714fb551bd19c42fba0625ee7af1740df49e05",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/README.md",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/README.md",
+      "sha256": "93edb6822321b2c9354048785cfbeeae4a3d81cdbdf44af05f91c9ec56107e9d",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/LICENSE",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/tokenizer_config.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/tokenizer_config.json",
+      "sha256": "ea349495764b24570b4560fe2e4a557e5c0a47e6bce782c2409b1d6445cf8633",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/special_tokens_map.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/special_tokens_map.json",
+      "sha256": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/tokenizer.json",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/tokenizer.json",
+      "sha256": "f34b44a6dc8a0eef651bfa10e8325057530152606a69d9c3b6ae02efb1558f0a",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/horizon-punct-small/model_quantized.onnx",
+      "url": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small/resolve/12b02a85b60a2843ad6f22e4248669f50aeecdbb/onnx/model_quantized.onnx",
+      "sha256": "5679870be92c7fa47c9be9b2872fac389ef28d43d2c33f35e1315b93a82f4ace",
+      "source": "https://huggingface.co/Horizon-Labs/punctuation-restoration-small",
+      "version": "12b02a85b60a2843ad6f22e4248669f50aeecdbb",
+      "license": "Apache-2.0"
     }
   ]
 }

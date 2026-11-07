@@ -1,4 +1,5 @@
 #include "pipeline.hpp"
+#include "clustering.hpp"
 #include <iostream>
 #include <limits>
 using namespace nh;
@@ -24,5 +25,9 @@ int main() {
   CHECK(attribute_words({Word{900, 1000, "угу"}}, turns)[0].speaker_id == "speaker_unknown");
   CHECK(attribute_words({}, turns).empty());
   CHECK(attribute_words(words, turns, true).size() == 2);
+  const auto labels=complete_link({0,.1f,2,.1f,0,.1f,2,.1f,0},3,.4f);
+  CHECK(labels[0]==labels[1] && labels[0]!=labels[2]); // cannot-link survives a tempting transitive bridge
+  CHECK(complete_link({},0,.4f).empty());
+  CHECK(complete_link({0,2,2,0},2,.4f)[0]!=complete_link({0,2,2,0},2,.4f)[1]);
   return 0;
 }

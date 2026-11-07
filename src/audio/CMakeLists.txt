@@ -14,7 +14,7 @@ find_library(SHERPA_C_API NAMES sherpa-onnx-c-api PATHS "${NH_SHERPA_LIB_DIR}" N
 add_library(sherpa_c_api SHARED IMPORTED)
 set_target_properties(sherpa_c_api PROPERTIES IMPORTED_LOCATION "${SHERPA_C_API}"
   INTERFACE_INCLUDE_DIRECTORIES "${NH_SHERPA_ROOT}/include")
-add_library(nuclear_audio SHARED src/audio.cpp src/sherpa.cpp src/decoder.c src/pipeline.cpp src/merge.cpp src/llm.cpp src/vad.cpp)
+add_library(nuclear_audio SHARED src/audio.cpp src/sherpa.cpp src/decoder.c src/pipeline.cpp src/merge.cpp src/llm.cpp src/vad.cpp src/refinement.cpp)
 target_compile_features(nuclear_audio PRIVATE cxx_std_17)
 target_include_directories(nuclear_audio PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>" "$<INSTALL_INTERFACE:include>"

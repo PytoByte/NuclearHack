@@ -151,6 +151,18 @@ typedef struct nh_pipeline_options {
 } nh_pipeline_options;
 NH_API nh_status nh_transcribe_file_with_options(const char *input_path, const nh_pipeline_config *config,
     const nh_pipeline_options *options, nh_progress_callback progress, void *user);
+/* Optional global speaker refinement; existing ABI structs/defaults stay unchanged.
+ * Uses config->embedding after releasing the diarizer. Up to three predicted
+ * spans, 2..20s total per cluster; complete linkage forbids merging simultaneous
+ * predicted speakers. No oracle speaker count. Experimental, caller opt-in. */
+typedef struct nh_speaker_refinement_config {
+  uint32_t struct_size;
+  float cluster_threshold; /* cosine dissimilarity in (0,2); dev candidate .4 */
+  uint32_t max_clusters; /* 0 = 128, maximum 256; excess fails explicitly */
+} nh_speaker_refinement_config;
+NH_API nh_status nh_transcribe_file_with_refinement(const char *input_path, const nh_pipeline_config *config,
+    const nh_pipeline_options *options, const nh_speaker_refinement_config *refinement,
+    nh_progress_callback progress, void *user);
 typedef struct nh_llm_config {
   uint32_t struct_size;
   const char *model;

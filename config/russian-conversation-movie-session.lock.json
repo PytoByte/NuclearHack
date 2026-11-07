@@ -1,0 +1,21 @@
+{
+  "source": "https://huggingface.co/datasets/leshinsky/ru-youtube-diarization",
+  "revision": "e3aaa8a28211afe56c913fcacb26db029b1fb10e",
+  "files": [
+    {
+      "path": "movie_podcast.json",
+      "sha256": "09f868cc7362dfe85c3160759f1b8d87ba7244bba70990908b7a7e11cb9f93c5"
+    },
+    {
+      "path": "clips/movie_podcast.wav",
+      "sha256": "2714f8339173f2574f017932a8590fec977672f7394f718726f3ea8fea39c131",
+      "source_file_complete": false,
+      "source_byte_range": [
+        0,
+        34560349
+      ],
+      "full_source_bytes": 1145098590
+    }
+  ],
+  "scope": "silver session holdout; speaker independence unverified"
+}

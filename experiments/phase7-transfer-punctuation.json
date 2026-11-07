@@ -1,0 +1,39 @@
+[
+  {
+    "experiment": "exp_0096",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--threads",
+      "4"
+    ],
+    "hypothesis": "Frozen movie-session baseline before evaluation of global ERes2Net.4"
+  },
+  {
+    "experiment": "exp_0097",
+    "script": "eval/scripts/probe_reclustering.py",
+    "args": [
+      "--baseline",
+      "exp_0096",
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--thresholds",
+      ".4"
+    ],
+    "hypothesis": "Only dev-selected global.4 on a new session; no threshold sweep"
+  },
+  {
+    "experiment": "exp_0098",
+    "script": "eval/scripts/compare_punctuation.py",
+    "args": [
+      "--baseline",
+      "exp_0069",
+      "--e2e",
+      "exp_0070",
+      "--extra-model",
+      "horizon-punct-small"
+    ],
+    "hypothesis": "A second Russian-capable CPU punctuator may improve punctuation without lexical rewrites; fixed text-v2 metrics"
+  }
+]

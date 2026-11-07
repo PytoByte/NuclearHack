@@ -42,3 +42,31 @@ class RUPunct:
         result=' '.join(output)
         if normalize(result)!=normalize(text):raise ValueError('Punctuator changed lexical content')
         return result
+
+class HorizonPunct:
+    """Published last-subtoken labels; punctuation only, preserves original casing."""
+    def __init__(self,threads=4):
+        directory=ROOT/'models/horizon-punct-small'
+        self.tokenizer=Tokenizer.from_file(str(directory/'tokenizer.json'))
+        self.config=json.loads((directory/'config.json').read_text())
+        options=ort.SessionOptions();options.intra_op_num_threads=threads;options.inter_op_num_threads=1
+        self.session=ort.InferenceSession(str(directory/'model_quantized.onnx'),options,providers=['CPUExecutionProvider'])
+
+    def __call__(self,text):
+        words=text.split();chunks=[]
+        for start in range(0,len(words),100):
+            chunk=' '.join(words[start:start+100]);encoded=self.tokenizer.encode(chunk)
+            if len(encoded.ids)>512:raise ValueError('Horizon 100-word window exceeds frozen 512-token budget')
+            feed={'input_ids':np.array([encoded.ids],dtype=np.int64),
+                  'attention_mask':np.array([encoded.attention_mask],dtype=np.int64)}
+            labels=self.session.run(None,feed)[0][0].argmax(axis=-1);ends={}
+            for i,(left,right) in enumerate(encoded.offsets):
+                if right>left and (right==len(chunk) or chunk[right].isspace()):ends[right]=self.config['id2label'][str(int(labels[i]))]
+            parts=[];previous=0
+            for end,label in sorted(ends.items()):
+                if label=='0':continue
+                parts.append(chunk[previous:end]+(' -' if label=='-' else label));previous=end
+            chunks.append(''.join(parts)+chunk[previous:])
+        result=' '.join(chunks)
+        if normalize(result)!=normalize(text):raise ValueError('Horizon changed lexical content')
+        return result

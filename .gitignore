@@ -6,8 +6,7 @@ __pycache__/
 .audio-runs/
 models/
 third_party/
-eval/data/audio/
-eval/data/references/
+eval/data/
 **/.gradle/
 **/.idea/
 **/build/

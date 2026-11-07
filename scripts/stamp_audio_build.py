@@ -20,7 +20,7 @@ def stamp(build):
     inputs += [ROOT/'config/audio-toolchain.lock.json']
     inputs += [ROOT/'.tools'/p for p in ('miniaudio/miniaudio.h','json/json.hpp','picosha2/picosha2.h',
         'sherpa-host/include/sherpa-onnx/c-api/c-api.h')]
-    inputs += [ROOT/'third_party/llama.cpp/include/llama.h',ROOT/'third_party/llama.cpp/ggml/include/ggml.h']
+    inputs += [p for p in (ROOT/'third_party/llama.cpp/include/llama.h', ROOT/'third_party/llama.cpp/ggml/include/ggml.h') if p.exists()]
     inputs += sorted((ROOT/'.tools/onnxruntime-headers').glob('*.h'))
     if (build/'CMakeCache.txt').exists():inputs.append(build/'CMakeCache.txt')
     sdk=build/'libnuclear_audio.so'

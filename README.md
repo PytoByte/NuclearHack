@@ -146,6 +146,23 @@ cd src/mobile/android
 ./gradlew :app:lintDebug
 ```
 
+Release-сборка (unsigned APK, затем подпись):
+
+```sh
+cd src/mobile/android
+./gradlew :app:assembleRelease
+# результат: app/build/outputs/apk/release/app-release-unsigned.apk
+
+export ANDROID_HOME="/path/to/android-sdk"  # например /home/user/NuclearHack/.tools/android-sdk
+BUILD_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
+"$BUILD_TOOLS/zipalign" -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk /tmp/app-aligned.apk
+"$BUILD_TOOLS/apksigner" sign --ks /path/to/release.jks --ks-key-alias <alias>   --ks-pass pass:<store-pass> --key-pass pass:<key-pass>   --out .build/android-app/neurostenographer-release-signed.apk /tmp/app-aligned.apk
+"$BUILD_TOOLS/apksigner" verify --verbose .build/android-app/neurostenographer-release-signed.apk
+```
+
+Для обычной локальной проверки можно использовать debug-ключ, но для
+публикации нужен собственный keystore; ключ из `/tmp` не использовать для релиза.
+
 Оффлайн-инвариант: `INTERNET` должен отсутствовать в manifest. Модели
 копируются из assets в app-private `filesDir/models`. Прогресс транскрибации
 обрабатывается foreground-службой с уведомлением по этапам.
@@ -159,12 +176,6 @@ cd src/mobile/android
 - `make leak-check` — cppcheck + clang-tidy + ASan/LSan ctest + Valgrind
   для `src/audio`; логи в `.audio-runs/leak-*`.
 - `make native-sanitize` — санитайзеры native тестов.
-
-### Native SDK
-- `make native-test` — полный SDK path + ABI smoke.
-- `make native-format-check` — formatting gate.
-- `make check` — repository guard, task protection, permission `INTERNET`.
-- `make test` — Python unit tests.
 
 ### ASR/diarization качество
 Качество сравнивается через scripts из `eval/scripts` и фиксирует run IDs:
@@ -191,7 +202,6 @@ environment, aggregate). `.audio-runs/` и debug outputs не коммитятс
 
 ### Android client
 - `make android-check` — build + lint + unit tests APK permission check.
-- `cd src/mobile/android && ./gradlew ktlintCheck detekt :app:lintDebug`.
 
 ## Ограничения и provenance
 

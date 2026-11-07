@@ -281,8 +281,8 @@ nh_status nh_diarizer_create_with_window(const nh_diarizer_config* options, floa
 nh_status nh_diarizer_process(nh_diarizer* handle, const float* samples, uint32_t frames, nh_turn_callback callback,
                               void* user) {
     return nh::guard([&]() -> nh_status {
-        if (!handle || !callback || !valid_pcm(samples, frames, 16000 * 3600 + 16))
-            return nh::fail(NH_INVALID_ARGUMENT, "Expected handle, callback, finite 16kHz PCM <=3600s");
+        if (!handle || !callback || !valid_pcm(samples, frames, std::numeric_limits<uint32_t>::max()))
+            return nh::fail(NH_INVALID_ARGUMENT, "Expected handle, callback, finite 16kHz PCM");
         nh::BusyGuard lock(handle->busy);
         if (!lock.owns_lock())
             return nh::fail(NH_BUSY, "Diarizer handle busy");

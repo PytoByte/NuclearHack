@@ -74,7 +74,7 @@ NH_API nh_status nh_asr_decode(nh_asr* handle, const float* samples, uint32_t fr
 NH_API void nh_asr_destroy(nh_asr* handle);
 
 /* Whole-window diarization: IDs are scoped to this call. Cross-window matching
- * belongs to the file orchestrator. 16-kHz mono, <=3600s (+1ms codec rounding) per call.
+ * belongs to the file orchestrator. 16-kHz mono, unlimited duration per call.
  * Runtime owns segmentation + embedding + clustering; speaker count is auto.
  * cluster_threshold is cosine dissimilarity in (0,2], not a probability. */
 typedef struct nh_diarizer nh_diarizer;
@@ -111,7 +111,7 @@ typedef struct nh_streaming_diarizer_config {
     const char* model;
     uint32_t threads;           /* 1..16 */
     uint32_t profile;           /* 0 = low latency, 1 = buffered file-mode */
-    uint32_t max_audio_seconds; /* 0 = 600, maximum 3600 per stream/reset */
+    uint32_t max_audio_seconds; /* 0 = 600 default, explicit values supported to uint32 budget */
 } nh_streaming_diarizer_config;
 /* Row-major probabilities[frames][speaker_slots], borrowed during callback.
  * Each posterior row covers 160 original PCM samples (10ms); start_sample is
@@ -189,7 +189,7 @@ typedef int32_t (*nh_progress_callback)(const char* stage, uint64_t completed_fr
  * bundle: punctuated GigaAM CTC and Nemotron3 Q8. The client supplies local
  * paths; the SDK does not download models or rewrite lexical ASR output.
  * Fixed file policy: 25s ASR chunks, buffered speaker profile, 160ms word anchor.
- * Zero threads select 4 threads. Zero duration uses 3600s; explicit duration is 1..3600s.
+ * Zero threads select 4 threads. Zero duration uses 3600s; explicit duration has no fixed 3600s cap.
  * Calls block: use a worker thread. One file/summary job per process.
  * trace_json and checkpoint_directory are optional. ABI1 entry points below
  * remain available for existing clients and advanced configurations. */

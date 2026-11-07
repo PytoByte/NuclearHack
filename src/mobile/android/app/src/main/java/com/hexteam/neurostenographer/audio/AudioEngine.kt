@@ -121,6 +121,6 @@ class AudioEngine(private val context: Context) {
         const val STATUS_BUSY = 5
         const val MAX_THREADS = 4
         const val CHUNK_SECONDS = 20
-        const val MAX_AUDIO_SECONDS = 3600
+        const val MAX_AUDIO_SECONDS = Int.MAX_VALUE
     }
 }

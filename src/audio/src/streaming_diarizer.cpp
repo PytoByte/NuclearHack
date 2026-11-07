@@ -175,7 +175,7 @@ extern "C" nh_status nh_streaming_diarizer_create(const nh_streaming_diarizer_co
             return nh::fail(NH_INVALID_ARGUMENT, "Missing streaming diarizer output");
         *out = nullptr;
         if (!config || config->struct_size != sizeof(*config) || !config->threads || config->threads > 16 ||
-            config->profile > 1 || config->max_audio_seconds > 3600)
+            config->profile > 1)
             return nh::fail(NH_INVALID_ARGUMENT, "Invalid streaming diarizer configuration");
         if (!config->model || !*config->model || !std::ifstream(config->model).good())
             return nh::fail(NH_IO_ERROR, "Streaming diarization model not readable");

@@ -72,7 +72,7 @@ auto FileTranscriber::emit(const char* stage, uint64_t done, uint64_t total) con
 auto FileTranscriber::validate() const -> nh_status {
     if ((speaker != nullptr) &&
         (speaker->struct_size != sizeof(*speaker) || (speaker->model == nullptr) || ((*speaker->model) == 0) ||
-         speaker->threads < 1 || speaker->threads > 16 || speaker->profile > 1 || speaker->max_audio_seconds > 3600)) {
+         speaker->threads < 1 || speaker->threads > 16 || speaker->profile > 1)) {
         return nh::fail(NH_INVALID_ARGUMENT, "Invalid file speaker streaming configuration");
     }
     if ((refinement != nullptr) &&
@@ -99,10 +99,10 @@ auto FileTranscriber::validate() const -> nh_status {
         ((speaker == nullptr) && ((config->segmentation == nullptr) || (config->embedding == nullptr))) ||
         (config->scratch_directory == nullptr) || (config->output_json == nullptr) || config->threads < 1 ||
         config->threads > 16 || (config->chunk_seconds == 0u) || config->chunk_seconds > 25 ||
-        (config->max_audio_seconds == 0u) || config->max_audio_seconds > 3600 ||
+        (config->max_audio_seconds == 0u) ||
         ((speaker == nullptr) && (!std::isfinite(config->cluster_threshold) || config->cluster_threshold <= 0 ||
                                   config->cluster_threshold > 2))) {
-        return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline configuration (duration budget <=3600s)");
+        return nh::fail(NH_INVALID_ARGUMENT, "Invalid file pipeline configuration (explicit duration required)");
     }
     return NH_OK;
 }

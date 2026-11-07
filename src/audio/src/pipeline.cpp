@@ -4,8 +4,7 @@
 extern "C" nh_status nh_transcribe(const char* input, const nh_transcription_config* options,
                                    nh_progress_callback progress, void* user) {
     return nh::guard([&]() -> nh_status {
-        if (!options || options->struct_size != sizeof(*options) || options->threads > 16 ||
-            options->max_audio_seconds > 3600)
+        if (!options || options->struct_size != sizeof(*options) || options->threads > 16)
             return nh::fail(NH_INVALID_ARGUMENT, "Invalid final transcription configuration (duration <=3600s)");
         nh_pipeline_config pipeline{};
         pipeline.struct_size = sizeof(pipeline);

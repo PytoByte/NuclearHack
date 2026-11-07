@@ -217,7 +217,7 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_audiohost_Native_llmAvailable
     return nh_llm_available();
 }
 extern "C" JNIEXPORT jlong JNICALL Java_com_hexteam_audiohost_Native_peakRssKib(JNIEnv*, jclass) {
-    struct rusage usage {};
+    struct rusage usage{};
     getrusage(RUSAGE_SELF, &usage);
     return usage.ru_maxrss;
 }
@@ -258,7 +258,7 @@ extern "C" JNIEXPORT jint JNICALL Java_com_hexteam_neurostenographer_audio_Nativ
     return nh_llm_available();
 }
 extern "C" JNIEXPORT jlong JNICALL Java_com_hexteam_neurostenographer_audio_NativeAudio_peakRssKib(JNIEnv*, jclass) {
-    struct rusage usage {};
+    struct rusage usage{};
     getrusage(RUSAGE_SELF, &usage);
     return usage.ru_maxrss;
 }

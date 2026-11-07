@@ -1,0 +1,9 @@
+{
+  "git_sha": "c65f4735328cbf341c291e5fe6d5b1c39fb531bd",
+  "git_dirty": true,
+  "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "machine": "x86_64",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "cpu_model": "12th Gen Intel(R) Core(TM) i5-12450H",
+  "measurement_scope": "Linux desktop CPU, Python harness + production C ABI; not Android"
+}

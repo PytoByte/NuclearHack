@@ -1,0 +1,56 @@
+[
+  {
+    "experiment": "exp_0081",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "wespeaker-resnet34-lm.onnx",
+      "--threshold",
+      ".4"
+    ],
+    "hypothesis": "WeSpeaker on natural Russian pilot with its own threshold; compare ERes2Net exp69, preserve lexical ASR"
+  },
+  {
+    "experiment": "exp_0082",
+    "script": "eval/scripts/run_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--threads",
+      "4",
+      "--embedding",
+      "wespeaker-resnet34-lm.onnx",
+      "--threshold",
+      ".55"
+    ],
+    "hypothesis": "WeSpeaker on natural Russian pilot with its own threshold; compare ERes2Net exp69, preserve lexical ASR"
+  },
+  {
+    "experiment": "exp_0083",
+    "script": "eval/scripts/score_conversation_diarization.py",
+    "args": [
+      "--runs",
+      "exp_0069",
+      "exp_0081",
+      "exp_0082"
+    ],
+    "hypothesis": "Evaluate alternative embedding by DER/JER, not cluster count alone"
+  },
+  {
+    "experiment": "exp_0084",
+    "script": "eval/scripts/run_asr.py",
+    "args": [
+      "--model",
+      "giga-v3-rnnt",
+      "--threads",
+      "4",
+      "--manifest",
+      "eval/data/openstt-calls-validation.jsonl"
+    ],
+    "hypothesis": "RNNT may improve natural telephone phonetic errors; compare frozen CTC78 and preserve normalization"
+  }
+]

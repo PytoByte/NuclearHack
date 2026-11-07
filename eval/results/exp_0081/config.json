@@ -1,0 +1,83 @@
+{
+  "experiment_id": "exp_0081",
+  "threads": 4,
+  "threshold": 0.4,
+  "embedding": "wespeaker-resnet34-lm.onnx",
+  "min_duration_on": 0.3,
+  "min_duration_off": 0.5,
+  "attribution": "overlap",
+  "model": "giga-v3-ctc",
+  "quant": "fp32",
+  "model_files": [
+    {
+      "path": "models/giga-v3-ctc/model.int8.onnx",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/model.int8.onnx",
+      "sha256": "f86ebfa0429ced91be6054fc344827e9c6c2572f3c318416cd974b06f66437ec",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/giga-v3-ctc/tokens.txt",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16/resolve/32a4c7cc81809bd132e2d935ab99e9e6ab47fbec/tokens.txt",
+      "sha256": "17cc514451bcceac9c280068c71502f8448f99e9fb1456b8d0761651fd0392f2",
+      "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+      "version": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+      "license": "MIT"
+    },
+    {
+      "path": "models/diarization/segmentation-model.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+      "source": "https://huggingface.co/pyannote/segmentation-3.0",
+      "version": "segmentation-3.0/sherpa-export",
+      "license": "MIT",
+      "archive_member": "sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+      "archive_sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
+    },
+    {
+      "path": "models/diarization/wespeaker-resnet34-lm.onnx",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/wespeaker_en_voxceleb_resnet34_LM.onnx",
+      "sha256": "e9848563da86f263117134dfd7ad63c92355b37de492b55e325400c9d9c39012",
+      "size_bytes": 26530550,
+      "license": "CC-BY-4.0",
+      "source": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet34-LM",
+      "version": "f0c48c298fd835726c27956a5d617bad7115627e"
+    }
+  ],
+  "window_shift_ratio": 0.1,
+  "chunk_seconds": 20,
+  "summary": false,
+  "manifest_sha256": "2662029235605d267c2b616b090c8550233f1b518589c1764b2fc1aca61dcd15",
+  "sdk_sha256": "c9483a6ff4100a7af8750426cd0b661d87c93cecba1b1f0edcce220da3b62ef5",
+  "model_lock_sha256": "3e049b99829ea1a4948c8c761f581ae2d6fe6428f92c217806316abe6e7f0da0",
+  "scope": "Linux native file pipeline; reference quality and split limits follow manifest",
+  "manifest": "eval/data/russian-conversation-pilot.jsonl",
+  "harness_files": {
+    "android_device.py": "919d5710c1579b1f677fdad0a6be7193c864cad806abcf94e5d84a4d3e4580f9",
+    "compare_asr.py": "c50402cccec3d7ff493a4070988e7d03cbf095b385e5d6ac618179b47c0c7897",
+    "compare_punctuation.py": "5c3a5dc137730453fc1a22fbe27a4f70bed504a0b82ac6fb73a4c238464df97e",
+    "native_sdk.py": "02f0568d880670d961c6035ddf84d3fc86a5b809e8cf970adfebb79bea470ed5",
+    "prepare_ami.py": "89bbd770e4676f825978e90d6d08778f4c9d974764e5268ae47ccd1ec6becd9c",
+    "prepare_audio_variants.py": "8637cf8057259a0c217e0a84a3c1e87804e3d2df71842b2658901effbab07202",
+    "prepare_dialogs.py": "e40ef15b93da2bea289b8e7b11a68bc663f361406ee710d0ea7f51af2b630292",
+    "prepare_fleurs.py": "0df5651fdd11bd3df18cda332bb84ed202de3026cebee035224185f5cfabb64b",
+    "prepare_openstt_calls.py": "f8801cea046deffaa8b9862c85a827a64a9d1ee89649c466c93c467257bd1a0a",
+    "prepare_russian_pilot.py": "86878758c15fe49ef15fbcab30764ae5d6377df213cca738870b3af19b6a8bbf",
+    "probe_checkpoint.py": "c8bccf841b760ada66917e1931a66d2353c8428136988b56aca429e6ab0f95ed",
+    "probe_codec.py": "f52134e5494c0661f7359efcc58f3f1826d6dfb9226a040feaf1dd3944f2de0b",
+    "probe_memory.py": "4466dd57486744ab06e8db08b0dedb8e92e0ca1b7671b618f1aa96ad70cd521c",
+    "punctuation.py": "d61382da5ee098105a961f3c653cd17682e9213d93179fbb14978554b5b4fe85",
+    "run_android_asr.py": "493937d5deaecded8447ff4bba80d85e6cd8968d2bef82343f5935178765e866",
+    "run_android_pipeline.py": "8bebe28fa45364b74ee1e95ffdd62b8d86034e8e0167d01f2d63f2707fa224c4",
+    "run_asr.py": "1b11dde0844f3a42ead587a349b1f30990ba1138215873b03a0e9325d110e11f",
+    "run_diarization.py": "c207c6c0f745b61c96efc2c336afcf4faa87fa18aa1a7be0b08efcb4e58b8dc9",
+    "run_file_pipeline.py": "9b3a249183ad3aa1e1d4ed5d9f6c474f2586b3f2ea4131489dc534c7d97bdad6",
+    "run_fragment_asr.py": "b85255aff77453667bcb0eba1ac21b2da5690d07d02e0ff9fa9b918a4a69b90e",
+    "run_research_queue.py": "0f532312a78f8b06e5e87a26d1175fa9c00d14a29e67881102219880e4b7fabe",
+    "score_conversation_diarization.py": "d7f917940386a8b067a53b8696972322c759546d2105fcf1d80e375707c3ee17",
+    "scoring.py": "0c51bd3899af8b51845afdd020de61f9b1d1cf4dd5ccf2efdf03a952e5bfbc9e"
+  },
+  "build_provenance_sha256": "7636932e31bb52eb6e818a4287328b7b165b52725b8b534abf982cfdf63f1757",
+  "source_snapshot": ".audio-runs/builds/949f0c5efdf5f4601a59cba2e0a4c5618b9dbe12cf8b41fa11fd4aaf7b82e626/source.tar"
+}

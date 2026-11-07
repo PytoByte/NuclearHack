@@ -33,9 +33,40 @@
   clang-format adjust staged code instead of hand-formatting or reformatting
   unrelated files. Do not stage generated logs, `.build`, models or weights.
 
+## Scope and module rules
+
+- `task/` is read-only. `task/task.md` is the original competition brief;
+  it does not override the current headless SDK scope in
+  `docs/ARCHITECTURE.md`.
+- Read `docs/ARCHITECTURE.md`, `docs/GOALS.md`, and `docs/RESEARCH.md`
+  before audio work.
+- `src/audio`: C++17/C ABI, clang-format, focused tests during iteration,
+  native gates before commit.
+- `src/mobile/android`: Kotlin/Compose MVVM, JNI bridge, ktlint/detekt/Lint.
+- Models are bootstrapped by developer tooling only. Shipped SDK and app have
+  no network access. Keep `INTERNET` absent from the manifest.
+- Qwen summary is optional and does not change transcript JSON.
+- Full Android app benchmarks are not claimed unless measured. Host numbers
+  are not Android evidence. Label host, AVD4096MiB, or physical ARM.
+
+## Documentation sync
+
+- Update related docs in the same change when behavior, API, config, build
+  command, model availability, or public limitations change.
+- `src/audio` API/config -> `ARCHITECTURE.md`, `GOALS.md`
+- rules/process -> `AGENTS.md`
+- optional/unimplemented items -> `GOALS.md`
+
+## Quality gates (commit/final only)
+
+- Run focused tests during normal iterations.
+- Run full gates before commit or final completion.
+- Never use `--no-verify`.
+
 ## Качество кода
 
-- Во время активной разработки не гоняйте полные quality gates (`make check`, `make native-test`, `make native-sanitize`, ktlint/detekt/Lint) на каждую итерацию; они замедляют цикл. Запускайте их в конце задачи, когда код уже работает, но стиль, типизация или регрессии остаются неясными.
+- Во время active iteration, full gates can slow the loop. Full tests/runs
+  are for end-of-task validation; use focused tests in between.
 - Настроить Git-хуки: `cd src/mobile/android && ./gradlew installGitHooks`; в корне репозитория дополнительно выполнить `pre-commit install -f`, чтобы убрать устаревший migration hook `pre-commit.legacy` с Gradle
 - Локальный прогон ktlint и detekt: `cd src/mobile/android && ./gradlew ktlintCheck detekt`
 - Локальный прогон Android Lint: `cd src/mobile/android && ./gradlew :app:lintDebug`

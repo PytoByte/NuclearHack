@@ -5,7 +5,10 @@
 через JNI и сохраняет строгий JSON. Сеть не используется: permission
 `INTERNET` отсутствует в манифесте.
 
-## Возможности
+## Документация
+
+Цели и статусы: [docs/GOALS.md](../../../../docs/GOALS.md)
+(от корня репозитория). Архитектура: [docs/ARCHITECTURE.md](../../../../docs/ARCHITECTURE.md).
 - импорт MP3/M4A/WAV через Storage Access Framework;
 - реальный локальный конвейер `nh_transcribe` → ASR → диаризация → speaker turns;
 - прогресс по стадиям native SDK и отмена задания;

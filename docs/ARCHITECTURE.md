@@ -30,30 +30,31 @@ Default0 в новой конфигурации означает4threads/3600s. 
 Профиль buffered,chunk25s и anchor160ms фиксированы основным API.Это обработка готового файла; low-latency speaker profile не выдаётся за готовый
 real-time микрофонный ASR.
 
-## Model contract
+## Контракт моделей
 
-- ASR: GigaAM-v3 CTC INT8 emits punctuated text. Do not rewrite, smooth,
-  summarize, normalize spoken words, or remove fillers in transcript output.
-- Diarization: Nemotron3 Q8 is diarization only. It cannot replace ASR.
-- Qwen summary remains an optional compatibility capability, outside the current
-  user scope. It is not used by transcription or required in the selected bundle.
-  Existing summary generation must never change transcript JSON.
-- All model execution is offline. Weights are supplied before build/deployment.
-- Automatic voice count can use up to 8 slots; this is not a guarantee that
-  all 8 speakers are recognized.
-- Speaker IDs are stable inside one file and canonicalized by first word; they
-  are not cross-file identities.
+- ASR: GigaAM-v3 CTC INT8 выдаёт текст с пунктуацией. Не переписывать,
+  сглаживать, суммировать, нормализовать произнесённые слова или удалять
+  слова-заполнители в transcript output.
+- Diarization: Nemotron3 Q8 используется только для диаризации. Он не заменяет ASR.
+- Qwen-резюме остаётся optional compatible-возможностью вне текущего
+  пользовательского scope. Оно не используется при транскрибации и не входит в
+  выбранный bundle. Существующая генерация резюме никогда не меняет transcript JSON.
+- Выполнение моделей полностью офлайн. Веса поставляются до сборки/развёртывания.
+- Автоматический подсчёт голосов может использовать до 8 слотов; это не
+  гарантия распознавания всех 8 говорящих.
+- ID спикеров стабильны внутри файла и канонизируются по первому слову; это
+  не межфайловая идентичность.
 
-## Non-goals and evaluator gaps
+## Вне scope и пробелы оценщика
 
-- Realtime microphone ASR is not implemented; SDK is buffered file processing.
-- In-app audio recording is not implemented; import is SAF only.
-- Full Android app benchmark is not claimed here; only state provenance of
-  measurements.
-- ARM physical RAM/RTF/quality are not measured.
-- Word timestamp MAE is unknown without manual word-level ground truth.
-- Cross-file speaker identity, channel-aware diarization, and in-app recording
-  are non-targets or planned goals; see `GOALS.md`.
+- Реалтайм-микрофонный ASR не реализован; SDK обрабатывает готовые файлы буфером.
+- Запись аудио в приложении не реализована; импорт только через SAF.
+- Полный benchmark Android-приложения здесь не заявляется; фиксируется только
+  provenance измерений.
+- Физические ARM RAM/RTF/качество не измерены.
+- MAE таймстампов слов неизвестен без ручной word-level разметки.
+- Межфайловая идентичность говорящих, channel-aware диаризация и запись в
+  приложении не являются целями текущего scope или planned goals; см. GOALS.md.
 
 ## Слои и владение ресурсами
 

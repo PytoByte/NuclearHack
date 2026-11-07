@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0229",
+    "script": "eval/scripts/probe_final_stress.py",
+    "args": [],
+    "hypothesis": "600s selected preset capacity soak on explicitly synthetic repeated/PCM-quantized fixture; source/export grid and bounded speaker PCM, full host time/PSS, no WER/DER quality labels or natural-long-conversation certification"
+  }
+]

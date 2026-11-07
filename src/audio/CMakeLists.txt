@@ -18,7 +18,7 @@ set_target_properties(sherpa_c_api PROPERTIES IMPORTED_LOCATION "${SHERPA_C_API}
 find_library(ORT_C_API NAMES onnxruntime PATHS "${NH_SHERPA_LIB_DIR}" NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH REQUIRED)
 add_library(nh_ort_runtime SHARED IMPORTED)
 set_target_properties(nh_ort_runtime PROPERTIES IMPORTED_LOCATION "${ORT_C_API}")
-add_library(nuclear_audio SHARED src/audio.cpp src/sherpa.cpp src/decoder.c src/pipeline.cpp src/merge.cpp src/llm.cpp src/vad.cpp src/refinement.cpp src/mel.cpp src/speaker_cache.cpp src/streaming_diarizer.cpp)
+add_library(nuclear_audio SHARED src/audio.cpp src/sherpa.cpp src/decoder.c src/pipeline.cpp src/file_transcriber.cpp src/pipeline_factory.cpp src/pipeline_storage.cpp src/merge.cpp src/llm.cpp src/vad.cpp src/refinement.cpp src/mel.cpp src/speaker_cache.cpp src/streaming_diarizer.cpp)
 target_compile_features(nuclear_audio PRIVATE cxx_std_17)
 target_include_directories(nuclear_audio PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>" "$<INSTALL_INTERFACE:include>"

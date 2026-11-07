@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Текущий срез: этап2, native posterior file API квалифицирован203–215; блоковые A/B216–218 завершены. Новые опыты приостановлены по просьбе пользователя для обсуждения финалки.**
+**Текущий срез: выбран финальный SDK `ru-offline-v1`, основной API `nh_transcribe`; пунктуация включена, C++ рефакторинг и квалификация230–244 завершены. Комплект проверяется отдельно в245.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -1192,3 +1192,104 @@ NeMo pipeline: мало агрегированных кластеров,част
 217 оставлен отдельным failed run. Проверки среза: `make check research-test`
 (35 tests), всеmodelSHA, strict JSON,ktlint/detekt/AndroidLint passed.
 Native код после квалификации215 не менялся.
+
+
+### exp_0219–0245 — финальный API, пунктуация и чистая поставка
+
+Пользователь возобновил работу после среза218: выбрать окончательный API,
+закрыть пунктуацию,перестроить C++ на классы/порты/фабрику,проверить и передать SDK.
+
+**ADR: `ru-offline-v1` / `nh_transcribe`.** Один blocking C ABI вызов с
+`nh_transcription_config`: input/models/scratch/output,optional trace/checkpoint.
+Default4threads/600s;chunk20s,buffered NemotronQ8,anchor160ms фиксированы.
+GigaAM-v3 CTC INT8 **с собственной пунктуацией** → release → Nemotron3Q8 →
+posterior merge → strict JSON. Не требуются Python/UI/сеть/внешний reference runtime.
+Старые ABI1 entry points сохранены как совместимые адаптеры:они используются
+существующими клиентами/тестами,не объявляются «мёртвым кодом» и не меняют свой backend.
+
+219–222: полное native сравнение ASR с пунктуацией на всех6known silver файлах.
+223: отдельные taggers на тех же frozen plain-CTC outputs; два вида контекста —
+исходные ASR chunks и итоговые speaker utterances. Lexical words/times/speakers
+сохраняются. Это блоковый A/B,не sweep числовых порогов.
+
+| Вариант,6known RU /2424words | normalized WER | punctuation-token WER | punctuation F1 | cpWER |
+| --- | --- | --- | --- | --- |
+| Plain CTC + Q8/posterior |13.45%|29.96%|0|23.43%|
+| +RUPunct,ASR chunks |13.45%|25.75%|43.95%|lexical unchanged|
+| +RUPunct,speaker turns |13.45%|24.76%|48.61%|lexical unchanged|
+| +Horizon,ASR chunks |13.45%|23.16%|51.59%|lexical unchanged|
+| +Horizon,speaker turns |13.45%|22.61%|54.33%|lexical unchanged|
+| **Punctuated GigaAM + Q8/posterior:выбранный SDK** |**13.78%**|**21.78%**|**64.86%**|**23.51%**|
+
+Выбранный вариант: CER7.36%,rawWER26.95%,punctuation precision57.56%/recall74.28%,
+DER13.56%,speaker-weighted JER18.43%. DER/JER относятся к диагностическим
+speaker turns,не являются оценкой точности word timestamps.
+На2424words это8дополнительных lexical ошибок и2cpWER ошибки против plainCTC;
+paired record cpWER deltaCI95[-1.03,+1.08]pp,10000bootstrap/seed42 — различие
+по speaker-attributed тексту неубедительно. Пунктуация теперь присутствует в native SDK.
+
+**Компромисс принят для русского dialogue-file preset,не универсально:**
+исторический manual OpenSTT phone40:WER17.65→20.59%,CER6.62→10.02% (78/79);
+это исторический ASR контроль,не новый final ARM benchmark. На movie тоже lexical
+регрессия. Максимум качества на телефонии не заявлен. Отдельные taggers не включены
+из-за более слабой пунктуации и дополнительного runtime/tokenizer блока.
+
+**Чтение метрик:** WER — замены/пропуски/вставки на эталонные слова,с
+фиксированной normalization;CER — то же на символах. cpWER учитывает
+распределение текста по голосам и оптимальное переименование IDs;100−cpWER
+не является speaker accuracy. DER — ошибки речи/говорящего по времени,
+collar250ms,overlap учитывается;JER усредняет ошибку перекрытия по голосам.
+F1 выше лучше,остальные error rates ниже лучше. RawWER штрафует case/пунктуацию,
+punctuation-token WER выделяет знаки отдельными токенами. Все6source snippets
+уже известны исследованию,разметка publisher-reviewed silver,не blind gold.
+
+**Архитектурный рефакторинг:** `FileTranscriber` управляет стадиями;
+`AudioDecoderPort/AsrPort/SpeakerPort/TranscriptSinkPort` задают границы;
+`PipelineFactory` создаёт native adapters;`PcmSpool/PcmMapping/AsrCheckpoint`
+управляют файловыми ресурсами через RAII,копирование владельцев запрещено.
+ASR lifetime заканчивается до загрузки speaker model. Весь native C/C++
+отформатирован pinned clang-format19.1.7;проверяются staged Git blobs.
+Прежний монолит orchestration заменён,не оставлен второй копией.
+Рабочие каталоги include/src/tools/tests/android не удаляются ради числа папок:
+они содержат используемые код/клиентов/проверки;тестовый APK и research не входят в SDK bundle.
+
+230–233: **exact6/6** до/после рефакторинга: JSON,ASR words/times,source PCM,
+word slots и raw speaker turns. 237:short/overlap smoke exact с227.
+Короткий третий голос остаётся проблемой; natural worst case cpWER60.41%.
+234–236: реальные полные device ASR+speaker/export на AVD4GB/x86_64,
+все3повтора и результаты до/после рефакторинга exact. Movie175.172s:
+38.73/39.06/38.09s,medianRTF.2211,peakPSS≤340424KiB (~332MiB).
+Это текущие measured times;исторические более быстрые серии не используются
+для заявления замедления из-за рефакторинга.
+
+239:7real-model controls — cancel/resume/busy/budget/weights alias и shared
+legacy ASR cache — passed. 240:old-default legacy JSON exact с203.
+241:3чередующиеся пары old archived/new binary на том же host/input/models:
+median wall18.19/18.10s,paired new/old ratios.9031/1.0096/.9837.
+Замедления не обнаружено в этом небольшом control;speedup/CPU isolation не заявлены.
+242:600s **synthetic repeated/quantized source** через новый primary API:
+59.02s,RTF.09836,peakPSS574048KiB (~561MiB),PCM bound486641samples,
+60000emitted rows,0chunk fallbacks,valid JSON/source bounds. Это capacity soak,
+не ground truth качества/стабильности спикеров естественного длинного разговора.
+
+238 остановлен **до inference**: устарел sanitizer provenance. Логи сохранены;
+`make native-sanitize` теперь автоматически stamp-ит actual build.
+243:повторный полный real-model ASan/UBSan smoke прошёл,release payload exact.
+244:сводный проверяемый audit всех quality/parity/target/control/resource результатов.
+Gates:3nativeCTest,14Python/CABI,3ASan/UBSanCTest,35research tests,
+ARM64/x86_64 cross-build/16KiBELF,native-format,strictJSON/modelSHA.
+
+**Поставка:** `make sdk-package` → `.build/nuclear-audio-sdk-ru-v1.tar`:
+header,C example,CLI/native runtimes3ABI,только2выбранные модели,лицензии,
+SHAmanifest,preset,build provenance. Qwen weights/research corpus/scripts/Python/APK
+исключены;optional llama runtime включается для библиотек,собранных с ним.
+245 проверяет извлечённый комплект:все SHA/файлы,library resolution внутри bundle,
+запуск launcher и компиляцию/запуск C example с default config,exact JSON с237.
+Отчёт244 содержит все измеримые метрики;245 — identity/checks поставки.
+
+**Не измерено:** manual word timestamp MAE,физический ARM quality/RTF/RAM,
+независимый people-disjoint RU dialogue gold. В JSON это unavailable/null с причиной.
+**Дальнейший research возможен,но не является хвостом текущей поставки:**
+silence-aware/overlapping ASR chunks с дедупликацией,short-speaker/overlap-aware
+обработка,channel-aware stereo,acoustic-aware punctuation и domain adaptation.
+Выбор модели/метода на новом независимом корпусе полезнее очередного threshold sweep.

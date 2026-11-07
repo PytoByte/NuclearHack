@@ -53,6 +53,7 @@ native-test: native-build
 native-sanitize:
 	.venv/bin/cmake -S src/audio -B .build/audio-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug -DNH_SANITIZE=ON
 	.venv/bin/cmake --build .build/audio-asan -j 4
+	.venv/bin/python scripts/stamp_audio_build.py --build .build/audio-asan
 	.venv/bin/ctest --test-dir .build/audio-asan --output-on-failure
 mobile-build:
 	.venv/bin/python scripts/build_mobile_audio.py
@@ -88,3 +89,11 @@ nemo-reference-bootstrap:
 lseend-reference-bootstrap: frontend-reference-bootstrap
 	uv pip install --python .tools/frontend-env/bin/python 'onnxruntime==1.23.2' 'matplotlib==3.10.7'
 	.venv/bin/python scripts/bootstrap_models.py lseend-dih3-onnx
+
+.PHONY: native-format native-format-check sdk-package
+native-format:
+	.venv/bin/python scripts/format_audio.py
+native-format-check:
+	.venv/bin/python scripts/format_audio.py --check
+sdk-package: native-format-check
+	.venv/bin/python scripts/package_audio_sdk.py

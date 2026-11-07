@@ -1,0 +1,73 @@
+[
+  {
+    "experiment": "exp_0224",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0221",
+      "--host-reference",
+      "exp_0221",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--android"
+    ],
+    "hypothesis": "Final punctuated candidate: fresh-process complete native device ASR+Nemotron+JSON, 4GB x86 AVD, actual in-device sampled PSS and all text/speaker metrics; three repeats, no ARM claim"
+  },
+  {
+    "experiment": "exp_0225",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0221",
+      "--host-reference",
+      "exp_0221",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--android"
+    ],
+    "hypothesis": "Final punctuated candidate: fresh-process complete native device ASR+Nemotron+JSON, 4GB x86 AVD, actual in-device sampled PSS and all text/speaker metrics; three repeats, no ARM claim"
+  },
+  {
+    "experiment": "exp_0226",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0221",
+      "--host-reference",
+      "exp_0221",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--android"
+    ],
+    "hypothesis": "Final punctuated candidate: fresh-process complete native device ASR+Nemotron+JSON, 4GB x86 AVD, actual in-device sampled PSS and all text/speaker metrics; three repeats, no ARM claim"
+  },
+  {
+    "experiment": "exp_0227",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--baseline",
+      "exp_0204",
+      "--model",
+      "giga-v3-ctc-punct"
+    ],
+    "hypothesis": "Final punctuated candidate complete host smoke; short/overlap cases and valid full export, actual native models"
+  },
+  {
+    "experiment": "exp_0228",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--baseline",
+      "exp_0227",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--asan"
+    ],
+    "hypothesis": "Final punctuated candidate real-model full ASan/UBSan smoke; compare release words, diagnostic times not performance"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "experiment_id": "exp_0245",
+  "scope": "extracted standalone SDK integrity and Linux CLI/C client execution; not Android/ARM runtime qualification",
+  "bundle_sha256": "ad2a35c32e5d990ed155c4b05206885f755a75927a63724bc2c51900bc987488",
+  "bundle_bytes": 581724160,
+  "manifest_verified_files": 63,
+  "runtime_resolved_inside_bundle": true,
+  "launcher_json_exact": true,
+  "c_client_compiled": true,
+  "c_client_default_config_json_exact": true,
+  "passed": true,
+  "limitation": "Linux extracted-package execution; native Android libs are included/cross-built, not physical ARM tested. No raw fixtures/research Python/Qwen weights shipped."
+}

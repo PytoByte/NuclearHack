@@ -12,6 +12,9 @@ dependencies = [
 package = false
 
 [dependency-groups]
+dev = [
+    "clang-format==19.1.7",
+]
 research = [
     "jiwer==4.0.0",
     "numpy==2.2.6",

@@ -1,0 +1,24 @@
+{
+  "stage": "research_dispatch",
+  "exit_code": 1,
+  "command": [
+    "/home/beyond/projs/NuclearHack/.venv/bin/python",
+    "/home/beyond/projs/NuclearHack/eval/scripts/probe_streaming_file_pipeline.py",
+    "--experiment",
+    "exp_0238",
+    "--model",
+    "giga-v3-ctc-punct",
+    "--baseline",
+    "exp_0237",
+    "--host-reference",
+    "exp_0237",
+    "--entry-point",
+    "final",
+    "--require-word-parity",
+    "--asan"
+  ],
+  "logs": [
+    "dispatch.stdout.log",
+    "dispatch.stderr.log"
+  ]
+}

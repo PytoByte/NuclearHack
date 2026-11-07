@@ -1,310 +1,149 @@
 # Аудиомодуль: текущая архитектура
 
-Обновлено: 07.11.2026. Реализованный код и принятые ограничения; этапы,
-эксперименты и ADR — в [RESEARCH.md](RESEARCH.md).
+07.11.2026. Самостоятельный C++17 SDK с C ABI1. Выбранный публичный файловый
+API — `nh_transcribe`. История A/B, метрики и решения — [RESEARCH.md](RESEARCH.md).
 
-## Границы и стек
+## Контракт и финальный состав
 
-Самостоятельный C++17 SDK с C ABI: `src/audio/include/nuclear_audio.h`.
-CMake/Ninja, Linux x86_64 для разработки, NDK r27d/API 26 для Android
-ARM64/x86_64. Android Java/JNI host — тонкий тестовый клиент, не ядро SDK.
-Без Gradle/Kotlin/Compose в новом модуле; существующий UI не изменяется.
+Клиент передаёт `nh_transcription_config`: локальные пути моделей/tokens,
+scratch,output JSON,опциональные trace/checkpoint,threads и лимит длительности.
+Один вызов выполняет весь путь. Отсутствуют зависимости inference от Python,
+UI,JVM,сети и инструментов исследования. Модели доставляются заранее.
 
-```text
-клиент → libnuclear_audio.so / C ABI
-  nh_decode_file → miniaudio → mono 16-kHz f32 blocks
-  nh_transcribe_file:
-    decode → temporary disk PCM → CTC chunks → release ASR
-      → mmap PCM → segmentation + embeddings + auto clustering → release diarizer
-      → CTC word spans + maximum speaker overlap → strict transcript JSON
-  nh_transcribe_file_with_streaming_diarizer (opt-in):
-    decode → disk PCM → same CTC chunks → release ASR
-      → read PCM 1s blocks → bounded Nemotron3 Q8
-      → accumulate first160ms speaker probabilities per word → strict JSON
-  nh_summarize_file (отдельное действие):
-    transcript JSON → local llama.cpp / Qwen3 → отдельный summary.txt
-```
-
-Низкоуровневые ASR/diarizer API доступны независимо от файлового orchestrator.
-Runtime — sherpa-onnx 2.0.1 / ONNX Runtime 1.28.2 CPU и pinned llama.cpp.
-Модели передаются локальными путями. Скачивания и сетевого inference в SDK нет.
-
-## Файловый пайплайн
-
-miniaudio 0.11.23 потоково декодирует MP3/WAV с настоящим ресемплированием
-(linear + low-pass 8-го порядка). Один PCM-блок переиспользуется. Временный
-PCM создаётся через mkstemp в scratch клиента, сразу unlink, удаляется при
-закрытии. Размер на диске 64 KB/s; ASR читает ограниченные чанки 1–25 s.
-После ASR PCM mmap используется whole-file diarizer. Это ограничивает heap
-декодера, но не доказывает постоянную память всего inference.
-
-Текущий принятый preset ограничен **600 s**. API принимает явный бюджет
-до3600s (+1ms для codec rounding); часовая обработка ещё не сертифицирована
-длинным stress-run. Последний хвост перераспределяется, чтобы не оставлять
-один отсчёт отдельным ASR-чанком; input<1s дополняется нулями только для модели. В файловом orchestrator VAD,
-silence-aware chunks и overlap/dedup ещё не реализованы.
-Отдельный incremental `nh_vad_*` API реализует Silero: 512-sample windows,
-30-s circular buffer, немедленная доставка unpadded source-frame intervals,
-flush/release. Research harness проверяет padding и исходные offsets;
-VAD не включён в принятый preset без A/B.
-Стереоканалы сводятся в mono; channel-aware диаризации пока нет.
-
-ASR файлового API: GigaAM-v3 CTC INT8, 4 CPU threads — host preset;
-другие CTC, RNNT и Whisper доступны через низкоуровневые constructors.
-`nh_asr_create` задаёт decoder/language явно: RNNT greedy/modified beam,
-Whisper ru/auto. CTC/Whisper beam без FST graph отклоняется. Hotwords —
-только поддерживаемый RNNT beam, не корректор текста.
-ASR текст не редактируется. CTC char/BPE timestamps собираются в word spans с учётом пробелов внутри token,
-последний символ +40 ms; это не forced alignment. При несовпадении
-реконструированных слов с исходным текстом сохраняется whole-chunk span,
-с явным `chunk_fallback` в trace, без подмены текста.
-
-Diarization: pyannote segmentation FP32 → ERes2Net embeddings → автоматическая
-agglomerative clustering. Число участников не задаётся. Порог — cosine
-**dissimilarity** в (0,2], provisional .8 по AMI validation. minDurationOn/Off
-пока .3/.5 s. ID канонизируются по первому появлению и стабильны внутри файла.
-Межфайловая идентификация отсутствует. Короткие реплики остаются слабым местом.
-
-`nh_transcribe_file_with_options` позволяет A/B minDurationOn/Off и
-maximum-overlap/midpoint attribution, не ломая исходный C ABI. Oracle доступен
-только низкоуровневому diagnostic config; файловый production API всегда auto.
-Word→speaker preset — максимальное пересечение интервалов; без пересечения
-`speaker_unknown`. Соседние слова одного speaker объединяются при gap≤1200 ms.
-Экспорт содержит только `transcript` и обязательные поля
-`speaker_id/start_ms/end_ms/text`; временные метки целые ms исходной timeline.
-MP3 encoder delay и точность границ ещё требуют отдельного измерения.
-Backend ASR, word spans и raw speaker turns хранятся в отдельном trace JSON.
-Вывод атомарный (temp/fsync/rename); перезапись входа/модели/trace запрещена.
-
-## Локальная LLM и ресурсы
-
-Отдельный `nh_summarize_file`: Qwen3-0.6B Q8_0 GGUF, CPU mmap, context 4096,
-output cap 256, greedy, ChatML no-thinking. Текст транскрипта токенизируется
-без интерпретации control tokens. Переполнение context возвращает явную ошибку,
-молчаливого усечения нет. Резюме сохраняется отдельно; основной JSON не меняется.
-ASR и diarizer уже освобождены до вызова LLM; RAII освобождает model/context/sampler.
-Отсутствующий optional llama runtime явно сообщает unavailable.
-
-Handles освобождаются явно; один handle обслуживает одну операцию, повторный
-вход — NH_BUSY. Разные handles независимы; общий бюджет контролирует клиент.
-Буферы callbacks заимствованы до возврата, исключения через C ABI запрещены.
-ASR/diar/VAD handles используют atomic busy guard, безопасный при reentry.
-Высокоуровневые file/summary вызовы совместно допускают один тяжёлый job
-на процесс; конкурентный вызов возвращает NH_BUSY. Для low-level handles
-суммарный бюджет остаётся обязанностью клиента.
-Progress: queued/decode/asr_load/asr/diarization_load/diarization/merge/done;
-LLM имеет отдельные load/prefill/generate/done stages. Отмена кооперативная
-между PCM-блоками, ASR-чанками, LLM batches/tokens и стадиями. Whole-file
-вызов базового whole-file diarizer непрерываемый: upstream progress callback игнорирует
-возвращаемый код. Отмена проверяется до/после него; это реальное ограничение
-latency отмены, не обещание мгновенного прерывания.
-
-Опциональный private checkpoint сохраняет завершённые ASR-чанки атомарно.
-Идентичность: SHA256 фактического decoded PCM, модели/tokens, ABI/платформы,
-runtime, chunk/thread/padding policy. Version2 cache с flock не допускает
-конкурентной записи. Повреждённый cache отклоняется; cache metadata≤64MiB.
-Resume повторно декодирует MP3, переиспользует только валидные ASR-чанки;
-при полном cache ASR модель вообще не загружается. Diarization пока
-пересчитывается целиком. Основной JSON публикуется только после завершения;
-частичный ASR checkpoint не выдаётся за готовый transcript.
-
-## Android host и offline-доставка
-
-`src/audio/android/`: минимальный Java host, JNI → тот же C ABI. SAF импорт MP3,
-просмотр реплик, экспорт JSON, отдельная кнопка резюме и отмена. Модели
-предварительно устанавливаются в private files; Android-код их не скачивает.
-APK собирается javac/d8/aapt2/zipalign/apksigner без Gradle. API 35, min26,
-ARM64/x86_64; в проверенном manifest **нет INTERNET**.
-
-Изолированный AVD NuclearAudio4G: API35 Google APIs/x86_64, 4096 MiB, 4 cores,
-headless, adb5039/emulator-5558, airplane mode. `AudioInstrumentation` проводит
-три MP3 через ASR/diar/JSON/optional LLM, пишет stage events, wall time,
-per-case sampled PSS и **process-lifetime** peak RSS. Доставка весов — локальный
-bundle с лицензиями/manifest, SHA256 проверяются перед упаковкой и на устройстве.
-
-## Проверка и воспроизводимость
-
-`make check native-test native-sanitize mobile-build research-test`.
-ASan/UBSan инструментируют наш код, не готовые sherpa/ONNX binaries.
-Release без fast-math; переносимый CPU baseline. Проверяются ABI и 16-KiB
-LOAD alignment. Cross-build ARM64 не является доказательством запуска ARM64.
-
-Дополнительно: `scripts/build_llama_audio.py`, `scripts/bootstrap_android_audio.py`,
-`scripts/build_android_host.py`, `scripts/package_offline_models.sh`,
-`scripts/install_android_audio.py`, `eval/scripts/run_android_pipeline.py`.
-Host harness вызывает тот же C ABI; Python занимается данными и scoring.
-Post-build provenance сохраняет source tar, SDK/CLI/runtime binaries и hashes;
-каждый новый run копирует actual Python harness. APK содержит buildinfo
-обоих ABI и runtime notices. Android runner сверяет SHA установленного APK
-с локальным и проверяет реальную RAM/ABI/airplane mode.
-Версии/хеши: `config/*lock.json`, `uv.lock`. Веса, аудио и raw logs исключены
-из Git. [src/audio/README.md](../src/audio/README.md) содержит команды API.
-
-
-### Исследование пунктуации и архитектур (не принято в production)
-
-Принятый native pipeline сохраняет CTC INT8,chunk20s,ERes2Net+FP32 segmentation,threshold.8,window shift.1.
-Window.5 остаётся кандидатом: synthetic cpWER лучше,отложенный AMI DER хуже. Отдельный RUPunct INT829MB
-с ORT CPU исследуется после ASR; сейчас это eval-компонент,не часть C ABI. Его output хранится отдельно,
-лексическая последовательность обязана совпадать с ASR. Метрики различают lexical/punctuation ошибки и unknown speakers.
-Короткие фрагменты — повторный offline decode,не causal streaming. Android ARM64 cross-build существует,
-но execution через x86 AVD native bridge падает: качество/RTF физического ARM пока не измерены.
-
-Исследование79 подтвердило риск смены ASR: на вручную размеченных телефонных OpenSTT40 e2e WER20.59%
-против CTC17.65%. В production ничего не переключено. `make research-pilot` воспроизводит ограниченную
-последовательную очередь,включая разговорный silver/телефонный lexical eval,пунктуацию и короткие offline фрагменты.
-
-Ограничение текущей валидации: пользователь подтвердил работу только в доступном host/x86 AVD окружении.
-ARM64 quality/performance остаются отдельной непроверенной целью; ARM-трансляция не используется для выводов о скорости.
-
-TitaNet-large проверен как альтернативный embedding: улучшил dev,но резко ухудшил отложенную сессию;
-в принятый pipeline не включён. Global reclustering по длинным predicted samples реализован как opt-in в native SDK,
-через тот же pinned native runtime,без oracle speaker count; валидация и ограничения — в RESEARCH.md. Принятый ERes2Net preset пока сохраняется.
-
-
-### Опциональное уточнение кластеров спикеров
-
-Новый C ABI `nh_transcribe_file_with_refinement` принимает отдельный `nh_speaker_refinement_config`;
-существующие структуры/вызовы и ABI version1 сохранены. Default off.
-После освобождения diarizer повторно загружается только исходный embedding,а не ASR/segmentation.
-На initial cluster берутся≤3 predicted spans,центр каждого≤8s,всего2..20s mono16k;
-рабочий sample buffer≤320000floats (1.28MB),PCM источник остаётся mmap scratch.
-Cluster cap0→128,максимум256; превышение возвращает ошибку без fallback.
-Нормализованные embeddings сравниваются cosine complete linkage; одновременно активные predicted IDs
-получают cannot-link distance2. При недостатке речи cluster остаётся отдельным.
-Embedding освобождается перед матричной кластеризацией/merge. Исходные слова/таймкоды не меняются.
-Trace сохраняет initial и refined turns,числа initial/final/embedded clusters.
-Отмена проверяется до загрузки и между cluster embeddings; nested тяжёлый job возвращает NH_BUSY.
-Это experimental opt-in: измерения основаны на publisher-reviewed silver,ARM runtime пока недоступен.
-
-Decoder проверяет RIFF/RF64 WAVE header до miniaudio filename hints: PCM с MPEG-sync bytes не должен
-ошибочно декодироваться какMP3 из-за имени файла. Android eval проверяет не толькоSHA входа,
-но и число decoded frames против frozen длительности;legacy suffix test host не задаёт фактическийcodec.
-
-Квалификация opt-in: native/prototype exact5/5,control cap/cancel/reentry passed,3 paired AVD reloads:
-cpWER42.97→33.16%,median wall+3.2%,sampledPSS~369MiB. Source signal host/AVD SHA-identical;
-ASR outputs имеют5замен междуplatform builds,а внутриdevice A/B words/timestamps exact.
-Default остаётсяoff;независимый gold/ARM runtime не заявляются. Короткий третий голос пока не восстановлен.
-
-Research backends в `eval/scripts` изолированы от SDK: turn/selective embedding splitting
-отклонены по regression-срезам. `probe_sortformer.py` проверяет другие diarizers через Python ORT:
-Sortformer v2≤4speaker slots/cache188,Nemotron3Q8≤8slots/cache264,512float/frame/FIFO,
-явный left/right context и frozen streaming profiles.
-Sortformer v2.1 FP32/MatMul-INT8 отклонён для интеграции:сильный speaker collapse на regression-сессии
-при улучшениях на других файлах. Это не новый C ABI/default;frontend/state numerical parity с NeMo
-и target-memory не квалифицированы. Все альтернативные модели остаются research-only.
-Nemotron3Q8 улучшил DER/cpWER на3known transfer files;но имеет dev/JER-регрессии,
-поэтому реализован отдельным experimental native API;основнойfilepreset прежний.
-Torch/librosa устанавливается отдельной dev-командой `make frontend-reference-bootstrap` для контроля
-спектрограммы;в runtime SDK не входит. Native ASR words/timestamps при этих diarization A/B сохраняются.
-
-### Stateful speaker API (experimental)
-
-`nh_streaming_diarizer_create/accept/flush/reset/get_stats/destroy` — additive CABI1.
-ПрямойCPUORT1.28.2 из тех же pinnedruntimeбиблиотек;C++headers1.28.2 скачиваютсяbootstrap,
-приватны SDK и включены вbuildprovenance. Runtime самостоятельный C++17/C ABI;
-reference Torch остаётся только инструментом разработчика.
+Preset `config/audio-sdk-preset.json` / `ru-offline-v1`:
 
 ```text
-16kmono PCM blocks → bounded ring + global-timeline preemphasis/STFT/logmel
-  → Nemotron3Q8 + cache264/FIFO → 8 probabilities per10ms → client callback
+клиент → nh_transcribe → FileTranscriber
+  decode MP3/WAV → mono16k f32 → unlinked disk PCM
+  GigaAM-v3 CTC INT8 с собственной пунктуацией,20s chunks → release ASR
+  read PCM blocks1s → Nemotron3 Diarization Q8 buffered → release speaker model
+  first min(word duration,160ms) posterior mean → speaker per word
+  merge adjacent same-speaker words,gap≤1200ms → strict transcript JSON
 ```
 
-Profile0:chunk9/right4/FIFO264/update222,nominalbuffer1.04s;
-profile1:340/40/40/300,30.4s;STFTstartup+2.5ms,computeдополнительно.
-Ring сохраняет201предыдущийsample и200lookahead;wholePCM не накапливает.
-МаксимальныйlogicalPCM486641samples (~1.86MiB) дляbuffered,
-features≤3040×128float;cache≤264×512float,FIFO≤40/264×512float.
-Это ограничения собственныхbufferов,не верхняя граница RSS всегоORT.
+GigaAM остаётся ASR,а Nemotron — только diarizer. NeMo-Speech.cpp,WhisperX,
+независимый aligner,RUPunct/Horizon и NME-SC не включены в runtime.
+Пунктуация/case генерируются ASR; модельный текст не переписывается LLM.
+Автоматическое число активных голосов,до8model slots; это не гарантия распознавания
+всех8участников. ID канонизируются по первому слову и стабильны внутри файла.
 
-Callback возвращаетrow-major `[frames][8]` borrowedf32posteriors иabsolute `start_sample`;
-шаг160source samples. IDs/slots scopedperstream;speaker count не подаётся.
-Транспортныеблоки1..400000samples не сбрасываютсостояние,flush завершаетреальныйEOF;
-последние<10msне образуютполнойrow. Configbudget0→600s,max3600s наstream/reset.
-Callbacks могутотменитьпосленейросетевогошага;cancel/runtimeerror требуетreset.
-Reset очищаетPCM/timeline/cache,сохраняяmodel session;stats даютcounters/NNtime/buffer sizes.
-Per-handlebusyguard запрещаетreentry;бюджетнесколькихlow-levelhandles контролируетклиент.
+Default0 в новой конфигурации означает4threads/600s. Доступный явный лимит1..600s.
+Профиль buffered,chunk20s и anchor160ms фиксированы основным API.
+Это обработка готового файла; low-latency speaker profile не выдаётся за готовый
+real-time микрофонный ASR. Полный600s synthetic soak не является проверкой
+качества естественного десятиминутного разговора.
 
-Низкоуровневый API не создаёт текст/word spans. Базовый file API сохраняет ERes2Net;
-новый opt-in file API ниже использует эти callbacks после собственного ASR.
-Native smoke175/natural176 совпали по cpWER и threshold decisions с прототипом;
-transport997 vs400000 samples даёт exact arrays. ASan/UBSan и cross-build пройдены.
+## Слои и владение ресурсами
 
-Standalone `nh-audio-stream INPUT MODEL OUTPUT_F32LE [THREADS PROFILE MAX_SECONDS]`
-вызывает SDK напрямую: decode16k блоками16000 → stream handle → exclusive output.
-PCM SHA256 считается инкрементально; stdout содержит source frames, ORT/counters,
-processing/load time, kernel peak RSS и unpaced callback intervals. Raw posteriors —
-eval artifact. CLI входит в host/Android build и hash provenance.
-Device runner проверяет SHA артефактов/PCM и собирает PSS внутри device shell;
-существующий app driver по умолчанию сохраняет APK checks.
+```mermaid
+flowchart TD
+    Client[Клиент: C / C++ / JNI] --> API[nh_transcribe / ABI adapters]
+    API --> Service[FileTranscriber]
+    Service --> Factory[PipelineFactory]
+    Factory --> Decoder[AudioDecoderPort]
+    Factory --> ASR[AsrPort]
+    Factory --> Speaker[SpeakerPort]
+    Factory --> Export[TranscriptSinkPort]
+    Service --> Storage[PcmSpool / PcmMapping / AsrCheckpoint]
+    Decoder --> Miniaudio[miniaudio]
+    ASR --> Sherpa[sherpa-onnx]
+    Speaker --> ORT[ONNX Runtime / bounded frontend and cache]
+    Export --> JSON[Atomic JSON export]
+```
 
-177–181: buffered на 4GB x86 AVD обрабатывает movie175.172 s за7.08–11.10 s,
-sampled PSS ≤285 MiB. Три повторных posterior arrays exact; решения порога совпали с host.
-Low182–183: AVD RTF1.192, cpWER36.34% против buffered30.50%; этот профиль
-не рекомендован для real-time в доступном окружении. Это были speaker-only execution с фиксированной host ASR attribution;
-полный target pipeline проверен отдельно в211–214, ARM execution по-прежнему отсутствует.
-Q4 зафиксирован только для воспроизводимости: screening184–185 отклонён
-по quality regression и отсутствию low RTF выигрыша.
+- `pipeline.cpp`: тонкие C ABI адаптеры,основной preset и совместимые entry points.
+- `file_transcriber.*`: проверка запроса,стадии,отмена,последовательность ресурсов,экспорт.
+- `pipeline_ports.hpp`: контракты декодера,ASR,спикеров,экспорта и фабрики.
+- `pipeline_factory.cpp`: native adapters и выбор posterior/legacy speaker backend.
+- `pipeline_storage.*`: noncopyable RAII для scratch PCM,mmap,locked ASR checkpoint;
+  проверка alias путей и атомарная запись JSON.
+- `mel.*`,`speaker_cache.*`,`posterior_merge.hpp`: DSP/state/накопление вероятностей.
+  Внутренние DSP циклы не используют virtual dispatch.
+- Низкоуровневые ASR/diar/VAD и optional summary остаются независимыми C API.
 
-Основной file API использует ERes2Net; Q8 buffered доступен через отдельный opt-in
-file API. Автоматическая смена default не принята.
+Фабрика не загружает модели заранее. ASR adapter существует только внутри
+стадии распознавания и уничтожается перед созданием speaker adapter.
+Runtime: sherpa-onnx2.0.1 / ONNX Runtime1.28.2 CPU,miniaudio0.11.23.
+CMake/Ninja; Linux x86_64 и NDKr27d/API26 для Android ARM64/x86_64.
+Release без fast-math; общие native библиотеки,статическая C++ runtime Android.
+Версии/SHA — `config/*lock.json`,инструменты — `uv.lock`.
 
-Внешний reference `NeMo-Speech.cpp 0.3.0` установлен отдельно в `.tools` для
-сравнения целого ASR/diarization pipeline (187–194). На6 известных записях
-протестированная связка хуже по WER/cpWER; default не заменён. Прямое posterior
-назначение спикера первым160ms слова улучшило cpWER нашего GigaAM/ONNX варианта
-в research190 и перенесено в новый файловый C API203–214. Внешний runtime не линкуется
-с SDK; Linux ARM64 binary не считается проверкой Android NDK.
+## PCM, таймлайн и память
 
-Блоковые исследования195+: LS-EEND recurrent diarization проверен отдельно и
-не принят из-за quality regression. DPDFNet enhancement→ASR проверен202 через
-существующий native sherpa C API с явным DSP right-padding/cropping до исходного
-N samples. Выигрыша WER в smoke нет, в основной SDK/preset не включён. Исходный звук остаётся входом для diarization.
+miniaudio потоково декодирует с mono mixing и настоящим ресемплированием:
+linear + low-pass8-го порядка. RIFF/RF64 WAVE header имеет приоритет над расширением.
+Декодер переиспользует один блок; PCM spool — mkstemp + немедленный unlink.
+На диске64KB/s; ASR читает ограниченные чанки,короткий хвост перераспределяется,
+input<1s дополняется только для модели.
 
-### Файловый API с posterior merge (experimental opt-in)
+Новый speaker backend читает spool блоками16000samples. Frontend:
+Slaney128mel,Hann400,FFT512,hop160,preemphasis.97. Cache264×512,
+FIFO40×512; profile340/right40/update300. Logical PCM≤486641samples (~1.86MiB),
+features≤3040×128float. Это границы собственных буферов,не общий RSS ORT.
+Полная матрица posteriors не хранится:на слово8double sums,anchor≤16rows.
+Слова/JSON/диагностические turns растут с длительностью,ограниченной API.
 
-`nh_transcribe_file_with_streaming_diarizer(input, config, options, speaker, progress, user)`
-сохраняет GigaAM/CTC word spans, disk spool, ASR checkpoint и общий heavy-job guard.
-ASR освобождается до загрузки Nemotron3 Q8. Второй проход читает PCM блоками16000,
-модель выдаёт posteriors в callback; полная матрица вероятностей не хранится.
-Для каждого слова накапливаются8 double sums только для первых min(word duration,160ms).
-Argmax выбирает слот, ties — меньший индекс; все ASR слова и интервалы сохраняются.
-Это присваивает слот и на слабоуверенных spans: нельзя считать отсутствие unknown доказательством качества.
-IDs канонизируются по первому слову спикера; соседние слова объединяются при gap≤1200ms.
+CTC word timestamps — token spans,last character+40ms,не forced alignment.
+При невозможности exact reconstruction сохраняется whole-chunk span и
+`chunk_fallback` в trace. Word timestamp MAE не измерен без manual GT.
+Модель спикеров выдаёт10ms rows; EOF<10ms не образует полной строки.
+Argmax назначает слот даже при слабой уверенности:zero unknown не доказывает качество.
+Стерео сводится в mono; cross-file speaker identity и channel-aware diarization отсутствуют.
 
-Структуры ABI1 не изменены. `config.segmentation/embedding/cluster_threshold` не используются,
-`options` разрешает checkpoint_directory, остальные tuning fields должны быть0.
-Speaker profile/threads берутся из отдельного config; duration0 наследует file budget,
-меньший явный лимит ограничивает decode до загрузки ASR. Новый режим строго считает samples
-без старого codec-rounding допуска16samples. Возвращаемые статусы — прежние NH_*.
-Отмена проверяется между PCM-блоками и после NN шага; speaker_stream progress считает
-выданные source frames монотонно. Checkpoint переиспользуется между старым и новым backend.
-Output/trace не могут перезаписать graph или стандартный sibling external weights `<model>_data`.
+## Ошибки, отмена, checkpoints и JSON
 
-Trace: original words, word_speaker_slots, decoded PCM SHA256, counters/NN time,
-и diagnostic speaker turns (.5 threshold, gaps<.5s merge перед min speech.3s).
-Trace ограничен65536 turns; word accumulator растёт с числом ASR words, не числом posterior frames.
-Основной transcript JSON сохраняет прежнюю строгую схему. Атомарность обеспечивается
-для каждого файла отдельно. Отмена/ошибка до export сохраняет существующие output/trace,
-что проверено209; trace записывается перед основным JSON.
+Вызовы блокируют поток клиента. Handles явно уничтожаются после окончания
+операций; callback buffers borrowed до возврата,исключения через C ABI запрещены.
+Один high-level file/summary job на процесс; повторный вход — `NH_BUSY`.
+Низкоуровневые отдельные handles независимы,их общий бюджет контролирует клиент.
 
-CLI: `nh-audio transcribe-stream INPUT OUTPUT ASR TOKENS SPEAKER_MODEL SCRATCH
-[THREADS PROFILE CHUNK_SECONDS MAX_SECONDS CHECKPOINT]`.
-Stdout содержит source samples, полный processing time и kernel peak RSS; stderr — progress.
-Ни Python, ни APK/UI, ни внешний reference runtime в этом пути не участвуют.
+Progress:queued/decode/checkpoint_identity/asr_load/asr/asr_cached/
+speaker_stream_load/speaker_stream/merge/done. Отмена между decode blocks,
+ASR chunks и speaker inference steps; синхронный NN call не прерывается посередине.
+Speaker progress считает уже emitted source samples,а не read-ahead PCM.
 
-203–214: old-default JSON exact; native/prototype word slots exact6/6;
-7 real-model control cases passed; full real-model smoke215 прошёл ASan/UBSan. В полном x86 AVD4096MiB movie175.172s:
-28.39–30.16s, median RTF.16268, sampled PSS≤340132KiB (~332MiB).
-Три повторных target transcript/word/slot/turn массива exact. PCM SHA совпадает с host;
-ASR слова между host/Android различаются, поэтому target cpWER27.85% /host28.12% считаются отдельно.
-Все ASR и speaker NN в target опытах исполняются на устройстве, host words не подставляются.
-Физический ARM и часовой stress не квалифицированы. Default ERes остаётся доступен.
+ASR checkpointv2: SHA256 decoded PCM,модель/tokens,architecture/platform,
+runtime,chunk/thread/padding policy; flock,atomic update,metadata≤64MiB.
+Resume повторно декодирует вход,переиспользует завершённые ASR chunks;
+при полном cache ASR вообще не загружается. Diarization пересчитывается.
 
+Основной JSON содержит только `transcript` с
+`speaker_id/start_ms/end_ms/text`; время — integer ms исходной timeline.
+Trace отдельно сохраняет backend ASR,words,slots,source PCM hash,diagnostic turns,
+profile/runtime/counters/NNtime. Output/trace защищены от alias входа/моделей,
+включая external speaker weights `<model>_data`.
+Экспорт temp/fsync/rename атомарен для каждого файла,trace публикуется первым;
+двухфайловой транзакции нет. Ошибка/отмена до export сохраняет прежние файлы.
 
-Срез216–218: независимый wav2vec2 Q8 forced aligner и официальный NeMo
-NME-SC проверены только в `eval/scripts`. В C ABI/поставляемый runtime не включены;
-первый дал небольшой cpWER выигрыш при дополнительной модели/памяти,
-второй на агрегированных ERes кластерах ухудшил результат. Принятый путь SDK
-остаётся GigaAM CTC + opt-in bounded NemotronQ8/posterior merge; подробные
-измерения и ограничения — в RESEARCH.md. Новые опыты остановлены для обсуждения финального среза.
+## Совместимость и дополнительные возможности
+
+Старые ABI1 структуры/символы сохранены:их вызывают существующие клиенты и тесты.
+`nh_transcribe_file*` — legacy pyannote segmentation FP32 + ERes2Net + auto AHC;
+optional global refinement использует complete-link cosine и predicted-overlap
+cannot-links. Непрерываемый whole-file legacy diarizer остаётся ограничением
+latency отмены старого режима. Это не рекомендуемый новый preset.
+
+Отдельно доступны CTC/RNNT/Whisper adapters,Silero VAD и stateful speaker API.
+VAD не включён в файловый preset без подтверждённого A/B. Optional
+`nh_summarize_file`: llama.cpp/Qwen3-0.6B,отдельный результат без изменения JSON;
+контекст4096/output≤256,overflow возвращает ошибку. Qwen weights не входят в
+минимальный transcription bundle. Сборки с llama поставляют его runtime libs.
+
+## Сборка, поставка и подтверждение
+
+`src/audio/.clang-format` + pinned clang-format19.1.7; pre-commit проверяет staged
+native blobs. Gates: `make check native-test native-sanitize mobile-build
+native-format-check research-test`,Android ktlint/detekt/Lint.
+ASan/UBSan покрывают наш код,а не предсобранный ORT/sherpa.
+
+`make sdk-package` создаёт `.build/nuclear-audio-sdk-ru-v1.tar`: public header,
+C-пример,CLI/runtimes Linux x86_64 и Android ARM64/x86_64,только выбранные модели,
+лицензии,SHA manifest,preset и build provenance. Research data/scripts/модели,
+Python и тестовый APK в комплект не входят. Linux launcher задаёт local library
+path; Android-клиент доставляет ABI libs/weights и вызывает C ABI через свой слой.
+
+Проверки качества —6известных natural RU silver записей; независимого gold и
+ручных word timestamps нет. Короткий третий голос,overlap и одна тяжёлая запись
+остаются ограничениями. Физический ARM runtime/качество/RTF не измерены;
+ARM cross-build и16KiB ELF alignment не заменяют запуск на устройстве.
+Подробные метрики,paired before/after parity и resource tests — в RESEARCH.md.

@@ -29,14 +29,19 @@ def main():
     p.add_argument('--experiment', required=True)
     p.add_argument('--manifest', default='eval/data/dialogs-smoke.jsonl')
     p.add_argument('--baseline', default='exp_0125')
+    p.add_argument('--model', choices=['giga-v3-ctc', 'giga-v3-ctc-punct'], default='giga-v3-ctc')
     p.add_argument('--prototype', help='exp_0190 for six natural posterior-anchor variants')
     p.add_argument('--android', action='store_true')
+    p.add_argument('--entry-point', choices=['stream', 'final'], default='stream')
+    p.add_argument('--require-word-parity', action='store_true')
     p.add_argument('--asan', action='store_true', help='Real-model host sanitizer check; timings are diagnostic')
     p.add_argument('--host-reference')
     p.add_argument('--timeout', type=int, default=1200)
     args = p.parse_args()
     if not re.fullmatch(r'exp_[0-9]+', args.experiment): p.error('Use exp_NNNN')
     if args.asan and args.android: p.error('ASan probe is host-only')
+    if args.model != 'giga-v3-ctc' and args.prototype:
+        p.error('Frozen prototype slots require the original GigaAM words')
     out = ROOT/'.audio-runs'/args.experiment; out.mkdir(parents=True, exist_ok=False)
     build = ROOT/'.build'/('android-x86_64' if args.android else ('audio-asan' if args.asan else 'audio'))
     binary = build/'nh-audio'
@@ -48,7 +53,10 @@ def main():
             raise ValueError('Native source changed since build: '+path)
     lock = json.loads((ROOT/'config/audio-models.lock.json').read_text())
     spk = next(m for m in lock['models'] if m['id'] == 'nemotron3-diarization-q8')
-    paths = ['models/giga-v3-ctc/model.int8.onnx', 'models/giga-v3-ctc/tokens.txt', *spk['files']]
+    asr = next(m for m in lock['models'] if m['id'] == args.model)
+    asr_paths = asr.get('runtime_files', asr['files'])
+    paths = [next(p for p in asr_paths if Path(p).name == 'model.int8.onnx'),
+             next(p for p in asr['files'] if Path(p).name == 'tokens.txt'), *spk['files']]
     files = [next(f for f in lock['files'] if f['path'] == path) for path in paths]
     for f in files:
         if sha256(ROOT/f['path']) != f['sha256']: raise ValueError('Changed model: '+f['path'])
@@ -56,7 +64,7 @@ def main():
         model_files=files, model_lock_sha256=sha256(ROOT/'config/audio-models.lock.json'),
         manifest_sha256=sha256(ROOT/args.manifest), sdk_sha256=provenance['sdk_sha256'],
         cli_sha256=sha256(binary), threads=4, profile=1, word_anchor_ms=160,
-        scope='full native GigaAM -> streaming Q8 posterior word merge -> strict JSON; '+('x86 AVD, not ARM' if args.android else ('host ASan/UBSan diagnostic, not performance' if args.asan else 'host')), input_sha256={})
+        scope='full native '+args.model+' -> streaming Q8 posterior word merge -> strict JSON; '+('x86 AVD, not ARM' if args.android else ('host ASan/UBSan diagnostic, not performance' if args.asan else 'host')), input_sha256={})
     record_harness(out, config)
     (out/'build-provenance.json').write_bytes((build/'build-provenance.json').read_bytes())
     (out/'config.json').write_text(json.dumps(config, indent=2))
@@ -93,6 +101,8 @@ def main():
         shell('mkdir', '-p', base+'/runs'); shell('mkdir', remote_run)
         config['remote_run'] = remote_run
     (out/'config.json').write_text(json.dumps(config, indent=2))
+    command_name = 'transcribe-final' if args.entry_point == 'final' else 'transcribe-stream'
+    command_options = ['4', '600'] if args.entry_point == 'final' else ['4', '1', '20', '600']
     cases = []
     for f in map(json.loads, (ROOT/args.manifest).read_text().splitlines()):
         ident = f['audio_id']
@@ -106,8 +116,8 @@ def main():
             upload(ROOT/f['audio'], audio)
             result_dir = remote_run+'/'+ident; shell('mkdir', result_dir)
             target_output = result_dir+'/transcript.json'
-            command = ['env', 'LD_LIBRARY_PATH='+runtime, cli, 'transcribe-stream', audio, target_output,
-                       models[0], models[1], models[2], result_dir, '4', '1', '20', '600']
+            command = ['env', 'LD_LIBRARY_PATH='+runtime, cli, command_name, audio, target_output,
+                       models[0], models[1], models[2], result_dir, *command_options]
             script = device_script(command, result_dir)
             (folder/'device-command.sh').write_text(script)
             began = time.perf_counter()
@@ -129,7 +139,7 @@ def main():
                 process_peak_rss_kib=measured['process_peak_rss_kib'], exit_code=0,
                 sampled_peak_pss_kib=max(s['pss_kib'] for s in samples), memory_samples=len(samples))
         else:
-            command = [cli, 'transcribe-stream', str(ROOT/f['audio']), str(output), models[0], models[1], models[2], str(folder), '4', '1', '20', '600']
+            command = [cli, command_name, str(ROOT/f['audio']), str(output), models[0], models[1], models[2], str(folder), *command_options]
             (folder/'command.json').write_text(json.dumps(command, indent=2))
             timing = profile(command, folder)
             if timing['exit_code']: raise RuntimeError('Native full file API failed; stderr retained')
@@ -148,7 +158,7 @@ def main():
             native_stream=trace['speaker_stream'], baseline_words_exact=same_words,
             text_metrics=text_metrics(' '.join(t['text'] for t in truth), ' '.join(t['text'] for t in actual['transcript'])),
             speaker_attributed=cpwer(truth, actual['transcript']), **speaker_coverage(actual['transcript']), json_valid=True)
-        if not args.android and not same_words: raise ValueError('New host file backend changed frozen ASR words/times')
+        if not args.android and (args.model == 'giga-v3-ctc' or args.require_word_parity) and not same_words: raise ValueError('New host file backend changed frozen ASR words/times')
         if args.prototype:
             expected_path = ROOT/'.audio-runs'/args.prototype/(ident+'.variants.json')
             config['input_sha256'][str(expected_path.relative_to(ROOT))] = sha256(expected_path)

@@ -1,0 +1,161 @@
+[
+  {
+    "experiment": "exp_0230",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-pilot.jsonl",
+      "--baseline",
+      "exp_0219",
+      "--host-reference",
+      "exp_0219",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--require-word-parity"
+    ],
+    "hypothesis": "Post-refactor recommended nh_transcribe API: actual full inference, exact pre-refactor punctuated ASR word/time and speaker-turn parity on six known sources; native classes/ports/factory must preserve measured output"
+  },
+  {
+    "experiment": "exp_0231",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--baseline",
+      "exp_0220",
+      "--host-reference",
+      "exp_0220",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--require-word-parity"
+    ],
+    "hypothesis": "Post-refactor recommended nh_transcribe API: actual full inference, exact pre-refactor punctuated ASR word/time and speaker-turn parity on six known sources; native classes/ports/factory must preserve measured output"
+  },
+  {
+    "experiment": "exp_0232",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0221",
+      "--host-reference",
+      "exp_0221",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--require-word-parity"
+    ],
+    "hypothesis": "Post-refactor recommended nh_transcribe API: actual full inference, exact pre-refactor punctuated ASR word/time and speaker-turn parity on six known sources; native classes/ports/factory must preserve measured output"
+  },
+  {
+    "experiment": "exp_0233",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-astrology-session.jsonl",
+      "--baseline",
+      "exp_0222",
+      "--host-reference",
+      "exp_0222",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--require-word-parity"
+    ],
+    "hypothesis": "Post-refactor recommended nh_transcribe API: actual full inference, exact pre-refactor punctuated ASR word/time and speaker-turn parity on six known sources; native classes/ports/factory must preserve measured output"
+  },
+  {
+    "experiment": "exp_0234",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0232",
+      "--host-reference",
+      "exp_0232",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--android"
+    ],
+    "hypothesis": "Final nh_transcribe API actual full4GB x86 AVD repeat; compare pre-refactor224-226 device arrays exactly, in-device timing/PSS, no host ASR substitution or ARM claim"
+  },
+  {
+    "experiment": "exp_0235",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0232",
+      "--host-reference",
+      "exp_0232",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--android"
+    ],
+    "hypothesis": "Final nh_transcribe API actual full4GB x86 AVD repeat; compare pre-refactor224-226 device arrays exactly, in-device timing/PSS, no host ASR substitution or ARM claim"
+  },
+  {
+    "experiment": "exp_0236",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--manifest",
+      "eval/data/russian-conversation-movie-session.jsonl",
+      "--baseline",
+      "exp_0232",
+      "--host-reference",
+      "exp_0232",
+      "--model",
+      "giga-v3-ctc-punct",
+      "--entry-point",
+      "final",
+      "--android"
+    ],
+    "hypothesis": "Final nh_transcribe API actual full4GB x86 AVD repeat; compare pre-refactor224-226 device arrays exactly, in-device timing/PSS, no host ASR substitution or ARM claim"
+  },
+  {
+    "experiment": "exp_0237",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--baseline",
+      "exp_0227",
+      "--host-reference",
+      "exp_0227",
+      "--entry-point",
+      "final",
+      "--require-word-parity"
+    ],
+    "hypothesis": "Final facade short/overlap smoke: exact before-refactor release words and source bounds, detect short-voice regression"
+  },
+  {
+    "experiment": "exp_0238",
+    "script": "eval/scripts/probe_streaming_file_pipeline.py",
+    "args": [
+      "--model",
+      "giga-v3-ctc-punct",
+      "--baseline",
+      "exp_0237",
+      "--host-reference",
+      "exp_0237",
+      "--entry-point",
+      "final",
+      "--require-word-parity",
+      "--asan"
+    ],
+    "hypothesis": "Final facade and class architecture under ASan/UBSan: real-model full smoke; exact release parity, not performance"
+  }
+]

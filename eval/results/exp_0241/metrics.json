@@ -1,0 +1,95 @@
+{
+  "experiment_id": "exp_0241",
+  "scope": "same-session alternating host full pipeline old/current native binary performance control; unisolated developer host, not ARM or cold-cache",
+  "cases": [
+    {
+      "variant": "old",
+      "pair": 0,
+      "exit_code": 0,
+      "wall_seconds": 20.047653575995355,
+      "process_peak_rss_kib": 575412,
+      "sampled_peak_pss_kib": 570895,
+      "sampled_peak_rss_kib": 576728,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    },
+    {
+      "variant": "new",
+      "pair": 0,
+      "exit_code": 0,
+      "wall_seconds": 18.104975012000068,
+      "process_peak_rss_kib": 563428,
+      "sampled_peak_pss_kib": 558684,
+      "sampled_peak_rss_kib": 564508,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    },
+    {
+      "variant": "new",
+      "pair": 1,
+      "exit_code": 0,
+      "wall_seconds": 18.238400424990687,
+      "process_peak_rss_kib": 597896,
+      "sampled_peak_pss_kib": 593231,
+      "sampled_peak_rss_kib": 599064,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    },
+    {
+      "variant": "old",
+      "pair": 1,
+      "exit_code": 0,
+      "wall_seconds": 18.064121253992198,
+      "process_peak_rss_kib": 593364,
+      "sampled_peak_pss_kib": 588351,
+      "sampled_peak_rss_kib": 594172,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    },
+    {
+      "variant": "old",
+      "pair": 2,
+      "exit_code": 0,
+      "wall_seconds": 18.191929303997313,
+      "process_peak_rss_kib": 573872,
+      "sampled_peak_pss_kib": 569195,
+      "sampled_peak_rss_kib": 575028,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    },
+    {
+      "variant": "new",
+      "pair": 2,
+      "exit_code": 0,
+      "wall_seconds": 17.89472039199609,
+      "process_peak_rss_kib": 589184,
+      "sampled_peak_pss_kib": 584629,
+      "sampled_peak_rss_kib": 590532,
+      "pss_sample_period_ms": 50,
+      "audio_seconds": 175.1717659482104,
+      "exact_output": true
+    }
+  ],
+  "median_new_over_old_wall_ratio": 0.9836625952621794,
+  "pair_wall_ratios": [
+    0.9030969606178046,
+    1.0096478078589055,
+    0.9836625952621794
+  ],
+  "variants": {
+    "old": {
+      "median_wall_seconds": 18.191929303997313,
+      "maximum_sampled_pss_kib": 588351
+    },
+    "new": {
+      "median_wall_seconds": 18.104975012000068,
+      "maximum_sampled_pss_kib": 593231
+    }
+  },
+  "limitation": "Three alternating pairs, shared developer host; ratios are measured diagnostics, not an isolated CPU benchmark or a speedup guarantee."
+}

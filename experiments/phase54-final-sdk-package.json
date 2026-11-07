@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0245",
+    "script": "eval/scripts/verify_sdk_bundle.py",
+    "args": [],
+    "hypothesis": "Extract actual final SDK outside source, verify all SHA/manifest paths, resolve native dependencies only inside package, execute packaged launcher and compile/run public C example with zero-default final config; transcript must equal qualified237, no Python in inference"
+  }
+]

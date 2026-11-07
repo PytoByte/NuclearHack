@@ -53,6 +53,9 @@ def main():
         row['model_lock_sha256'] = c.get('model_lock_sha256','')
         row['wer'] = m.get('normalized',{}).get('wer',m.get('normalized_wer',row['wer']))
         row['cer'] = m.get('cer',row['cer'])
+        for key in ['cpwer', 'der', 'jer']:
+            if isinstance(m.get(key), (int, float)):
+                row[key] = m[key]
         row['der'] = m.get('der_details',{}).get('diarization error rate',row['der'])
         cases=m.get('cases',[])
         attributed=[x['speaker_attributed'] for x in cases if 'speaker_attributed' in x and 'audio_id' in x]

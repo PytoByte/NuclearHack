@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0244",
+    "script": "eval/scripts/analyze_final_sdk.py",
+    "args": [],
+    "hypothesis": "Seal final selected SDK: all six known source metrics and exact before/after source words/slots/turns/export parity, three actual device runs, controls/legacy, ASan full pipeline, contemporary old/new timings and600s capacity; explicit unavailable timestamp/ARM/gold fields"
+  }
+]

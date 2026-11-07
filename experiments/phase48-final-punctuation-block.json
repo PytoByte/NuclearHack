@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0223",
+    "script": "eval/scripts/probe_final_punctuation.py",
+    "args": [],
+    "hypothesis": "Finish punctuation selection on six known actual native outputs: fixed lexical content/times/speakers; compare RUPunct and Horizon under original ASR chunk versus speaker-utterance context; all text-v2 metrics and incremental host times, no native/ARM integration claim"
+  }
+]

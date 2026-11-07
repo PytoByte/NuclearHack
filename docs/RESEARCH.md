@@ -1406,6 +1406,23 @@ GCC (препроцессор раскрывает `__has_feature(...)` даже
 правильная форма `#if defined(__SANITIZE_ADDRESS__) / #elif defined(__has_feature)
 / #if __has_feature(address_sanitizer)`.
 
+**252 Аудит retention и внешнего egress (утечка данных, а не памяти).** Единственный
+подтверждённый внешний путь до правки: `allowBackup="true"` в `AndroidManifest.xml`
+означал, что `filesDir` — `models`, `imports`, `results` (+ невидимые `*.trace.json`),
+`summaries`, `scratch`, `job-cache` — копируется в Google system backup, причём
+`res/xml/backup_rules.xml` нигде не referenced (lint `UnusedResources`), а его
+`<exclude domain="file" path="." />` не является валидным синтаксисом "исключить всё".
+После `allowBackup="false"` путь закрыт; lint-baseline обновлён, потому что он
+цитировал именно эту строку манифеста. `scripts/package_audio_sdk.py` и
+`scripts/bootstrap_models.py` в комплект кладут только модели, libs, лицензии и
+документацию; в git нет ни медиа, ни weights, ни raw-логов. Native-слой:
+`pipeline_storage.cpp:25` — PcmSpool через `mkstemp` с немедленным `unlink`,
+`write_json` — `mkstemp` + `fsync` + `rename`, checkpoint lock `0600`, cap 64 MiB.
+Оставлено осознанно (вне этого пула): нет пути удаления для девяти app-private
+поверхностей; `RECORD_AUDIO` declared, но в Kotlin не используется (SDK читает
+SAF-файлы, микрофон не открывается); artifacts eval-прогонов
+`/data/local/tmp/nuclear-*-eval` не очищаются.
+
 **Итог.** Подтверждённая утечка за всё исследование — одна, в тестовом C-файле
 (`c_abi.c:115`, незакрытый `FILE*`), исправлена. SDK-код (create/process/destroy
 успех и error-пути) утечек не даёт ни в статике, ни в ASan/LSan, ни в Valgrind.

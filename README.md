@@ -125,8 +125,6 @@ callback может запросить кооперативную отмену.
 Сборка native-зависимостей и APK:
 
 ```sh
-export JAVA_HOME="$PWD/.tools/jdk" ANDROID_HOME="$PWD/.tools/android-sdk"
-export PATH="$JAVA_HOME/bin:$PATH"
 make mobile-build                      # cross-build arm64-v8a and x86_64
 make android-app                        # debug APK + libs/assets checks
 ```

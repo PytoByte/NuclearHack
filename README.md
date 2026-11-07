@@ -29,19 +29,19 @@ Python-зависимости поставляются только через `
 - внешняя сеть доступна только developer tooling. Готовое приложение и SDK не
   имеют доступа в интернет.
 
-Базовая установка:
+Базовые команды установки и проверок:
 
 ```sh
 make audio-bootstrap        # uv sync --frozen + pinned native dev dependencies
+make mobile-bootstrap       # bootstrap + NDK для кросскомпиляции
 make doctor                # показать отсутствующие локальные инструменты
-make check                 # task/ protection, INTERNET permission, whitespace
-make test                  # unit tests scripts/tests
+make check                  # task/ protection, INTERNET permission, whitespace
+make test                  # Python unit tests
 ```
 
-Для Android также:
+Для Android из одной сессии shell:
 
 ```sh
-make mobile-bootstrap       # native bootstrap + NDK
 export JAVA_HOME="$PWD/.tools/jdk" ANDROID_HOME="$PWD/.tools/android-sdk"
 export PATH="$JAVA_HOME/bin:$PATH"
 ```

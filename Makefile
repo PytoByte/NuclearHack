@@ -64,6 +64,11 @@ research-bootstrap: audio-bootstrap
 research-test:
 	.venv/bin/python -m unittest discover -s eval/tests -v
 
+.PHONY: frontend-reference-bootstrap
+frontend-reference-bootstrap:
+	test -x .tools/frontend-env/bin/python || uv venv .tools/frontend-env --python .venv/bin/python
+	uv pip install --python .tools/frontend-env/bin/python 'torch==2.9.0+cpu' 'librosa==0.11.0' 'numpy==2.2.6' 'scipy==1.18.1' --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+
 .PHONY: research-pilot
 research-pilot: audio-bootstrap
 	uv sync --frozen --group research

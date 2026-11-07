@@ -1,0 +1,41 @@
+{
+  "experiment_id": "exp_0163",
+  "scope": "independent frontend numeric conformance; not full NeMo/state parity or timestamp accuracy",
+  "reference_versions": {
+    "torch": "2.9.0+cpu",
+    "librosa": "0.11.0",
+    "numpy": "2.2.6",
+    "scipy": "1.18.1"
+  },
+  "cases": [
+    {
+      "case": "silence",
+      "frames": 400,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "passed": true
+    },
+    {
+      "case": "impulse",
+      "frames": 100,
+      "max_absolute_difference": 1.52587890625e-05,
+      "mean_absolute_difference": 2.7343631359144638e-08,
+      "passed": true
+    },
+    {
+      "case": "sine",
+      "frames": 25,
+      "max_absolute_difference": 0.0001163482666015625,
+      "mean_absolute_difference": 3.6632222872867715e-06,
+      "passed": false
+    },
+    {
+      "case": "real",
+      "frames": 400,
+      "max_absolute_difference": 6.198883056640625e-05,
+      "mean_absolute_difference": 5.311553650244605e-07,
+      "passed": false
+    }
+  ],
+  "all_passed": false
+}

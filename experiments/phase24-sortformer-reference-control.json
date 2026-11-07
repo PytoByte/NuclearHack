@@ -1,0 +1,18 @@
+[
+  {
+    "experiment": "exp_0164",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--baseline",
+      "exp_0104",
+      "--manifest",
+      "eval/data/russian-conversation-heldout-session.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole",
+      "--reference-frontend"
+    ],
+    "hypothesis": "Use actual independent Torch/librosa frontend with FP32 model on collapsed-speaker case; isolate NumPy FFT/rounding from model/state failure, no threshold changes"
+  }
+]

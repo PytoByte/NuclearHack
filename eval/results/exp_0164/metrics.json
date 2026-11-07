@@ -1,0 +1,40 @@
+{
+  "experiment_id": "exp_0164",
+  "scope": "experimental streaming Sortformer; preserved ASR words; no oracle; not SDK preset",
+  "load_seconds": 1.5608350659967982,
+  "cases": [
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "audio_seconds": 177.9,
+      "wall_seconds": 5.050393283003359,
+      "inference_rtf": 0.02838894481733198,
+      "model_seconds": 5.045639163006854,
+      "process_peak_rss_kib": 1316016,
+      "speaker_attributed": {
+        "errors": 466,
+        "reference_words": 465,
+        "cpwer": 1.0021505376344086
+      },
+      "known_speakers_count": 2,
+      "unknown_utterances": 6,
+      "unknown_utterance_fraction": 0.42857142857142855,
+      "unknown_word_fraction": 0.01609657947686117,
+      "predicted_speakers_includes_unknown": true,
+      "calls": 7,
+      "max_call_seconds": 0.8467117219988722,
+      "reference_frontend_seconds_excluded_from_inference_rtf": 1.7268875399968238,
+      "der_details": {
+        "missed detection": 3.4399999999999835,
+        "confusion": 57.169000000000025,
+        "correct": 78.32999999999998,
+        "false alarm": 11.74200000000002,
+        "total": 138.939,
+        "diarization error rate": 0.5207393172543349
+      },
+      "jer": 0.7205742058095952
+    }
+  ],
+  "cpwer": 1.0021505376344086,
+  "inference_rtf": 0.02838894481733198,
+  "process_peak_rss_kib": 1377996
+}

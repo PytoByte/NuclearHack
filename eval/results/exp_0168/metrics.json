@@ -1,0 +1,579 @@
+{
+  "experiment_id": "exp_0168",
+  "scope": "paired source-file silver comparison; speaker independence unverified, not gold/ARM validation",
+  "recordings": 3,
+  "runs": {
+    "exp_0099": {
+      "cpwer": 0.4463840399002494,
+      "der": 0.21161531563163238,
+      "jer": 0.3297418631479862,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "speaker_attributed": {
+            "errors": 95,
+            "reference_words": 418,
+            "cpwer": 0.22727272727272727
+          },
+          "reference_speakers": 2,
+          "der_details": {
+            "correct": 141.767,
+            "confusion": 11.629999999999995,
+            "total": 155.52800000000002,
+            "missed detection": 2.1310000000000144,
+            "false alarm": 2.953000000000017,
+            "diarization error rate": 0.10746617972326543
+          },
+          "jer": 0.12450572980310483
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "speaker_attributed": {
+            "errors": 181,
+            "reference_words": 391,
+            "cpwer": 0.4629156010230179
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 123.58100000000006,
+            "confusion": 25.462999999999994,
+            "total": 149.90700000000007,
+            "missed detection": 0.8630000000000049,
+            "false alarm": 4.1950000000000145,
+            "diarization error rate": 0.20359956506367283
+          },
+          "jer": 0.2789931103285874
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "speaker_attributed": {
+            "errors": 261,
+            "reference_words": 394,
+            "cpwer": 0.6624365482233503
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 104.03000000000003,
+            "confusion": 31.663000000000057,
+            "total": 141.71600000000007,
+            "missed detection": 6.022999999999993,
+            "false alarm": 9.703,
+            "diarization error rate": 0.3343941403934632
+          },
+          "jer": 0.5173147048639725
+        }
+      ]
+    },
+    "exp_0166": {
+      "cpwer": 0.31587697423108896,
+      "der": 0.15781917070519816,
+      "jer": 0.2545716113817429,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "speaker_attributed": {
+            "errors": 61,
+            "reference_words": 418,
+            "cpwer": 0.145933014354067
+          },
+          "reference_speakers": 2,
+          "der_details": {
+            "correct": 146.38599999999997,
+            "confusion": 3.5630000000000166,
+            "total": 155.52800000000002,
+            "missed detection": 5.579000000000035,
+            "false alarm": 3.1309999999999825,
+            "diarization error rate": 0.07891183581091529
+          },
+          "jer": 0.09744220682622258
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "speaker_attributed": {
+            "errors": 54,
+            "reference_words": 391,
+            "cpwer": 0.13810741687979539
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 146.85100000000008,
+            "confusion": 1.6229999999999905,
+            "total": 149.90700000000007,
+            "missed detection": 1.4329999999999914,
+            "false alarm": 3.35400000000001,
+            "diarization error rate": 0.042759844436884124
+          },
+          "jer": 0.05568239194332115
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "speaker_attributed": {
+            "errors": 265,
+            "reference_words": 394,
+            "cpwer": 0.6725888324873096
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 97.94400000000003,
+            "confusion": 33.036000000000016,
+            "total": 141.71600000000007,
+            "missed detection": 10.736000000000018,
+            "false alarm": 8.114000000000026,
+            "diarization error rate": 0.36612661943605546
+          },
+          "jer": 0.5582137671905115
+        }
+      ],
+      "paired_recording_bootstrap_delta_ci95": {
+        "cpwer": [
+          -0.3248081841432225,
+          0.01015228426395931
+        ],
+        "der": [
+          -0.16083972062678867,
+          0.0317324790425923
+        ],
+        "jer": [
+          -0.22331071838526628,
+          0.04089906232653895
+        ]
+      }
+    },
+    "exp_0167": {
+      "cpwer": 0.3325020781379884,
+      "der": 0.1640184188339063,
+      "jer": 0.26102651080632266,
+      "cases": [
+        {
+          "audio_id": "ru-youtube-yCX4MRy14zw",
+          "speaker_attributed": {
+            "errors": 81,
+            "reference_words": 418,
+            "cpwer": 0.1937799043062201
+          },
+          "reference_speakers": 2,
+          "der_details": {
+            "correct": 143.78799999999998,
+            "confusion": 5.964000000000013,
+            "total": 155.52800000000002,
+            "missed detection": 5.776000000000031,
+            "false alarm": 2.9769999999999754,
+            "diarization error rate": 0.09462604804279627
+          },
+          "jer": 0.12576757237057432
+        },
+        {
+          "audio_id": "ru-youtube-p0_iIC13bs8",
+          "speaker_attributed": {
+            "errors": 54,
+            "reference_words": 391,
+            "cpwer": 0.13810741687979539
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 147.30900000000008,
+            "confusion": 1.1430000000000007,
+            "total": 149.90700000000007,
+            "missed detection": 1.4549999999999856,
+            "false alarm": 3.790000000000024,
+            "diarization error rate": 0.042613086780470606
+          },
+          "jer": 0.053632328562540195
+        },
+        {
+          "audio_id": "ru-youtube-nr3hmL9bcPU",
+          "speaker_attributed": {
+            "errors": 265,
+            "reference_words": 394,
+            "cpwer": 0.6725888324873096
+          },
+          "reference_speakers": 3,
+          "der_details": {
+            "correct": 98.00300000000006,
+            "confusion": 33.087,
+            "total": 141.71600000000007,
+            "missed detection": 10.626000000000012,
+            "false alarm": 8.523000000000025,
+            "diarization error rate": 0.36859634762482724
+          },
+          "jer": 0.5585933186739375
+        }
+      ],
+      "paired_recording_bootstrap_delta_ci95": {
+        "cpwer": [
+          -0.3248081841432225,
+          0.01015228426395931
+        ],
+        "der": [
+          -0.1609864782832022,
+          0.03420220723136408
+        ],
+        "jer": [
+          -0.22536078176604724,
+          0.04127861380996489
+        ]
+      }
+    }
+  },
+  "comparison_baseline": "exp_0099",
+  "normalized": {
+    "substitutions": 90,
+    "deletions": 13,
+    "insertions": 69,
+    "reference_words": 1203,
+    "wer": 0.142975893599335
+  },
+  "lexical_invariance_verified": true,
+  "lexical_cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 25,
+          "deletions": 1,
+          "insertions": 13,
+          "reference_words": 418
+        },
+        "raw": {
+          "substitutions": 159,
+          "deletions": 3,
+          "insertions": 14,
+          "reference_words": 419
+        },
+        "punctuation_token_wer": {
+          "substitutions": 32,
+          "deletions": 93,
+          "insertions": 5,
+          "reference_words": 518
+        },
+        "normalized_cer": {
+          "errors": 121,
+          "reference_characters": 2412
+        },
+        "raw_cer": {
+          "errors": 283,
+          "reference_characters": 2513
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 98
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 91
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 34
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 55
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 5
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 31,
+          "deletions": 5,
+          "insertions": 5,
+          "reference_words": 391
+        },
+        "raw": {
+          "substitutions": 155,
+          "deletions": 5,
+          "insertions": 10,
+          "reference_words": 386
+        },
+        "punctuation_token_wer": {
+          "substitutions": 34,
+          "deletions": 114,
+          "insertions": 2,
+          "reference_words": 503
+        },
+        "normalized_cer": {
+          "errors": 90,
+          "reference_characters": 2214
+        },
+        "raw_cer": {
+          "errors": 266,
+          "reference_characters": 2321
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 112
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 89
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 36
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 63
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 9
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 1
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 3
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "text_metrics": {
+        "policy": "text-v2",
+        "normalized": {
+          "substitutions": 34,
+          "deletions": 7,
+          "insertions": 51,
+          "reference_words": 394
+        },
+        "raw": {
+          "substitutions": 177,
+          "deletions": 7,
+          "insertions": 54,
+          "reference_words": 391
+        },
+        "punctuation_token_wer": {
+          "substitutions": 67,
+          "deletions": 97,
+          "insertions": 24,
+          "reference_words": 511
+        },
+        "normalized_cer": {
+          "errors": 327,
+          "reference_characters": 2385
+        },
+        "raw_cer": {
+          "errors": 489,
+          "reference_characters": 2499
+        },
+        "punctuation": {
+          "end_to_end": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 117
+          },
+          "conditional_equal_words": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 104
+          },
+          "per_mark": {
+            ".": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 41
+            },
+            ",": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 54
+            },
+            "?": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 15
+            },
+            "!": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ":": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ";": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u2014": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 2
+            },
+            "-": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 5
+            },
+            "\u2026": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00ab": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\u00bb": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "\"": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            "(": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            },
+            ")": {
+              "true_positive": 0,
+              "false_positive": 0,
+              "false_negative": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "frontend_control": [],
+  "limitation": "small reused dev/source-file corpus; exploratory intervals do not establish people-disjoint generalization"
+}

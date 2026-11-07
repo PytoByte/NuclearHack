@@ -4,12 +4,14 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, разбор speaker collapse и следующий streaming backend.**
+**Сейчас: этап2, подготовка native opt-in Nemotron3Q8 после166–174.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
 149–161: MatMul-only INT8/transfer завершены; **Sortformer v2.1 не проходит regression**,
-несмотря на dev выигрыш. Далее — новая8slot-модель и frontend/state conformance,без смены SDK default.
+несмотря на dev выигрыш. Frontend control164 завершён;новая8slot-модель smoke165 прошла,
+natural dev/known transfer166–174 завершены. Далее — отдельный native backend и target-проверки;
+SDK/default сейчас не меняются.
 В `src/audio` реализован opt-in `nh_transcribe_file_with_refinement`; старые ABI/default вызовы сохранены.
 Exact native/prototype parity5/5,граница EOF исправлена,ASan/UBSan и ARM64/x86 cross-build пройдены.
 На AVD4096MiB/x86_64 три пары:cpWER42.97→33.16%,medianRTF.302→.312 (+3.2% wall),sampledPSS~369MiB.
@@ -777,3 +779,54 @@ Dispatch теперь сам фиксируетgit/host/CPU/affinity/thread env 
 включаяfailure; новые161артефакты это проверяют. Историческим timings эти поля заднимчислом не приписываются.
 Далее: [Nemotron3Diarization](https://huggingface.co/nvidia/Nemotron-3-Diarization)8slots
 и frontend/state conformance; найденpublicONNXQ8≈120MB externalweights,но пока не измерен.
+
+### exp_0162–0164 — независимый frontend control (завершён)
+
+Отдельный`.tools/frontend-env`:Torch2.9.0+cpu/librosa0.11.0/numpy2.2.6/SciPy1.18.1;
+SDK/research основноеокружение не меняются.162 сравнивает logmel наsilence/impulse/sine/realPCM:
+maxdelta1.316e-4,meanreal6.76e-7,строгий заранее заданныйmax5e-5непройден;failure сохранён.
+163 исправляет float32Hann arithmetic иcast-before-Slaney по reference source:
+realmax6.20e-5,sinemax1.163e-4,meanreal5.31e-7;тотжедопуск всё ещё **не** пройден.
+Не расширять tolerance молча и не заявлять numerical parity.164 подаёт **реальныеTorch/librosa features**
+в тотжеFP32 Sortformer/state наfailedsFt — контроль влияния FFT/rounding без новой модели/порогов.
+Child Torch memory/time выделены отдельно;этот diagnostic не device performance profile.
+Nemotron3Q8 weights/config/cards закреплены вlock (export353b6f8…,upstreamf667ed7…,OpenMDW-1.1),
+externaldataSHA002d7483….
+
+164 даёт **те же** cpWER100.22%,DER52.07%,JER72.06%,полные turns/utterances exact equal160.
+Posterior maxdelta1.97e-6,0threshold flips. Следовательно,наблюдаемые NumPy/Torch
+frontend-различия не объясняют speaker collapse на этомsource;fullstate parity не проверена.
+
+### exp_0165–0174 — новая8slot-архитектура (завершён screening)
+
+Nemotron3Q8/ORT1.23.2:graph+externalweights120844247bytes;Transformers reference0f53828…,
+learned silence embedding,cache264×512,FIFO40buffered/264low,LC0,10msoutput.
+Published buffered340/right40/update300,low9/right4/update222;buffer30.4s/1.04s.
+State считает80ms pooledsigmoid дляcache,выдаёт10ms logits→sigmoid;GTcountнеподаётся.
+Пятый model-free test проверяет8slots,encoder-ratemask,learnedsilencecompression иrealEOFgrid.
+165 structural:clean3.23%,short20.00%,noise10.26%,общийcpWER9.41% противERes17.65%;
+третийкороткийголос **не восстановлен** (2known+unknown),не путать снижениеcpWER с полным решением.
+Host diarizerRTF.0200примерно,processRSS311472KiB;толькоscreening,не targetRAM.
+Далее natural dev166/167,pairedanalysis168;доtransferникакихновыхпорогов.
+
+До169–174 выбран buffered8slotQ8 дляfile-mode по166 (cp31.59%,RTF.0194,RSS566548KiB):
+это быстрее/экономнее предыдущегоbuffered4slot,ноthirddevcp67.26% противnative66.24% — regression.
+Low167ещёидёт;выборfile-mode не меняется по контрольным результатам.
+169–174 проверятвсе3 **уже известные** source-file regressions;это не новый независимыйtest.
+
+166 buffered:DER15.78%,JER25.46%,cpWER31.59%,RTF.0194,peakRSS566548KiB.
+167 low:DER16.40%,JER26.10%,cpWER33.25%,RTF.5285,RSS463628KiB;
+pairedCI168vsnativeвключают0 дляDER/JER/cpWER (thirddevregression),не заявлять значимость.
+
+| Known transfer / nativeglobal.4→Nemotron3Q8 buffered | DER | JER | cpWER |
+| --- | --- | --- | --- |
+| sFt169/172 | 12.98→10.82% | 11.13→10.26% | 20.65→18.92% |
+| movie170/173 | 21.25→16.67% | 16.59→19.04% | 33.42→30.50% |
+| astrology171/174 | 10.23→6.55% | 26.09→4.55% | 15.57→10.55% |
+
+**ADR: принять для native prototype,не default promotion.** Все3transfer cpWER/DER лучше,
+collapse прежнеймодели не повторился;но thirddev/JERmovie хуже,6smallknown silver files
+не независимыйgold/people-disjoint test. Host buffered transferRSS~384–386MiB/RTF~.031;
+это покаPythonORT1.23.2,не Android/ARM. Следующее: C++17/CABI additive streaming handle,
+bounded PCM/features/cache,host parity/resource/cancel tests,затем4GBx86AVD.
+Существующие API/preset остаются прежними;frontends имеют измеренные floating-point differences.

@@ -77,6 +77,36 @@ class StreamingState(unittest.TestCase):
             self.assertEqual(features.dtype, np.float32)
             self.assertTrue(np.isfinite(features).all())
 
+    def test_nemotron_eight_slots_hires_and_learned_silence_cache(self):
+        class FakeNemotron:
+            def run(self, _, inputs):
+                frames = (inputs['input_features'].shape[1]+7)//8
+                cached = inputs['cached_embeds'].shape[1]
+                self_mask = inputs['attention_mask']
+                if self_mask.shape != (1, cached+frames):
+                    raise AssertionError('Mask is not at encoder rate')
+                logits = np.full((1, (cached+frames)*8, 8), -2, np.float32)
+                logits[:, :, 0] = 2
+                embeddings = np.repeat(np.arange(frames, dtype=np.float32)[None, :, None], 512, axis=2)
+                return logits, embeddings, np.full(512, .123, np.float32)
+
+        obj = candidate.Nemotron3.__new__(candidate.Nemotron3)
+        obj.session = FakeNemotron()
+        obj.chunk, obj.right, obj.fifo_cap, obj.update = candidate.V3_PROFILES['low']
+        obj.reset()
+        prediction = obj.step(np.zeros((104, 128), np.float32), left=0, keep=9)
+        self.assertEqual(prediction.shape, (72, 8))
+        np.testing.assert_array_equal(obj.fifo[:, 0], np.arange(9))
+        for i in range(100):
+            obj.step(np.zeros((104, 128), np.float32), left=0, keep=9)
+        self.assertTrue(obj.compressed)
+        self.assertEqual(obj.cache.shape, (264, 512))
+        self.assertLessEqual(len(obj.fifo), 264)
+        self.assertTrue(np.any(np.all(obj.cache == np.float32(.123), axis=1)))
+        self.assertTrue(np.isfinite(obj.cache).all())
+        obj.reset()
+        self.assertEqual(obj.predict(np.zeros(48000, np.float32), 'whole').shape, (300, 8))
+
 
 if __name__ == '__main__':
     unittest.main()

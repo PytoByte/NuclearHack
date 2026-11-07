@@ -1,0 +1,19 @@
+[
+  {
+    "experiment": "exp_0165",
+    "script": "eval/scripts/probe_sortformer.py",
+    "args": [
+      "--model",
+      "nemotron3-diarization-q8",
+      "--baseline",
+      "exp_0125",
+      "--manifest",
+      "eval/data/dialogs-smoke.jsonl",
+      "--profile",
+      "buffered",
+      "--frontend",
+      "whole"
+    ],
+    "hypothesis": "New 8-slot architecture Q8, published buffered profile, learned-silence bounded cache and 10ms logits; same frozen ASR, no reference speaker count"
+  }
+]

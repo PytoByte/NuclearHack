@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0163",
+    "script": "eval/scripts/probe_frontend_conformance.py",
+    "args": [],
+    "hypothesis": "Match Torch float32 Hann arithmetic and librosa cast-before-Slaney arithmetic; keep original max5e-5/mean5e-6 tolerance, preserve failed162"
+  }
+]

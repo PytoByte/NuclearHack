@@ -1307,3 +1307,131 @@ UI показывает только сохранённые реальные р�
 требует libs/models и проверяет отсутствие `INTERNET`; без флага
 `requireNativeAudio` Gradle оставляет UI-заглушку. Запуск на физическом
 ARM-устройстве, качество и RTF приложения остаются неизмеренными.
+
+## Аудит утечек памяти native-кода (`src/audio`), 07.11.2026
+
+Задача: проверить весь C/C++ код SDK на утечки памяти четырьмя независимыми
+слоями — статика, ручной аудит владения, динамические санитизеры, фиксация.
+Все измерения сделаны на host x86_64 (WSL Ubuntu, gcc 13.3 / clang 18.1.3,
+valgrind 3.22); Android/ARM не запускается, поэтому device-цифры не заявляются.
+Модели — pinned `config/audio-models.lock.json`, загруженные локально через
+`scripts/bootstrap_models.py` (файлы в Git не входят).
+
+**246 cppcheck 2.22.0.** `cppcheck --std=c++17 --enable=all -q src/audio` и
+`--check-level=exhaustive`. До фикса: одна finding — `leakReturnValNotUsed`
+`src/audio/tests/c_abi.c:115` (`CHECK(fopen("c-abi-result.json","rb") == NULL)`
+— дескриптор не закрывается никогда). После: 0 leak/error diagnostic,
+`--error-exitcode=1` exits 0. Никаких других leak- или uninitialized-предупреждений
+cppcheck не даёт ни на SDK-коде, ни на тестах/tools.
+
+**247 clang-tidy 18.1.3.**
+`clang-tidy -checks="clang-analyzer-*,bugprone-*" -quiet <all .c/.cpp/.h/.hpp в
+src/audio/src,include,tests,tools>` (jni.cpp исключён: standalone-анализ невозможен
+без Android `jni.h`). Результат: **0 clang-analyzer diagnostics** (нет
+`clang-analyzer-memory.*`, `clang-analyzer-cplusplus.NewDelete*`,
+`clang-analyzer-resource leak`). bugprone даёт только не-leak замечания
+(`bugprone-easily-swappable-parameters` в JNI-мосте, `fseek`/`rewind`,
+implicit widening/narrowing в `file_transcriber.cpp`) — они не являются утечками
+и оставлены как style backlog.
+
+**248 Ручной аудит владения и жизненного цикла C ABI.** Все create-функции
+(`nh_asr_*`, `nh_diarizer_*`, `nh_streaming_diarizer_*`, `nh_vad_*`) пишут
+`*out = nullptr` до работы, делают handle через `std::make_unique` и
+`release()` только после успешных всех sub-allocations: error-путь возвращает
+статус и ничего не оставляет. Raw `new`/`malloc`/`free` в SDK-коде отсутствуют;
+память живёт в RAII-контейнерах. Подтверждённыеprocess-lifetime allocations
+(не утечки в смысле "потерянная память", а singleton'ы, живущие до выхода
+процесса):
+- `src/audio/src/llm.cpp:59-60` — `std::call_once([]{ llama_backend_init(); })`,
+  `llama_backend_free()` нигде не вызывается;
+- `src/audio/src/streaming_diarizer.cpp:17` — `static Ort::Env` на весь процесс.
+Гап API-контракта: `nh_*_destroy` имеют тип `void` и не идемпотентны —
+повторный destroy это double-free; `include/nuclear_audio.h` не документирует
+"один destroy на handle". JNI-мост передаёт handle как raw `jlong`, поэтому
+исключение между create и destroy на Kotlin-стороне оставляет native handle
+неуничтоженным (риск не проверен динамически — Android не запускался).
+`third_party/miniaudio` (vendored) — potential double-uninit только на OOM-пути
+upstream, в нормальном потоке leak не observed.
+
+**249 Динамическая проверка.** `make native-sanitize` (Debug build
+`.build/audio-asan`, `-DNH_SANITIZE=ON`, ASan+UBSan) + ctest с pinned моделями:
+4/4 tests passed — `c-abi` 0.21s, `merge` 0.15s, **`lifecycle-smoke` 7.99s**
+(новый тест), `stream-core` 0.39s. `lifecycle-smoke`
+(`src/audio/tests/lifecycle_smoke.cpp`, добавлен в CMake как `add_test`)
+проходит полный успех-путь каждого handle-типа на реальных моделях с детерминированным
+синтетическим сигналом 3s/16 kHz (записи и сеть не используются): VAD
+create→accept×2→flush→destroy; diarizer config и window variant
+create→process→destroy; streaming diarizer create(profile 0, 60s)→accept
+блоками 4000 samples→flush→reset→accept→stats→destroy; whisper ASR
+create→decode→destroy. Без env-переключателей моделей секции пропускаются,
+поэтому дефолтный ctest-прогон остаётся зелёным без весов.
+Env-переключатели моделей передаются абсолютными путями (`NH_VAD_MODEL`,
+`NH_SEGMENTATION_MODEL`, `NH_EMBEDDING_MODEL`, `NH_NEMOTRON_MODEL`,
+`NH_ASR_ENCODER`, `NH_ASR_DECODER`, `NH_ASR_TOKENS`), потому что ctest меняет
+working directory на `.build/audio-asan` и относительные `models/...` там
+не resolves.
+
+**250 Valgrind 3.22 (отдельный слой, без ASan).** ASan и Valgrind в одном
+процессе не совмещаются ("ASan runtime does not come first"), поэтому Valgrind
+запускается на обычном build `.build/audio`. Прогон `audio-lifecycle-smoke-test`
+с pinned моделями: `definitely lost 0 / 0 blocks`, `indirectly lost 0 / 0`,
+`possibly lost 0 / 0`, `still reachable 2,871 bytes in 42 blocks` (695 B из них —
+stdstring heuristic), `ERROR SUMMARY: 0 errors`. Reachable-блоки — static
+singleton'ы ORT/llama и fst-реестр внутри предсобранного
+`libsherpa-onnx-c-api.so`: это соответствует 248, а не утечке.
+
+**251 Ускорение gate'а `make leak-check`.** Первый полный прогон занял 20m40s;
+тайминги по логам `.audio-runs/leak-<stamp>/` показали, что узкое место — не
+churn-циклы, а один Valgrind-прогон `audio-lifecycle-smoke-test` (~16 мин):
+Valgrind интерпретирует каждую инструкцию ORT, и стоимость определяется
+загрузкой четырёх pinned-моделей, а не числом циклов. Замеры на host
+(x86_64, WSL, 12 ядер): `lifecycle-smoke` под Valgrind со всеми моделями и
+1s сигналом/2 циклами — 6m43s; только VAD-путь, 1s сигнал, 2 цикла — 19.3s.
+Поэтому в gate: Valgrind по умолчанию грузит только `silero` VAD, сигнал 1s
+(`NH_LIFECYCLE_SECONDS`), `--cycles 2`; полный набор моделей —
+`--valgrind-all-models`. Churn/RSS меряется в обычном build (2..80 циклов,
+VmRSS-плато ~35 MB, дельта после warm-up −3568…+2656 kB), лимит RSS поднят до
+8192 kB, чтобы шум плато не давал ложных падений; RSS-гейт выключён под
+санитизером (ASan arenas: 31 MB → 510 MB, инструмент, а не SDK). Valgrind-бинари
+идут параллельно (2 одновременно: 4 упирались в память WSL), статика и dynamic
+builds — параллельно. Итог после изменений: **3m25s**, PASS — cppcheck 0
+findings, clang-tidy 0 clang-analyzer, ASan/LSan ctest 4/4, plain churn 30
+циклов `VmRSS 37648 -> 35676 kB (delta -1972)`, Valgrind
+`definitely/indirectly/possibly lost 0`, `still reachable 5742 B` суммарно по
+четырем бинарям.
+Побочный вывод из отладки: `#if defined(__SANITIZE_ADDRESS__) ||
+(defined(__has_feature) && __has_feature(address_sanitizer))` не компилируется
+GCC (препроцессор раскрывает `__has_feature(...)` даже когда
+`defined(__has_feature)` ложен: "missing binary operator before token") —
+правильная форма `#if defined(__SANITIZE_ADDRESS__) / #elif defined(__has_feature)
+/ #if __has_feature(address_sanitizer)`.
+
+**Итог.** Подтверждённая утечка за всё исследование — одна, в тестовом C-файле
+(`c_abi.c:115`, незакрытый `FILE*`), исправлена. SDK-код (create/process/destroy
+успех и error-пути) утечек не даёт ни в статике, ни в ASan/LSan, ни в Valgrind.
+Остаточные allocations — осознанные process-lifetime singleton'ы.
+
+**Что изменено в коде:** `src/audio/tests/c_abi.c:115` (файл открывается в
+переменную и закрывается); `src/audio/CMakeLists.txt` (новый target
+`audio-lifecycle-smoke-test` + `add_test`, sanitize-флаги только при
+`NH_SANITIZE` и не на Android); тесты и gates перепроверены:
+`make native-format-check` 33 files PASS, `make native-test` 14 Python/CABI +
+4 CTest PASS, `make check` PASS.
+
+**Backlog (не применялся намеренно):**
+- `llama_backend_free()` при завершении/уничтожении LLM-хендла — иначе backend
+  llama.cpp остаётся зарегистрированным на весь процесс;
+- идемпотентность/документация `nh_*_destroy` (guard `if (!handle) return;` или
+  явно "один destroy" в `nuclear_audio.h`);
+- JNI: гарантировать destroy в `finally` при исключении между create и destroy;
+- upstream miniaudio — двойной uninit только на OOM-пути.
+Отдельная проверка: cppcheck-гипотеза "uninitialized member" у `PipelineRequest`
+оказалась false positive — единственное место конструирования
+(`src/audio/src/file_transcriber.cpp:260`) заполняет все 7 полей aggregate-инициализацией,
+поэтому дефолтные `= nullptr` в `pipeline_ports.hpp` ничего не добавляют и
+не применены.
+
+**Ограничения слоя:** Android/ARM lifecycle под санитизером не проверялся
+(`make mobile-build` проверяет только ABI, не execution/RAM); vendored ORT/sherpa
+бинарики неinstrumentируются;Valgrind-прогон — host x86_64, реальные долгие
+записи в этом аудите не использовались (синтетический 3s сигнал).

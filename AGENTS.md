@@ -24,6 +24,14 @@
   metrics; never invent missing measurements or treat read speech as dialogues.
 - Keep audio, model weights and raw logs out of Git. Downloads run only on the
   developer machine; user-audio processing in the shipped SDK stays offline.
+- Android client integration: use `make android-app` after `mobile-build` and
+  model bootstrap. Do not run quality gates on every iteration; run them at
+  task end once working code exists. Required env: `JAVA_HOME` and
+  `ANDROID_HOME` under `.tools`; `android.builder.sdkDownload=false` keeps
+  platform-tools download from hanging, the warning is acceptable.
+- Preserve pre-existing formatting edits in native files; let pre-commit
+  clang-format adjust staged code instead of hand-formatting or reformatting
+  unrelated files. Do not stage generated logs, `.build`, models or weights.
 
 ## Качество кода
 

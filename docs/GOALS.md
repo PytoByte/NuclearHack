@@ -32,6 +32,3 @@ avoid duplicating `AGENTS.md`/`task/task.md`.
 - Use `not measured` when no artifact exists.
 - Host screening metrics are not final Android metrics.
 - Word timestamp accuracy cannot be claimed without manual word-level ground truth.
-```
-
-Then edit AGENTS. Let's do.

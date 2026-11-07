@@ -10,11 +10,14 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 import jiwer
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "eval" / "scripts"))
+from scoring import normalize as normalize_v1
 
 
 def load_run(run_dir):
@@ -31,10 +34,6 @@ def load_run(run_dir):
     if len(rows_by_audio) != len(rows):
         raise ValueError(f"Duplicate audio_id in {run_dir}")
     return config, rows_by_audio
-
-
-def normalize_text(text):
-    return " ".join(str(text).split())
 
 
 def align_to_reference(ref_words, hyp_words):
@@ -75,6 +74,7 @@ def align_to_reference(ref_words, hyp_words):
         "deletions": result.deletions,
         "insertions": result.insertions,
         "hits": result.hits,
+        "reference_words": len(ref_words),
     }
 
 
@@ -125,14 +125,14 @@ def analyze_domain(domain, manifest_path, primary_run, secondary_run, primary_id
         audio_id = fixture["audio_id"]
         if audio_id not in primary_rows or audio_id not in secondary_rows:
             raise ValueError(f"{audio_id} missing from one of the runs")
-        primary_reference = normalize_text(primary_rows[audio_id]["reference"])
-        secondary_reference = normalize_text(secondary_rows[audio_id]["reference"])
+        primary_reference = normalize_v1(primary_rows[audio_id]["reference"])
+        secondary_reference = normalize_v1(secondary_rows[audio_id]["reference"])
         if primary_reference != secondary_reference:
             raise ValueError(f"Reference text differs between runs for {audio_id}")
         reference = primary_reference
         ref_words = reference.split()
-        primary_text = normalize_text(primary_rows[audio_id]["hypothesis"]["text"])
-        secondary_text = normalize_text(secondary_rows[audio_id]["hypothesis"]["text"])
+        primary_text = normalize_v1(primary_rows[audio_id]["hypothesis"]["text"])
+        secondary_text = normalize_v1(secondary_rows[audio_id]["hypothesis"]["text"])
 
         primary_status, primary_word, primary_insertions, primary_counts = align_to_reference(
             ref_words, primary_text.split())
@@ -184,7 +184,7 @@ def analyze_domain(domain, manifest_path, primary_run, secondary_run, primary_id
             "examples": differing_examples[:12],
         })
 
-    total_ref_words = sum(len(normalize_text(primary_rows[f["audio_id"]]["reference"]).split()) for f in fixtures)
+    total_ref_words = sum(len(normalize_v1(primary_rows[f["audio_id"]]["reference"]).split()) for f in fixtures)
 
     categories_with_fraction = {}
     for key, count in category_counts.items():
@@ -300,4 +300,3 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
-PY

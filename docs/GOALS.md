@@ -98,3 +98,13 @@ Implemented in the current client:
   measurements stay `null`/`not measured` with a reason. User observations,
   host screening, AVD4096MiB SDK runs and full-app measurements remain distinct
   evidence.
+
+## ROVER status
+
+Step 1 completed in `exp_0269`: phone40 has 22.2% complementary one-correct errors and 5 RNNT-rescued CTC deletions → Step 2 ROVER prototype on phone40 is justified. FLEURS has only 2.2% complementary errors, mostly identical substitutions, so ROVER is not expected to help there. Default `ru-offline-v1` remains unchanged.
+
+ROVER Step 2 phone40 rejected (`exp_0270`): fused WER 17.65% equals CTC, below required 16.42%. Next: confidence-surrogate routing (Step 3) or close hypothesis.
+
+## ROVER status (corrected)
+
+Step 1 `exp_0272`: complementary errors found in both domains (phone40 24.6%, FLEURS 20.4%). Step 2 phone40 `exp_0270` rejected: CTC-tie-break ROVER gives 17.65%, below required 16.42%. Step 3 `exp_0273` rejected: surrogate duration correlation weak (precision 0.171, recall 0.593). ROVER hypothesis closes for now unless real confidence or a different merge feature is tested separately.

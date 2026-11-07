@@ -160,7 +160,7 @@ native SDK: задачи `syncNativeAudio` и `syncAudioAssets` берут го�
 app-specific JNI-мост к C ABI; `AudioEngine.kt` выполняет blocking-вызовы
 в IO-диспетчере, `AudioModelStore.kt` один раз копирует assets в
 `filesDir/models`, `TranscriptRepository.kt` импортирует SAF-аудио и хранит
-строгий JSON, `MainViewModel.kt` управляет прогрессом, отменой и ошибками.
+строгий JSON, `MainViewModel.kt` управляет прогрессом, отменой и ошибками. Во время обработки `TranscriptionService` работает как foreground-служба с уведомлением по этапам, чтобы транскрибация продолжалась в фоне; манифест по-прежнему не содержит `INTERNET`.
 Финальный preset `giga-v3-ctc-punct` + `nemotron3-diarization` выбирается
 при наличии; иначе работает legacy `giga-v3-ctc` + `diarization`.
 Сводка Qwen показывается только при `nh_llm_available() == 1`. Манифест

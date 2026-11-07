@@ -117,6 +117,14 @@
       "revision": "20999cc921d2b14aa58708f61756a8b2e787ba20",
       "license": "Apache-2.0",
       "scope": "developer-only Linux x86_64 CPU comparison; Android NDK not qualified"
+    },
+    {
+      "name": "research/nmesc/offline_clustering.py",
+      "url": "https://raw.githubusercontent.com/NVIDIA/NeMo/1f73a910bc0f5ab774d100706329730b81457591/nemo/collections/asr/parts/utils/offline_clustering.py",
+      "sha256": "c2fcc816454612ae12f22230385d8d34de58c9ee8f650629d4936d54e0d3d515",
+      "revision": "1f73a910bc0f5ab774d100706329730b81457591",
+      "license": "Apache-2.0; embedded scikit-learn BSD notice",
+      "scope": "Research-only official NME-SC implementation; Torch in isolated frontend env; never SDK"
     }
   ]
 }

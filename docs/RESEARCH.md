@@ -4,7 +4,7 @@
 
 ## Текущий этап по AGENT_AUDIO_HACKATHON.md
 
-**Сейчас: этап2, posterior merge перенесён в полный native file API; квалификация203–214 завершена.**
+**Текущий срез: этап2, native posterior file API квалифицирован203–215; блоковые A/B216–218 завершены. Новые опыты приостановлены по просьбе пользователя для обсуждения финалки.**
 Завершены window/turn-embedding/избирательные short-turn опыты132–139; два последних
 метода не приняты из-за регрессии чистого двухголосого диалога. Screening Sortformer
 v2.1 завершён:bounded context/state,buffered vs low-latency,whole vs window frontend143–148.
@@ -1142,3 +1142,53 @@ geometry/word assignment при фиксированном GigaAM; никако�
 диагностические, не используются для performance claims. Проверки:3nativeCTest,
 14PythonCABI,3ASan/UBSanCTest,32research tests,ARM64/x86_64 cross-build/16KiBELF,
 всеmodelSHA,ktlint/detekt/AndroidLint passed.
+
+
+### exp_0216–0218 — независимое выравнивание и автооценка числа голосов
+
+Срез зафиксирован по просьбе пользователя; следующий эксперимент не запускается.
+Оба A/B используют шесть уже известных natural RU silver записей,2424 эталонных слова.
+Это regression screening, без нового независимого gold/ручных word timestamps.
+
+**216 — независимый русский char CTC aligner:** взят русский wav2vec2 XLSR,
+используемый [WhisperX](https://github.com/m-bain/whisperX/blob/main/whisperx/alignment.py),
+[Q8 ONNX export](https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/tree/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb)
+317.35MB. Исходные GigaAM слова и Nemotron posterior arrays заморожены;
+20s исходные чанки,полный CTC Viterbi,first160ms speaker anchor.
+Viterbi сверён с независимым exhaustive reference на маленьких графах,
+включая обязательный blank между одинаковыми буквами.
+Все2560 распознанных слов выровнены,текст exact; cpWER23.43→22.94%
+(568→556 ошибок). По записям:13.88→13.16,13.30→12.53,61.68→61.68,
+15.70→16.13,28.12→26.53,9.50→8.97%. Source-grid проверки пройдены;
+median абсолютный сдвиг start60–160ms — **не timestamp MAE**.
+Дополнительный hostRTF.100–.128,process peakRSS1142472KiB (~1.09GiB),
+не Android/ARM память. WER/CER/пунктуация и speaker posterior field неизменны.
+**ADR:** не добавлять тяжёлый aligner в SDK/default: небольшой суммарный выигрыш,
+одна регрессия,дополнительная NN/память/время. Никакого заявления об улучшении точности таймстампов.
+
+**217 — технический сбой импорта worker**, до измерения NeMo: изолированная Torch
+среда не содержит jiwer. Логи сохранены; отдельный worker без scoring imports,новыйID218.
+**218 — официальный [NeMo SpeakerClustering/NME-SC](https://github.com/NVIDIA/NeMo/blob/1f73a910bc0f5ab774d100706329730b81457591/nemo/collections/asr/parts/utils/offline_clustering.py):**
+заново извлечены native ERes2Net cluster-векторы по прежнему бюджету2–20s;
+референсный код pinnedSHA,одна шкала,официальные defaults,oracle=-1.
+Контрольный AHC.4 воспроизвёл818/2424 ошибок (cpWER33.75%).
+NeMo на этих агрегированных входах:2527/2424 (104.25%),26 объединений
+предсказанных одновременно звучащих кластеров. cpWER может превышать100%.
+**ADR:** этот способ замены global refinement отклонён. Это не полный multiscale
+NeMo pipeline: мало агрегированных кластеров,часть без достаточного embedding evidence;
+результат не переносится на весь NeMo/все варианты автооценки. В shipped SDK Torch нет.
+
+**К обсуждению финалки:** текущий SDK — GigaAM CTC + opt-in bounded NemotronQ8
++posterior merge,без нового aligner/NME. На этих6записях cpWER23.43%,WER13.45%;
+полный x86AVD run211–213 medianRTF.163,PSS~332MiB. Основной старый API/preset сохранён.
+Ограничения: короткий третий голос,одна тяжёлая natural запись,нет ARM runtime,
+нет независимого gold/word MAE и длительного stress. Это проверенный SDK с измеренными
+ограничениями,а не законченная независимая квалификация качества.
+
+Воспроизводимость: `scripts/bootstrap_models.py russian-aligner-wav2vec2-q8`,
+`scripts/bootstrap_clustering_reference.py`; Torch только в среде
+`make frontend-reference-bootstrap`. Замороженные очереди —
+`experiments/phase8-independent-alignment.json` и `phase8-nmesc-block-retry.json`;
+217 оставлен отдельным failed run. Проверки среза: `make check research-test`
+(35 tests), всеmodelSHA, strict JSON,ktlint/detekt/AndroidLint passed.
+Native код после квалификации215 не менялся.

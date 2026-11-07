@@ -321,6 +321,21 @@
         "models/dpdfnet/baseline.onnx"
       ],
       "scope": "Research-only causal speech enhancement before ASR; native sherpa runtime, original audio for diarization; not SDK preset"
+    },
+    {
+      "id": "russian-aligner-wav2vec2-q8",
+      "family": "research_ctc_aligner",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "revision": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "upstream": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-russian",
+      "files": [
+        "models/russian-aligner/model_quantized.onnx",
+        "models/russian-aligner/config.json",
+        "models/russian-aligner/vocab.json",
+        "models/russian-aligner/preprocessor_config.json",
+        "models/russian-aligner/README.md"
+      ],
+      "scope": "Independent Russian character CTC aligner selected by WhisperX; Q8 third-party export, not GigaAM replacement or SDK preset; fixed ASR text only"
     }
   ],
   "files": [
@@ -941,6 +956,46 @@
       "sha256": "371d26182aff0e1e0d31354e24c81f79cd57458f5a7dd003fc10a7ebf64255e0",
       "source": "https://huggingface.co/Ceva-IP/DPDFNet",
       "version": "dd6818d00f50c836fed43a6243ebe49116de5964",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/config.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/config.json",
+      "sha256": "6dac5a0bbfd7497b48d54573a5194cf0054e2adea6c6ea802c08bdae4d679891",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/vocab.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/vocab.json",
+      "sha256": "94af9bc439fe8a64657b1898505fe2bd1a78e2ef8ad24b7dbdc3c6f921cf0953",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/preprocessor_config.json",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/preprocessor_config.json",
+      "sha256": "2c594304e9d9832162bedd5345051df29e8daf458a845cbed58c6ede23ceeae3",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/README.md",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/README.md",
+      "sha256": "e6e9099ee83288aba005d936dabbf7098577605ea2be54edce5c1d56383db9b6",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "models/russian-aligner/model_quantized.onnx",
+      "url": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX/resolve/df5ba1d9e0f9a34c44eec437b441f4ae43c842eb/onnx/model_quantized.onnx",
+      "sha256": "027f226a26c4ad2bb8cd6e4f56038b9013afc3cf6ccf2cdf9aecb092c3726344",
+      "source": "https://huggingface.co/onnx-community/wav2vec2-large-xlsr-53-russian-ONNX",
+      "version": "df5ba1d9e0f9a34c44eec437b441f4ae43c842eb",
       "license": "Apache-2.0"
     }
   ]

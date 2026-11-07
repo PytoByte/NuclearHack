@@ -1,0 +1,8 @@
+[
+  {
+    "experiment": "exp_0217",
+    "script": "eval/scripts/probe_nmesc.py",
+    "args": [],
+    "hypothesis": "Official NeMo single-scale SpeakerClustering including enhanced auto count on fresh native ERes cluster vectors; compare unchanged AHC .4 and original IDs across six known silver sources; no oracle speaker count and explicitly measure overlap cannot-link violations; block screening not full NeMo reproduction"
+  }
+]

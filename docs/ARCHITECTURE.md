@@ -300,3 +300,11 @@ Stdout содержит source samples, полный processing time и kernel p
 ASR слова между host/Android различаются, поэтому target cpWER27.85% /host28.12% считаются отдельно.
 Все ASR и speaker NN в target опытах исполняются на устройстве, host words не подставляются.
 Физический ARM и часовой stress не квалифицированы. Default ERes остаётся доступен.
+
+
+Срез216–218: независимый wav2vec2 Q8 forced aligner и официальный NeMo
+NME-SC проверены только в `eval/scripts`. В C ABI/поставляемый runtime не включены;
+первый дал небольшой cpWER выигрыш при дополнительной модели/памяти,
+второй на агрегированных ERes кластерах ухудшил результат. Принятый путь SDK
+остаётся GigaAM CTC + opt-in bounded NemotronQ8/posterior merge; подробные
+измерения и ограничения — в RESEARCH.md. Новые опыты остановлены для обсуждения финального среза.

@@ -1,0 +1,469 @@
+{
+  "experiment_id": "exp_0218",
+  "scope": "six known silver records; reference clustering block on cluster-level inputs, not full NeMo multiscale pipeline; no GT count supplied",
+  "cases": [
+    {
+      "audio_id": "ru-youtube-yCX4MRy14zw",
+      "initial_clusters": 8,
+      "usable_embeddings": 5,
+      "embedding_seconds": 1.8786671220004791,
+      "reference_worker": {
+        "labels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "clustering_seconds": 0.0603597850058577,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 162,
+            "reference_words": 418,
+            "cpwer": 0.3875598086124402
+          },
+          "predicted_speakers": 8,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 22.919000000000008,
+            "missed detection": 2.1310000000000144,
+            "false alarm": 2.953000000000017,
+            "total": 155.52800000000002,
+            "correct": 130.478,
+            "diarization error rate": 0.18005118049483074
+          },
+          "jer": 0.1935997244300406
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 95,
+            "reference_words": 418,
+            "cpwer": 0.22727272727272727
+          },
+          "predicted_speakers": 6,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 11.629999999999995,
+            "missed detection": 2.1310000000000144,
+            "false alarm": 2.953000000000017,
+            "total": 155.52800000000002,
+            "correct": 141.767,
+            "diarization error rate": 0.10746617972326543
+          },
+          "jer": 0.12450572980310483
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 408,
+            "reference_words": 418,
+            "cpwer": 0.9760765550239234
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 3,
+          "der_details": {
+            "confusion": 74.61099999999998,
+            "missed detection": 2.1310000000000144,
+            "false alarm": 2.953000000000017,
+            "total": 155.52800000000002,
+            "correct": 78.78600000000003,
+            "diarization error rate": 0.5124157707936834
+          },
+          "jer": 0.7457948079969206
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-p0_iIC13bs8",
+      "initial_clusters": 8,
+      "usable_embeddings": 7,
+      "embedding_seconds": 1.4979918999961228,
+      "reference_worker": {
+        "labels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "clustering_seconds": 0.02611267899919767,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 228,
+            "reference_words": 391,
+            "cpwer": 0.5831202046035806
+          },
+          "predicted_speakers": 8,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 35.51399999999997,
+            "missed detection": 0.8630000000000049,
+            "false alarm": 4.1950000000000145,
+            "total": 149.90700000000007,
+            "correct": 113.53000000000009,
+            "diarization error rate": 0.27064780163701474
+          },
+          "jer": 0.32807667699855597
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 181,
+            "reference_words": 391,
+            "cpwer": 0.4629156010230179
+          },
+          "predicted_speakers": 6,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 25.462999999999994,
+            "missed detection": 0.8630000000000049,
+            "false alarm": 4.1950000000000145,
+            "total": 149.90700000000007,
+            "correct": 123.58100000000006,
+            "diarization error rate": 0.20359956506367283
+          },
+          "jer": 0.2789931103285874
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 366,
+            "reference_words": 391,
+            "cpwer": 0.9360613810741688
+          },
+          "predicted_speakers": 2,
+          "cannot_link_violations": 7,
+          "der_details": {
+            "confusion": 64.19399999999999,
+            "missed detection": 0.8630000000000049,
+            "false alarm": 4.1950000000000145,
+            "total": 149.90700000000007,
+            "correct": 84.85000000000005,
+            "diarization error rate": 0.4619664191798914
+          },
+          "jer": 0.8055498083525275
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-nr3hmL9bcPU",
+      "initial_clusters": 5,
+      "usable_embeddings": 4,
+      "embedding_seconds": 0.9115587339983904,
+      "reference_worker": {
+        "labels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clustering_seconds": 0.02364528500038432,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 262,
+            "reference_words": 394,
+            "cpwer": 0.6649746192893401
+          },
+          "predicted_speakers": 5,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 32.27000000000005,
+            "missed detection": 6.022999999999993,
+            "false alarm": 9.703,
+            "total": 141.71600000000007,
+            "correct": 103.42300000000003,
+            "diarization error rate": 0.33867735470941907
+          },
+          "jer": 0.47108356267408724
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 261,
+            "reference_words": 394,
+            "cpwer": 0.6624365482233503
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 31.663000000000057,
+            "missed detection": 6.022999999999993,
+            "false alarm": 9.703,
+            "total": 141.71600000000007,
+            "correct": 104.03000000000003,
+            "diarization error rate": 0.3343941403934632
+          },
+          "jer": 0.5173147048639725
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 445,
+            "reference_words": 394,
+            "cpwer": 1.1294416243654823
+          },
+          "predicted_speakers": 2,
+          "cannot_link_violations": 3,
+          "der_details": {
+            "confusion": 63.45000000000004,
+            "missed detection": 6.022999999999993,
+            "false alarm": 9.703,
+            "total": 141.71600000000007,
+            "correct": 72.24300000000004,
+            "diarization error rate": 0.5586948544977278
+          },
+          "jer": 0.823604287889808
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-sFt2qKDPrj4",
+      "initial_clusters": 4,
+      "usable_embeddings": 2,
+      "embedding_seconds": 0.6536841600027401,
+      "reference_worker": {
+        "labels": [
+          0,
+          0
+        ],
+        "clustering_seconds": 0.04471542999817757,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 96,
+            "reference_words": 465,
+            "cpwer": 0.2064516129032258
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 1.485999999999997,
+            "missed detection": 3.2240000000000038,
+            "false alarm": 13.322000000000028,
+            "total": 138.939,
+            "correct": 134.22899999999998,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 96,
+            "reference_words": 465,
+            "cpwer": 0.2064516129032258
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 1.485999999999997,
+            "missed detection": 3.2240000000000038,
+            "false alarm": 13.322000000000028,
+            "total": 138.939,
+            "correct": 134.22899999999998,
+            "diarization error rate": 0.12978357408646982
+          },
+          "jer": 0.11127129845362761
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 476,
+            "reference_words": 465,
+            "cpwer": 1.0236559139784946
+          },
+          "predicted_speakers": 3,
+          "cannot_link_violations": 1,
+          "der_details": {
+            "confusion": 59.90200000000003,
+            "missed detection": 3.2240000000000038,
+            "false alarm": 13.322000000000028,
+            "total": 138.939,
+            "correct": 75.81299999999996,
+            "diarization error rate": 0.5502270780702327
+          },
+          "jer": 0.7423902627984262
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-movie_podcast",
+      "initial_clusters": 9,
+      "usable_embeddings": 7,
+      "embedding_seconds": 1.2351609580000513,
+      "reference_worker": {
+        "labels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "clustering_seconds": 0.026544404005107936,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 163,
+            "reference_words": 377,
+            "cpwer": 0.4323607427055703
+          },
+          "predicted_speakers": 9,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 18.585999999999974,
+            "missed detection": 2.0789999999999766,
+            "false alarm": 16.499999999999996,
+            "total": 148.55499999999992,
+            "correct": 127.88999999999999,
+            "diarization error rate": 0.2501767022314965
+          },
+          "jer": 0.19437872522022767
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 126,
+            "reference_words": 377,
+            "cpwer": 0.33421750663129973
+          },
+          "predicted_speakers": 8,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 12.991999999999994,
+            "missed detection": 2.0789999999999766,
+            "false alarm": 16.499999999999996,
+            "total": 148.55499999999992,
+            "correct": 133.48399999999998,
+            "diarization error rate": 0.21252061526034116
+          },
+          "jer": 0.1658760543430888
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 429,
+            "reference_words": 377,
+            "cpwer": 1.1379310344827587
+          },
+          "predicted_speakers": 3,
+          "cannot_link_violations": 9,
+          "der_details": {
+            "confusion": 81.60899999999997,
+            "missed detection": 2.0789999999999766,
+            "false alarm": 16.499999999999996,
+            "total": 148.55499999999992,
+            "correct": 64.86699999999999,
+            "diarization error rate": 0.6744168826360607
+          },
+          "jer": 0.8584425560516588
+        }
+      }
+    },
+    {
+      "audio_id": "ru-youtube-astrology",
+      "initial_clusters": 4,
+      "usable_embeddings": 4,
+      "embedding_seconds": 0.9225987069949042,
+      "reference_worker": {
+        "labels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clustering_seconds": 0.05227780900168,
+        "torch_version": "2.9.0+cpu",
+        "oracle_num_speakers": -1
+      },
+      "variants": {
+        "original": {
+          "speaker_attributed": {
+            "errors": 59,
+            "reference_words": 379,
+            "cpwer": 0.15567282321899736
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 6.634999999999991,
+            "missed detection": 7.227000000000032,
+            "false alarm": 1.779999999999981,
+            "total": 152.853,
+            "correct": 138.99099999999999,
+            "diarization error rate": 0.10233361464936903
+          },
+          "jer": 0.2609007918549144
+        },
+        "ahc_04": {
+          "speaker_attributed": {
+            "errors": 59,
+            "reference_words": 379,
+            "cpwer": 0.15567282321899736
+          },
+          "predicted_speakers": 4,
+          "cannot_link_violations": 0,
+          "der_details": {
+            "confusion": 6.634999999999991,
+            "missed detection": 7.227000000000032,
+            "false alarm": 1.779999999999981,
+            "total": 152.853,
+            "correct": 138.99099999999999,
+            "diarization error rate": 0.10233361464936903
+          },
+          "jer": 0.2609007918549144
+        },
+        "nmesc": {
+          "speaker_attributed": {
+            "errors": 403,
+            "reference_words": 379,
+            "cpwer": 1.0633245382585752
+          },
+          "predicted_speakers": 1,
+          "cannot_link_violations": 3,
+          "der_details": {
+            "confusion": 74.83299999999996,
+            "missed detection": 7.227000000000032,
+            "false alarm": 1.779999999999981,
+            "total": 152.853,
+            "correct": 70.79300000000002,
+            "diarization error rate": 0.5485008472192235
+          },
+          "jer": 0.8439689582134883
+        }
+      }
+    }
+  ],
+  "variants": {
+    "original": {
+      "errors": 970,
+      "reference_words": 2424,
+      "cpwer": 0.40016501650165015,
+      "cannot_link_violations": 0
+    },
+    "ahc_04": {
+      "errors": 818,
+      "reference_words": 2424,
+      "cpwer": 0.33745874587458746,
+      "cannot_link_violations": 0
+    },
+    "nmesc": {
+      "errors": 2527,
+      "reference_words": 2424,
+      "cpwer": 1.0424917491749175,
+      "cannot_link_violations": 26
+    }
+  }
+}

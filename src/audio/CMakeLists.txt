@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 project(nuclear_audio VERSION 0.1.0 LANGUAGES C CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(CTest)
 include(GNUInstallDirs)
 option(NH_SANITIZE "Enable ASan and UBSan on host" OFF)

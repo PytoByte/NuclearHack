@@ -1,6 +1,7 @@
 # Scripts
 
-Рабочие скрипты репозитория. Запускать из корня проекта, если явно не указано иное. Python-зависимости поставляются через `uv sync`; большинство проверок используют только стандартную библиотеку.
+Рабочие скрипты репозитория. Запускать из корня проекта, если явно не указано иное. Python-зависимости поставляются через `uv sync`; большинство проверок используют только стандартную библиотеку. 
+Скрипты импортируют соседние модули из `scripts/`, поэтому запускать их следует через `uv run python ...` или `.venv/bin/python ...`, а не системным `python3`. `make` и shell-обёртки уже используют правильный интерпретатор.
 
 ## Основные команды
 
@@ -8,10 +9,10 @@
 make check                      # защита task/, permission INTERNET, diff whitespace
 make test                      # unit tests из scripts/tests
 make doctor                    # проверка локальных инструментов
-python3 scripts/audio_tools.py transcript result.json
-python3 scripts/audio_tools.py models config/audio-models.lock.json
-python3 scripts/audio_tools.py apk app.apk
-python3 scripts/audio_tools.py run -- python3 -m unittest discover -s scripts/tests
+uv run python scripts/audio_tools.py transcript result.json
+uv run python scripts/audio_tools.py models config/audio-models.lock.json
+uv run python scripts/audio_tools.py apk app.apk
+uv run python scripts/audio_tools.py run -- uv run python -m unittest discover -s scripts/tests
 ```
 
 Android-проверки запускаются из `src/mobile/android`:
@@ -56,7 +57,7 @@ Android-проверки запускаются из `src/mobile/android`:
 ## Тесты
 
 ```sh
-python3 -m unittest discover -s scripts/tests -v
+uv run python -m unittest discover -s scripts/tests -v
 ```
 
 Тесты в `scripts/tests/test_audio_tools.py` и `test_native_audio.py` не требуют сетевых загрузок, кроме уже собранных нативных артефактов для `test_native_audio.py`.

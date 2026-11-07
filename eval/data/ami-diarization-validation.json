@@ -1,0 +1,17 @@
+{
+  "audio_id": "ami-ihm-validation-row0-first180",
+  "audio": "eval/data/audio/ami-ihm-validation-row0-first180.wav",
+  "reference": "eval/data/references/ami-ihm-validation-row0-first180.json",
+  "audio_sha256": "d208ddc26de0859f8710ef9dec72c63b5ea2790032195fe28d7220eec6921813",
+  "reference_sha256": "5f33e005147888d159aa222e8b033b447e82ec068dac2058aa797bf0b8e3033b",
+  "source": "diarizers-community/ami",
+  "source_revision": "8cdaae2eaf968f3b000b6eb1204ab9b8db006ed0",
+  "source_split": "validation",
+  "source_row": 0,
+  "source_audio_sha256": "996c2f77648eb34adc9221a08d1cf4a4d7a4c1daddbe2b25cd9bff4e6495b3e0",
+  "excerpt_start_seconds": 0,
+  "excerpt_end_seconds": 180,
+  "license": "CC-BY-4.0",
+  "language": "English",
+  "domain": "meeting IHM; calibration excerpt, not Russian"
+}

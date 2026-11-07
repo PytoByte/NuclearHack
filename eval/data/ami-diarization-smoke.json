@@ -1,0 +1,17 @@
+{
+  "audio_id": "ami-ihm-test-row0-first180",
+  "audio": "eval/data/audio/ami-ihm-test-row0-first180.wav",
+  "reference": "eval/data/references/ami-ihm-test-row0-first180.json",
+  "audio_sha256": "56135fb88de414f8c84efe7e7c2eec43fc145c47e18214950d08941a32bdc991",
+  "reference_sha256": "9fed8ae828d6d5d1d8886c8fbbd0f4bbf560f8d7ea9792fab0a12efe55744c32",
+  "source": "diarizers-community/ami",
+  "source_revision": "8cdaae2eaf968f3b000b6eb1204ab9b8db006ed0",
+  "source_split": "test",
+  "source_row": 0,
+  "source_audio_sha256": "50e2c8e4737850c4bf3cc24e7087c755e1c733cd91822106afd0df485ba64893",
+  "excerpt_start_seconds": 0,
+  "excerpt_end_seconds": 180,
+  "license": "CC-BY-4.0",
+  "language": "English",
+  "domain": "meeting IHM; diarization smoke only"
+}

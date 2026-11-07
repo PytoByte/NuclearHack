@@ -36,6 +36,24 @@
 - Preserve pre-existing formatting in native files; let pre-commit clang-format
   adjust staged code. Do not stage generated logs, `.build`, models, or weights.
 
+## Android development workflow
+
+- `src/mobile/android` is the Android client only. Gradle consumes synced
+  native libraries and local models; it does not build the native SDK.
+- Run `make mobile-build` before `make android-app`.
+- Required environment: `JAVA_HOME` and `ANDROID_HOME` under `.tools`.
+- Keep `android.builder.sdkDownload=false` to avoid platform-tools download
+  hanging; the warning is acceptable.
+- Offline invariant: keep `INTERNET` absent from the manifest. Models remain
+  assets copied to `filesDir/models`.
+- Final preset first, legacy preset as fallback. Optional Qwen summary only
+  when runtime and weights are present.
+- Keep blocking native calls on the IO dispatcher.
+- Run ktlint, detekt, and Lint before finalizing an Android change.
+- Build gates do not replace focused tests; full quality gates run before
+  commit.
+- Read `src/mobile/android/README.md` for manual build and bootstrap details.
+
 ## Scope and module rules
 
 - `task/` is read-only.

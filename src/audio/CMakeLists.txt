@@ -1,38 +1,107 @@
 cmake_minimum_required(VERSION 3.22)
+
 project(nuclear_audio VERSION 0.1.0 LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include(CTest)
 include(GNUInstallDirs)
+
 option(NH_SANITIZE "Enable ASan and UBSan on host" OFF)
+
 set(NH_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/../../.tools" CACHE PATH "Pinned native dependencies")
 set(NH_SHERPA_ROOT "${NH_DEPS}/sherpa-host" CACHE PATH "sherpa C API distribution")
 set(NH_SHERPA_LIB_DIR "${NH_SHERPA_ROOT}/lib" CACHE PATH "Directory with sherpa shared libraries")
-if(NOT EXISTS "${NH_DEPS}/miniaudio/miniaudio.h" OR NOT EXISTS "${NH_DEPS}/json/json.hpp" OR
-   NOT EXISTS "${NH_DEPS}/picosha2/picosha2.h" OR
-   NOT EXISTS "${NH_DEPS}/onnxruntime-headers/onnxruntime_cxx_api.h")
+
+if(NOT EXISTS "${NH_DEPS}/miniaudio/miniaudio.h"
+   OR NOT EXISTS "${NH_DEPS}/json/json.hpp"
+   OR NOT EXISTS "${NH_DEPS}/picosha2/picosha2.h"
+   OR NOT EXISTS "${NH_DEPS}/onnxruntime-headers/onnxruntime_cxx_api.h")
   message(FATAL_ERROR "Run make audio-bootstrap first")
 endif()
-find_library(SHERPA_C_API NAMES sherpa-onnx-c-api PATHS "${NH_SHERPA_LIB_DIR}" NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH REQUIRED)
+
+find_library(SHERPA_C_API
+  NAMES sherpa-onnx-c-api
+  PATHS "${NH_SHERPA_LIB_DIR}"
+  NO_DEFAULT_PATH
+  NO_CMAKE_FIND_ROOT_PATH
+  REQUIRED
+)
 add_library(sherpa_c_api SHARED IMPORTED)
-set_target_properties(sherpa_c_api PROPERTIES IMPORTED_LOCATION "${SHERPA_C_API}"
-  INTERFACE_INCLUDE_DIRECTORIES "${NH_SHERPA_ROOT}/include")
-find_library(ORT_C_API NAMES onnxruntime PATHS "${NH_SHERPA_LIB_DIR}" NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH REQUIRED)
+set_target_properties(sherpa_c_api PROPERTIES
+  IMPORTED_LOCATION "${SHERPA_C_API}"
+  INTERFACE_INCLUDE_DIRECTORIES "${NH_SHERPA_ROOT}/include"
+)
+
+find_library(ORT_C_API
+  NAMES onnxruntime
+  PATHS "${NH_SHERPA_LIB_DIR}"
+  NO_DEFAULT_PATH
+  NO_CMAKE_FIND_ROOT_PATH
+  REQUIRED
+)
 add_library(nh_ort_runtime SHARED IMPORTED)
-set_target_properties(nh_ort_runtime PROPERTIES IMPORTED_LOCATION "${ORT_C_API}")
-add_library(nuclear_audio SHARED src/audio.cpp src/sherpa.cpp src/decoder.c src/pipeline.cpp src/file_transcriber.cpp src/pipeline_factory.cpp src/pipeline_storage.cpp src/merge.cpp src/llm.cpp src/vad.cpp src/refinement.cpp src/mel.cpp src/speaker_cache.cpp src/streaming_diarizer.cpp)
+set_target_properties(nh_ort_runtime PROPERTIES
+  IMPORTED_LOCATION "${ORT_C_API}"
+)
+
+add_library(nuclear_audio SHARED
+  src/audio.cpp
+  src/sherpa.cpp
+  src/decoder.c
+  src/pipeline.cpp
+  src/file_transcriber.cpp
+  src/pipeline_factory.cpp
+  src/pipeline_storage.cpp
+  src/merge.cpp
+  src/llm.cpp
+  src/vad.cpp
+  src/refinement.cpp
+  src/mel.cpp
+  src/speaker_cache.cpp
+  src/streaming_diarizer.cpp
+)
+
 target_compile_features(nuclear_audio PRIVATE cxx_std_17)
-target_include_directories(nuclear_audio PUBLIC
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>" "$<INSTALL_INTERFACE:include>"
-  PRIVATE "${NH_DEPS}/miniaudio" "${NH_DEPS}/json" "${NH_DEPS}/picosha2" "${NH_DEPS}/onnxruntime-headers")
-target_link_libraries(nuclear_audio PRIVATE sherpa_c_api nh_ort_runtime ${CMAKE_DL_LIBS})
+
+target_include_directories(nuclear_audio
+  PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include>"
+  PRIVATE
+    "${NH_DEPS}/miniaudio"
+    "${NH_DEPS}/json"
+    "${NH_DEPS}/picosha2"
+    "${NH_DEPS}/onnxruntime-headers"
+)
+
+target_link_libraries(nuclear_audio PRIVATE
+  sherpa_c_api
+  nh_ort_runtime
+  ${CMAKE_DL_LIBS}
+)
+
 set(NH_LLAMA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../.build/llama-host" CACHE PATH "llama runtime build")
-find_library(NH_LLAMA_LIBRARY NAMES llama PATHS "${NH_LLAMA_ROOT}/bin" "${NH_LLAMA_ROOT}/src" NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+find_library(NH_LLAMA_LIBRARY
+  NAMES llama
+  PATHS "${NH_LLAMA_ROOT}/bin" "${NH_LLAMA_ROOT}/src"
+  NO_DEFAULT_PATH
+  NO_CMAKE_FIND_ROOT_PATH
+)
+
 if(NH_LLAMA_LIBRARY)
   add_library(nh_llama_runtime SHARED IMPORTED)
-  set_target_properties(nh_llama_runtime PROPERTIES IMPORTED_LOCATION "${NH_LLAMA_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/llama.cpp/include;${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/llama.cpp/ggml/include")
+  set_target_properties(nh_llama_runtime PROPERTIES
+    IMPORTED_LOCATION "${NH_LLAMA_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES
+      "${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/llama.cpp/include;${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/llama.cpp/ggml/include"
+  )
   target_link_libraries(nuclear_audio PRIVATE nh_llama_runtime)
   target_compile_definitions(nuclear_audio PRIVATE NH_HAVE_LLAMA=1)
+
   if(NOT ANDROID)
     add_executable(nh-audio-quantize tools/quantize.cpp)
     target_compile_features(nh-audio-quantize PRIVATE cxx_std_17)
@@ -42,12 +111,23 @@ else()
   message(STATUS "llama runtime not built; summary API reports unavailable")
   target_compile_definitions(nuclear_audio PRIVATE NH_HAVE_LLAMA=0)
 endif()
+
 if(UNIX)
   target_link_libraries(nuclear_audio PRIVATE m)
 endif()
-set_target_properties(nuclear_audio PROPERTIES CXX_VISIBILITY_PRESET hidden C_VISIBILITY_PRESET hidden
-  VISIBILITY_INLINES_HIDDEN YES VERSION ${PROJECT_VERSION} SOVERSION 0)
-target_compile_options(nuclear_audio PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Wall;-Wextra;-Wpedantic>)
+
+set_target_properties(nuclear_audio PROPERTIES
+  CXX_VISIBILITY_PRESET hidden
+  C_VISIBILITY_PRESET hidden
+  VISIBILITY_INLINES_HIDDEN YES
+  VERSION ${PROJECT_VERSION}
+  SOVERSION 0
+)
+
+target_compile_options(nuclear_audio PRIVATE
+  $<$<COMPILE_LANGUAGE:CXX>:-Wall;-Wextra;-Wpedantic>
+)
+
 if(ANDROID)
   target_link_options(nuclear_audio PRIVATE "-Wl,-z,max-page-size=16384")
   add_library(nuclear_audio_jni SHARED android/jni.cpp)
@@ -55,53 +135,79 @@ if(ANDROID)
   target_link_libraries(nuclear_audio_jni PRIVATE nuclear_audio)
   target_link_options(nuclear_audio_jni PRIVATE "-Wl,-z,max-page-size=16384")
 endif()
+
 if(NH_SANITIZE AND NOT ANDROID)
-  target_compile_options(nuclear_audio PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+  target_compile_options(nuclear_audio PRIVATE
+    -fsanitize=address,undefined
+    -fno-omit-frame-pointer
+  )
   target_link_options(nuclear_audio PRIVATE -fsanitize=address,undefined)
 endif()
+
 add_executable(nh-audio tools/main.cpp)
 target_link_libraries(nh-audio PRIVATE nuclear_audio)
 target_compile_features(nh-audio PRIVATE cxx_std_17)
+
 add_executable(nh-audio-stream tools/stream.cpp)
 target_link_libraries(nh-audio-stream PRIVATE nuclear_audio)
 target_compile_features(nh-audio-stream PRIVATE cxx_std_17)
 target_include_directories(nh-audio-stream PRIVATE "${NH_DEPS}/picosha2")
+
 if(BUILD_TESTING)
   add_executable(audio-c-abi-test tests/c_abi.c)
   target_link_libraries(audio-c-abi-test PRIVATE nuclear_audio)
   if(NH_SANITIZE AND NOT ANDROID)
     foreach(target audio-c-abi-test nh-audio nh-audio-stream)
-      target_compile_options(${target} PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+      target_compile_options(${target} PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+      )
       target_link_options(${target} PRIVATE -fsanitize=address,undefined)
     endforeach()
   endif()
   add_test(NAME c-abi COMMAND audio-c-abi-test)
+
   add_executable(audio-merge-test tests/merge.cpp src/merge.cpp)
   target_compile_features(audio-merge-test PRIVATE cxx_std_17)
   target_include_directories(audio-merge-test PRIVATE include src "${NH_DEPS}/json")
   target_link_libraries(audio-merge-test PRIVATE nuclear_audio)
   if(NH_SANITIZE AND NOT ANDROID)
-    target_compile_options(audio-merge-test PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_compile_options(audio-merge-test PRIVATE
+      -fsanitize=address,undefined
+      -fno-omit-frame-pointer
+    )
     target_link_options(audio-merge-test PRIVATE -fsanitize=address,undefined)
   endif()
   add_test(NAME merge COMMAND audio-merge-test)
+
   add_executable(audio-lifecycle-smoke-test tests/lifecycle_smoke.cpp)
   target_compile_features(audio-lifecycle-smoke-test PRIVATE cxx_std_17)
   target_include_directories(audio-lifecycle-smoke-test PRIVATE include)
   target_link_libraries(audio-lifecycle-smoke-test PRIVATE nuclear_audio)
   if(NH_SANITIZE AND NOT ANDROID)
-    target_compile_options(audio-lifecycle-smoke-test PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_compile_options(audio-lifecycle-smoke-test PRIVATE
+      -fsanitize=address,undefined
+      -fno-omit-frame-pointer
+    )
     target_link_options(audio-lifecycle-smoke-test PRIVATE -fsanitize=address,undefined)
   endif()
   add_test(NAME lifecycle-smoke COMMAND audio-lifecycle-smoke-test)
+
   add_executable(audio-stream-core-test tests/stream_core.cpp src/mel.cpp src/speaker_cache.cpp)
   target_compile_features(audio-stream-core-test PRIVATE cxx_std_17)
   target_include_directories(audio-stream-core-test PRIVATE src include)
   if(NH_SANITIZE AND NOT ANDROID)
-    target_compile_options(audio-stream-core-test PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_compile_options(audio-stream-core-test PRIVATE
+      -fsanitize=address,undefined
+      -fno-omit-frame-pointer
+    )
     target_link_options(audio-stream-core-test PRIVATE -fsanitize=address,undefined)
   endif()
   add_test(NAME stream-core COMMAND audio-stream-core-test)
 endif()
-install(TARGETS nuclear_audio nh-audio nh-audio-stream LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(TARGETS nuclear_audio nh-audio nh-audio-stream
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 install(FILES include/nuclear_audio.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

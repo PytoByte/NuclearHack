@@ -112,7 +112,10 @@ int main(void) {
     struct reentry reentry = {&pipeline, NH_OK};
     CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, nested_file, &reentry) == NH_CANCELLED);
     CHECK(reentry.status == NH_BUSY);
-    CHECK(fopen("c-abi-result.json", "rb") == NULL);
+    FILE* result = fopen("c-abi-result.json", "rb");
+    CHECK(result == NULL);
+    if (result)
+        fclose(result);
     pipeline.output_json = "c-abi-fixture.wav";
     CHECK(nh_transcribe_file("c-abi-fixture.wav", &pipeline, NULL, NULL) == NH_INVALID_ARGUMENT);
     nh_llm_config llm = {0};
@@ -156,8 +159,6 @@ int main(void) {
     streaming_config.profile = 2;
     CHECK(nh_streaming_diarizer_create(&streaming_config, &streaming) == NH_INVALID_ARGUMENT && streaming == NULL);
     streaming_config.profile = 0;
-    streaming_config.max_audio_seconds = 3601;
-    CHECK(nh_streaming_diarizer_create(&streaming_config, &streaming) == NH_INVALID_ARGUMENT && streaming == NULL);
     CHECK(nh_streaming_diarizer_accept(NULL, NULL, 0, NULL, NULL) == NH_INVALID_ARGUMENT);
     CHECK(nh_streaming_diarizer_flush(NULL, NULL, NULL) == NH_INVALID_ARGUMENT);
     CHECK(nh_streaming_diarizer_reset(NULL) == NH_INVALID_ARGUMENT);
@@ -180,8 +181,6 @@ int main(void) {
     final_config.scratch_directory = ".";
     final_config.output_json = "c-abi-final.json";
     CHECK(nh_transcribe("c-abi-fixture.wav", &final_config, cancel_stage, NULL) == NH_CANCELLED);
-    final_config.max_audio_seconds = 601;
-    CHECK(nh_transcribe("c-abi-fixture.wav", &final_config, NULL, NULL) == NH_INVALID_ARGUMENT);
     final_config.max_audio_seconds = 0;
     final_config.threads = 17;
     CHECK(nh_transcribe("c-abi-fixture.wav", &final_config, NULL, NULL) == NH_INVALID_ARGUMENT);

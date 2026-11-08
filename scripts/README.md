@@ -38,6 +38,7 @@ Android-проверки запускаются из `src/mobile/android`:
 
 ### Сборка и поставка
 - `format_audio.py` — применение/проверка `src/audio/.clang-format`
+- `leak_check.py` — leak-гейт: cppcheck + clang-tidy + ASan/LSan ctest + Valgrind + churn RSS (`make leak-check`, Linux host/WSL, логи в `.audio-runs/`)
 - `stamp_audio_build.py` — фиксация бинарников и hashes после сборки
 - `build_mobile_audio.py` — cross-compile native SDK для Android
 - `build_llama_audio.py` — сборка CPU-only llama runtime
@@ -51,6 +52,9 @@ Android-проверки запускаются из `src/mobile/android`:
 - `cppcheck.sh`, `pre-commit.sh`, `pre-push.sh` — локальные quality gates
 
 ## Исследовательские скрипты
+
+Единый порядок A/B, карта данных/запусков и правила продолжения исследования —
+[docs/AUDIO_RESEARCH_AGENT.md](../docs/AUDIO_RESEARCH_AGENT.md).
 
 `eval/scripts/` содержит подготовку данных, запуски и скоринг. Там же находятся `probe_*`, `compare_*`, `run_*`, `prepare_*`. Они не входят в shipped SDK и могут требовать research-зависимости (`uv sync --group research`).
 

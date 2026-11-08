@@ -1,0 +1,204 @@
+{
+  "experiment_id": "exp_0266",
+  "model": "giga-v3-ctc",
+  "threads": 4,
+  "cer": 0.06751985878199471,
+  "clips": 40,
+  "audio_seconds": 140.65,
+  "load_seconds": 0.7608029739931226,
+  "inference_seconds": 4.133335803009686,
+  "decode_seconds": 0.008792107066255994,
+  "inference_rtf": 0.029387385730605658,
+  "full_rtf": 0.034859089115315066,
+  "first_inference_seconds": 0.09701307899376843,
+  "median_inference_seconds": 0.09568033649702556,
+  "process_peak_rss_kib": 426504,
+  "current_rss_kib_by_stage": {
+    "before_load": 50308,
+    "after_load": 415716,
+    "before_release": 426984,
+    "after_release": 262676
+  },
+  "normalized": {
+    "substitutions": 45,
+    "deletions": 14,
+    "insertions": 13,
+    "reference_words": 408,
+    "wer": 0.17647058823529413
+  },
+  "raw": {
+    "substitutions": 52,
+    "deletions": 14,
+    "insertions": 13,
+    "reference_words": 408,
+    "wer": 0.19362745098039216
+  },
+  "scope": "Linux desktop CPU, Python harness + production C ABI; not Android",
+  "manifest_sha256": "a6a18d1ea9a67cdf87fc603f5a0f8519f6ecdf3b6fb67b9e49ddfbafce20f388",
+  "text_metrics": {
+    "normalized": {
+      "substitutions": 45,
+      "deletions": 14,
+      "insertions": 13,
+      "reference_words": 408,
+      "wer": 0.17647058823529413
+    },
+    "raw": {
+      "substitutions": 52,
+      "deletions": 14,
+      "insertions": 13,
+      "reference_words": 408,
+      "wer": 0.19362745098039216
+    },
+    "punctuation_token_wer": {
+      "substitutions": 45,
+      "deletions": 14,
+      "insertions": 13,
+      "reference_words": 408,
+      "wer": 0.17647058823529413
+    },
+    "normalized_cer": {
+      "errors": 153,
+      "reference_characters": 2266,
+      "cer": 0.06751985878199471
+    },
+    "raw_cer": {
+      "errors": 160,
+      "reference_characters": 2266,
+      "cer": 0.0706090026478376
+    },
+    "punctuation": {
+      "end_to_end": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "conditional_equal_words": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "per_mark": {
+        ".": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ",": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "?": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "!": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ":": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ";": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2014": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "-": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u2026": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00ab": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\u00bb": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "\"": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "(": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        ")": {
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      }
+    }
+  },
+  "punctuation_reference_available": false
+}

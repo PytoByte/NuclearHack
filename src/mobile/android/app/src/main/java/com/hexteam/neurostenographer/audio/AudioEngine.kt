@@ -7,6 +7,16 @@ import java.io.File
 class AudioEngine(private val context: Context) {
     private val models = AudioModelStore(context)
 
+    fun prepareInput(input: File): File {
+        if (!M4aDecoder.needsConversion(input)) return input
+        val converted = M4aDecoder.decodeToWav(input, directory("converted"))
+        if (!converted.isFile || converted.length() == 0L) {
+            converted.delete()
+            throw TranscriptionException("Не удалось декодировать M4A/MP4 в PCM WAV")
+        }
+        return converted
+    }
+
     fun isAvailable(): Boolean = runCatching { NativeAudio.llmAvailable() }.isSuccess
 
     fun summaryAvailable(): Boolean = runCatching { NativeAudio.llmAvailable() == 1 }.getOrDefault(false)
@@ -111,6 +121,6 @@ class AudioEngine(private val context: Context) {
         const val STATUS_BUSY = 5
         const val MAX_THREADS = 4
         const val CHUNK_SECONDS = 20
-        const val MAX_AUDIO_SECONDS = 600
+        const val MAX_AUDIO_SECONDS = Int.MAX_VALUE
     }
 }

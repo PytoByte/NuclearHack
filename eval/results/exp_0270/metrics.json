@@ -1,0 +1,17 @@
+{
+  "experiment_id": "exp_0270",
+  "scope": "phone40 ROVER screening, CTC tie-break, no confidence available",
+  "baseline_ctc_wer": 0.17647058823529413,
+  "baseline_rnnt_wer": 0.1642156862745098,
+  "fused": {
+    "substitutions": 45,
+    "deletions": 14,
+    "insertions": 13,
+    "reference_words": 408,
+    "wer": 0.17647058823529413
+  },
+  "ctc_insertions": 13,
+  "rnnt_insertions": 12,
+  "accept_rule": "WER fused < 0.1642156862745098 and insertions not grow by more than 1-2 absolute",
+  "decision": "reject_no_quality_gain"
+}

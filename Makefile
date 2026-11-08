@@ -22,9 +22,11 @@ help:
 	@echo 'audio-bootstrap Install pinned native development dependencies locally'
 	@echo 'native-test   Build native SDK, CTest, and Python C ABI tests'
 	@echo 'native-sanitize ASan/UBSan build and tests'
+	@echo 'leak-check      cppcheck + clang-tidy + ASan/LSan + Valgrind over src/audio (Linux host/WSL)'
 	@echo 'mobile-bootstrap Also install NDK for cross-compilation'
 	@echo 'mobile-build  Cross-compile ARM64 and x86_64 SDK (no UI)'
 	@echo 'android-app   Build offline Compose APK with native SDK and models'
+	@echo 'android-release Build, zipalign and sign an offline release APK'
 	@echo 'research-bootstrap Prepare pinned models and FLEURS validation40'
 	@echo 'research-test Test fixed WER normalization and scoring'
 	@echo 'More: python3 scripts/audio_tools.py --help'
@@ -60,6 +62,8 @@ mobile-build:
 	.venv/bin/python scripts/build_mobile_audio.py
 android-app:
 	.venv/bin/python scripts/build_android_app.py
+android-release:
+	.venv/bin/python scripts/build_android_release.py
 research-bootstrap: audio-bootstrap
 	uv sync --frozen --group research
 	$(MAKE) native-build
@@ -93,10 +97,12 @@ lseend-reference-bootstrap: frontend-reference-bootstrap
 	uv pip install --python .tools/frontend-env/bin/python 'onnxruntime==1.23.2' 'matplotlib==3.10.7'
 	.venv/bin/python scripts/bootstrap_models.py lseend-dih3-onnx
 
-.PHONY: native-format native-format-check sdk-package
+.PHONY: native-format native-format-check sdk-package leak-check
 native-format:
 	.venv/bin/python scripts/format_audio.py
 native-format-check:
 	.venv/bin/python scripts/format_audio.py --check
+leak-check: native-format-check
+	.venv/bin/python scripts/leak_check.py
 sdk-package: native-format-check
 	.venv/bin/python scripts/package_audio_sdk.py

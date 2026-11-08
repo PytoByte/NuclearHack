@@ -1,0 +1,712 @@
+{
+  "experiment_id": "exp_0263_der",
+  "scope": "Russian conversational silver pilot: publisher turns, not independently audited gold; diagnostic DER/JER",
+  "runs": {
+    "exp_0263": {
+      "der": 0.0414631401070252,
+      "jer": 0.03895935213725774,
+      "cases": [
+        {
+          "audio_id": "rbm-rec_0020",
+          "der_details": {
+            "missed detection": 1.5500000000000007,
+            "confusion": 0.0,
+            "correct": 50.72300000000001,
+            "total": 52.27300000000002,
+            "false alarm": 0.3129999999999953,
+            "diarization error rate": 0.03563981405314398
+          },
+          "jer": 0.035427680371201316,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0028",
+          "der_details": {
+            "missed detection": 0.0730000000000004,
+            "confusion": 0.0,
+            "correct": 53.086999999999996,
+            "total": 53.16,
+            "false alarm": 0.5929999999999964,
+            "diarization error rate": 0.01252821670428888
+          },
+          "jer": 0.012390006139192174,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0014",
+          "der_details": {
+            "missed detection": 0.10699999999999932,
+            "confusion": 0.0,
+            "correct": 53.14799999999999,
+            "total": 53.25499999999999,
+            "false alarm": 0.39800000000000546,
+            "diarization error rate": 0.009482677682846772
+          },
+          "jer": 0.009412334818183562,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0019",
+          "der_details": {
+            "missed detection": 0.039000000000003254,
+            "confusion": 0.0,
+            "correct": 53.23899999999999,
+            "total": 53.278,
+            "false alarm": 0.35600000000000165,
+            "diarization error rate": 0.00741394196478856
+          },
+          "jer": 0.007364731327143289,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0024",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 53.27599999999999,
+            "total": 53.27599999999999,
+            "false alarm": 0.9120000000000089,
+            "diarization error rate": 0.017118402282453808
+          },
+          "jer": 0.01683029453015452,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0035",
+          "der_details": {
+            "missed detection": 1.1400000000000041,
+            "confusion": 0.0,
+            "correct": 51.516,
+            "total": 52.656,
+            "false alarm": 0.8499999999999996,
+            "diarization error rate": 0.037792464296566464
+          },
+          "jer": 0.03719209060666111,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0000",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 53.097,
+            "total": 53.097,
+            "false alarm": 0.11200000000000188,
+            "diarization error rate": 0.002109347044089155
+          },
+          "jer": 0.0021049070645943707,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0049",
+          "der_details": {
+            "missed detection": 1.9000000000000021,
+            "confusion": 7.061999999999999,
+            "correct": 42.81499999999999,
+            "total": 51.776999999999994,
+            "false alarm": 0.4830000000000041,
+            "diarization error rate": 0.1824169032582036
+          },
+          "jer": 0.1807309605817069,
+          "reference_speakers": 1,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0042",
+          "der_details": {
+            "missed detection": 0.04899999999999949,
+            "confusion": 0.0,
+            "correct": 53.702999999999996,
+            "total": 53.751999999999995,
+            "false alarm": 0.1109999999999971,
+            "diarization error rate": 0.0029766334275933286
+          },
+          "jer": 0.0029704992295266994,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0027",
+          "der_details": {
+            "missed detection": 1.769999999999996,
+            "confusion": 0.0,
+            "correct": 49.66700000000002,
+            "total": 51.43700000000002,
+            "false alarm": 1.2500000000000009,
+            "diarization error rate": 0.05871259987946412
+          },
+          "jer": 0.0573196424165353,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0005",
+          "der_details": {
+            "missed detection": 3.8410000000000055,
+            "confusion": 0.0,
+            "correct": 49.629,
+            "total": 53.470000000000006,
+            "false alarm": 0.6720000000000015,
+            "diarization error rate": 0.08440246867402294
+          },
+          "jer": 0.08335488160762448,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0045",
+          "der_details": {
+            "missed detection": 2.3200000000000003,
+            "confusion": 0.0,
+            "correct": 51.72099999999999,
+            "total": 54.04099999999999,
+            "false alarm": 0.49300000000000654,
+            "diarization error rate": 0.05205307081660235
+          },
+          "jer": 0.05158249899145505,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0006",
+          "der_details": {
+            "missed detection": 2.7599999999999962,
+            "confusion": 5.766000000000002,
+            "correct": 45.28500000000001,
+            "total": 53.81100000000001,
+            "false alarm": 0.2380000000000031,
+            "diarization error rate": 0.1628663284458568
+          },
+          "jer": 0.16214916094654866,
+          "reference_speakers": 1,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0048",
+          "der_details": {
+            "missed detection": 2.0199999999999987,
+            "confusion": 0.0,
+            "correct": 51.467,
+            "total": 53.487,
+            "false alarm": 0.2599999999999928,
+            "diarization error rate": 0.042627180436367554
+          },
+          "jer": 0.042420972333339295,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0023",
+          "der_details": {
+            "missed detection": 1.4700000000000015,
+            "confusion": 0.0,
+            "correct": 51.556000000000004,
+            "total": 53.026,
+            "false alarm": 0.42399999999999416,
+            "diarization error rate": 0.03571832685852215
+          },
+          "jer": 0.03543498596819455,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0051",
+          "der_details": {
+            "missed detection": 0.7800000000000011,
+            "confusion": 0.0,
+            "correct": 51.78199999999999,
+            "total": 52.56199999999999,
+            "false alarm": 0.24800000000000466,
+            "diarization error rate": 0.01955785548495122
+          },
+          "jer": 0.01946601022533622,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0025",
+          "der_details": {
+            "missed detection": 5.639999999999998,
+            "confusion": 0.0,
+            "correct": 47.078,
+            "total": 52.717999999999996,
+            "false alarm": 0.6109999999999998,
+            "diarization error rate": 0.11857430099776164
+          },
+          "jer": 0.11721577378161971,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0029",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 54.36099999999999,
+            "total": 54.36099999999999,
+            "false alarm": 0.45300000000001006,
+            "diarization error rate": 0.00833318003715918
+          },
+          "jer": 0.008264312037071005,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0044",
+          "der_details": {
+            "missed detection": 2.307999999999999,
+            "confusion": 0.0,
+            "correct": 48.832,
+            "total": 51.14,
+            "false alarm": 0.5560000000000027,
+            "diarization error rate": 0.05600312866640598
+          },
+          "jer": 0.05540080470442595,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0016",
+          "der_details": {
+            "missed detection": 1.4899999999999998,
+            "confusion": 0.0,
+            "correct": 51.26199999999999,
+            "total": 52.75199999999999,
+            "false alarm": 0.34700000000000397,
+            "diarization error rate": 0.03482332423415234
+          },
+          "jer": 0.03459575509896628,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0040",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 51.169,
+            "total": 51.169,
+            "false alarm": 0.35199999999999676,
+            "diarization error rate": 0.006879165119505888
+          },
+          "jer": 0.006832165524737561,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0043",
+          "der_details": {
+            "missed detection": 1.2950000000000017,
+            "confusion": 0.0,
+            "correct": 50.571999999999996,
+            "total": 51.867000000000004,
+            "false alarm": 0.5450000000000035,
+            "diarization error rate": 0.03547535041548586
+          },
+          "jer": 0.03510646416851109,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0041",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 52.775,
+            "total": 52.775,
+            "false alarm": 0.6209999999999933,
+            "diarization error rate": 0.01176693510184734
+          },
+          "jer": 0.011630084650535397,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0033",
+          "der_details": {
+            "missed detection": 3.259999999999998,
+            "confusion": 0.0,
+            "correct": 49.476,
+            "total": 52.736000000000004,
+            "false alarm": 0.2569999999999979,
+            "diarization error rate": 0.06669068567961156
+          },
+          "jer": 0.06636725605268612,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0037",
+          "der_details": {
+            "missed detection": 3.1999999999999975,
+            "confusion": 0.0,
+            "correct": 50.876000000000005,
+            "total": 54.076,
+            "false alarm": 0.8559999999999967,
+            "diarization error rate": 0.07500554774761435
+          },
+          "jer": 0.07383674361028163,
+          "reference_speakers": 1,
+          "predicted_speakers": 1
+        },
+        {
+          "audio_id": "rbm-rec_0127",
+          "der_details": {
+            "missed detection": 2.0399999999999983,
+            "confusion": 0.0,
+            "correct": 50.47100000000002,
+            "total": 52.51100000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.03884900306602422
+          },
+          "jer": 0.037064998578743104,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0097",
+          "der_details": {
+            "missed detection": 1.1299999999999972,
+            "confusion": 0.0,
+            "correct": 54.842,
+            "total": 55.971999999999994,
+            "false alarm": 0.0,
+            "diarization error rate": 0.020188665761452108
+          },
+          "jer": 0.02505321035828306,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0080",
+          "der_details": {
+            "missed detection": 1.4499999999999993,
+            "confusion": 0.0,
+            "correct": 51.887,
+            "total": 53.337,
+            "false alarm": 0.2469999999999999,
+            "diarization error rate": 0.03181656261132045
+          },
+          "jer": 0.03179136041360314,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0110",
+          "der_details": {
+            "missed detection": 0.7099999999999946,
+            "confusion": 0.0,
+            "correct": 53.449000000000005,
+            "total": 54.15899999999999,
+            "false alarm": 0.0,
+            "diarization error rate": 0.013109547812921117
+          },
+          "jer": 0.014440214100787085,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0105",
+          "der_details": {
+            "missed detection": 0.05299999999999727,
+            "confusion": 2.9450000000000003,
+            "correct": 51.672000000000004,
+            "total": 54.67000000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.05483811962685197
+          },
+          "jer": 0.06386812366665223,
+          "reference_speakers": 2,
+          "predicted_speakers": 3
+        },
+        {
+          "audio_id": "rbm-rec_0117",
+          "der_details": {
+            "missed detection": 1.222,
+            "confusion": 0.0,
+            "correct": 52.452,
+            "total": 53.67399999999999,
+            "false alarm": 0.0,
+            "diarization error rate": 0.022767075306479864
+          },
+          "jer": 0.022770932142365755,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0138",
+          "der_details": {
+            "missed detection": 0.6280000000000001,
+            "confusion": 0.0,
+            "correct": 53.88700000000001,
+            "total": 54.51500000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.011519765202237917
+          },
+          "jer": 0.011147643251164713,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0078",
+          "der_details": {
+            "missed detection": 1.4439999999999955,
+            "confusion": 0.0,
+            "correct": 52.484,
+            "total": 53.928,
+            "false alarm": 0.0,
+            "diarization error rate": 0.02677644266429305
+          },
+          "jer": 0.024261567929029806,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0056",
+          "der_details": {
+            "missed detection": 1.0039999999999996,
+            "confusion": 0.0,
+            "correct": 52.772000000000006,
+            "total": 53.776,
+            "false alarm": 0.0,
+            "diarization error rate": 0.018670038678964586
+          },
+          "jer": 0.01858565403085118,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0106",
+          "der_details": {
+            "missed detection": 0.13700000000000045,
+            "confusion": 0.0,
+            "correct": 61.214999999999996,
+            "total": 61.352,
+            "false alarm": 0.0,
+            "diarization error rate": 0.0022330160385969564
+          },
+          "jer": 0.001835083583369059,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0118",
+          "der_details": {
+            "missed detection": 8.97000000000001,
+            "confusion": 0.0,
+            "correct": 49.16499999999999,
+            "total": 58.135000000000005,
+            "false alarm": 0.1869999999999994,
+            "diarization error rate": 0.15751268598950732
+          },
+          "jer": 0.1532811259721967,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0067",
+          "der_details": {
+            "missed detection": 0.48999999999999844,
+            "confusion": 0.0,
+            "correct": 52.67999999999999,
+            "total": 53.16999999999999,
+            "false alarm": 0.0,
+            "diarization error rate": 0.009215723152153443
+          },
+          "jer": 0.009764457375154339,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0112",
+          "der_details": {
+            "missed detection": 0.26200000000000045,
+            "confusion": 0.0,
+            "correct": 51.928,
+            "total": 52.190000000000005,
+            "false alarm": 0.0,
+            "diarization error rate": 0.0050201187967043575
+          },
+          "jer": 0.004607970734109543,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0113",
+          "der_details": {
+            "missed detection": 2.6199999999999974,
+            "confusion": 0.0,
+            "correct": 51.275999999999996,
+            "total": 53.89599999999999,
+            "false alarm": 0.0,
+            "diarization error rate": 0.048612141902924115
+          },
+          "jer": 0.0423372761941697,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0139",
+          "der_details": {
+            "missed detection": 0.11299999999999955,
+            "confusion": 0.0,
+            "correct": 52.52200000000001,
+            "total": 52.63500000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.002146860454070476
+          },
+          "jer": 0.0019052436351374054,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0064",
+          "der_details": {
+            "missed detection": 6.2419999999999956,
+            "confusion": 0.0,
+            "correct": 52.20800000000002,
+            "total": 58.45000000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.10679213002566286
+          },
+          "jer": 0.1090943905736768,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0126",
+          "der_details": {
+            "missed detection": 1.581000000000003,
+            "confusion": 0.0,
+            "correct": 51.410999999999994,
+            "total": 52.992,
+            "false alarm": 0.0,
+            "diarization error rate": 0.029834692028985567
+          },
+          "jer": 0.030201726904561837,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0104",
+          "der_details": {
+            "missed detection": 0.0,
+            "confusion": 0.0,
+            "correct": 53.889000000000024,
+            "total": 53.889000000000024,
+            "false alarm": 0.0,
+            "diarization error rate": 0.0
+          },
+          "jer": 0.0,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0120",
+          "der_details": {
+            "missed detection": 1.2799999999999985,
+            "confusion": 0.0,
+            "correct": 50.22000000000001,
+            "total": 51.500000000000014,
+            "false alarm": 0.0,
+            "diarization error rate": 0.0248543689320388
+          },
+          "jer": 0.024860139812862045,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0065",
+          "der_details": {
+            "missed detection": 0.5399999999999991,
+            "confusion": 0.0,
+            "correct": 58.50600000000001,
+            "total": 59.04600000000001,
+            "false alarm": 0.0,
+            "diarization error rate": 0.009145412051620755
+          },
+          "jer": 0.010709186101856241,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0066",
+          "der_details": {
+            "missed detection": 1.5339999999999954,
+            "confusion": 0.0,
+            "correct": 51.575,
+            "total": 53.108999999999995,
+            "false alarm": 0.0,
+            "diarization error rate": 0.028883993296804602
+          },
+          "jer": 0.028790909115285594,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0100",
+          "der_details": {
+            "missed detection": 2.2490000000000023,
+            "confusion": 0.0,
+            "correct": 52.19899999999999,
+            "total": 54.447999999999986,
+            "false alarm": 0.0,
+            "diarization error rate": 0.04130546576550108
+          },
+          "jer": 0.04000373445219049,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0061",
+          "der_details": {
+            "missed detection": 1.729999999999999,
+            "confusion": 0.0,
+            "correct": 50.842,
+            "total": 52.571999999999996,
+            "false alarm": 0.0,
+            "diarization error rate": 0.0329072510081412
+          },
+          "jer": 0.03312807166266576,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0090",
+          "der_details": {
+            "missed detection": 6.650999999999997,
+            "confusion": 0.0,
+            "correct": 46.238,
+            "total": 52.888999999999996,
+            "false alarm": 0.0,
+            "diarization error rate": 0.12575393749172792
+          },
+          "jer": 0.10922671293599612,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        },
+        {
+          "audio_id": "rbm-rec_0135",
+          "der_details": {
+            "missed detection": 1.6400000000000023,
+            "confusion": 0.0,
+            "correct": 52.699000000000005,
+            "total": 54.339000000000006,
+            "false alarm": 0.0,
+            "diarization error rate": 0.03018090137838389
+          },
+          "jer": 0.02954546322933795,
+          "reference_speakers": 2,
+          "predicted_speakers": 2
+        }
+      ]
+    }
+  }
+}

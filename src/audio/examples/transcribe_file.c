@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     config.speaker_model = argv[5];
     config.scratch_directory = argv[6];
     config.output_json = argv[2];
-    /* Zero threads and duration use the measured preset:4 threads,600s limit. */
+    /* Zero threads and duration use the measured preset:4 threads,3600s limit. */
     const nh_status status = nh_transcribe(argv[1], &config, progress, NULL);
     if (status != NH_OK)
         fprintf(stderr, "%s\n", nh_last_error());

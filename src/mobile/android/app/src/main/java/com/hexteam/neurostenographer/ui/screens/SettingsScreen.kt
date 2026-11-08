@@ -46,9 +46,9 @@ fun SettingsScreen(state: MainState) {
         )
         val summarySubtitle =
             if (state.summaryAvailable) {
-                "Qwen3-0.6B доступна на устройстве"
+                "Локальная модель резюме доступна"
             } else {
-                "Модель Qwen не включена в эту сборку"
+                "Модель резюме не включена в эту сборку"
             }
         SettingRow(
             title = "Локальное резюме",

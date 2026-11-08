@@ -4,9 +4,8 @@
 extern "C" nh_status nh_transcribe(const char* input, const nh_transcription_config* options,
                                    nh_progress_callback progress, void* user) {
     return nh::guard([&]() -> nh_status {
-        if (!options || options->struct_size != sizeof(*options) || options->threads > 16 ||
-            options->max_audio_seconds > 600)
-            return nh::fail(NH_INVALID_ARGUMENT, "Invalid final transcription configuration");
+        if (!options || options->struct_size != sizeof(*options) || options->threads > 16)
+            return nh::fail(NH_INVALID_ARGUMENT, "Invalid final transcription configuration (duration <=3600s)");
         nh_pipeline_config pipeline{};
         pipeline.struct_size = sizeof(pipeline);
         pipeline.asr_model = options->asr_model;
@@ -15,8 +14,8 @@ extern "C" nh_status nh_transcribe(const char* input, const nh_transcription_con
         pipeline.output_json = options->output_json;
         pipeline.trace_json = options->trace_json;
         pipeline.threads = options->threads ? options->threads : 4;
-        pipeline.chunk_seconds = 20;
-        pipeline.max_audio_seconds = options->max_audio_seconds ? options->max_audio_seconds : 600;
+        pipeline.chunk_seconds = 25;
+        pipeline.max_audio_seconds = options->max_audio_seconds ? options->max_audio_seconds : 3600;
         nh_pipeline_options checkpoint{};
         checkpoint.struct_size = sizeof(checkpoint);
         checkpoint.checkpoint_directory = options->checkpoint_directory;

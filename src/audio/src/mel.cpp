@@ -51,8 +51,8 @@ MelFrontend::MelFrontend() {
 
 void MelFrontend::extract(const std::vector<float>& pcm, uint64_t base_sample, uint64_t total_samples,
                           uint64_t first_mel_frame, uint32_t frames, std::vector<float>& output) const {
-    if (frames > 3040 || total_samples < base_sample || pcm.size() != total_samples - base_sample ||
-        first_mel_frame > 360000 || first_mel_frame + frames > 363040)
+    (void)first_mel_frame;
+    if (frames > 3040 || total_samples < base_sample || pcm.size() != total_samples - base_sample)
         throw std::invalid_argument("Invalid bounded frontend window");
     output.resize(static_cast<size_t>(frames) * 128);
     const auto raw = [&](int64_t sample) -> float {

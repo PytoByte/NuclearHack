@@ -1,0 +1,1831 @@
+{
+  "experiment_id": "exp_0269",
+  "step": 1,
+  "analysis_type": "error_overlap_without_asr_inference",
+  "systems": {
+    "ctc": "primary input run",
+    "rnnt": "secondary input run"
+  },
+  "domains": [
+    {
+      "domain": "phone40",
+      "manifest": "eval/data/openstt-calls-validation.jsonl",
+      "clips": 40,
+      "reference_words": 408,
+      "models": {
+        "ctc": {
+          "run_dir": ".audio-runs/exp_0266",
+          "config_model": {
+            "id": "giga-v3-ctc",
+            "family": "ctc",
+            "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+            "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+            "files": [
+              "models/giga-v3-ctc/model.int8.onnx",
+              "models/giga-v3-ctc/tokens.txt",
+              "models/giga-v3-ctc/LICENSE"
+            ]
+          },
+          "aggregate": {
+            "substitutions": 52,
+            "deletions": 14,
+            "insertions": 13,
+            "reference_words": 408
+          }
+        },
+        "rnnt": {
+          "run_dir": ".audio-runs/exp_0265",
+          "config_model": {
+            "id": "giga-v3-rnnt",
+            "family": "transducer",
+            "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+            "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+            "files": [
+              "models/giga-v3-rnnt/encoder.int8.onnx",
+              "models/giga-v3-rnnt/decoder.onnx",
+              "models/giga-v3-rnnt/joiner.onnx",
+              "models/giga-v3-rnnt/tokens.txt",
+              "models/giga-v3-rnnt/LICENSE"
+            ]
+          },
+          "aggregate": {
+            "substitutions": 43,
+            "deletions": 19,
+            "insertions": 12,
+            "reference_words": 408
+          }
+        }
+      },
+      "union_error_positions": 72,
+      "categories": {
+        "both_correct": {
+          "count": 336,
+          "fraction_of_reference_words": 0.8235294117647058,
+          "fraction_of_union_error_positions": 4.666666666666667
+        },
+        "primary_correct_secondary_error": {
+          "count": 6,
+          "fraction_of_reference_words": 0.014705882352941176,
+          "fraction_of_union_error_positions": 0.08333333333333333
+        },
+        "primary_error_secondary_correct": {
+          "count": 10,
+          "fraction_of_reference_words": 0.024509803921568627,
+          "fraction_of_union_error_positions": 0.1388888888888889
+        },
+        "both_deletion": {
+          "count": 14,
+          "fraction_of_reference_words": 0.03431372549019608,
+          "fraction_of_union_error_positions": 0.19444444444444445
+        },
+        "both_substitution_same": {
+          "count": 35,
+          "fraction_of_reference_words": 0.0857843137254902,
+          "fraction_of_union_error_positions": 0.4861111111111111
+        },
+        "both_substitution_different": {
+          "count": 6,
+          "fraction_of_reference_words": 0.014705882352941176,
+          "fraction_of_union_error_positions": 0.08333333333333333
+        },
+        "mixed_type": {
+          "count": 1,
+          "fraction_of_reference_words": 0.0024509803921568627,
+          "fraction_of_union_error_positions": 0.013888888888888888
+        }
+      },
+      "fractions": {
+        "one_correct_of_union_errors": 0.2222222222222222,
+        "one_correct_plus_different_replacement_of_union_errors": 0.3194444444444444
+      },
+      "deletion_rescue": {
+        "ctc_deletions_rescued_by_rnnt": 0,
+        "rnnt_deletions_rescued_by_ctc": 5,
+        "note": "A deletion is considered rescued if the other system has a word (correct or substitution) at the same reference position."
+      },
+      "green_light": true,
+      "green_light_rule": "Go to Step 2 only if at least 15% of union error positions are corrected by one model while the other errs; report below if not.",
+      "per_clip": [
+        {
+          "audio_id": "openstt-calls2-4dded67e270b",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 2,
+            "both_deletion": 1,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "да",
+              "ctc_status": "substitution",
+              "ctc_word": "а",
+              "rnnt_status": "correct",
+              "rnnt_word": "да"
+            },
+            {
+              "reference_word": "перезвоните",
+              "ctc_status": "substitution",
+              "ctc_word": "пеизвините",
+              "rnnt_status": "correct",
+              "rnnt_word": "перезвоните"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-84023d25f8b6",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "тебя",
+              "ctc_status": "substitution",
+              "ctc_word": "себя",
+              "rnnt_status": "correct",
+              "rnnt_word": "тебя"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-1feb05c25cea",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-362f49666ce8",
+          "reference_words": 9,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-a51983034bb6",
+          "reference_words": 5,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-43a3e8a048e4",
+          "reference_words": 8,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-0e018db403d2",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 2,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "ты",
+              "ctc_status": "correct",
+              "ctc_word": "ты",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-db3c9f848961",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-54faf1028e95",
+          "reference_words": 5,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-34643a087f0f",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 4,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-937c21019e8a",
+          "reference_words": 4,
+          "categories": {
+            "both_correct": 4,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-d5c4ad91bd6d",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "встрече",
+              "ctc_status": "substitution",
+              "ctc_word": "встреч",
+              "rnnt_status": "correct",
+              "rnnt_word": "встрече"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-610b054b06ad",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-fd09ed9da301",
+          "reference_words": 6,
+          "categories": {
+            "both_correct": 4,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "мужчина",
+              "ctc_status": "substitution",
+              "ctc_word": "мужина",
+              "rnnt_status": "correct",
+              "rnnt_word": "мужчина"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-6d121de6347f",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-21fff4372808",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-9a97a0cc9153",
+          "reference_words": 17,
+          "categories": {
+            "both_correct": 14,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "ж",
+              "ctc_status": "correct",
+              "ctc_word": "ж",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            },
+            {
+              "reference_word": "застрелил",
+              "ctc_status": "substitution",
+              "ctc_word": "застрели",
+              "rnnt_status": "correct",
+              "rnnt_word": "застрелил"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-51cdd6f3c5de",
+          "reference_words": 6,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-67bd9aa34181",
+          "reference_words": 12,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-393f0a044287",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 2,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-14458407244e",
+          "reference_words": 16,
+          "categories": {
+            "both_correct": 14,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 2,
+          "rnnt_insertions": 4,
+          "examples": [
+            {
+              "reference_word": "так",
+              "ctc_status": "substitution",
+              "ctc_word": "е",
+              "rnnt_status": "substitution",
+              "rnnt_word": "ее"
+            },
+            {
+              "reference_word": "вы",
+              "ctc_status": "correct",
+              "ctc_word": "вы",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-a01b53e337ae",
+          "reference_words": 16,
+          "categories": {
+            "both_correct": 14,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "ну",
+              "ctc_status": "correct",
+              "ctc_word": "ну",
+              "rnnt_status": "substitution",
+              "rnnt_word": "но"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-83ac4f24f93b",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 3,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 1,
+            "mixed_type": 1
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "обиженно",
+              "ctc_status": "substitution",
+              "ctc_word": "обижена",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            },
+            {
+              "reference_word": "нападает",
+              "ctc_status": "substitution",
+              "ctc_word": "на",
+              "rnnt_status": "substitution",
+              "rnnt_word": "настает"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-36333c2774a3",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 13,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-5ce0a4ea55c7",
+          "reference_words": 8,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 1,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "же",
+              "ctc_status": "substitution",
+              "ctc_word": "зарегистрирувать",
+              "rnnt_status": "substitution",
+              "rnnt_word": "зарегистрируете"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-dcd597d8d6a9",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-7e34da4f8bf3",
+          "reference_words": 17,
+          "categories": {
+            "both_correct": 17,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-0d18df2d582b",
+          "reference_words": 16,
+          "categories": {
+            "both_correct": 15,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "области",
+              "ctc_status": "substitution",
+              "ctc_word": "област",
+              "rnnt_status": "correct",
+              "rnnt_word": "области"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-c516eaaea330",
+          "reference_words": 6,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-8dcea303ec8b",
+          "reference_words": 20,
+          "categories": {
+            "both_correct": 18,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-a56b0acdee0b",
+          "reference_words": 7,
+          "categories": {
+            "both_correct": 3,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "в",
+              "ctc_status": "substitution",
+              "ctc_word": "и",
+              "rnnt_status": "substitution",
+              "rnnt_word": "из"
+            },
+            {
+              "reference_word": "белых",
+              "ctc_status": "substitution",
+              "ctc_word": "дела",
+              "rnnt_status": "correct",
+              "rnnt_word": "белых"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-1fca2e9b5be1",
+          "reference_words": 6,
+          "categories": {
+            "both_correct": 4,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "не",
+              "ctc_status": "correct",
+              "ctc_word": "не",
+              "rnnt_status": "substitution",
+              "rnnt_word": "где"
+            },
+            {
+              "reference_word": "повысите",
+              "ctc_status": "substitution",
+              "ctc_word": "ее",
+              "rnnt_status": "correct",
+              "rnnt_word": "повысите"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-22e25f8990a3",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "меня",
+              "ctc_status": "substitution",
+              "ctc_word": "мен",
+              "rnnt_status": "correct",
+              "rnnt_word": "меня"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-9ea6c77ae8ee",
+          "reference_words": 19,
+          "categories": {
+            "both_correct": 17,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 2,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "и",
+              "ctc_status": "substitution",
+              "ctc_word": "в",
+              "rnnt_status": "substitution",
+              "rnnt_word": "поэтому"
+            },
+            {
+              "reference_word": "поэтому",
+              "ctc_status": "substitution",
+              "ctc_word": "т",
+              "rnnt_status": "substitution",
+              "rnnt_word": "вот"
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-322f7e1c8d95",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "вот",
+              "ctc_status": "correct",
+              "ctc_word": "вот",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            }
+          ]
+        },
+        {
+          "audio_id": "openstt-calls2-8bbc7f2d745d",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 2,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-87b8347fdcf4",
+          "reference_words": 9,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 2,
+          "rnnt_insertions": 2,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-319b32602023",
+          "reference_words": 6,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-4bc8009e5717",
+          "reference_words": 8,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 0,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "openstt-calls2-38372c16489e",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 13,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 1,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 0,
+          "examples": []
+        }
+      ]
+    },
+    {
+      "domain": "fleurs",
+      "manifest": "eval/data/fleurs-ru-validation.jsonl",
+      "clips": 40,
+      "reference_words": 744,
+      "models": {
+        "ctc": {
+          "run_dir": ".audio-runs/exp_0268",
+          "config_model": {
+            "id": "giga-v3-ctc",
+            "family": "ctc",
+            "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-giga-am-v3-russian-2025-12-16",
+            "revision": "32a4c7cc81809bd132e2d935ab99e9e6ab47fbec",
+            "files": [
+              "models/giga-v3-ctc/model.int8.onnx",
+              "models/giga-v3-ctc/tokens.txt",
+              "models/giga-v3-ctc/LICENSE"
+            ]
+          },
+          "aggregate": {
+            "substitutions": 221,
+            "deletions": 4,
+            "insertions": 22,
+            "reference_words": 744
+          }
+        },
+        "rnnt": {
+          "run_dir": ".audio-runs/exp_0267",
+          "config_model": {
+            "id": "giga-v3-rnnt",
+            "family": "transducer",
+            "source": "https://huggingface.co/csukuangfj/sherpa-onnx-nemo-transducer-giga-am-v3-russian-2025-12-16",
+            "revision": "0424d62637b37d8b7b1eb0f75a04d78dec55fdcc",
+            "files": [
+              "models/giga-v3-rnnt/encoder.int8.onnx",
+              "models/giga-v3-rnnt/decoder.onnx",
+              "models/giga-v3-rnnt/joiner.onnx",
+              "models/giga-v3-rnnt/tokens.txt",
+              "models/giga-v3-rnnt/LICENSE"
+            ]
+          },
+          "aggregate": {
+            "substitutions": 219,
+            "deletions": 5,
+            "insertions": 21,
+            "reference_words": 744
+          }
+        }
+      },
+      "union_error_positions": 227,
+      "categories": {
+        "both_correct": {
+          "count": 517,
+          "fraction_of_reference_words": 0.6948924731182796,
+          "fraction_of_union_error_positions": 2.2775330396475773
+        },
+        "primary_correct_secondary_error": {
+          "count": 2,
+          "fraction_of_reference_words": 0.002688172043010753,
+          "fraction_of_union_error_positions": 0.00881057268722467
+        },
+        "primary_error_secondary_correct": {
+          "count": 3,
+          "fraction_of_reference_words": 0.004032258064516129,
+          "fraction_of_union_error_positions": 0.013215859030837005
+        },
+        "both_deletion": {
+          "count": 4,
+          "fraction_of_reference_words": 0.005376344086021506,
+          "fraction_of_union_error_positions": 0.01762114537444934
+        },
+        "both_substitution_same": {
+          "count": 213,
+          "fraction_of_reference_words": 0.2862903225806452,
+          "fraction_of_union_error_positions": 0.9383259911894273
+        },
+        "both_substitution_different": {
+          "count": 5,
+          "fraction_of_reference_words": 0.006720430107526882,
+          "fraction_of_union_error_positions": 0.022026431718061675
+        },
+        "mixed_type": {
+          "count": 0,
+          "fraction_of_reference_words": 0.0,
+          "fraction_of_union_error_positions": 0.0
+        }
+      },
+      "fractions": {
+        "one_correct_of_union_errors": 0.022026431718061675,
+        "one_correct_plus_different_replacement_of_union_errors": 0.04405286343612335
+      },
+      "deletion_rescue": {
+        "ctc_deletions_rescued_by_rnnt": 0,
+        "rnnt_deletions_rescued_by_ctc": 1,
+        "note": "A deletion is considered rescued if the other system has a word (correct or substitution) at the same reference position."
+      },
+      "green_light": false,
+      "green_light_rule": "Go to Step 2 only if at least 15% of union error positions are corrected by one model while the other errs; report below if not.",
+      "per_clip": [
+        {
+          "audio_id": "fleurs-ru-validation-0001",
+          "reference_words": 9,
+          "categories": {
+            "both_correct": 5,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0026",
+          "reference_words": 24,
+          "categories": {
+            "both_correct": 19,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 5,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0031",
+          "reference_words": 32,
+          "categories": {
+            "both_correct": 25,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 7,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0043",
+          "reference_words": 27,
+          "categories": {
+            "both_correct": 15,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 12,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 6,
+          "rnnt_insertions": 6,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0050",
+          "reference_words": 19,
+          "categories": {
+            "both_correct": 12,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 7,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0052",
+          "reference_words": 15,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0068",
+          "reference_words": 37,
+          "categories": {
+            "both_correct": 28,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 8,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "оперение,",
+              "ctc_status": "substitution",
+              "ctc_word": "перение",
+              "rnnt_status": "substitution",
+              "rnnt_word": "оперение"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0088",
+          "reference_words": 15,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0089",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0093",
+          "reference_words": 21,
+          "categories": {
+            "both_correct": 15,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 6,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0094",
+          "reference_words": 17,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 8,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0102",
+          "reference_words": 39,
+          "categories": {
+            "both_correct": 23,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 16,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 4,
+          "rnnt_insertions": 4,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0105",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 5,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "всепоглощающей",
+              "ctc_status": "substitution",
+              "ctc_word": "всепрощающей",
+              "rnnt_status": "substitution",
+              "rnnt_word": "всепобщающей"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0121",
+          "reference_words": 35,
+          "categories": {
+            "both_correct": 26,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 8,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "больше",
+              "ctc_status": "substitution",
+              "ctc_word": "большую",
+              "rnnt_status": "correct",
+              "rnnt_word": "больше"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0122",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 10,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "памятниками,",
+              "ctc_status": "substitution",
+              "ctc_word": "памятниками",
+              "rnnt_status": "substitution",
+              "rnnt_word": "памятником"
+            },
+            {
+              "reference_word": "предшественниками",
+              "ctc_status": "correct",
+              "ctc_word": "предшественниками",
+              "rnnt_status": "substitution",
+              "rnnt_word": "предшественником"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0149",
+          "reference_words": 16,
+          "categories": {
+            "both_correct": 12,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0174",
+          "reference_words": 21,
+          "categories": {
+            "both_correct": 14,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 7,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0177",
+          "reference_words": 34,
+          "categories": {
+            "both_correct": 25,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 9,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0179",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 5,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0187",
+          "reference_words": 16,
+          "categories": {
+            "both_correct": 12,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0192",
+          "reference_words": 8,
+          "categories": {
+            "both_correct": 6,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0204",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0210",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 10,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0212",
+          "reference_words": 12,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0228",
+          "reference_words": 19,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 7,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0236",
+          "reference_words": 12,
+          "categories": {
+            "both_correct": 10,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0240",
+          "reference_words": 14,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "семейство",
+              "ctc_status": "substitution",
+              "ctc_word": "семейства",
+              "rnnt_status": "correct",
+              "rnnt_word": "семейство"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0242",
+          "reference_words": 26,
+          "categories": {
+            "both_correct": 23,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0245",
+          "reference_words": 24,
+          "categories": {
+            "both_correct": 13,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 11,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0252",
+          "reference_words": 21,
+          "categories": {
+            "both_correct": 13,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 8,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0256",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0258",
+          "reference_words": 15,
+          "categories": {
+            "both_correct": 11,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0260",
+          "reference_words": 22,
+          "categories": {
+            "both_correct": 14,
+            "primary_correct_secondary_error": 1,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 6,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 2,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "из-за",
+              "ctc_status": "substitution",
+              "ctc_word": "за",
+              "rnnt_status": "substitution",
+              "rnnt_word": "изза"
+            },
+            {
+              "reference_word": "им",
+              "ctc_status": "correct",
+              "ctc_word": "им",
+              "rnnt_status": "deletion",
+              "rnnt_word": null
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0261",
+          "reference_words": 20,
+          "categories": {
+            "both_correct": 13,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 6,
+            "both_substitution_different": 1,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 1,
+          "rnnt_insertions": 1,
+          "examples": [
+            {
+              "reference_word": "Гиннеса.",
+              "ctc_status": "substitution",
+              "ctc_word": "геннеса",
+              "rnnt_status": "substitution",
+              "rnnt_word": "гиннеса"
+            }
+          ]
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0280",
+          "reference_words": 24,
+          "categories": {
+            "both_correct": 17,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 7,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0281",
+          "reference_words": 11,
+          "categories": {
+            "both_correct": 9,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 0,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0287",
+          "reference_words": 20,
+          "categories": {
+            "both_correct": 16,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 3,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0322",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0333",
+          "reference_words": 10,
+          "categories": {
+            "both_correct": 7,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 0,
+            "both_deletion": 1,
+            "both_substitution_same": 2,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 0,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": []
+        },
+        {
+          "audio_id": "fleurs-ru-validation-0335",
+          "reference_words": 13,
+          "categories": {
+            "both_correct": 8,
+            "primary_correct_secondary_error": 0,
+            "primary_error_secondary_correct": 1,
+            "both_deletion": 0,
+            "both_substitution_same": 4,
+            "both_substitution_different": 0,
+            "mixed_type": 0
+          },
+          "differing_positions": 1,
+          "ctc_insertions": 0,
+          "rnnt_insertions": 0,
+          "examples": [
+            {
+              "reference_word": "износу",
+              "ctc_status": "substitution",
+              "ctc_word": "исносу",
+              "rnnt_status": "correct",
+              "rnnt_word": "износу"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overall_green_light": true,
+  "decision": "go_to_step_2_prototype",
+  "note": "Decision is based on provided saved ASR runs only; no new ASR inference was performed by this script."
+}

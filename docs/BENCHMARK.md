@@ -65,7 +65,7 @@ make research-bootstrap
 .venv/bin/python eval/scripts/prepare_openstt_calls.py
 
 # Полный research/run queue
-uv run python eval/scripts/run_research_queue.py experiments/phase54-final-sdk-package.json
+uv run python eval/scripts/run_research_queue.py experiments/phase53-final-sdk-audit.json
 ```
 
 При каждом запуске сохранять run ID и provenance:

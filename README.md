@@ -4,12 +4,7 @@
 
 ## Установка
 
-1. Скачайте готовый APK из GitHub Releases (рекомендуется signed release APK).
-2. Установите APK на Android-устройство или AVD.
-   ```sh
-   adb install -r .build/android-app/neurostenographer-release-signed.apk
-   ```
-3. При первом запуске модели копируются из assets в `filesDir/models`; сеть не используется.
+Скачайте и установите готовый APK из GitHub Releases
 
 ## Использование
 

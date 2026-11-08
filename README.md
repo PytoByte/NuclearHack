@@ -44,4 +44,4 @@ make android-release
 - Архитектура и модели: `docs/ARCHITECTURE.md`
 - Ограничения: `docs/LIMITATIONS.md`
 - Результаты тестов: `docs/BENCHMARK.md`
-- Репозиторий/infra: `docs/RESEARCH.md`
+- Исследование: `docs/RESEARCH.md`

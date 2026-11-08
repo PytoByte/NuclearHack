@@ -15,7 +15,6 @@ merge adjacent same-speaker words, gap ≤ 1200 ms → strict transcript JSON
 - GigaAM — ASR; Nemotron — только диаризация.
 - Пунктуация/case генерируются ASR, без LLM-переписывания.
 - До 8 speaker-слотов, но без гарантии для всех.
-- IDs спикеров穩定ны только внутри файла.
 
 ## Модели
 

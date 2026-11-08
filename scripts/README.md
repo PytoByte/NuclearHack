@@ -53,8 +53,8 @@ Android-проверки запускаются из `src/mobile/android`:
 
 ## Исследовательские скрипты
 
-Единый порядок A/B, карта данных/запусков и правила продолжения исследования —
-[docs/AUDIO_RESEARCH_AGENT.md](../docs/AUDIO_RESEARCH_AGENT.md).
+Архитектура SDK и ограничения — [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md).
+Манифесты данных находятся в `eval/data/`, результаты экспериментов — в `eval/results/`.
 
 `eval/scripts/` содержит подготовку данных, запуски и скоринг. Там же находятся `probe_*`, `compare_*`, `run_*`, `prepare_*`. Они не входят в shipped SDK и могут требовать research-зависимости (`uv sync --group research`).
 

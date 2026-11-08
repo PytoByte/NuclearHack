@@ -59,7 +59,12 @@ phone40 plain CTC всё ещё имеет лучший WER (17,65% против
 ## Как воспроизвести
 
 ```sh
-# Host decoder only: время и peak RSS нативного декодера, без ASR/diarization
+# Данные
+make research-bootstrap
+.venv/bin/python eval/scripts/prepare_russian_pilot.py
+.venv/bin/python eval/scripts/prepare_openstt_calls.py
+
+# Host decoder only
 uv run python scripts/benchmark_decode.py path/to/audio.wav
 
 # Полный research/run queue

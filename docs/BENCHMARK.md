@@ -59,17 +59,10 @@ phone40 plain CTC всё ещё имеет лучший WER (17,65% против
 ## Как воспроизвести
 
 ```sh
-# Проверка Python/C-unit infra и native SDK
-make native-test native-sanitize
-make native-format-check
-make check
-
-# Host decoder only, не ASR/diarization
+# Host decoder only: время и peak RSS нативного декодера, без ASR/diarization
 uv run python scripts/benchmark_decode.py path/to/audio.wav
 
-# Research harness и fixed runs
-make research-bootstrap
-make research-test
+# Полный research/run queue
 uv run python eval/scripts/run_research_queue.py experiments/...
 ```
 

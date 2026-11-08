@@ -87,3 +87,26 @@ uv run python eval/scripts/run_research_queue.py experiments/...
 - Timestamp MAE не измерен, потому что нет ручной word-level ground truth.
 - Qwen/summary не входит в transcription baseline.
 - Benchmark size APK не является целевой метрикой проекта.
+
+## Тестовые данные и запуск
+
+Подготовка pinned audio/data:
+
+```sh
+make research-bootstrap
+# эквивалентно: models + prepare_fleurs.py --split validation
+.venv/bin/python eval/scripts/prepare_russian_pilot.py
+.venv/bin/python eval/scripts/prepare_openstt_calls.py
+```
+
+Запуск измерений:
+
+```sh
+.venv/bin/python eval/scripts/run_asr.py
+.venv/bin/python eval/scripts/run_file_pipeline.py
+.venv/bin/python eval/scripts/run_diarization.py
+.venv/bin/python eval/scripts/run_fragment_asr.py
+.venv/bin/python eval/scripts/run_research_queue.py experiments/...
+```
+
+Результаты сохраняются в `eval/results/exp_NNNN/`.

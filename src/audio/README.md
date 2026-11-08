@@ -27,7 +27,7 @@ buffered speaker profile и first160ms word anchor фиксирована.
 
 ## Документация
 
-Текущие цели и статусы: [docs/GOALS.md](../../docs/GOALS.md).
+Архитектура и ограничения: [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md).
 Архитектура: [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md).
 
 ## Сборка и проверка
@@ -88,5 +88,5 @@ ARM не проверен.3600s long-dialogue soak и натворческая �
 Выбранный ASR лучше восстанавливает пунктуацию, но на phone40 хуже plain CTC;
 нет утверждения об универсальном качестве или независимом gold test.
 
-Текущие измерения/решения — [RESEARCH.md](../../docs/RESEARCH.md),
-слои реализации — [ARCHITECTURE.md](../../docs/ARCHITECTURE.md).
+Архитектура и ограничения — [ARCHITECTURE.md](../../docs/ARCHITECTURE.md).
+Результаты экспериментов — `eval/results/`.

@@ -12,9 +12,7 @@
 
 - Create a separate branch from the current base branch (`dev`) for the task;
   preserve unrelated user changes.
-- Read `docs/ARCHITECTURE.md`, `docs/GOALS.md`, `docs/RESEARCH.md` before
-  audio work. For audio research, follow the single playbook
-  [`docs/AUDIO_RESEARCH_AGENT.md`](docs/AUDIO_RESEARCH_AGENT.md).
+- Read `docs/ARCHITECTURE.md` before audio work.
 - `task/task.md` is the original competition brief and Android-app-first
   reference; the current headless SDK scope overrides that sequence.
 - Native SDK: C++17 / C ABI.
@@ -33,14 +31,13 @@
 ## Documentation
 
 - `docs/ARCHITECTURE.md`: keep aligned with implemented/accepted code.
-- `docs/RESEARCH.md`: record stages, concise experiments, and ADRs. Avoid extra docs.
-- `docs/AUDIO_RESEARCH_AGENT.md`: the research loop, measurement rules, and tool map;
-  keep completed checklists and historical results out of this instruction.
+- Keep reproducible experiment configs and metrics in `eval/results`; raw logs
+  remain local. `docs/` contains only the architecture document.
 - Update related docs in the same change when behavior, API, config, build command,
   model availability, or public limitations change.
-  - `src/audio` API/config -> `docs/ARCHITECTURE.md`, `docs/GOALS.md`
+  - `src/audio` API/config -> `docs/ARCHITECTURE.md`
   - rules/process -> `AGENTS.md`
-  - optional/unimplemented items -> `docs/GOALS.md`
+  - optional/unimplemented items -> limitations in `docs/ARCHITECTURE.md`
 
 ## Native audio (`src/audio`)
 

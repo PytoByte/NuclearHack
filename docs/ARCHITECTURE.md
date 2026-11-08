@@ -25,12 +25,14 @@ merge adjacent same-speaker words, gap ≤ 1200 ms → strict transcript JSON
 
 ## Ключевые технические решения
 
-- `nh_transcribe` blocking; отмена между стадиями.
+- `nh_transcribe` блокирующий; отмена между блоками и инференсами.
+  Текущий синхронный вызов нейросети не прерывается.
 - Один high-level job на процесс (`NH_BUSY` при повторе).
 - PCM spool на диске; ASR читает чанки, speaker backend stream 16000 samples.
 - ASR checkpoint v2 по SHA256 PCM + params; диаризация пересчитывается.
 - JSON строго: `speaker_id`, `start_ms`, `end_ms`, `text`.
-- Atomic export output/trace; внешняя сеть отсутствует.
+- Атомарная запись каждого output/trace-файла; это не общая транзакция двух файлов.
+  Внешняя сеть отсутствует.
 
 ## Слои
 
@@ -53,7 +55,7 @@ service с progress; manifest без `INTERNET`. Final preset выбираетс
 - Linux x86_64, NDK r27d/API 26 for Android.
 - Gates: `make check native-test native-sanitize leak-check mobile-build`.
 - Android: ktlint, detekt, lint.
-- ASM/UBSan покрывают проектный код, не предсобранный ORT/sherpa.
+- ASan/UBSan покрывают проектный код, не предсобранный ORT/sherpa.
 
 ## Не входит в scope
 
@@ -61,3 +63,20 @@ service с progress; manifest без `INTERNET`. Final preset выбираетс
 - Запись аудио в приложении.
 - Full Android-app benchmark на physical ARM (not measured).
 - Cross-file speaker identity.
+
+## Границы качества и измерений
+
+- Короткие голоса, музыка и одновременная речь остаются сложными.
+  Один ASR-поток не гарантирует расшифровку обоих наложенных голосов.
+- Стереоканалы сводятся в mono; отдельной channel-aware обработки нет.
+- Таймкоды получены из CTC-токенов; без ручных времён слов timestamp MAE не измерен.
+- Русские диалоги оценивались на известном publisher-reviewed silver-наборе,
+  а не независимом blind gold. FLEURS — чтение, не диалоги.
+- Android RTF/PSS в презентации относятся к native SDK CLI на x86_64 AVD с 4 ГБ RAM,
+  а не полному Compose APK или инструментированному ARM-бенчмарку.
+  Время трёх повторов одного файла различалось в 2,46 раза.
+- Бюджет C API по умолчанию — 3600 с, явный бюджет задаёт вызывающий код.
+  Это не жёсткий максимум и не сертификация многочасового качества.
+
+Материалы релиза: [презентация](../artifacts/presentation.pdf),
+[видео приложения](../artifacts/demo.mp4). Конфигурации и результаты экспериментов — `eval/results/`.

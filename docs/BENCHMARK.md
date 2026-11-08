@@ -64,9 +64,6 @@ make research-bootstrap
 .venv/bin/python eval/scripts/prepare_russian_pilot.py
 .venv/bin/python eval/scripts/prepare_openstt_calls.py
 
-# Host decoder only
-uv run python scripts/benchmark_decode.py path/to/audio.wav
-
 # Полный research/run queue
 uv run python eval/scripts/run_research_queue.py experiments/...
 ```

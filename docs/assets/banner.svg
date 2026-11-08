@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Нейростенографист">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00060E"/>
+      <stop offset="100%" stop-color="#0E1723"/>
+    </linearGradient>
+    <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dce6ff"/>
+      <stop offset="100%" stop-color="#8ea7ff"/>
+    </linearGradient>
+  <defs>
+    <path id="ringPath" d="M 1145 -80 A 230 230 0 1 1 1144.99 -80" />
+  </defs>
+  </defs>
+  <rect width="1200" height="300" fill="url(#bg)"/>
+
+  <!-- moving stars -->
+  <g fill="#ffffff">
+    <circle r="1.4" opacity="0.9">
+      <animate attributeName="cx" values="100;1180" dur="18s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="55;45;60" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.8" opacity="0.7">
+      <animate attributeName="cx" values="1180;100" dur="26s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="230;205;250" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.2" opacity="0.8">
+      <animate attributeName="cx" values="300;980" dur="14s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="80;70;90" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.6" opacity="0.6">
+      <animate attributeName="cx" values="920;220" dur="22s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="255;230;270" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.1" opacity="0.7">
+      <animate attributeName="cx" values="150;1120" dur="20s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="120;100;135" dur="5.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.3" opacity="0.8">
+      <animate attributeName="cx" values="1120;180" dur="24s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="180;160;195" dur="6.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.5" opacity="0.5">
+      <animate attributeName="cx" values="420;1080" dur="16s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="40;30;50" dur="4.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.2" opacity="0.6">
+      <animate attributeName="cx" values="1080;360" dur="28s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="260;235;280" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.85;0.3" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.7" opacity="0.7">
+      <animate attributeName="cx" values="600;200" dur="19s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="200;180;215" dur="6.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.95;0.2" dur="3.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.0" opacity="0.6">
+      <animate attributeName="cx" values="220;860" dur="15s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="100;85;115" dur="5.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.25;0.8;0.25" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.4" opacity="0.5">
+      <animate attributeName="cx" values="860;500" dur="23s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="35;25;45" dur="4.9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.75;0.2" dur="2.7s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <g id="moonGroup">
+    <animateTransform attributeName="transform" type="rotate" from="0 1145 150" to="360 1145 150" dur="42s" repeatCount="indefinite"/>
+    <!-- large partial moon -->
+    <circle cx="1145" cy="150" r="195" fill="url(#moon)" opacity="0.96"/>
+    <circle cx="1115" cy="209" r="15" fill="#0E1723" opacity="0.34"/>
+    <circle cx="1293" cy="196" r="5" fill="#0E1723" opacity="0.31"/>
+    <circle cx="1156" cy="199" r="10" fill="#0E1723" opacity="0.34"/>
+    <circle cx="1191" cy="171" r="10" fill="#0E1723" opacity="0.2"/>
+    <circle cx="1265" cy="196" r="6" fill="#0E1723" opacity="0.22"/>
+    <circle cx="1055" cy="54" r="5" fill="#0E1723" opacity="0.19"/>
+    <circle cx="1049" cy="99" r="6" fill="#0E1723" opacity="0.3"/>
+    <circle cx="1034" cy="211" r="12" fill="#0E1723" opacity="0.22"/>
+    <circle cx="1089" cy="294" r="6" fill="#0E1723" opacity="0.2"/>
+    <circle cx="1248" cy="228" r="6" fill="#0E1723" opacity="0.25"/>
+    <circle cx="1056" cy="241" r="5" fill="#0E1723" opacity="0.33"/>
+    <circle cx="1020" cy="96" r="10" fill="#0E1723" opacity="0.31"/>
+    <circle cx="1097" cy="48" r="8" fill="#0E1723" opacity="0.22"/>
+    <circle cx="983" cy="185" r="8" fill="#0E1723" opacity="0.2"/>
+    <circle cx="1154" cy="101" r="8" fill="#0E1723" opacity="0.33"/>
+    <circle cx="986" cy="124" r="15" fill="#0E1723" opacity="0.27"/>
+    <ellipse cx="1080" cy="145" rx="30" ry="15" fill="#0E1723" opacity="0.16"/>
+    <ellipse cx="1239" cy="107" rx="18" ry="19" fill="#0E1723" opacity="0.13"/>
+    <ellipse cx="1195" cy="237" rx="30" ry="15" fill="#0E1723" opacity="0.12"/>
+    <ellipse cx="1207" cy="15" rx="30" ry="23" fill="#0E1723" opacity="0.16"/>
+    <ellipse cx="1290" cy="140" rx="24" ry="23" fill="#0E1723" opacity="0.15"/>
+    <ellipse cx="1083" cy="260" rx="18" ry="11" fill="#0E1723" opacity="0.12"/>
+  </g>
+
+  <g transform="translate(80,118)">
+    <text font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700" fill="#ffffff">Нейростенографист</text>
+    <text y="46" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#c9c9c9">Offline audio transcription and diarization</text>
+    <g transform="translate(0,72)">
+      <rect x="0" y="0" width="148" height="40" rx="8" fill="#0b1120" stroke="#3656ff" stroke-width="1.5"/>
+      <text x="74" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#ffffff">C++17 SDK</text>
+      <rect x="166" y="0" width="132" height="40" rx="8" fill="#0b1120" stroke="#3656ff" stroke-width="1.5"/>
+      <text x="232" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#ffffff">Android</text>
+      <rect x="316" y="0" width="122" height="40" rx="8" fill="#0b1120" stroke="#3656ff" stroke-width="1.5"/>
+      <text x="377" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#ffffff">GigaAM</text>
+      <rect x="456" y="0" width="148" height="40" rx="8" fill="#0b1120" stroke="#3656ff" stroke-width="1.5"/>
+      <text x="530" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#ffffff">Nemotron</text>
+    </g>
+  </g>
+
+  <text font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#ffffff" opacity="1" letter-spacing="8">
+    <textPath xlink:href="#ringPath" startOffset="0%">
+      NUCLEAR HACK • NUCLEAR HACK • NUCLEAR HACK •
+      <animate attributeName="startOffset" from="0%" to="100%" dur="12s" repeatCount="indefinite"/>
+    </textPath>
+  </text>
+
+</svg>
